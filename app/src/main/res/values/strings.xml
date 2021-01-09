@@ -1,3 +1,30 @@
 <resources>
     <string name="app_name">Profitable_Shopping</string>
+
+    ////////////menu///////////////////////////////////////////
+    <string name="home">الرئيسية</string>
+    <string name="cart">السلة</string>
+    <string name="search">البحث</string>
+    <string name="Notification">الاشعارات</string>
+    <string name="Profile">حسابي</string>
+
+    ////////////////////////////////////////////////////////////
+
+    <string name="logout">تسجيل الخروج</string>
+
+    ////////////////////////category///////////////////////////////
+
+    <string name="category_name">ملابس نسائية</string>
+    <string name="category_update">تعديل</string>
+    <string name="category_delete">حذف</string>
+    <string name="category_save">حفظ</string>
+    <string name="category_add">اضافة</string>
+    <string name="add_new_category">اضافة صنف جديد</string>
+    <string name="backed">تراجع</string>
+    <string name="cancel">الغاء</string>
+    <string name="title_update">تعديل الصنف</string>
+    <string name="title_delete">حذف الصنف</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
