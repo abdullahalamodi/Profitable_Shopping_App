@@ -19,7 +19,7 @@ class ShoppingRepositry {
     init {
         val retrofit: Retrofit = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl("")
+            .baseUrl("https://profitableshopping.000webhostapp.com/profitable_shopping_api/api/")
             .build()
         shoppingApi = retrofit.create(ShoppingApi::class.java)
     }

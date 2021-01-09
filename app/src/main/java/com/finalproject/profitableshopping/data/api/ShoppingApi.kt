@@ -9,14 +9,14 @@ import kotlin.collections.HashMap
 
 interface ShoppingApi {
 
-    @GET("")
+    @GET("categories.php")
     fun fetchAllCaregories(): Call<List<CategoryModel>>
-    @GET("")
+    @GET("categories.php?")
     fun fetchCaregory(@Query("id") query: Int): Call<CategoryModel>
-    @POST()
+    @POST("categories.php")
     fun createCategory(@Body category: HashMap<Any, Any>):Call<String>
-    @POST("{id}")
+    @POST("categories.php?{id}")
     fun editCategory( @Path("id") id:Int,@Body category: HashMap<Any, Any>):Call<String>
-    @DELETE("{id}")
+    @DELETE("categories.php?{id}")
     fun deleteCategory(@Path("id")id:Int):Call<String>
 }
