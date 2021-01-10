@@ -19,7 +19,6 @@ class CategoryViewModel :ViewModel() {
     private val categoryIdLiveData = MutableLiveData<Int>()
     var categoryIDetailsLiveData = Transformations.switchMap(categoryIdLiveData){catId ->
         getSingleCategory(catId)
-
     }
 
     init {
@@ -34,18 +33,17 @@ class CategoryViewModel :ViewModel() {
         var resulte = "0"
         var call = repositry.createCategory(category)
         call.enqueue(object : Callback<String> {
-
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 resulte = response.body()!!
             }
-
             override fun onFailure(call: Call<String>, t: Throwable) {
                 resulte = t.message!!
             }
-
         })
         return  resulte
     }
+
+
     fun getAllCategories(): MutableLiveData<List<CategoryModel>>{
         val responseLiveData: MutableLiveData<List<CategoryModel>> = MutableLiveData()
         var call=repositry.getAllCategories()
@@ -56,14 +54,13 @@ class CategoryViewModel :ViewModel() {
             ) {
                 responseLiveData.value=response.body()?: emptyList()
             }
-
             override fun onFailure(call: Call<List<CategoryModel>>, t: Throwable) {
                 Log.d("categoryFaild",t.message!!)
             }
-
         })
         return responseLiveData
     }
+
     fun getSingleCategory(id:Int):MutableLiveData<CategoryModel>{
         val responseLiveData: MutableLiveData<CategoryModel> = MutableLiveData()
        var call= repositry.getCategory(id)
@@ -79,6 +76,8 @@ class CategoryViewModel :ViewModel() {
         })
         return responseLiveData
     }
+
+
     fun editeCategory(catId:Int,category: HashMap<Any, Any>):MutableLiveData<String>{
         val responseLiveData: MutableLiveData<String> = MutableLiveData()
         var call= repositry.updateCategory(catId,category)
