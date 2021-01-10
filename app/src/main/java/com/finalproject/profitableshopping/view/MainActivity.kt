@@ -4,13 +4,21 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.finalproject.profitableshopping.R
 import kotlinx.android.synthetic.main.activity_main.*
-import com.finalproject.profitableshopping.categorty.CategoryCrudFragment
+import com.finalproject.profitableshopping.view.category.CategoryFragment
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-      
+
+        val isFragmentContainerEmpty = savedInstanceState == null
+        if (isFragmentContainerEmpty) {
+            val fragmentManager = supportFragmentManager
+            val fragmentTransaction = fragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.container, CategoryFragment.newInstance())
+                .commit()
+        }
+
         bottomNav.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.menu_home -> {
@@ -41,13 +49,9 @@ class MainActivity : AppCompatActivity() {
     private fun setContent(content: String) {
         setTitle(content)
         // tvLabel.text = content
-
-        val isFragmentContainerEmpty = savedInstanceState == null
-        if (isFragmentContainerEmpty) {
-            val fragmentManager=supportFragmentManager
-            val fragmentTransaction=fragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.container, CategoryCrudFragment.newInstance())
-                .commit()
-        }
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.container, CategoryFragment.newInstance())
+            .commit()
     }
 }
