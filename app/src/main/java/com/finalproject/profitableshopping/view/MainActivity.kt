@@ -10,6 +10,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        //hide app bar elevation
+        supportActionBar?.elevation = 0.0f
 
         val isFragmentContainerEmpty = savedInstanceState == null
         if (isFragmentContainerEmpty) {
