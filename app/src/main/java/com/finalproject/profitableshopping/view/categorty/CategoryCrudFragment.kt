@@ -19,17 +19,17 @@ import com.finalproject.profitableshopping.data.models.CategoryModel
 import com.finalproject.profitableshopping.viewmodel.CategoryViewModel
 
 
-class CategoryCrudFragment : Fragment() ,MenuItem.OnMenuItemClickListener,
+class CategoryCrudFragment : Fragment(), MenuItem.OnMenuItemClickListener,
     PopupMenu.OnMenuItemClickListener {
 
 
-     lateinit var categoryName_ed:EditText
-    private lateinit var save_btn:Button
-    var test=0
-    var category= CategoryModel()
+    lateinit var categoryName_ed: EditText
+    private lateinit var save_btn: Button
+    var test = 0
+    var category = CategoryModel()
     private lateinit var categoryViewModel: CategoryViewModel
     lateinit var categoryRecycelerView: RecyclerView
-    var categoryList:List<CategoryModel> = emptyList()
+    var categoryList: List<CategoryModel> = emptyList()
     private var adapter: CategoryAdapter? = CategoryAdapter(emptyList())
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,63 +46,67 @@ class CategoryCrudFragment : Fragment() ,MenuItem.OnMenuItemClickListener,
             Observer { categoriesList ->
 
                 updateUI(categoriesList)
-                categoryList=categoriesList
+                categoryList = categoriesList
             }
         )
     }
 
-    private fun updateUI(categoriesList:List<CategoryModel>) {
-        adapter= CategoryAdapter(categoriesList)
-       categoryRecycelerView.adapter=adapter
+    private fun updateUI(categoriesList: List<CategoryModel>) {
+        adapter = CategoryAdapter(categoriesList)
+        categoryRecycelerView.adapter = adapter
     }
 
-    private inner class CategoryHolder(view: View) : RecyclerView.ViewHolder(view) ,View.OnClickListener{
+    private inner class CategoryHolder(view: View) : RecyclerView.ViewHolder(view),
+        View.OnClickListener {
         lateinit var popupMenu: PopupMenu
-        var categoryNameBtn=view.findViewById(R.id.pop_menue)as Button
-         var categoryNameTv :TextView =view.findViewById(R.id.category_name)as TextView
+        var categoryNameBtn = view.findViewById(R.id.pop_menue) as Button
+        var categoryNameTv: TextView = view.findViewById(R.id.category_name) as TextView
 
 
         init {
-
-
-            categoryNameBtn.setOnClickListener (this)
-
-
+            categoryNameBtn.setOnClickListener(this)
         }
-        fun showPopUpMenu(v:View){
-                 popupMenu= PopupMenu(requireContext(),v)
-                 popupMenu.setOnMenuItemClickListener(this@CategoryCrudFragment)
+
+        fun showPopUpMenu(v: View) {
+            popupMenu = PopupMenu(requireContext(), v)
+            popupMenu.setOnMenuItemClickListener(this@CategoryCrudFragment)
             // do inflate for menu xml file her
-                 popupMenu.inflate()
-                popupMenu.show()
+            popupMenu.inflate()
+            popupMenu.show()
         }
-        fun bind(cat:CategoryModel){
-            category=cat
+
+        fun bind(cat: CategoryModel) {
+            category = cat
         }
+
         override fun onClick(p0: View?) {
             showPopUpMenu(p0!!)
         }
     }
-    private inner class CategoryAdapter(val categoriesList:List<CategoryModel>):RecyclerView.Adapter<CategoryHolder>() {
+
+    private inner class CategoryAdapter(val categoriesList: List<CategoryModel>) :
+        RecyclerView.Adapter<CategoryHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryHolder {
 
-               var view: View
-                          view = layoutInflater.inflate(
-                          R.layout.category_lis_itemt,
-                              parent, false )
+            var view: View
+            view = layoutInflater.inflate(
+                R.layout.category_lis_itemt,
+                parent, false
+            )
             return CategoryHolder(view)
-         }
+        }
 
         override fun onBindViewHolder(holder: CategoryHolder, position: Int) {
-             val category=categoriesList.get(position)
+            val category = categoriesList.get(position)
 
             holder.bind(category)
         }
 
         override fun getItemCount(): Int {
-        return categoriesList.size
+            return categoriesList.size
         }
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -116,16 +120,17 @@ class CategoryCrudFragment : Fragment() ,MenuItem.OnMenuItemClickListener,
         super.onStart()
         save_btn.setOnClickListener {
 
-            val cat= HashMap<Any,Any>()
-            cat.put("name",categoryName_ed.text.toString())
-            if(test==0) {
-                    categoryViewModel.createCategory(cat)
-            } else{
-                categoryViewModel.editeCategory(category.id,cat)
+            val cat = HashMap<Any, Any>()
+            cat.put("name", categoryName_ed.text.toString())
+            if (test == 0) {
+                categoryViewModel.createCategory(cat)
+            } else {
+                categoryViewModel.editeCategory(category.id, cat)
             }
-             updateUI(categoryList)
+            updateUI(categoryList)
         }
     }
+
     companion object {
 
         @JvmStatic
@@ -139,15 +144,12 @@ class CategoryCrudFragment : Fragment() ,MenuItem.OnMenuItemClickListener,
 
     override fun onMenuItemClick(p0: MenuItem?): Boolean {
         if (p0 != null) {
-            when(p0.itemId){
+            when (p0.itemId) {
                 // use the menu item id from menu xml file
-                R.id.edit ->
-
-                {             categoryName_ed.setText(category.categoryName)
-
-
+                R.id.edit -> {
+                    categoryName_ed.setText(category.categoryName)
                 }
-                else ->{
+                else -> {
                     categoryViewModel.deleteCategory(category.id)
                 }
 

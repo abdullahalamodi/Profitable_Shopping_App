@@ -23,12 +23,16 @@ class ShoppingRepositry {
             .build()
         shoppingApi = retrofit.create(ShoppingApi::class.java)
     }
+
     fun createCategory(category: HashMap<Any,Any>): Call<String> {
       return shoppingApi.createCategory(category)
     }
+
     fun getCategory(id:Int):Call<CategoryModel>{
         return  shoppingApi.fetchCaregory(id)
     }
+
+
     fun getAllCategories():Call<List<CategoryModel>>{
         return shoppingApi.fetchAllCaregories()
 
@@ -37,6 +41,7 @@ class ShoppingRepositry {
     fun updateCategory(catId:Int,category: HashMap<Any, Any>):Call<String>{
         return  shoppingApi.editCategory(catId,category)
     }
+
     fun deleteCategory(catId:Int):Call<String>{
         return shoppingApi.deleteCategory(catId)
     }
