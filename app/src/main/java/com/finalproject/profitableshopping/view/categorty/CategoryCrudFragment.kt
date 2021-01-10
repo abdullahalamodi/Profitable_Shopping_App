@@ -18,7 +18,6 @@ import com.finalproject.profitableshopping.data.models.CategoryModel
 
 import com.finalproject.profitableshopping.viewmodel.CategoryViewModel
 
-
 class CategoryCrudFragment : Fragment(), MenuItem.OnMenuItemClickListener,
     PopupMenu.OnMenuItemClickListener {
 
@@ -27,10 +26,12 @@ class CategoryCrudFragment : Fragment(), MenuItem.OnMenuItemClickListener,
     private lateinit var save_btn: Button
     var test = 0
     var category = CategoryModel()
+
     private lateinit var categoryViewModel: CategoryViewModel
     lateinit var categoryRecycelerView: RecyclerView
     var categoryList: List<CategoryModel> = emptyList()
     private var adapter: CategoryAdapter? = CategoryAdapter(emptyList())
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         categoryViewModel = ViewModelProviders.of(this).get(CategoryViewModel::class.java)
@@ -86,6 +87,7 @@ class CategoryCrudFragment : Fragment(), MenuItem.OnMenuItemClickListener,
 
     private inner class CategoryAdapter(val categoriesList: List<CategoryModel>) :
         RecyclerView.Adapter<CategoryHolder>() {
+
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryHolder {
 
             var view: View
