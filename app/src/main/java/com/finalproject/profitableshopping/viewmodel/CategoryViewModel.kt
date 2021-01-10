@@ -5,71 +5,70 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.finalproject.profitableshopping.data.ShoppingRepositry
+import com.finalproject.profitableshopping.data.repositories.CategoryRepository
 
-import com.finalproject.profitableshopping.data.models.CategoryModel
+import com.finalproject.profitableshopping.data.models.Category
 
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class CategoryViewModel :ViewModel() {
-    val repositry: ShoppingRepositry
-    val categoriesLiveData: LiveData<List<CategoryModel>>
+    val repository: CategoryRepository
+    val categoriesLiveData: LiveData<List<Category>>
     private val categoryIdLiveData = MutableLiveData<Int>()
-    var categoryIDetailsLiveData = Transformations.switchMap(categoryIdLiveData){catId ->
-        getSingleCategory(catId)
+    var categoryDetailsLiveData = Transformations.switchMap(categoryIdLiveData){catId ->
+        getCategory(catId)
     }
 
     init {
-        repositry = ShoppingRepositry()
+        repository =
+            CategoryRepository()
         categoriesLiveData=getAllCategories()
 
     }
-    fun loadNews(catId:Int ) {
-        categoryIdLiveData.value = catId
-    }
-    fun createCategory(category: HashMap<Any, Any>): String {
-        var resulte = "0"
-        var call = repositry.createCategory(category)
+
+    fun addCategory(category: HashMap<String, Any>): MutableLiveData<String> {
+        var result = MutableLiveData<String>()
+        val call = repository.addCategory(category)
         call.enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
-                resulte = response.body()!!
+                result.value = response.body()!!
             }
             override fun onFailure(call: Call<String>, t: Throwable) {
-                resulte = t.message!!
+                result.value = t.message!!
             }
         })
-        return  resulte
+        return  result
     }
 
 
-    fun getAllCategories(): MutableLiveData<List<CategoryModel>>{
-        val responseLiveData: MutableLiveData<List<CategoryModel>> = MutableLiveData()
-        var call=repositry.getAllCategories()
-        call.enqueue(object :Callback<List<CategoryModel>>{
+    private fun getAllCategories(): MutableLiveData<List<Category>>{
+        val responseLiveData: MutableLiveData<List<Category>> = MutableLiveData()
+        var call=repository.getAllCategories()
+        call.enqueue(object :Callback<List<Category>>{
             override fun onResponse(
-                call: Call<List<CategoryModel>>,
-                response: Response<List<CategoryModel>>
+                call: Call<List<Category>>,
+                response: Response<List<Category>>
             ) {
                 responseLiveData.value=response.body()?: emptyList()
             }
-            override fun onFailure(call: Call<List<CategoryModel>>, t: Throwable) {
-                Log.d("categoryFaild",t.message!!)
+            override fun onFailure(call: Call<List<Category>>, t: Throwable) {
+                Log.d("categoryFailed",t.message!!)
             }
         })
         return responseLiveData
     }
 
-    fun getSingleCategory(id:Int):MutableLiveData<CategoryModel>{
-        val responseLiveData: MutableLiveData<CategoryModel> = MutableLiveData()
-       var call= repositry.getCategory(id)
-        call.enqueue(object :Callback<CategoryModel>{
-            override fun onResponse(call: Call<CategoryModel>, response: Response<CategoryModel>) {
+    private fun getCategory(id:Int):MutableLiveData<Category>{
+        val responseLiveData: MutableLiveData<Category> = MutableLiveData()
+       var call= repository.getCategory(id)
+        call.enqueue(object :Callback<Category>{
+            override fun onResponse(call: Call<Category>, response: Response<Category>) {
                 responseLiveData.value=response.body()
             }
 
-            override fun onFailure(call: Call<CategoryModel>, t: Throwable) {
+            override fun onFailure(call: Call<Category>, t: Throwable) {
 
             }
 
@@ -78,9 +77,9 @@ class CategoryViewModel :ViewModel() {
     }
 
 
-    fun editeCategory(catId:Int,category: HashMap<Any, Any>):MutableLiveData<String>{
+    fun updateCategory(catId:Int, category: HashMap<String, Any>):MutableLiveData<String>{
         val responseLiveData: MutableLiveData<String> = MutableLiveData()
-        var call= repositry.updateCategory(catId,category)
+        var call= repository.updateCategory(catId,category)
         call.enqueue(object :Callback<String>{
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 responseLiveData.value=response.body()
@@ -97,7 +96,7 @@ class CategoryViewModel :ViewModel() {
     }
     fun deleteCategory(catId:Int):MutableLiveData<String>{
         val responseLiveData: MutableLiveData<String> = MutableLiveData()
-        var call= repositry.deleteCategory(catId)
+        var call= repository.deleteCategory(catId)
         call.enqueue(object :Callback<String>{
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 responseLiveData.value=response.body()
