@@ -36,7 +36,7 @@
 
 
                 <ImageView
-                    android:id="@+id/Img_more"
+                    android:id="@+id/img_more_options"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.4"
@@ -59,7 +59,7 @@
         </androidx.cardview.widget.CardView>
 
         <LinearLayout
-            android:id="@+id/edit_delete_share"
+            android:id="@+id/ly_update_delete_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="6dp"
@@ -69,7 +69,7 @@
             android:weightSum="2">
 
             <TextView
-                android:id="@+id/edit_athkar"
+                android:id="@+id/tv_update_category"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -80,7 +80,7 @@
 
 
             <TextView
-                android:id="@+id/delete_athkar"
+                android:id="@+id/tv_delete_category"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
