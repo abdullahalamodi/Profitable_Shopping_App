@@ -27,4 +27,20 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+
+    ////////////////////// product////////////////////////////
+    <string-array name="category">
+        <item>bags</item>
+        <item>glasses</item>
+        <item>watches</item>
+        <item>shoes0</item>
+    </string-array>
+
+    <string name="name_product">اسم المنتج</string>
+    <string name="rail_price_product">سعر المنتج بالريال</string>
+    <string name="dollar_price_product">سعر المنتج بالدولار</string>
+    <string name="quntity_product">كمية المنتج</string>
+    <string name="description_product">وصف عن المنتج</string>
+    <string name="add_product">اضافة المنتج</string>
+
 </resources>
