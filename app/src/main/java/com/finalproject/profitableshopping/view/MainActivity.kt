@@ -5,8 +5,9 @@ import android.os.Bundle
 import com.finalproject.profitableshopping.R
 import kotlinx.android.synthetic.main.activity_main.*
 import com.finalproject.profitableshopping.view.category.CategoryFragment
+import com.finalproject.profitableshopping.view.products.fragments.ProductListFragment
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() ,ProductListFragment.Callbacks{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -56,4 +57,12 @@ class MainActivity : AppCompatActivity() {
         fragmentTransaction.replace(R.id.container, CategoryFragment.newInstance())
             .commit()
     }
+
+    override fun onItemSelected(itemId: Int) {
+
+    }
+/*
+    override fun onFloatButtonClicked() {
+
+    }*/
 }

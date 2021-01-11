@@ -10,6 +10,7 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.models.Category
@@ -65,6 +66,7 @@ class CategoryFragment : Fragment(), MenuItem.OnMenuItemClickListener {
         categoryRecyclerView = view.findViewById(R.id.rv_category)
         categoryNameEt = view.findViewById(R.id.category_name_et)
         addBtn = view.findViewById(R.id.add_category_btn)
+        categoryRecyclerView.layoutManager=LinearLayoutManager(context)
         return view
     }
 
