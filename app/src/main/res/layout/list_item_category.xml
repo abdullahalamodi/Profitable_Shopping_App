@@ -8,7 +8,7 @@
     android:layout_marginRight="6dp"
     android:layout_marginTop="10dp"
     android:orientation="vertical"
-    app:cardBackgroundColor="@color/lightGray"
+    app:cardBackgroundColor="@color/lightGray1"
     app:cardCornerRadius="16dp"
     app:cardElevation="4dp">
 
@@ -43,7 +43,7 @@
                     android:src="@drawable/ic_more" />
 
                 <TextView
-                    android:id="@+id/txtOfAthlar"
+                    android:id="@+id/txt_category_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -65,7 +65,7 @@
             android:layout_marginBottom="6dp"
             android:layout_marginTop="6dp"
             android:orientation="horizontal"
-            android:visibility="visible"
+            android:visibility="gone"
             android:weightSum="2">
 
             <TextView

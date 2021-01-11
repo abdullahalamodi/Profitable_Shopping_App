@@ -109,11 +109,11 @@ class CategoryFragment : Fragment(), MenuItem.OnMenuItemClickListener {
 //adapter code is last thing in the fragment or activity
     private inner class CategoryHolder(view: View) : RecyclerView.ViewHolder(view),
         View.OnClickListener {
-        var categoryNameBtn = view.findViewById(R.id.pop_menue) as Button
-        var categoryNameTv: TextView = view.findViewById(R.id.category_name) as TextView
+//        var categoryNameBtn = view.findViewById(R.id.pop_menue) as Button
+        var categoryNameTv: TextView = view.findViewById(R.id.txt_category_name) as TextView
 
         init {
-            categoryNameBtn.setOnClickListener(this)
+         //   categoryNameBtn.setOnClickListener(this)
         }
 
 //        fun showPopUpMenu(v: View) {
@@ -139,7 +139,7 @@ class CategoryFragment : Fragment(), MenuItem.OnMenuItemClickListener {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryHolder {
 
             val view: View = layoutInflater.inflate(
-                R.layout.category_lis_item,
+                R.layout.list_item_category,
                 parent, false
             )
             return CategoryHolder(view)
