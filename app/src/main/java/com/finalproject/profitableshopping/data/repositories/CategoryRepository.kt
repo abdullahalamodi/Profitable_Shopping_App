@@ -24,17 +24,21 @@ class CategoryRepository {
     }
 
     fun getCategory(id:Int):Call<Category>{
-        return  shoppingApi.fetchCategory(id)
+        return  shoppingApi.getCategoryById(id)
+    }
+
+    fun getCategoryByName(name:String):Call<Category>{
+        return  shoppingApi.getCategoryByName(name)
     }
 
 
     fun getAllCategories():Call<List<Category>>{
-        return shoppingApi.fetchAllCategories()
+        return shoppingApi.getCategories()
 
     }
 
     fun updateCategory(catId:Int,category: HashMap<String, Any>):Call<String>{
-        return  shoppingApi.editCategory(catId,category)
+        return  shoppingApi.updateCategory(catId,category)
     }
 
     fun deleteCategory(catId:Int):Call<String>{

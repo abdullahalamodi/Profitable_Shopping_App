@@ -17,7 +17,7 @@ class Product (
     @SerializedName("user_id")
     var userId:Int=0,
     @SerializedName("images")
-    var images:List<ImageModel>,
+    var images:List<ImageModel> =emptyList(),
     @SerializedName("quantity")
     var quantity:Int=0
 

@@ -20,7 +20,7 @@ class ProductRepositry {
 
 
     fun createProduct(product: HashMap<String,Any>): Call<String> {
-        return shoppingApi.createProduct(product)
+        return shoppingApi.addProduct(product)
     }
 
     fun getProduct(proId:Int):Call<Product>{

@@ -24,7 +24,7 @@ class CategoryViewModel :ViewModel() {
     init {
         repository =
             CategoryRepository()
-        categoriesLiveData=getAllCategories()
+        categoriesLiveData=getCategories()
 
     }
 
@@ -43,7 +43,7 @@ class CategoryViewModel :ViewModel() {
     }
 
 
-    private fun getAllCategories(): MutableLiveData<List<Category>>{
+    private fun getCategories(): MutableLiveData<List<Category>>{
         val responseLiveData: MutableLiveData<List<Category>> = MutableLiveData()
         var call=repository.getAllCategories()
         call.enqueue(object :Callback<List<Category>>{
@@ -63,6 +63,22 @@ class CategoryViewModel :ViewModel() {
     private fun getCategory(id:Int):MutableLiveData<Category>{
         val responseLiveData: MutableLiveData<Category> = MutableLiveData()
        var call= repository.getCategory(id)
+        call.enqueue(object :Callback<Category>{
+            override fun onResponse(call: Call<Category>, response: Response<Category>) {
+                responseLiveData.value=response.body()
+            }
+
+            override fun onFailure(call: Call<Category>, t: Throwable) {
+
+            }
+
+        })
+        return responseLiveData
+    }
+
+     fun getCategoryByName(name:String):MutableLiveData<Category>{
+        val responseLiveData: MutableLiveData<Category> = MutableLiveData()
+        var call= repository.getCategoryByName(name)
         call.enqueue(object :Callback<Category>{
             override fun onResponse(call: Call<Category>, response: Response<Category>) {
                 responseLiveData.value=response.body()

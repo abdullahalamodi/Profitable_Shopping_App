@@ -11,13 +11,15 @@ interface ShoppingApi {
 
     //category methods
     @GET("categories.php")
-    fun fetchAllCategories(): Call<List<Category>>
+    fun getCategories(): Call<List<Category>>
     @GET("categories.php?")
-    fun fetchCategory(@Query("id") query: Int): Call<Category>
+    fun getCategoryById(@Query("id") query: Int): Call<Category>
+    @GET("categories.php?")
+    fun getCategoryByName(@Query("name") name: String): Call<Category>
     @POST("categories.php")
     fun addCategory(@Body category: HashMap<String, Any>):Call<String>
     @POST("categories.php?{id}")
-    fun editCategory( @Path("id") id:Int,@Body category: HashMap<String, Any>):Call<String>
+    fun updateCategory(@Path("id") id:Int, @Body category: HashMap<String, Any>):Call<String>
     @DELETE("categories.php?{id}")
     fun deleteCategory(@Path("id")id:Int):Call<String>
 
@@ -32,7 +34,7 @@ interface ShoppingApi {
     @GET("products.php?")
     fun getProduct(@Query("id") proId: Int): Call<Product>
     @POST("products.php")
-    fun createProduct(@Body product: HashMap<String, Any>):Call<String>
+    fun addProduct(@Body product: HashMap<String, Any>):Call<String>
     @POST("products.php?{id}")
     fun updateProduct(@Path("id") id:Int, @Body category: HashMap<String, Any>):Call<String>
     @DELETE("products.php?{id}")

@@ -26,5 +26,6 @@
     <string name="title_delete">حذف الصنف</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="spiner_nothing_selected_message">you have to choose category</string>
 
 </resources>
