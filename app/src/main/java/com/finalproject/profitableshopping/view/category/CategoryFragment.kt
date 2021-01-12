@@ -33,9 +33,9 @@ class CategoryFragment : Fragment(){
         super.onStart()
         addBtn.setOnClickListener {
             showProgress(true)
-            val catMap = Category()
-            catMap.name = categoryNameEt.text.toString()
-                val response = categoryViewModel.addCategory(catMap)
+            //val catMap = Category(null,categoryNameEt.text.toString())
+            //catMap.name = categoryNameEt.text.toString()
+                val response = categoryViewModel.addCategory(categoryNameEt.text.toString())
                 //will display message after get response
                 response.observe(
                     viewLifecycleOwner,
@@ -128,7 +128,7 @@ class CategoryFragment : Fragment(){
                 showProgress(true)
                 val catMap = HashMap<String, String>()
                 catMap["name"];
-                val response = categoryViewModel.updateCategory(cat.id,catMap)
+                val response = categoryViewModel.updateCategory(cat.id!!,catMap)
                 response.observe(
                     viewLifecycleOwner,
                     Observer { message ->
@@ -153,7 +153,7 @@ class CategoryFragment : Fragment(){
             view.ed_delete_category.setText(cat.name)
             view.btn_delete.setOnClickListener {
                 showProgress(true)
-                val response = categoryViewModel.deleteCategory(cat.id)
+                val response = categoryViewModel.deleteCategory(cat.id!!)
                 response.observe(
                     viewLifecycleOwner,
                     Observer { message ->

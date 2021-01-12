@@ -2,6 +2,7 @@ package com.finalproject.profitableshopping.data.repositories
 
 import com.finalproject.profitableshopping.data.api.ShoppingApi
 import com.finalproject.profitableshopping.data.models.Category
+import com.google.gson.GsonBuilder
 
 
 import retrofit2.Call
@@ -12,14 +13,15 @@ class CategoryRepository {
      private var shoppingApi: ShoppingApi
 
     init {
+        val  gson=GsonBuilder().setLenient().create()
         val retrofit: Retrofit = Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .baseUrl(BASE_URL)
             .build()
         shoppingApi = retrofit.create(ShoppingApi::class.java)
     }
 
-    fun addCategory(category: Category): Call<String> {
+    fun addCategory(category: String): Call<String> {
       return shoppingApi.addCategory(category)
     }
 
@@ -48,7 +50,7 @@ class CategoryRepository {
 
     companion object{
 //        internal const val BASE_URL = "https://profitableshopping.000webhostapp.com/profitable_shopping_api/api/"
-        internal const val BASE_URL = "http://10.0.2.2:80/profitable_shopping_api/api/"
+        internal const val BASE_URL = "https://profitableshopping.000webhostapp.com/profitable_shopping_api/api/"
     }
 
 }

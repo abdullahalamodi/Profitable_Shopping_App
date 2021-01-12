@@ -27,7 +27,7 @@ class CategoryViewModel : ViewModel() {
         categoriesLiveData = getCategories()
     }
 
-    fun addCategory(category: Category): MutableLiveData<String> {
+    fun addCategory(category: String): MutableLiveData<String> {
         val responseLiveData = MutableLiveData<String>()
         val call = repository.addCategory(category)
         call.enqueue(object : Callback<String> {
