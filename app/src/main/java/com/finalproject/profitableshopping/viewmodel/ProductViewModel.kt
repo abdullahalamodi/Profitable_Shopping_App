@@ -1,17 +1,22 @@
 package com.finalproject.profitableshopping.viewmodel
 
+import android.net.Uri
 import android.util.Log
+import androidx.core.net.toFile
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.finalproject.profitableshopping.data.models.Product
 import com.finalproject.profitableshopping.data.repositories.ProductRepositry
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ProdductViewModel:ViewModel() {
+class ProductViewModel:ViewModel() {
     val productRepositry: ProductRepositry
     val productsListLiveData: LiveData<List<Product>>
 
@@ -24,15 +29,12 @@ class ProdductViewModel:ViewModel() {
     var userProductsListLiveData:LiveData<List<Product>>
     init {
         productRepositry = ProductRepositry()
-        productsListLiveData=getProducts()
+        productsListLiveData= getProducts()
         this.userProductsListLiveData = Transformations.switchMap(userIdLiveData) { useId ->
             getUserProducts(useId)
-
         }
-
-
-
     }
+
     fun getProducts(): MutableLiveData<List<Product>>{
         val responseLiveData: MutableLiveData<List<Product>> = MutableLiveData()
         val call=productRepositry.getProducts()
@@ -44,7 +46,7 @@ class ProdductViewModel:ViewModel() {
                 responseLiveData.value=response.body()?: emptyList()
             }
             override fun onFailure(call: Call<List<Product>>, t: Throwable) {
-                Log.d("Faild ",t.message!!)
+                Log.d("Failed ",t.message!!)
             }
         })
         return responseLiveData
@@ -91,20 +93,20 @@ class ProdductViewModel:ViewModel() {
         return responseLiveData
     }
 
-    fun createProduct(product: HashMap<String, Any>): String {
-        var resulte = "0"
-        val call = productRepositry.createProduct(product)
-        call.enqueue(object : Callback<String> {
-            override fun onResponse(call: Call<String>, response: Response<String>) {
-                resulte = response.body()!!
+    fun createProduct(product: HashMap<String, Any>): MutableLiveData<String> {
+         var resulte = MutableLiveData<String>();
+        val call = productRepositry.AddProduct(product)
+        call.enqueue(object : Callback<Int> {
+            override fun onResponse(call: Call<Int>, response: Response<Int>) {
+//                resulte.value = response.body()!!
             }
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                resulte = t.message!!
+            override fun onFailure(call: Call<Int>, t: Throwable) {
+                resulte.value = t.message!!
             }
         })
         return  resulte
     }
-    fun editeProduct(proId:Int,product: HashMap<String, Any>):MutableLiveData<String>{
+    fun editeProduct(proId:Int,product: HashMap<String, String>):MutableLiveData<String>{
         val responseLiveData: MutableLiveData<String> = MutableLiveData()
         val call= productRepositry.updateProduct(proId,product)
         call.enqueue(object :Callback<String>{
@@ -137,6 +139,30 @@ class ProdductViewModel:ViewModel() {
         return responseLiveData
 
 
+    }
+
+    fun uploadImage(images:List<Uri>,productId:Int,userId:Int) {
+
+        for(im in images){
+            val file = im.toFile()
+            val requestBody= RequestBody.create(MediaType.parse("*/*"),file)
+            val fileToUploaded= MultipartBody.Part.createFormData("file",file.name,requestBody)
+            val fileName= RequestBody.create(MediaType.parse("image/*"),file.name
+            )
+          val  call= productRepositry.uploadImage(fileToUploaded,fileName,productId,userId)
+            call.enqueue(
+                object :Callback<Unit>{
+                    override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+
+                    }
+
+                    override fun onFailure(call: Call<Unit>, t: Throwable) {
+
+                    }
+                }
+            )
+
+        }
     }
 
 }

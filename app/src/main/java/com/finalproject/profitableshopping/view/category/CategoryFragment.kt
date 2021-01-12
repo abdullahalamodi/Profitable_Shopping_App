@@ -3,7 +3,6 @@ package com.finalproject.profitableshopping.view.category
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -20,33 +19,31 @@ import kotlinx.android.synthetic.main.delete_category.view.*
 import kotlinx.android.synthetic.main.update_category.view.*
 
 
-class CategoryFragment : Fragment(), MenuItem.OnMenuItemClickListener {
+class CategoryFragment : Fragment(){
 
     private lateinit var categoryNameEt: EditText
     private lateinit var addBtn: Button
-    private var test = 0
-    private var category = Category()
     private lateinit var categoryViewModel: CategoryViewModel
     private lateinit var categoryRecyclerView: RecyclerView
+    private lateinit var categoriesList: List<Category>
+    private lateinit var progressBar: ProgressBar
     private var openMoreOptions = true
 
     override fun onStart() {
         super.onStart()
         addBtn.setOnClickListener {
-            val cat = HashMap<String, Any>()
-            cat["name"] = categoryNameEt.text.toString()
-            if (test == 0) {
-                val response = categoryViewModel.addCategory(cat)
+            showProgress(true)
+            val catMap = Category()
+            catMap.name = categoryNameEt.text.toString()
+                val response = categoryViewModel.addCategory(catMap)
                 //will display message after get response
                 response.observe(
                     viewLifecycleOwner,
                     Observer { message ->
+                        showProgress(false)
                         Toast.makeText(context, message.toString(), Toast.LENGTH_SHORT).show()
                     }
                 )
-            } else {
-                categoryViewModel.updateCategory(category.id, cat)
-            }
         }
     }
 
@@ -67,24 +64,34 @@ class CategoryFragment : Fragment(), MenuItem.OnMenuItemClickListener {
         categoryNameEt = view.findViewById(R.id.category_name_et)
         addBtn = view.findViewById(R.id.add_category_btn)
         categoryRecyclerView.layoutManager=LinearLayoutManager(context)
+        progressBar = view.findViewById(R.id.progress_circular)
         return view
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        showProgress(true)
         categoryViewModel.categoriesLiveData.observe(
             viewLifecycleOwner,
             Observer { categoriesList ->
+                showProgress(false)
                 updateUI(categoriesList)
-                Toast.makeText(context, categoriesList.size.toString(), Toast.LENGTH_SHORT).show()
             }
         )
     }
 
     private fun updateUI(categoriesList: List<Category>) {
+        this.categoriesList = categoriesList
         adapter = CategoryAdapter(categoriesList)
         categoryRecyclerView.adapter = adapter
+    }
+
+    private fun showProgress(show:Boolean){
+        if (show)
+        progressBar.visibility  = View.VISIBLE
+        else
+        progressBar.visibility  = View.GONE
     }
 
     companion object {
@@ -98,26 +105,10 @@ class CategoryFragment : Fragment(), MenuItem.OnMenuItemClickListener {
             }
     }
 
-    override fun onMenuItemClick(p0: MenuItem?): Boolean {
-        if (p0 != null) {
-//            when (p0.itemId) {
-//                // use the menu item id from menu xml file
-//                R.id.edit -> {
-//                    categoryName_ed.setText(category.categoryName)
-//                }
-//                else -> {
-//                    categoryViewModel.deleteCategory(category.id)
-//                }
-//            }
-        }
-        return true
-    }
-
 
     //adapter code is last thing in the fragment or activity
     private inner class CategoryHolder(view: View) : RecyclerView.ViewHolder(view),
         View.OnClickListener {
-        //        var categoryNameBtn = view.findViewById(R.id.pop_menue) as Button
         var categoryNameTv: TextView = view.findViewById(R.id.txt_category_name) as TextView
         var categoryUpdateTv: TextView = view.findViewById(R.id.tv_update_category) as TextView
         var categoryDeleteTv: TextView = view.findViewById(R.id.tv_delete_category) as TextView
@@ -125,38 +116,53 @@ class CategoryFragment : Fragment(), MenuItem.OnMenuItemClickListener {
         var categoryUpdeteDeleteLy: LinearLayout =
             view.findViewById(R.id.ly_update_delete_category) as LinearLayout
 
-        init {
-            //   categoryNameBtn.setOnClickListener(this)
-        }
-
-//        fun showPopUpMenu(v: View) {
-//            popupMenu = PopupMenu(requireContext(), v)
-//            popupMenu.setOnMenuItemClickListener(this@CategoryCrudFragment)
-//            // do inflate for menu xml file her
-//            popupMenu.inflate()
-//            popupMenu.show()
-//        }
-
         ////////////////////this function to update the category
-        fun categoryDialogUpdate(){
-            var alertBuilder = AlertDialog.Builder(requireContext())
+        fun categoryDialogUpdate(cat: Category){
+            val alertBuilder = AlertDialog.Builder(requireContext())
             val view = layoutInflater.inflate(R.layout.update_category, null)
             alertBuilder.setView(view)
-            var alertDialog = alertBuilder.create()
+            val alertDialog = alertBuilder.create()
             alertDialog.show()
+            view.ed_update_category.setText(cat.name)
+            view.btn_update.setOnClickListener {
+                showProgress(true)
+                val catMap = HashMap<String, String>()
+                catMap["name"];
+                val response = categoryViewModel.updateCategory(cat.id,catMap)
+                response.observe(
+                    viewLifecycleOwner,
+                    Observer { message ->
+                        showProgress(false)
+                        Toast.makeText(requireContext(), message.toString(), Toast.LENGTH_SHORT).show()
+                    }
+                )
+                alertDialog.dismiss()
+            }
             view.btn_cancel.setOnClickListener {
                 alertDialog.dismiss()
             }
         }
 
         ////////////////////this function to delete the category
-        fun categoryDialogDelete(){
+        fun categoryDialogDelete(cat: Category){
             var alertBuilder = AlertDialog.Builder(requireContext())
             val view = layoutInflater.inflate(R.layout.delete_category, null)
             alertBuilder.setView(view)
             var alertDialog = alertBuilder.create()
             alertDialog.show()
-
+            view.ed_delete_category.setText(cat.name)
+            view.btn_delete.setOnClickListener {
+                showProgress(true)
+                val response = categoryViewModel.deleteCategory(cat.id)
+                response.observe(
+                    viewLifecycleOwner,
+                    Observer { message ->
+                        showProgress(false)
+                        Toast.makeText(requireContext(), message.toString(), Toast.LENGTH_SHORT).show()
+                    }
+                )
+                alertDialog.dismiss()
+            }
             view.btn_exit.setOnClickListener {
                 alertDialog.dismiss()
             }
@@ -164,7 +170,6 @@ class CategoryFragment : Fragment(), MenuItem.OnMenuItemClickListener {
 
         fun bind(cat: Category) {
             categoryNameTv.text = cat.name
-
             categoryMoreOPtionIV.setOnClickListener {
 
                 if (openMoreOptions) {
@@ -177,11 +182,11 @@ class CategoryFragment : Fragment(), MenuItem.OnMenuItemClickListener {
             }
 
             categoryUpdateTv.setOnClickListener {
-                categoryDialogUpdate()
+                categoryDialogUpdate(cat)
             }
 
             categoryDeleteTv.setOnClickListener {
-                categoryDialogDelete()
+                categoryDialogDelete(cat)
             }
         }
 

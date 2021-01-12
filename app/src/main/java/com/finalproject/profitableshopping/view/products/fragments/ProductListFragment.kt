@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.widget.ContentLoadingProgressBar
 import androidx.fragment.app.Fragment
@@ -14,14 +12,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import com.finalproject.profitableshopping.R
-import com.finalproject.profitableshopping.data.models.Category
 import com.finalproject.profitableshopping.data.models.Product
-import com.finalproject.profitableshopping.view.category.CategoryFragment
-import com.finalproject.profitableshopping.viewmodel.ProdductViewModel
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.finalproject.profitableshopping.viewmodel.ProductViewModel
 
 class ProductListFragment :Fragment() {
-    private lateinit var productViewModel: ProdductViewModel
+    private lateinit var productViewModel: ProductViewModel
     private lateinit var productsRv: RecyclerView
    private var adapter:ProductAdapter=ProductAdapter(emptyList())
    // private lateinit var addFbtn: FloatingActionButton
@@ -38,7 +33,7 @@ class ProductListFragment :Fragment() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        productViewModel= ViewModelProviders.of(this).get(ProdductViewModel::class.java)
+        productViewModel= ViewModelProviders.of(this).get(ProductViewModel::class.java)
 
     }
 
@@ -54,9 +49,9 @@ class ProductListFragment :Fragment() {
            val view=inflater.inflate(
                //next line still need some config
                R.layout.fragment_catergory_list, container, false)
-           productsRv=view.findViewById()
+//           productsRv=view.findViewById()
            //  addFbtn =view.findViewById()
-            loadingProgressBar=view.findViewById()
+//            loadingProgressBar=view.findViewById()
         productsRv.adapter=adapter
 
 
@@ -87,7 +82,7 @@ class ProductListFragment :Fragment() {
     private inner class ProductHolder(view: View) : RecyclerView.ViewHolder(view),
         View.OnClickListener {
         // need to change next variable inflate to be comfortable with product item xml file
-        var productImageIv = view.findViewById(R.id.pop_menue) as ImageView
+//        var productImageIv = view.findViewById(R.id.pop_menue) as ImageView
         var productNameTv: TextView = view.findViewById(R.id.category_name) as TextView
         var productRialPriceTv: TextView = view.findViewById(R.id.category_name) as TextView
         var productDollarPriceTv: TextView = view.findViewById(R.id.category_name) as TextView
