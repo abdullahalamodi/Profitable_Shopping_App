@@ -48,7 +48,7 @@ class ProductRepositry {
 
     }
 
-    fun updateProduct(proId:Int,product: HashMap<String, Any>):Call<String>{
+    fun updateProduct(proId:Int,product: HashMap<String, String>):Call<String>{
         return  shoppingApi.updateProduct(proId,product)
     }
 

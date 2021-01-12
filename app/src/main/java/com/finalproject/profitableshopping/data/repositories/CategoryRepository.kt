@@ -1,11 +1,7 @@
 package com.finalproject.profitableshopping.data.repositories
 
-import androidx.core.net.toFile
 import com.finalproject.profitableshopping.data.api.ShoppingApi
 import com.finalproject.profitableshopping.data.models.Category
-import okhttp3.MediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 
 
 import retrofit2.Call
@@ -23,7 +19,7 @@ class CategoryRepository {
         shoppingApi = retrofit.create(ShoppingApi::class.java)
     }
 
-    fun addCategory(category: HashMap<String,Any>): Call<String> {
+    fun addCategory(category: Category): Call<String> {
       return shoppingApi.addCategory(category)
     }
 
@@ -41,19 +37,18 @@ class CategoryRepository {
 
     }
 
-    fun updateCategory(catId:Int,category: HashMap<String, Any>):Call<String>{
+    fun updateCategory(catId:Int,category: HashMap<String, String>):Call<String>{
         return  shoppingApi.updateCategory(catId,category)
     }
 
-
-
     fun deleteCategory(catId:Int):Call<String>{
-        return shoppingApi.deleteCategory(catId)
+        return shoppingApi.deleteCategory(catId.toString())
     }
 
 
     companion object{
-        internal const val BASE_URL = "https://profitableshopping.000webhostapp.com/profitable_shopping_api/api/"
+//        internal const val BASE_URL = "https://profitableshopping.000webhostapp.com/profitable_shopping_api/api/"
+        internal const val BASE_URL = "http://10.0.2.2:80/profitable_shopping_api/api/"
     }
 
 }

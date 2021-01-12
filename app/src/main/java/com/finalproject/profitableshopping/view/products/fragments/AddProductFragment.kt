@@ -5,42 +5,35 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
-import androidx.core.net.toFile
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.finalproject.profitableshopping.data.api.ShoppingApi
 import com.finalproject.profitableshopping.viewmodel.CategoryViewModel
-import com.finalproject.profitableshopping.viewmodel.ProdductViewModel
-import okhttp3.MediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import java.io.File as File1
+import com.finalproject.profitableshopping.viewmodel.ProductViewModel
 
-class AddProductFragment :Fragment(), AdapterView.OnItemSelectedListener {
-    lateinit var productNameET:EditText
-    lateinit var productdescriptionET:EditText
-    lateinit var productRialPriceET:EditText
-    lateinit var productDollarPriceET:EditText
-    lateinit var productQuantityET:EditText
-    lateinit var pickImagesBtn:Button
-    lateinit var selectCategorySv:Spinner
-    lateinit var addProductBtn:Button
-    lateinit var prodductViewModel: ProdductViewModel
+class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener {
+    lateinit var productNameET: EditText
+    lateinit var productdescriptionET: EditText
+    lateinit var productRialPriceET: EditText
+    lateinit var productDollarPriceET: EditText
+    lateinit var productQuantityET: EditText
+    lateinit var pickImagesBtn: Button
+    lateinit var selectCategorySv: Spinner
+    lateinit var addProductBtn: Button
+    lateinit var productViewModel: ProductViewModel
     lateinit var categoryViewModel: CategoryViewModel
-    var map=HashMap<Int,String>()
-    lateinit var categoriesName:MutableList<String>
+    var map = HashMap<Int, String>()
+    lateinit var categoriesName: MutableList<String>
     lateinit var images: MutableList<Uri>
-    var selectedCategoryId=0
+    var selectedCategoryId = 0
 
-   companion object{
-       val PICK_IMAGES_REQUST=0
-   }
+    companion object {
+        val PICK_IMAGES_REQUST = 0
+    }
+
     override fun onStart() {
         super.onStart()
         pickImagesBtn.setOnClickListener {
@@ -48,21 +41,20 @@ class AddProductFragment :Fragment(), AdapterView.OnItemSelectedListener {
 
 
         }
-        addProductBtn.setOnClickListener{
+        addProductBtn.setOnClickListener {
 
-        val product= HashMap<String, Any>()
+            val product = HashMap<String,String>()
 
 
-            product["name"]=productNameET.text.toString()
-            product["description"]=productdescriptionET.text.toString()
-            product["rial_price"]=productRialPriceET.text.toString().toDouble()
-            product["dollar_price"]=productDollarPriceET.text.toString().toDouble()
-            product["user_id"]=0
-            product["quantity"]=productQuantityET.text.toString().toInt()
-            product["category_id"]=selectedCategoryId
-            val pId=prodductViewModel.createProduct(product)
-            prodductViewModel.uploadImage(images,pId,1)
-
+//            product["name"] = productNameET.text.toString()
+//            product["description"] = productdescriptionET.text.toString()
+//            product["rial_price"] = productRialPriceET.text.toString().toDouble()
+//            product["dollar_price"] = productDollarPriceET.text.toString().toDouble()
+//            product["user_id"] = 0
+//            product["quantity"] = productQuantityET.text.toString().toInt()
+//            product["category_id"] = selectedCategoryId
+//            val pId = productViewModel.createProduct(product)
+//            productViewModel.uploadImage(images, pId, 1)
 
 
         }
@@ -78,25 +70,25 @@ class AddProductFragment :Fragment(), AdapterView.OnItemSelectedListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        prodductViewModel = ViewModelProviders.of(this).get(ProdductViewModel::class.java)
+        productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view=inflater.inflate()
-        selectCategorySv=view.findViewById()
-        productNameET=view.findViewById()
-        productdescriptionET=view.findViewById()
-        productRialPriceET=view.findViewById()
-        productDollarPriceET=view.findViewById()
-        productQuantityET=view.findViewById()
-        pickImagesBtn=view.findViewById()
-        addProductBtn=view.findViewById()
-        return return view
-    }
+//    override fun onCreateView(
+//        inflater: LayoutInflater,
+//        container: ViewGroup?,
+//        savedInstanceState: Bundle?
+//    ): View? {
+//        val view=inflater.inflate()
+//        selectCategorySv=view.findViewById()
+//        productNameET=view.findViewById()
+//        productdescriptionET=view.findViewById()
+//        productRialPriceET=view.findViewById()
+//        productDollarPriceET=view.findViewById()
+//        productQuantityET=view.findViewById()
+//        pickImagesBtn=view.findViewById()
+//        addProductBtn=view.findViewById()
+//        return  view
+//    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -104,35 +96,36 @@ class AddProductFragment :Fragment(), AdapterView.OnItemSelectedListener {
             viewLifecycleOwner,
             Observer {
 
-                for( item in it) {
-                    categoriesName.add(item.name)
-
-                }
+//                for (item in it) {
+//                    categoriesName.add(item.name)
+//                }
                 //spiner adapter
-                val dataAdapter= ArrayAdapter<String>(
+                val dataAdapter = ArrayAdapter<String>(
                     requireContext(),
                     R.layout.simple_spinner_dropdown_item,
-                    categoriesName)
+                    categoriesName
+                )
 
                 dataAdapter.setDropDownViewResource(
-                    android.R.layout.simple_spinner_dropdown_item)
+                    android.R.layout.simple_spinner_dropdown_item
+                )
 
-                selectCategorySv.adapter=dataAdapter
+                selectCategorySv.adapter = dataAdapter
             }
         )
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode==PICK_IMAGES_REQUST && resultCode ==Activity.RESULT_OK && data !=null && data.data !=null){
+        if (requestCode == PICK_IMAGES_REQUST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
 
-                if(data!!.clipData !=null){
-                    for(i in 0 until 3){
-                       // val imageUri=data.clipData!!.getItemAt(i).uri.toFile()
-                       // images!!.add(imageUri)
+            if (data!!.clipData != null) {
+                for (i in 0 until 3) {
+                    // val imageUri=data.clipData!!.getItemAt(i).uri.toFile()
+                    // images!!.add(imageUri)
 
-                      val  imageUri=data.data!!
-                        images!!.add(imageUri!!)
+                    val imageUri = data.data!!
+                    images!!.add(imageUri!!)
 
 
                 }
@@ -143,22 +136,22 @@ class AddProductFragment :Fragment(), AdapterView.OnItemSelectedListener {
     fun uploadImage() {
 
 
-
-
     }
+
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-        val item= p0?.get(p2).toString()
-        selectCategorySv.prompt=item
+        val item = p0?.get(p2).toString()
+        selectCategorySv.prompt = item
         categoryViewModel.getCategoryByName(selectCategorySv.prompt.toString()).observe(
             this,
             Observer {
-                selectedCategoryId=it.id
+                selectedCategoryId = it.id
             }
         )
     }
 
     override fun onNothingSelected(p0: AdapterView<*>?) {
-        selectCategorySv.prompt=getString(com.finalproject.profitableshopping.R.string.spiner_nothing_selected_message)
+        selectCategorySv.prompt =
+            getString(com.finalproject.profitableshopping.R.string.spiner_nothing_selected_message)
     }
 
 

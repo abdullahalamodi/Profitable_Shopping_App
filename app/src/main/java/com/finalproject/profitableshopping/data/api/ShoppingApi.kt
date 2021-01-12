@@ -14,20 +14,19 @@ interface ShoppingApi {
     //category methods
     @GET("categories.php")
     fun getCategories(): Call<List<Category>>
-    @GET("categories.php?")
+    @GET("categories.php")
     fun getCategoryById(@Query("id") query: Int): Call<Category>
-    @GET("categories.php?")
+    @GET("categories.php")
     fun getCategoryByName(@Query("name") name: String): Call<Category>
     @POST("categories.php")
-    fun addCategory(@Body category: HashMap<String, Any>):Call<String>
-    @POST("categories.php?{id}")
-    fun updateCategory(@Path("id") id:Int, @Body category: HashMap<String, Any>):Call<String>
-    @DELETE("categories.php?{id}")
-    fun deleteCategory(@Path("id")id:Int):Call<String>
+    fun addCategory(@Body category: Category):Call<String>
+    @POST("categories.php")
+    fun updateCategory(@Query("id") id:Int, @Body category: HashMap<String, String>):Call<String>
+    @DELETE("categories.php?")
+    fun deleteCategory(@Query("id")id:String):Call<String>
 
 
     //product methods
-
 
     @GET("products.php")
     fun getProducts(): Call<List<Product>>
@@ -38,7 +37,7 @@ interface ShoppingApi {
     @POST("products.php")
     fun addProduct(@Body product: HashMap<String, Any>):Call<Int>
     @POST("products.php?{id}")
-    fun updateProduct(@Path("id") id:Int, @Body category: HashMap<String, Any>):Call<String>
+    fun updateProduct(@Path("id") id:Int, @Body category: HashMap<String, String>):Call<String>
     @DELETE("products.php?{id}")
     fun deleteProduct(@Path("id")id:Int):Call<String>
     @Multipart

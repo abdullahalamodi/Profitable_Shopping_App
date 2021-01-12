@@ -16,7 +16,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ProdductViewModel:ViewModel() {
+class ProductViewModel:ViewModel() {
     val productRepositry: ProductRepositry
     val productsListLiveData: LiveData<List<Product>>
 
@@ -29,15 +29,12 @@ class ProdductViewModel:ViewModel() {
     var userProductsListLiveData:LiveData<List<Product>>
     init {
         productRepositry = ProductRepositry()
-        productsListLiveData=getProducts()
+        productsListLiveData= getProducts()
         this.userProductsListLiveData = Transformations.switchMap(userIdLiveData) { useId ->
             getUserProducts(useId)
-
         }
-
-
-
     }
+
     fun getProducts(): MutableLiveData<List<Product>>{
         val responseLiveData: MutableLiveData<List<Product>> = MutableLiveData()
         val call=productRepositry.getProducts()
@@ -49,7 +46,7 @@ class ProdductViewModel:ViewModel() {
                 responseLiveData.value=response.body()?: emptyList()
             }
             override fun onFailure(call: Call<List<Product>>, t: Throwable) {
-                Log.d("Faild ",t.message!!)
+                Log.d("Failed ",t.message!!)
             }
         })
         return responseLiveData
@@ -96,20 +93,20 @@ class ProdductViewModel:ViewModel() {
         return responseLiveData
     }
 
-    fun createProduct(product: HashMap<String, Any>): Int {
-         var resulte = 0
+    fun createProduct(product: HashMap<String, Any>): MutableLiveData<String> {
+         var resulte = MutableLiveData<String>();
         val call = productRepositry.AddProduct(product)
         call.enqueue(object : Callback<Int> {
             override fun onResponse(call: Call<Int>, response: Response<Int>) {
-                resulte = response.body()!!
+//                resulte.value = response.body()!!
             }
             override fun onFailure(call: Call<Int>, t: Throwable) {
-               // resulte = t.message!!
+                resulte.value = t.message!!
             }
         })
         return  resulte
     }
-    fun editeProduct(proId:Int,product: HashMap<String, Any>):MutableLiveData<String>{
+    fun editeProduct(proId:Int,product: HashMap<String, String>):MutableLiveData<String>{
         val responseLiveData: MutableLiveData<String> = MutableLiveData()
         val call= productRepositry.updateProduct(proId,product)
         call.enqueue(object :Callback<String>{
@@ -147,12 +144,12 @@ class ProdductViewModel:ViewModel() {
     fun uploadImage(images:List<Uri>,productId:Int,userId:Int) {
 
         for(im in images){
-            var file = im.toFile()
-            var requestBody= RequestBody.create(MediaType.parse("*/*"),file)
-            var fileToUploaded= MultipartBody.Part.createFormData("file",file.name,requestBody)
-            var fileName= RequestBody.create(MediaType.parse("image/*"),file.name
+            val file = im.toFile()
+            val requestBody= RequestBody.create(MediaType.parse("*/*"),file)
+            val fileToUploaded= MultipartBody.Part.createFormData("file",file.name,requestBody)
+            val fileName= RequestBody.create(MediaType.parse("image/*"),file.name
             )
-          var  call= productRepositry.uploadImage(fileToUploaded,fileName,productId,userId)
+          val  call= productRepositry.uploadImage(fileToUploaded,fileName,productId,userId)
             call.enqueue(
                 object :Callback<Unit>{
                     override fun onResponse(call: Call<Unit>, response: Response<Unit>) {

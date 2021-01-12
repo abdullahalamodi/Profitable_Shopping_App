@@ -59,6 +59,7 @@
                     android:layout_marginRight="8dp"
                     android:layout_marginBottom="18dp"
                     android:background="@drawable/bg4"
+                    android:enabled="false"
                     android:gravity="top"
                     android:padding="20dp" />
 
