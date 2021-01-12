@@ -2,6 +2,8 @@ package com.finalproject.profitableshopping.data.api
 
 import com.finalproject.profitableshopping.data.models.Category
 import com.finalproject.profitableshopping.data.models.Product
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 import retrofit2.Call
 import retrofit2.http.*
@@ -34,11 +36,15 @@ interface ShoppingApi {
     @GET("products.php?")
     fun getProduct(@Query("id") proId: Int): Call<Product>
     @POST("products.php")
-    fun addProduct(@Body product: HashMap<String, Any>):Call<String>
+    fun addProduct(@Body product: HashMap<String, Any>):Call<Int>
     @POST("products.php?{id}")
     fun updateProduct(@Path("id") id:Int, @Body category: HashMap<String, Any>):Call<String>
     @DELETE("products.php?{id}")
     fun deleteProduct(@Path("id")id:Int):Call<String>
+    @Multipart
+    @POST("products.php?{p_id}?{u_id}")
+   fun uploadImage(@Part file:MultipartBody.Part,@Part ("file") name:RequestBody
+                   ,@Path("p_id")pId:Int,@Path("u_id")uId:Int) :Call<Unit>
 
 
 

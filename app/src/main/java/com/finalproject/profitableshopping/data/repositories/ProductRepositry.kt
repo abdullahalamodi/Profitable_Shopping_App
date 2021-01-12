@@ -2,6 +2,8 @@ package com.finalproject.profitableshopping.data.repositories
 
 import com.finalproject.profitableshopping.data.api.ShoppingApi
 import com.finalproject.profitableshopping.data.models.Product
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -19,7 +21,15 @@ class ProductRepositry {
 
 
 
-    fun createProduct(product: HashMap<String,Any>): Call<String> {
+    fun uploadImage(file: MultipartBody.Part,
+                    name: RequestBody,
+                    pId:Int,
+                    uId:Int) :Call<Unit>{
+
+        return shoppingApi.uploadImage(file,name,pId,uId)
+
+    }
+    fun AddProduct(product: HashMap<String,Any>): Call<Int> {
         return shoppingApi.addProduct(product)
     }
 
