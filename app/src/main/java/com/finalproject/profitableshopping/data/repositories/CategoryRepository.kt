@@ -1,7 +1,11 @@
 package com.finalproject.profitableshopping.data.repositories
 
+import androidx.core.net.toFile
 import com.finalproject.profitableshopping.data.api.ShoppingApi
 import com.finalproject.profitableshopping.data.models.Category
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 
 import retrofit2.Call
@@ -41,6 +45,8 @@ class CategoryRepository {
         return  shoppingApi.updateCategory(catId,category)
     }
 
+
+
     fun deleteCategory(catId:Int):Call<String>{
         return shoppingApi.deleteCategory(catId)
     }
@@ -49,4 +55,5 @@ class CategoryRepository {
     companion object{
         internal const val BASE_URL = "https://profitableshopping.000webhostapp.com/profitable_shopping_api/api/"
     }
+
 }

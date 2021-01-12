@@ -1,12 +1,17 @@
 package com.finalproject.profitableshopping.viewmodel
 
+import android.net.Uri
 import android.util.Log
+import androidx.core.net.toFile
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.finalproject.profitableshopping.data.models.Product
 import com.finalproject.profitableshopping.data.repositories.ProductRepositry
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -91,15 +96,15 @@ class ProdductViewModel:ViewModel() {
         return responseLiveData
     }
 
-    fun createProduct(product: HashMap<String, Any>): String {
-        var resulte = "0"
-        val call = productRepositry.createProduct(product)
-        call.enqueue(object : Callback<String> {
-            override fun onResponse(call: Call<String>, response: Response<String>) {
+    fun createProduct(product: HashMap<String, Any>): Int {
+         var resulte = 0
+        val call = productRepositry.AddProduct(product)
+        call.enqueue(object : Callback<Int> {
+            override fun onResponse(call: Call<Int>, response: Response<Int>) {
                 resulte = response.body()!!
             }
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                resulte = t.message!!
+            override fun onFailure(call: Call<Int>, t: Throwable) {
+               // resulte = t.message!!
             }
         })
         return  resulte
@@ -137,6 +142,30 @@ class ProdductViewModel:ViewModel() {
         return responseLiveData
 
 
+    }
+
+    fun uploadImage(images:List<Uri>,productId:Int,userId:Int) {
+
+        for(im in images){
+            var file = im.toFile()
+            var requestBody= RequestBody.create(MediaType.parse("*/*"),file)
+            var fileToUploaded= MultipartBody.Part.createFormData("file",file.name,requestBody)
+            var fileName= RequestBody.create(MediaType.parse("image/*"),file.name
+            )
+          var  call= productRepositry.uploadImage(fileToUploaded,fileName,productId,userId)
+            call.enqueue(
+                object :Callback<Unit>{
+                    override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+
+                    }
+
+                    override fun onFailure(call: Call<Unit>, t: Throwable) {
+
+                    }
+                }
+            )
+
+        }
     }
 
 }

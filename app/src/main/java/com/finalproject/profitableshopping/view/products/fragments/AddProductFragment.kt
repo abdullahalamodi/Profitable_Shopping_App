@@ -3,6 +3,7 @@ package com.finalproject.profitableshopping.view.products.fragments
 import android.R
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,9 +14,13 @@ import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.finalproject.profitableshopping.data.api.ShoppingApi
 import com.finalproject.profitableshopping.viewmodel.CategoryViewModel
 import com.finalproject.profitableshopping.viewmodel.ProdductViewModel
-import java.io.File
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File as File1
 
 class AddProductFragment :Fragment(), AdapterView.OnItemSelectedListener {
     lateinit var productNameET:EditText
@@ -30,7 +35,7 @@ class AddProductFragment :Fragment(), AdapterView.OnItemSelectedListener {
     lateinit var categoryViewModel: CategoryViewModel
     var map=HashMap<Int,String>()
     lateinit var categoriesName:MutableList<String>
-    lateinit var images: MutableList<File>
+    lateinit var images: MutableList<Uri>
     var selectedCategoryId=0
 
    companion object{
@@ -55,6 +60,8 @@ class AddProductFragment :Fragment(), AdapterView.OnItemSelectedListener {
             product["user_id"]=0
             product["quantity"]=productQuantityET.text.toString().toInt()
             product["category_id"]=selectedCategoryId
+            val pId=prodductViewModel.createProduct(product)
+            prodductViewModel.uploadImage(images,pId,1)
 
 
 
@@ -123,7 +130,9 @@ class AddProductFragment :Fragment(), AdapterView.OnItemSelectedListener {
                     for(i in 0 until 3){
                        // val imageUri=data.clipData!!.getItemAt(i).uri.toFile()
                        // images!!.add(imageUri)
-                      val  imageUri=data.data
+
+                      val  imageUri=data.data!!
+                        images!!.add(imageUri!!)
 
 
                 }
@@ -131,6 +140,12 @@ class AddProductFragment :Fragment(), AdapterView.OnItemSelectedListener {
         }
     }
 
+    fun uploadImage() {
+
+
+
+
+    }
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
         val item= p0?.get(p2).toString()
         selectCategorySv.prompt=item
