@@ -16,7 +16,12 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+<<<<<<< HEAD:app/src/main/java/com/finalproject/profitableshopping/viewmodel/ProductViewModel.kt
 class ProductViewModel:ViewModel() {
+=======
+class ProdductViewModel:ViewModel() {
+
+>>>>>>> main:app/src/main/java/com/finalproject/profitableshopping/viewmodel/ProdductViewModel.kt
     val productRepositry: ProductRepositry
     val productsListLiveData: LiveData<List<Product>>
 
@@ -33,6 +38,10 @@ class ProductViewModel:ViewModel() {
         this.userProductsListLiveData = Transformations.switchMap(userIdLiveData) { useId ->
             getUserProducts(useId)
         }
+<<<<<<< HEAD:app/src/main/java/com/finalproject/profitableshopping/viewmodel/ProductViewModel.kt
+=======
+
+>>>>>>> main:app/src/main/java/com/finalproject/profitableshopping/viewmodel/ProdductViewModel.kt
     }
 
     fun getProducts(): MutableLiveData<List<Product>>{
@@ -93,12 +102,21 @@ class ProductViewModel:ViewModel() {
         return responseLiveData
     }
 
+<<<<<<< HEAD:app/src/main/java/com/finalproject/profitableshopping/viewmodel/ProductViewModel.kt
     fun createProduct(product: HashMap<String, Any>): MutableLiveData<String> {
          var resulte = MutableLiveData<String>();
         val call = productRepositry.AddProduct(product)
         call.enqueue(object : Callback<Int> {
             override fun onResponse(call: Call<Int>, response: Response<Int>) {
 //                resulte.value = response.body()!!
+=======
+    fun addProduct(product: HashMap<String, Any>): String {
+        var resulte = "0"
+        val call = productRepositry.addProduct(product)
+        call.enqueue(object : Callback<String> {
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                resulte = response.body()!!
+>>>>>>> main:app/src/main/java/com/finalproject/profitableshopping/viewmodel/ProdductViewModel.kt
             }
             override fun onFailure(call: Call<Int>, t: Throwable) {
                 resulte.value = t.message!!
@@ -106,7 +124,11 @@ class ProductViewModel:ViewModel() {
         })
         return  resulte
     }
+<<<<<<< HEAD:app/src/main/java/com/finalproject/profitableshopping/viewmodel/ProductViewModel.kt
     fun editeProduct(proId:Int,product: HashMap<String, String>):MutableLiveData<String>{
+=======
+    fun updateProduct(proId:Int,product: HashMap<String, Any>):MutableLiveData<String>{
+>>>>>>> main:app/src/main/java/com/finalproject/profitableshopping/viewmodel/ProdductViewModel.kt
         val responseLiveData: MutableLiveData<String> = MutableLiveData()
         val call= productRepositry.updateProduct(proId,product)
         call.enqueue(object :Callback<String>{
@@ -115,9 +137,7 @@ class ProductViewModel:ViewModel() {
             }
 
             override fun onFailure(call: Call<String>, t: Throwable) {
-
             }
-
         })
         return responseLiveData
 
@@ -130,14 +150,10 @@ class ProductViewModel:ViewModel() {
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 responseLiveData.value=response.body()
             }
-
             override fun onFailure(call: Call<String>, t: Throwable) {
-
             }
-
         })
         return responseLiveData
-
 
     }
 

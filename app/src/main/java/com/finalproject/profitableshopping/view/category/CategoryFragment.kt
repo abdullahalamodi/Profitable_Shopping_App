@@ -27,6 +27,7 @@ class CategoryFragment : Fragment(){
     private lateinit var categoryRecyclerView: RecyclerView
     private lateinit var categoriesList: List<Category>
     private lateinit var progressBar: ProgressBar
+    private var adapter: CategoryAdapter? = CategoryAdapter(emptyList())
     private var openMoreOptions = true
 
     override fun onStart() {
@@ -47,7 +48,6 @@ class CategoryFragment : Fragment(){
         }
     }
 
-    private var adapter: CategoryAdapter? = CategoryAdapter(emptyList())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
