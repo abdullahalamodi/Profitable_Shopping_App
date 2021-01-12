@@ -17,9 +17,7 @@ class ProductRepositry {
         shoppingApi = retrofit.create(ShoppingApi::class.java)
     }
 
-
-
-    fun createProduct(product: HashMap<String,Any>): Call<String> {
+    fun addProduct(product: HashMap<String,Any>): Call<String> {
         return shoppingApi.addProduct(product)
     }
 

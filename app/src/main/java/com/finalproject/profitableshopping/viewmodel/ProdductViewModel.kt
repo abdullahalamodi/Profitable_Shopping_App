@@ -91,9 +91,9 @@ class ProdductViewModel:ViewModel() {
         return responseLiveData
     }
 
-    fun createProduct(product: HashMap<String, Any>): String {
+    fun addProduct(product: HashMap<String, Any>): String {
         var resulte = "0"
-        val call = productRepositry.createProduct(product)
+        val call = productRepositry.addProduct(product)
         call.enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 resulte = response.body()!!
@@ -104,7 +104,7 @@ class ProdductViewModel:ViewModel() {
         })
         return  resulte
     }
-    fun editeProduct(proId:Int,product: HashMap<String, Any>):MutableLiveData<String>{
+    fun updateProduct(proId:Int,product: HashMap<String, Any>):MutableLiveData<String>{
         val responseLiveData: MutableLiveData<String> = MutableLiveData()
         val call= productRepositry.updateProduct(proId,product)
         call.enqueue(object :Callback<String>{

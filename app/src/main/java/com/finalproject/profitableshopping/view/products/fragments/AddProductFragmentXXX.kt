@@ -1,23 +1,23 @@
 package com.finalproject.profitableshopping.view.products.fragments
 
+import android.R
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.lifecycle.Observer
+import androidx.core.net.toFile
 import androidx.core.view.get
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.viewmodel.CategoryViewModel
 import com.finalproject.profitableshopping.viewmodel.ProdductViewModel
 import java.io.File
 
-
-class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener {
+class AddProductFragmentXXX : Fragment(), AdapterView.OnItemSelectedListener {
 
     lateinit var productNameET: EditText
     lateinit var productdescriptionET: EditText
@@ -69,28 +69,27 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener {
         startActivityForResult(Intent.createChooser(intent, "Select Image(S)"), PICK_IMAGES_REQUST)
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         prodductViewModel = ViewModelProviders.of(this).get(ProdductViewModel::class.java)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+ /*   override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_product_add, container, false)
-        selectCategorySv = view.findViewById(R.id.spinner_all_category)
-        productNameET = view.findViewById(R.id.et_name_product)
-        productdescriptionET = view.findViewById(R.id.et_desc_product)
-        productRialPriceET = view.findViewById(R.id.et_dollar_price_product)
-        productDollarPriceET = view.findViewById(R.id.et_rial_price_product)
-        productQuantityET = view.findViewById(R.id.et_quantity_product)
-        pickImagesBtn = view.findViewById(R.id.btn_load_photo_product)
-        addProductBtn = view.findViewById(R.id.btn_add_product)
-        return view;
-    }
+       *//* val view = inflater.inflate()
+        selectCategorySv = view.findViewById()
+        productNameET = view.findViewById()
+        productdescriptionET = view.findViewById()
+        productRialPriceET = view.findViewById()
+        productDollarPriceET = view.findViewById()
+        productQuantityET = view.findViewById()
+        pickImagesBtn = view.findViewById()
+        addProductBtn = view.findViewById()
+        return return view*//*
+    }*/
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -105,7 +104,7 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 //spiner adapter
                 val dataAdapter = ArrayAdapter<String>(
                     requireContext(),
-                    android.R.layout.simple_spinner_dropdown_item,
+                    R.layout.simple_spinner_dropdown_item,
                     categoriesName
                 )
 
@@ -120,13 +119,15 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == AddProductFragment.PICK_IMAGES_REQUST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
+        if (requestCode == PICK_IMAGES_REQUST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
 
             if (data!!.clipData != null) {
                 for (i in 0 until 3) {
                     // val imageUri=data.clipData!!.getItemAt(i).uri.toFile()
                     // images!!.add(imageUri)
                     val imageUri = data.data
+
+
                 }
             }
         }
