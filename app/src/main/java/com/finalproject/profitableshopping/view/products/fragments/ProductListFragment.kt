@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.widget.ContentLoadingProgressBar
 import androidx.fragment.app.Fragment
@@ -17,7 +18,7 @@ import com.finalproject.profitableshopping.data.models.Product
 import com.finalproject.profitableshopping.viewmodel.ProductViewModel
 
 class ProductListFragment : Fragment() {
-    private lateinit var productViewModel: ProdductViewModel
+    private lateinit var productViewModel: ProductViewModel
     private lateinit var productsRv: RecyclerView
     private var adapter: ProductAdapter = ProductAdapter(emptyList())
 
@@ -36,7 +37,7 @@ class ProductListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        productViewModel = ViewModelProviders.of(this).get(ProdductViewModel::class.java)
+        productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
 
     }
 

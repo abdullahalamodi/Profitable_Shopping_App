@@ -45,7 +45,6 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
             val product = HashMap<String,String>()
 
-            val product = HashMap<String, Any>()
 
 //            product["name"] = productNameET.text.toString()
 //            product["description"] = productdescriptionET.text.toString()

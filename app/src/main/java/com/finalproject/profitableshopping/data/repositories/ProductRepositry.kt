@@ -29,7 +29,8 @@ class ProductRepositry {
         return shoppingApi.uploadImage(file,name,pId,uId)
 
     }
-    fun AddProduct(product: HashMap<String,Any>): Call<Int> {
+
+    fun AddProduct(product: HashMap<String,Any>): Call<String> {
         return shoppingApi.addProduct(product)
     }
 
