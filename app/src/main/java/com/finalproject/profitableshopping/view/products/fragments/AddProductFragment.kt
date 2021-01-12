@@ -79,7 +79,8 @@ class AddProductFragment :Fragment(), AdapterView.OnItemSelectedListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view=inflater.inflate()
+        val view=inflater.
+        inflate()
         selectCategorySv=view.findViewById()
         productNameET=view.findViewById()
         productdescriptionET=view.findViewById()
