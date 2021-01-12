@@ -12,6 +12,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class ProdductViewModel:ViewModel() {
+
     val productRepositry: ProductRepositry
     val productsListLiveData: LiveData<List<Product>>
 
@@ -29,8 +30,6 @@ class ProdductViewModel:ViewModel() {
             getUserProducts(useId)
 
         }
-
-
 
     }
     fun getProducts(): MutableLiveData<List<Product>>{
@@ -113,9 +112,7 @@ class ProdductViewModel:ViewModel() {
             }
 
             override fun onFailure(call: Call<String>, t: Throwable) {
-
             }
-
         })
         return responseLiveData
 
@@ -128,14 +125,10 @@ class ProdductViewModel:ViewModel() {
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 responseLiveData.value=response.body()
             }
-
             override fun onFailure(call: Call<String>, t: Throwable) {
-
             }
-
         })
         return responseLiveData
-
 
     }
 

@@ -28,6 +28,7 @@ class CategoryFragment : Fragment(), MenuItem.OnMenuItemClickListener {
     private var category = Category()
     private lateinit var categoryViewModel: CategoryViewModel
     private lateinit var categoryRecyclerView: RecyclerView
+    private var adapter: CategoryAdapter? = CategoryAdapter(emptyList())
     private var openMoreOptions = true
 
     override fun onStart() {
@@ -50,7 +51,6 @@ class CategoryFragment : Fragment(), MenuItem.OnMenuItemClickListener {
         }
     }
 
-    private var adapter: CategoryAdapter? = CategoryAdapter(emptyList())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
