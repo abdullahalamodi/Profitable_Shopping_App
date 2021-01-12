@@ -6,33 +6,18 @@ import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.view.WindowManager
 import android.widget.Toast
 import com.finalproject.profitableshopping.R
+import kotlinx.android.synthetic.main.activity_check_network.*
 
-class SplashScreenActivity : AppCompatActivity() {
-
-    private val SPLASH_TIME_OUT = 4000L
-
+class CheckNetworkActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash_screen)
+        setContentView(R.layout.activity_check_network)
 
-        // This is used to hide the status bar and make
-        // the splash screen as a full screen activity.
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
-
-        // we used the postDelayed(Runnable, time) method
-        // to send a message with a delayed time.
-        Handler().postDelayed(
-            {
-                checkNetwork()
-            }, SPLASH_TIME_OUT
-        ) // 3000 is the delayed time in milliseconds.
+        btn_try_again.setOnClickListener {
+            checkNetwork()
+        }
     }
 
     fun checkNetwork(){
@@ -40,12 +25,11 @@ class SplashScreenActivity : AppCompatActivity() {
         val activeNetwork: NetworkInfo?=connectionManger.activeNetworkInfo
         val isConnected:Boolean=activeNetwork?.isConnectedOrConnecting==true
         if (isConnected){
-            val i = Intent(this@SplashScreenActivity, MainActivity::class.java)
+            val i = Intent(this@CheckNetworkActivity, SplashScreenActivity::class.java)
             startActivity(i)
-            finish()
             Toast.makeText(this, "Network connection is available", Toast.LENGTH_SHORT).show()
         }else{
-            val i = Intent(this@SplashScreenActivity, CheckNetworkActivity::class.java)
+            val i = Intent(this@CheckNetworkActivity, CheckNetworkActivity::class.java)
             startActivity(i)
             Toast.makeText(this, "Network connection is not available", Toast.LENGTH_SHORT).show()
         }
