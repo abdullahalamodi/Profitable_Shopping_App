@@ -17,7 +17,7 @@ import com.finalproject.profitableshopping.viewmodel.ProductViewModel
 
 class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener {
     lateinit var productNameET: EditText
-    lateinit var productdescriptionET: EditText
+    lateinit var productDescriptionET: EditText
     lateinit var productRialPriceET: EditText
     lateinit var productDollarPriceET: EditText
     lateinit var productQuantityET: EditText
@@ -82,7 +82,7 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener {
 //        val view=inflater.inflate()
 //        selectCategorySv=view.findViewById()
 //        productNameET=view.findViewById()
-//        productdescriptionET=view.findViewById()
+//        productDescriptionET=view.findViewById()
 //        productRialPriceET=view.findViewById()
 //        productDollarPriceET=view.findViewById()
 //        productQuantityET=view.findViewById()
@@ -91,7 +91,7 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener {
 //        return  view
 //    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+   /* override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         categoryViewModel.categoriesLiveData.observe(
             viewLifecycleOwner,
@@ -115,7 +115,7 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener {
             }
         )
     }
-
+*/
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PICK_IMAGES_REQUST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {

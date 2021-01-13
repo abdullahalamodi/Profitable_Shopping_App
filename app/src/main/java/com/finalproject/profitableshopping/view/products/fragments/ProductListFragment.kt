@@ -53,7 +53,7 @@ class ProductListFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(
             //next line still need some config
-            R.layout.fragment_catergory_list, container, false
+            R.layout.fragment_product_list, container, false
         )
         productsRv = view.findViewById(R.id.rv_product)
         productsRv.layoutManager = GridLayoutManager(context, 2)
@@ -102,6 +102,9 @@ class ProductListFragment : Fragment() {
 
 
         fun bind(pro: Product) {
+            productNameTv.text=pro.productName
+            productRialPriceTv.text=pro.productRialPrice.toString()
+            productDescriptionTv.text=pro.productDescription
 
         }
 
