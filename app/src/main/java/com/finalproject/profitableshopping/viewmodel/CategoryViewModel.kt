@@ -90,7 +90,7 @@ class CategoryViewModel : ViewModel() {
 
     fun getCategoryByName(name: String): MutableLiveData<Category> {
         val responseLiveData: MutableLiveData<Category> = MutableLiveData()
-        var call = repository.getCategoryByName(name)
+        val call = repository.getCategoryByName(name)
         call.enqueue(object : Callback<Category> {
             override fun onResponse(call: Call<Category>, response: Response<Category>) {
                 responseLiveData.value = response.body() ?: Category(id = -1)
@@ -105,7 +105,7 @@ class CategoryViewModel : ViewModel() {
         return responseLiveData
     }
 
-    fun updateCategory(catId: Int, category: Category): MutableLiveData<String> {
+    fun updateCategory(catId: Int?, category: Category): MutableLiveData<String> {
         val responseLiveData: MutableLiveData<String> = MutableLiveData()
         val call = repository.updateCategory(catId, category)
         call.enqueue(object : Callback<String> {

@@ -13,7 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SignIn"></activity>
+        <activity android:name=".SignIn" />
         <activity android:name=".SignUp" />
         <activity android:name=".view.CheckNetworkActivity" />
         <activity android:name=".view.SplashScreenActivity" />

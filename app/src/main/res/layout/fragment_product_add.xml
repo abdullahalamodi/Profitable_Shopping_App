@@ -3,8 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="#ddd"
-    tools:context=".view.products.fragments.ProductFragment">
+    android:clickable="true"
+    android:focusable="true"
+    tools:context=".view.products.fragments.AddProductFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,7 +23,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/rb_light"
             android:paddingRight="18dp"
-            android:text="ما الذي تود الاعلان عنه:"
+            android:text="@string/category_hint"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -33,6 +36,7 @@
             app:cardCornerRadius="10dp">
 
             <Spinner
+                android:id="@+id/spinner_all_category"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:entries="@array/category"
@@ -51,66 +55,77 @@
             android:paddingRight="8dp">
 
             <EditText
+                android:id="@+id/et_name_product"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:layout_margin="6dp"
                 android:background="@drawable/et_bg"
                 android:fontFamily="@font/rb_light"
                 android:hint="@string/name_product"
+                android:textDirection="rtl"
                 android:inputType="textPersonName"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
-                android:focusable="false"/>
+                />
 
             <EditText
+                android:id="@+id/et_rial_price_product"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:layout_margin="6dp"
                 android:background="@drawable/et_bg"
                 android:fontFamily="@font/rb_light"
                 android:hint="@string/rail_price_product"
+                android:textDirection="rtl"
                 android:inputType="textPersonName"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
-                android:focusable="false"/>
+                />
 
             <EditText
+                android:id="@+id/et_dollar_price_product"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:layout_margin="6dp"
                 android:background="@drawable/et_bg"
                 android:fontFamily="@font/rb_light"
                 android:hint="@string/dollar_price_product"
+                android:textDirection="rtl"
                 android:inputType="textPersonName"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
-                android:focusable="false"/>
+                />
 
             <EditText
+                android:id="@+id/et_quantity_product"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:layout_margin="6dp"
                 android:background="@drawable/et_bg"
                 android:fontFamily="@font/rb_light"
                 android:hint="@string/quntity_product"
+                android:textDirection="rtl"
                 android:inputType="textPersonName"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
-                android:focusable="false"/>
+                />
 
             <EditText
+                android:id="@+id/et_desc_product"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:layout_margin="5dp"
                 android:background="@drawable/et_bg"
                 android:fontFamily="@font/rb_light"
                 android:hint="@string/description_product"
+                android:textDirection="rtl"
                 android:inputType="textPersonName"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
-                android:focusable="false"/>
+                />
 
             <ImageView
+                android:id="@+id/btn_load_photo_product"
                 android:layout_width="140dp"
                 android:layout_height="140dp"
                 android:background="#ddd"
@@ -120,6 +135,7 @@
 
 
             <Button
+                android:id="@+id/btn_add_product"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
