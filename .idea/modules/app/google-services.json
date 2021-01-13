@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "227395489988",
+    "project_id": "profitableshopping-e4d5a",
+    "storage_bucket": "profitableshopping-e4d5a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:227395489988:android:2bb121d2534a05aa1a3991",
+        "android_client_info": {
+          "package_name": "com.finalproject.profitableshopping"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "227395489988-qj6p584mb1d4i63kt8d030hou8qfd67i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.finalproject.profitableshopping",
+            "certificate_hash": "aebee59c897d612826a11e168163122c9362ada1"
+          }
+        },
+        {
+          "client_id": "227395489988-n324m11g7f2rsthg2c8o2rp2dvf0mib3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAShDLZjaBRNyjq_HR145BPpbOCZ08tWKc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "227395489988-n324m11g7f2rsthg2c8o2rp2dvf0mib3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
