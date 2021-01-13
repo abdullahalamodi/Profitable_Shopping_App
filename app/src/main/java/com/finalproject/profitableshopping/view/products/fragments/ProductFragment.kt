@@ -67,14 +67,12 @@ class ProductFragment : Fragment() , AdapterView.OnItemSelectedListener {
             product["user_id"] = 0
             product["quantity"] = productQuantityET.text.toString().toInt()
             product["category_id"] = selectedCategoryId
-
-
-
-            productViewModel.addProduct(product,images).observe(
+            productViewModel.addProduct(product).observe(
                 this,
                 Observer {
                     showProgress(false)
-                    Toast.makeText(requireContext(),it!!,Toast.LENGTH_LONG).show()
+                    productViewModel.uploadImage(images,it,1)
+
                 }
             )
             showProgress(false)

@@ -102,20 +102,20 @@ class ProductViewModel : ViewModel() {
         return responseLiveData
     }
 
-    fun addProduct(product: HashMap<String, Any>,images: List<Uri>): MutableLiveData<String> {
+    fun addProduct(product: HashMap<String, Any>): MutableLiveData<Int> {
 
-        val responseLiveData: MutableLiveData<String> = MutableLiveData()
+        val responseLiveData: MutableLiveData<Int> = MutableLiveData()
 
-        val call = productRepositry.AddProduct(product,prepareImages(images))
-            call.enqueue(object : Callback<String> {
-                override fun onResponse(call: Call<String>, response: Response<String>) {
+        val call = productRepositry.AddProduct(product)
+            call.enqueue(object : Callback<Int> {
+                override fun onResponse(call: Call<Int>, response: Response<Int>) {
                 responseLiveData.value = response.body()!!
-                    Log.d("success",responseLiveData.value!!)
+                    Log.d("success",responseLiveData.value.toString())
             }
 
-            override fun onFailure(call: Call<String>, t: Throwable) {
+            override fun onFailure(call: Call<Int>, t: Throwable) {
                 Log.d("failed",t.message!!)
-                responseLiveData.value =t.message
+                responseLiveData.value = 0
 
             }
         })
@@ -164,18 +164,36 @@ class ProductViewModel : ViewModel() {
 
     }
 
-    fun prepareImages(images: List<Uri>):MutableList<MultipartBody.Part> {
+    fun uploadImage(images: List<Uri>, productId: Int, userId: Int) {
         lateinit var imageFiles: MutableList<MultipartBody.Part>
         for (im in images) {
             val file = im.toFile()
-
             val requestBody = RequestBody.create(MediaType.parse("*/*"), file)
-            val fileToUploaded =
-                MultipartBody.Part.createFormData("file", file.name, requestBody)
-            imageFiles.add(fileToUploaded)
 
+            imageFiles.add(MultipartBody.Part.createFormData("file", file.name, requestBody))
+           // val fileName = RequestBody.create(MediaType.parse("image/*"), file.name)
         }
-          return imageFiles
+            val call = productRepositry.uploadImage(
+                imageFiles,
+                productId,
+                userId
+            )
+            call.enqueue(
+                object : Callback<String> {
+                    override fun onResponse(
+                        call: Call<String>,
+                        response: Response<String>
+                    ) {
+                       Log.d("success",response.body()!!)
+                    }
+
+                    override fun onFailure(call: Call<String>, t: Throwable) {
+                        Log.d("failed",t.message!!)
+
+                    }
+                }
+            )
         }
+    }
 
 }
