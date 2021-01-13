@@ -34,15 +34,16 @@ class CategoryFragment : Fragment(){
         super.onStart()
         addBtn.setOnClickListener {
             showProgress(true)
-            //val catMap = Category(null,categoryNameEt.text.toString())
-            //catMap.name = categoryNameEt.text.toString()
-                val response = categoryViewModel.addCategory(categoryNameEt.text.toString())
+            val catMap = Category();
+            catMap.name = categoryNameEt.text.toString()
+                val response = categoryViewModel.addCategory(catMap)
                 //will display message after get response
                 response.observe(
                     viewLifecycleOwner,
                     Observer { message ->
                         showProgress(false)
                         Toast.makeText(context, message.toString(), Toast.LENGTH_SHORT).show()
+                        categoryViewModel.refresh()
                     }
                 )
         }
@@ -124,16 +125,18 @@ class CategoryFragment : Fragment(){
             val alertDialog = alertBuilder.create()
             alertDialog.show()
             view.ed_update_category.setText(cat.name)
+            Toast.makeText(requireContext(), cat.id.toString()+".", Toast.LENGTH_SHORT).show()
             view.btn_update.setOnClickListener {
                 showProgress(true)
-                val catMap = HashMap<String, String>()
-                catMap["name"];
-                val response = categoryViewModel.updateCategory(cat.id!!,catMap)
+                val catMap = Category()
+                catMap.name = view.ed_update_category.text.toString()
+                val response = categoryViewModel.updateCategory(cat.id,catMap)
                 response.observe(
                     viewLifecycleOwner,
                     Observer { message ->
                         showProgress(false)
                         Toast.makeText(requireContext(), message.toString(), Toast.LENGTH_SHORT).show()
+                        categoryViewModel.refresh()
                     }
                 )
                 alertDialog.dismiss()
@@ -159,6 +162,7 @@ class CategoryFragment : Fragment(){
                     Observer { message ->
                         showProgress(false)
                         Toast.makeText(requireContext(), message.toString(), Toast.LENGTH_SHORT).show()
+                        categoryViewModel.refresh()
                     }
                 )
                 alertDialog.dismiss()

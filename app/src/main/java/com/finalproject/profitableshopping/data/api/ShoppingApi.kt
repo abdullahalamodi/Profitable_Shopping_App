@@ -22,8 +22,7 @@ interface ShoppingApi {
     @POST("categories.php")
     fun addCategory(@Field("name")name:String):Call<String>
     @POST("categories.php")
-
-    fun updateCategory(@Query("id") id:Int, @Body category: HashMap<String, String>):Call<String>
+    fun updateCategory(@Query("id") id:String, @Body category: Category):Call<String>
     @DELETE("categories.php?")
     fun deleteCategory(@Query("id")id:String):Call<String>
 

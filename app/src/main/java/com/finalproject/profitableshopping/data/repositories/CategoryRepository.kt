@@ -39,8 +39,8 @@ class CategoryRepository {
 
     }
 
-    fun updateCategory(catId:Int,category: HashMap<String, String>):Call<String>{
-        return  shoppingApi.updateCategory(catId,category)
+    fun updateCategory(catId:Int,category: Category):Call<String>{
+        return  shoppingApi.updateCategory(catId.toString(),category)
     }
 
     fun deleteCategory(catId:Int):Call<String>{
