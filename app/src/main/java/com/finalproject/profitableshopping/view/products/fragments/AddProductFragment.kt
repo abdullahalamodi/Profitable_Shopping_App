@@ -106,11 +106,11 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener {
                     categoriesName
                 )
 
-                dataAdapter.setDropDownViewResource(
-                    android.R.layout.simple_spinner_dropdown_item
-                )
+               // dataAdapter.setDropDownViewResource(
+                //    android.R.layout.simple_spinner_dropdown_item
+              //  )
 
-                selectCategorySv.adapter = dataAdapter
+              //  selectCategorySv.adapter = dataAdapter
             }
         )
     }
