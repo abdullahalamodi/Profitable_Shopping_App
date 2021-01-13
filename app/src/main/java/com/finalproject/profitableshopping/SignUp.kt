@@ -1,8 +1,11 @@
 package com.finalproject.profitableshopping
 
+import android.app.ProgressDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
+import android.util.Patterns
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -11,31 +14,36 @@ import com.google.firebase.auth.FirebaseAuth
 
 class SignUp : AppCompatActivity() {
 
-    lateinit var user_name: EditText
-    lateinit var user_email: EditText
-    lateinit var user_pass: EditText
-    lateinit var confrim_pass: EditText
-    lateinit var btn_register: Button
+    lateinit var userNameEt: EditText
+    lateinit var userEmailEt: EditText
+    lateinit var userPassEt: EditText
+    lateinit var confrimPassEt: EditText
+    lateinit var registerBtn: Button
     lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
 
-        user_name = findViewById(R.id.register_user_name)
-        user_email = findViewById(R.id.register_email)
-        user_pass = findViewById(R.id.register_password)
-        confrim_pass = findViewById(R.id.register_confirm_password)
-        btn_register = findViewById(R.id.btn_register)
-        btn_register.setOnClickListener {
-            var userName = user_name.text.toString()
-            var email = user_email.text.toString()
-            var password = user_pass.text.toString()
-            var confirmPassword = confrim_pass.text.toString()
+        userNameEt = findViewById(R.id.register_user_name)
+        userEmailEt = findViewById(R.id.register_email)
+        userPassEt = findViewById(R.id.register_password)
+        confrimPassEt = findViewById(R.id.register_confirm_password)
+        registerBtn = findViewById(R.id.btn_register)
+
+        registerBtn.setOnClickListener {
+            var userName = userNameEt.text.toString()
+            var email = userEmailEt.text.toString()
+            var password = userPassEt.text.toString()
+            var confirmPassword = confrimPassEt.text.toString()
 
             if (userName.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty()) {
                 if (password.length > 6 && password.length < 14) {
                     if (password == confirmPassword) {
+                        if(!isValidEmail(email)){
+                            Toast.makeText(this, "Please enter valid email", Toast.LENGTH_SHORT).show()
+                            return@setOnClickListener
+                        }
                         register(userName, email, password)
                     } else {
                         Toast.makeText(this, "password not equal confirmPassword", Toast.LENGTH_LONG).show()
@@ -52,9 +60,13 @@ class SignUp : AppCompatActivity() {
 
     private fun register(userName: String, email: String, password: String) {
         auth = FirebaseAuth.getInstance()
+        var p= ProgressDialog(this)
+        p.setMessage("please wait")
+        p.setCanceledOnTouchOutside(false)
+        p.show()
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) {
-
+                p.dismiss()
                 if (it.isSuccessful) {
                     sendEmailVerification()
                 } else {
@@ -76,5 +88,11 @@ class SignUp : AppCompatActivity() {
         }
     }
 
-
+    private fun isValidEmail(target: CharSequence?): Boolean {
+        return if (TextUtils.isEmpty(target)) {
+            false
+        } else {
+            Patterns.EMAIL_ADDRESS.matcher(target).matches()
+        }
+    }
 }

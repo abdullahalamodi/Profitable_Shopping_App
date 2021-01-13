@@ -2,6 +2,7 @@ package com.finalproject.profitableshopping.data.repositories
 
 import com.finalproject.profitableshopping.data.api.ShoppingApi
 import com.finalproject.profitableshopping.data.models.Category
+import com.google.gson.GsonBuilder
 
 
 import retrofit2.Call
@@ -12,8 +13,9 @@ class CategoryRepository {
      private var shoppingApi: ShoppingApi
 
     init {
+        val  gson=GsonBuilder().setLenient().create()
         val retrofit: Retrofit = Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .baseUrl(BASE_URL)
             .build()
         shoppingApi = retrofit.create(ShoppingApi::class.java)
@@ -37,8 +39,8 @@ class CategoryRepository {
 
     }
 
-    fun updateCategory(catId:Int,category: HashMap<String, String>):Call<String>{
-        return  shoppingApi.updateCategory(catId,category)
+    fun updateCategory(catId:Int?,category: Category):Call<String>{
+        return  shoppingApi.updateCategory(catId.toString(),category)
     }
 
     fun deleteCategory(catId:Int):Call<String>{

@@ -29,7 +29,7 @@
                 android:layout_height="140dp"
                 android:layout_gravity="center"
                 android:layout_margin="12dp"
-                android:src="@drawable/ic_launcher_background" />
+                android:src="@drawable/shoe" />
 
             <View
                 android:layout_width="match_parent"

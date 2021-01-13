@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.widget.ContentLoadingProgressBar
 import androidx.fragment.app.Fragment
@@ -21,6 +22,7 @@ class ProductListFragment : Fragment() {
     private lateinit var productViewModel: ProductViewModel
     private lateinit var productsRv: RecyclerView
     private var adapter: ProductAdapter = ProductAdapter(emptyList())
+    private lateinit var progressBar: ProgressBar
 
     // private lateinit var addFbtn: FloatingActionButton
     private lateinit var loadingProgressBar: ContentLoadingProgressBar
@@ -53,9 +55,10 @@ class ProductListFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(
             //next line still need some config
-            R.layout.fragment_catergory_list, container, false
+            R.layout.fragment_product_list, container, false
         )
         productsRv = view.findViewById(R.id.rv_product)
+        progressBar = view.findViewById(R.id.progress_circular)
         productsRv.layoutManager = GridLayoutManager(context, 2)
         //  addFbtn =view.findViewById()
         //    loadingProgressBar=view.findViewById()
@@ -66,9 +69,11 @@ class ProductListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        showProgress(true)
         productViewModel.productsListLiveData.observe(
             viewLifecycleOwner,
             Observer { prodcts ->
+                showProgress(false)
                 updateUI(prodcts)
 
             }
@@ -84,6 +89,13 @@ class ProductListFragment : Fragment() {
     private fun updateUI(productsList: List<Product>) {
         adapter = ProductAdapter(productsList)
         productsRv.adapter = adapter
+    }
+
+    private fun showProgress(show: Boolean) {
+        if (show)
+            progressBar.visibility = View.VISIBLE
+        else
+            progressBar.visibility = View.GONE
     }
 
     private inner class ProductHolder(view: View) : RecyclerView.ViewHolder(view),
@@ -102,6 +114,9 @@ class ProductListFragment : Fragment() {
 
 
         fun bind(pro: Product) {
+            productNameTv.text = pro.name
+            productRialPriceTv.text = pro.rialPrice.toString()
+            productDescriptionTv.text = pro.description
 
         }
 
@@ -135,6 +150,12 @@ class ProductListFragment : Fragment() {
     interface Callbacks {
         fun onItemSelected(itemId: Int)
         // fun onFloatButtonClicked()
+    }
+
+    companion object {
+        fun newInstance(): ProductListFragment {
+            return ProductListFragment();
+        }
     }
 
 }

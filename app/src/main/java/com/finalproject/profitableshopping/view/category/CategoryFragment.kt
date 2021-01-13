@@ -18,8 +18,9 @@ import com.finalproject.profitableshopping.viewmodel.CategoryViewModel
 import kotlinx.android.synthetic.main.delete_category.view.*
 import kotlinx.android.synthetic.main.update_category.view.*
 
+const val USER_ID_ARG = "userId";
 
-class CategoryFragment : Fragment(){
+class CategoryFragment : Fragment() {
 
     private lateinit var categoryNameEt: EditText
     private lateinit var addBtn: Button
@@ -34,17 +35,18 @@ class CategoryFragment : Fragment(){
         super.onStart()
         addBtn.setOnClickListener {
             showProgress(true)
-            val catMap = Category()
+            val catMap = Category();
             catMap.name = categoryNameEt.text.toString()
-                val response = categoryViewModel.addCategory(catMap)
-                //will display message after get response
-                response.observe(
-                    viewLifecycleOwner,
-                    Observer { message ->
-                        showProgress(false)
-                        Toast.makeText(context, message.toString(), Toast.LENGTH_SHORT).show()
-                    }
-                )
+            val response = categoryViewModel.addCategory(catMap)
+            //will display message after get response
+            response.observe(
+                viewLifecycleOwner,
+                Observer { message ->
+                    showProgress(false)
+                    Toast.makeText(context, message.toString(), Toast.LENGTH_SHORT).show()
+                    categoryViewModel.refresh()
+                }
+            )
         }
     }
 
@@ -63,7 +65,7 @@ class CategoryFragment : Fragment(){
         categoryRecyclerView = view.findViewById(R.id.rv_category)
         categoryNameEt = view.findViewById(R.id.category_name_et)
         addBtn = view.findViewById(R.id.add_category_btn)
-        categoryRecyclerView.layoutManager=LinearLayoutManager(context)
+        categoryRecyclerView.layoutManager = LinearLayoutManager(context)
         progressBar = view.findViewById(R.id.progress_circular)
         return view
     }
@@ -87,22 +89,18 @@ class CategoryFragment : Fragment(){
         categoryRecyclerView.adapter = adapter
     }
 
-    private fun showProgress(show:Boolean){
+    private fun showProgress(show: Boolean) {
         if (show)
-        progressBar.visibility  = View.VISIBLE
+            progressBar.visibility = View.VISIBLE
         else
-        progressBar.visibility  = View.GONE
+            progressBar.visibility = View.GONE
     }
 
     companion object {
 
         @JvmStatic
-        fun newInstance() =
-            CategoryFragment().apply {
-                arguments = Bundle().apply {
+        fun newInstance() = CategoryFragment()
 
-                }
-            }
     }
 
 
@@ -117,23 +115,26 @@ class CategoryFragment : Fragment(){
             view.findViewById(R.id.ly_update_delete_category) as LinearLayout
 
         ////////////////////this function to update the category
-        fun categoryDialogUpdate(cat: Category){
+        fun categoryDialogUpdate(cat: Category) {
             val alertBuilder = AlertDialog.Builder(requireContext())
             val view = layoutInflater.inflate(R.layout.update_category, null)
             alertBuilder.setView(view)
             val alertDialog = alertBuilder.create()
             alertDialog.show()
             view.ed_update_category.setText(cat.name)
+            Toast.makeText(requireContext(), cat.id.toString() + ".", Toast.LENGTH_SHORT).show()
             view.btn_update.setOnClickListener {
                 showProgress(true)
-                val catMap = HashMap<String, String>()
-                catMap["name"];
-                val response = categoryViewModel.updateCategory(cat.id,catMap)
+                val catMap = Category()
+                catMap.name = view.ed_update_category.text.toString()
+                val response = categoryViewModel.updateCategory(cat.id, catMap)
                 response.observe(
                     viewLifecycleOwner,
                     Observer { message ->
                         showProgress(false)
-                        Toast.makeText(requireContext(), message.toString(), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), message.toString(), Toast.LENGTH_SHORT)
+                            .show()
+                        categoryViewModel.refresh()
                     }
                 )
                 alertDialog.dismiss()
@@ -144,7 +145,7 @@ class CategoryFragment : Fragment(){
         }
 
         ////////////////////this function to delete the category
-        fun categoryDialogDelete(cat: Category){
+        fun categoryDialogDelete(cat: Category) {
             var alertBuilder = AlertDialog.Builder(requireContext())
             val view = layoutInflater.inflate(R.layout.delete_category, null)
             alertBuilder.setView(view)
@@ -153,12 +154,14 @@ class CategoryFragment : Fragment(){
             view.ed_delete_category.setText(cat.name)
             view.btn_delete.setOnClickListener {
                 showProgress(true)
-                val response = categoryViewModel.deleteCategory(cat.id)
+                val response = categoryViewModel.deleteCategory(cat.id!!)
                 response.observe(
                     viewLifecycleOwner,
                     Observer { message ->
                         showProgress(false)
-                        Toast.makeText(requireContext(), message.toString(), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), message.toString(), Toast.LENGTH_SHORT)
+                            .show()
+                        categoryViewModel.refresh()
                     }
                 )
                 alertDialog.dismiss()
