@@ -15,6 +15,7 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 
 class ProductViewModel : ViewModel() {
 
@@ -50,6 +51,7 @@ class ProductViewModel : ViewModel() {
 
             override fun onFailure(call: Call<List<Product>>, t: Throwable) {
                 Log.d("Failed ", t.message!!)
+                responseLiveData.value= emptyList()
             }
         })
         return responseLiveData
@@ -72,6 +74,7 @@ class ProductViewModel : ViewModel() {
 
             override fun onFailure(call: Call<List<Product>>, t: Throwable) {
                 Log.d("Faild ", t.message!!)
+                responseLiveData.value= emptyList()
             }
         })
         return responseLiveData
@@ -90,6 +93,8 @@ class ProductViewModel : ViewModel() {
             }
 
             override fun onFailure(call: Call<Product>, t: Throwable) {
+                responseLiveData.value= Product()
+                Log.d("Faild ", t.message!!)
 
             }
 
@@ -97,18 +102,21 @@ class ProductViewModel : ViewModel() {
         return responseLiveData
     }
 
-    fun addProduct(product: HashMap<String, Any>): MutableLiveData<String> {
+    fun addProduct(product: HashMap<String, Any>): MutableLiveData<Int> {
 
-        val responseLiveData: MutableLiveData<String> = MutableLiveData()
+        val responseLiveData: MutableLiveData<Int> = MutableLiveData()
 
         val call = productRepositry.AddProduct(product)
-        call.enqueue(object : Callback<String> {
-            override fun onResponse(call: Call<String>, response: Response<String>) {
+            call.enqueue(object : Callback<Int> {
+                override fun onResponse(call: Call<Int>, response: Response<Int>) {
                 responseLiveData.value = response.body()!!
+                    Log.d("success",responseLiveData.value.toString())
             }
 
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                responseLiveData.value = t.message!!
+            override fun onFailure(call: Call<Int>, t: Throwable) {
+                Log.d("failed",t.message!!)
+                responseLiveData.value = 0
+
             }
         })
         return responseLiveData
@@ -129,6 +137,7 @@ class ProductViewModel : ViewModel() {
             }
 
             override fun onFailure(call: Call<String>, t: Throwable) {
+                responseLiveData.value=t.message
             }
         })
         return responseLiveData
@@ -148,6 +157,7 @@ class ProductViewModel : ViewModel() {
             }
 
             override fun onFailure(call: Call<String>, t: Throwable) {
+                responseLiveData.value=t.message
             }
         })
         return responseLiveData
@@ -155,31 +165,30 @@ class ProductViewModel : ViewModel() {
     }
 
     fun uploadImage(images: List<Uri>, productId: Int, userId: Int) {
-
+        lateinit var imageFiles: MutableList<MultipartBody.Part>
         for (im in images) {
             val file = im.toFile()
             val requestBody = RequestBody.create(MediaType.parse("*/*"), file)
-            val fileToUploaded =
-                MultipartBody.Part.createFormData("file", file.name, requestBody)
-            val fileName = RequestBody.create(
-                MediaType.parse("image/*"), file.name
-            )
+
+            imageFiles.add(MultipartBody.Part.createFormData("file", file.name, requestBody))
+           // val fileName = RequestBody.create(MediaType.parse("image/*"), file.name)
+        }
             val call = productRepositry.uploadImage(
-                fileToUploaded,
-                fileName,
+                imageFiles,
                 productId,
                 userId
             )
             call.enqueue(
-                object : Callback<Unit> {
+                object : Callback<String> {
                     override fun onResponse(
-                        call: Call<Unit>,
-                        response: Response<Unit>
+                        call: Call<String>,
+                        response: Response<String>
                     ) {
-
+                       Log.d("success",response.body()!!)
                     }
 
-                    override fun onFailure(call: Call<Unit>, t: Throwable) {
+                    override fun onFailure(call: Call<String>, t: Throwable) {
+                        Log.d("failed",t.message!!)
 
                     }
                 }

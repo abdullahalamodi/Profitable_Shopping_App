@@ -21,16 +21,16 @@ class ProductRepositry {
 
 
 
-    fun uploadImage(file: MultipartBody.Part,
-                    name: RequestBody,
-                    pId:Int,
-                    uId:Int) :Call<Unit>{
+    fun uploadImage(file:List< MultipartBody.Part>,
 
-        return shoppingApi.uploadImage(file,name,pId,uId)
+                    pId:Int,
+                    uId:Int) :Call<String>{
+
+        return shoppingApi.uploadImage(file,pId,uId)
 
     }
 
-    fun AddProduct(product: HashMap<String,Any>): Call<String> {
+    fun AddProduct(product: HashMap<String,Any>): Call<Int>{
         return shoppingApi.addProduct(product)
     }
 
