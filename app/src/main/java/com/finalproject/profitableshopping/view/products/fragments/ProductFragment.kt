@@ -1,5 +1,6 @@
 package com.finalproject.profitableshopping.view.products.fragments
 
+import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -7,10 +8,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Spinner
+import android.widget.*
+import androidx.core.view.get
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.viewmodel.CategoryViewModel
@@ -41,6 +41,7 @@ class ProductFragment : Fragment() , AdapterView.OnItemSelectedListener {
     lateinit var categoriesName: MutableList<String>
     lateinit var images: MutableList<Uri>
     var selectedCategoryId = 0
+    private lateinit var progressBar: ProgressBar
 
     companion object {
         val PICK_IMAGES_REQUST = 0
@@ -49,30 +50,47 @@ class ProductFragment : Fragment() , AdapterView.OnItemSelectedListener {
     override fun onStart() {
         super.onStart()
         pickImagesBtn.setOnClickListener {
+            showProgress(true)
             pickImages()
+
 
 
         }
         addProductBtn.setOnClickListener {
+                showProgress(true)
+            val product = HashMap<String,Any>()
 
-            val product = HashMap<String,String>()
+            product["name"] = productNameET.text.toString()
+            product["description"] = productdescriptionET.text.toString()
+            product["rial_price"] = productRialPriceET.text.toString().toDouble()
+            product["dollar_price"] = productDollarPriceET.text.toString().toDouble()
+            product["user_id"] = 0
+            product["quantity"] = productQuantityET.text.toString().toInt()
+            product["category_id"] = selectedCategoryId
 
 
-//            product["name"] = productNameET.text.toString()
-//            product["description"] = productdescriptionET.text.toString()
-//            product["rial_price"] = productRialPriceET.text.toString().toDouble()
-//            product["dollar_price"] = productDollarPriceET.text.toString().toDouble()
-//            product["user_id"] = 0
-//            product["quantity"] = productQuantityET.text.toString().toInt()
-//            product["category_id"] = selectedCategoryId
-//            val pId = productViewModel.createProduct(product)
-//            productViewModel.uploadImage(images, pId, 1)
+
+            productViewModel.addProduct(product,images).observe(
+                this,
+                Observer {
+                    showProgress(false)
+                    Toast.makeText(requireContext(),it!!,Toast.LENGTH_LONG).show()
+                }
+            )
+            showProgress(false)
+          // productViewModel.uploadImage(images, 1, 1)
 
 
         }
     }
-
+    private fun showProgress(show:Boolean){
+        if (show)
+            progressBar.visibility  = View.VISIBLE
+        else
+            progressBar.visibility  = View.GONE
+    }
     private fun pickImages() {
+        showProgress(false)
         var intent = Intent()
         intent.type = "image/*"
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
@@ -91,51 +109,39 @@ class ProductFragment : Fragment() , AdapterView.OnItemSelectedListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view=inflater.inflate(R.layout.fragment_add_product,container,false)
-        selectCategorySv=view.findViewById(R.id.category_name)
+        val view=inflater.inflate(R.layout.fragment_product_add,container,false)
+        selectCategorySv=view.findViewById(R.id.spinner_all_category)
         productNameET=view.findViewById(R.id.et_name_product)
-        productdescriptionET=view.findViewById(R.id.et_description_product)
-        productRialPriceET=view.findViewById(R.id.et_price_product)
-      //  productDollarPriceET=view.findViewById(R.id.et_price_product)
-       // productQuantityET=view.findViewById(R.id.pro)
-       // pickImagesBtn=view.findViewById()
-       // addProductBtn=view.findViewById()
+        productdescriptionET=view.findViewById(R.id.et_desc_product)
+        productRialPriceET=view.findViewById(R.id.et_rial_price_product)
+       productDollarPriceET=view.findViewById(R.id.et_dollar_price_product)
+        productQuantityET=view.findViewById(R.id.et_quantity_product)
+        pickImagesBtn=view.findViewById(R.id.btn_load_photo_product)
+       addProductBtn=view.findViewById(R.id.btn_add_product)
+       progressBar = view.findViewById(R.id.progress_circular)
+
         return return view
     }
-    =======
-//    override fun onCreateView(
-//        inflater: LayoutInflater,
-//        container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View? {
-//        val view=inflater.inflate()
-//        selectCategorySv=view.findViewById()
-//        productNameET=view.findViewById()
-//        productdescriptionET=view.findViewById()
-//        productRialPriceET=view.findViewById()
-//        productDollarPriceET=view.findViewById()
-//        productQuantityET=view.findViewById()
-//        pickImagesBtn=view.findViewById()
-//        addProductBtn=view.findViewById()
-//        return  view
-//    }
-    >>>>>>> upstream/main
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        showProgress(true)
         categoryViewModel.categoriesLiveData.observe(
             viewLifecycleOwner,
             Observer {
-
-//                for (item in it) {
-//                    categoriesName.add(item.name)
-//                }
+                 showProgress(false)
+                for (item in it) {
+                  categoriesName.add(item.name)
+                }
                 //spiner adapter
                 val dataAdapter = ArrayAdapter<String>(
                     requireContext(),
-                    R.layout.simple_spinner_dropdown_item,
+                    R.layout.support_simple_spinner_dropdown_item,
                     categoriesName
                 )
+
+
 
                 dataAdapter.setDropDownViewResource(
                     android.R.layout.simple_spinner_dropdown_item
@@ -144,11 +150,19 @@ class ProductFragment : Fragment() , AdapterView.OnItemSelectedListener {
                 selectCategorySv.adapter = dataAdapter
             }
         )
+        addProductBtn.isEnabled = !(categoriesName.isEmpty()||
+                productNameET.text.isEmpty()||
+                productdescriptionET.text.isEmpty()||
+                productRialPriceET.text.isEmpty()||
+                productDollarPriceET.text.isEmpty()||
+                productQuantityET.text.isEmpty()||
+                images.size==0)
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == PICK_IMAGES_REQUST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
+        if (requestCode == PICK_IMAGES_REQUST && resultCode == RESULT_OK && data != null && data.data != null) {
 
             if (data!!.clipData != null) {
                 for (i in 0 until 3) {
@@ -172,10 +186,13 @@ class ProductFragment : Fragment() , AdapterView.OnItemSelectedListener {
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
         val item = p0?.get(p2).toString()
         selectCategorySv.prompt = item
+
+        showProgress(true)
         categoryViewModel.getCategoryByName(selectCategorySv.prompt.toString()).observe(
             this,
             Observer {
-                selectedCategoryId = it.id
+                showProgress(false)
+                selectedCategoryId = it.id!!
             }
         )
     }
@@ -186,4 +203,4 @@ class ProductFragment : Fragment() , AdapterView.OnItemSelectedListener {
     }
 
 
-}}
+}

@@ -30,8 +30,8 @@ class ProductRepositry {
 
     }
 
-    fun AddProduct(product: HashMap<String,Any>): Call<String> {
-        return shoppingApi.addProduct(product)
+    fun AddProduct(product: HashMap<String,Any>,files:List<MultipartBody.Part>): Call<String>{
+        return shoppingApi.addProduct(product,files)
     }
 
     fun getProduct(proId:Int):Call<Product>{

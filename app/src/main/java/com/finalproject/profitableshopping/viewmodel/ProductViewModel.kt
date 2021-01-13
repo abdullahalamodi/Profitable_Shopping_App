@@ -15,6 +15,7 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 
 class ProductViewModel : ViewModel() {
 
@@ -50,6 +51,7 @@ class ProductViewModel : ViewModel() {
 
             override fun onFailure(call: Call<List<Product>>, t: Throwable) {
                 Log.d("Failed ", t.message!!)
+                responseLiveData.value= emptyList()
             }
         })
         return responseLiveData
@@ -72,6 +74,7 @@ class ProductViewModel : ViewModel() {
 
             override fun onFailure(call: Call<List<Product>>, t: Throwable) {
                 Log.d("Faild ", t.message!!)
+                responseLiveData.value= emptyList()
             }
         })
         return responseLiveData
@@ -90,6 +93,8 @@ class ProductViewModel : ViewModel() {
             }
 
             override fun onFailure(call: Call<Product>, t: Throwable) {
+                responseLiveData.value= Product()
+                Log.d("Faild ", t.message!!)
 
             }
 
@@ -97,18 +102,21 @@ class ProductViewModel : ViewModel() {
         return responseLiveData
     }
 
-    fun addProduct(product: HashMap<String, Any>): MutableLiveData<String> {
+    fun addProduct(product: HashMap<String, Any>,images: List<Uri>): MutableLiveData<String> {
 
         val responseLiveData: MutableLiveData<String> = MutableLiveData()
 
-        val call = productRepositry.AddProduct(product)
-        call.enqueue(object : Callback<String> {
-            override fun onResponse(call: Call<String>, response: Response<String>) {
+        val call = productRepositry.AddProduct(product,prepareImages(images))
+            call.enqueue(object : Callback<String> {
+                override fun onResponse(call: Call<String>, response: Response<String>) {
                 responseLiveData.value = response.body()!!
+                    Log.d("success",responseLiveData.value!!)
             }
 
             override fun onFailure(call: Call<String>, t: Throwable) {
-                responseLiveData.value = t.message!!
+                Log.d("failed",t.message!!)
+                responseLiveData.value =t.message
+
             }
         })
         return responseLiveData
@@ -129,6 +137,7 @@ class ProductViewModel : ViewModel() {
             }
 
             override fun onFailure(call: Call<String>, t: Throwable) {
+                responseLiveData.value=t.message
             }
         })
         return responseLiveData
@@ -148,43 +157,25 @@ class ProductViewModel : ViewModel() {
             }
 
             override fun onFailure(call: Call<String>, t: Throwable) {
+                responseLiveData.value=t.message
             }
         })
         return responseLiveData
 
     }
 
-    fun uploadImage(images: List<Uri>, productId: Int, userId: Int) {
-
+    fun prepareImages(images: List<Uri>):MutableList<MultipartBody.Part> {
+        lateinit var imageFiles: MutableList<MultipartBody.Part>
         for (im in images) {
             val file = im.toFile()
+
             val requestBody = RequestBody.create(MediaType.parse("*/*"), file)
             val fileToUploaded =
                 MultipartBody.Part.createFormData("file", file.name, requestBody)
-            val fileName = RequestBody.create(
-                MediaType.parse("image/*"), file.name
-            )
-            val call = productRepositry.uploadImage(
-                fileToUploaded,
-                fileName,
-                productId,
-                userId
-            )
-            call.enqueue(
-                object : Callback<Unit> {
-                    override fun onResponse(
-                        call: Call<Unit>,
-                        response: Response<Unit>
-                    ) {
+            imageFiles.add(fileToUploaded)
 
-                    }
-
-                    override fun onFailure(call: Call<Unit>, t: Throwable) {
-
-                    }
-                }
-            )
         }
-    }
+          return imageFiles
+        }
 
 }

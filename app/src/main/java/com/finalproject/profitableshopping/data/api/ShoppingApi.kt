@@ -37,7 +37,8 @@ interface ShoppingApi {
     @GET("products.php?")
     fun getProduct(@Query("id") proId: Int): Call<Product>
     @POST("products.php")
-    fun addProduct(@Body product: HashMap<String, Any>):Call<String>
+    @Multipart
+    fun addProduct(@Part product: HashMap<String, Any>,@Part file:List<MultipartBody.Part>):Call<String>
     @POST("products.php?{id}")
     fun updateProduct(@Path("id") id:Int, @Body category: HashMap<String, String>):Call<String>
     @DELETE("products.php?{id}")
