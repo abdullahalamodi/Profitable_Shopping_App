@@ -15,25 +15,36 @@ import retrofit2.Response
 
 class CategoryViewModel : ViewModel() {
     val repository: CategoryRepository
-    val categoriesLiveData: LiveData<List<Category>>
+    var categoriesLiveData: LiveData<List<Category>>
     private val categoryIdLiveData = MutableLiveData<Int>()
     var categoryDetailsLiveData = Transformations.switchMap(categoryIdLiveData) { catId ->
         getCategory(catId)
     }
 
+    private val loadTrigger = MutableLiveData(Unit)
+
     init {
         repository =
             CategoryRepository()
-        categoriesLiveData = getCategories()
+        categoriesLiveData = Transformations.switchMap(loadTrigger) {
+            getCategories()
+        }
+        refresh()
     }
 
-    fun addCategory(category: String): MutableLiveData<String> {
+    fun refresh() {
+        loadTrigger.value = Unit
+    }
+
+
+    fun addCategory(category: Category): MutableLiveData<String> {
         val responseLiveData = MutableLiveData<String>()
         val call = repository.addCategory(category)
         call.enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 responseLiveData.value = response.body()!!
             }
+
             override fun onFailure(call: Call<String>, t: Throwable) {
                 responseLiveData.value = t.message!!
             }
@@ -79,7 +90,7 @@ class CategoryViewModel : ViewModel() {
 
     fun getCategoryByName(name: String): MutableLiveData<Category> {
         val responseLiveData: MutableLiveData<Category> = MutableLiveData()
-        var call = repository.getCategoryByName(name)
+        val call = repository.getCategoryByName(name)
         call.enqueue(object : Callback<Category> {
             override fun onResponse(call: Call<Category>, response: Response<Category>) {
                 responseLiveData.value = response.body() ?: Category(id = -1)
@@ -94,7 +105,7 @@ class CategoryViewModel : ViewModel() {
         return responseLiveData
     }
 
-    fun updateCategory(catId: Int, category: HashMap<String, String>): MutableLiveData<String> {
+    fun updateCategory(catId: Int?, category: Category): MutableLiveData<String> {
         val responseLiveData: MutableLiveData<String> = MutableLiveData()
         val call = repository.updateCategory(catId, category)
         call.enqueue(object : Callback<String> {

@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-
     <application
         android:name=".data.ApplicationClass"
         android:allowBackup="true"
@@ -14,7 +13,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.CheckNetworkActivity"></activity>
+        <activity android:name=".PhoneNumberLoginActivity"></activity>
+        <activity android:name=".SignIn" />
+        <activity android:name=".SignUp" />
+        <activity android:name=".view.CheckNetworkActivity" />
         <activity android:name=".view.SplashScreenActivity" />
         <activity android:name=".view.MainActivity">
             <intent-filter>

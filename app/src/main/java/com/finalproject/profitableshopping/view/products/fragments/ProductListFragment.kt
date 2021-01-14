@@ -90,12 +90,14 @@ class ProductListFragment : Fragment() {
         adapter = ProductAdapter(productsList)
         productsRv.adapter = adapter
     }
-    private fun showProgress(show:Boolean){
+
+    private fun showProgress(show: Boolean) {
         if (show)
-            progressBar.visibility  = View.VISIBLE
+            progressBar.visibility = View.VISIBLE
         else
-            progressBar.visibility  = View.GONE
+            progressBar.visibility = View.GONE
     }
+
     private inner class ProductHolder(view: View) : RecyclerView.ViewHolder(view),
         View.OnClickListener {
         // need to change next variable inflate to be comfortable with product item xml file
@@ -112,6 +114,9 @@ class ProductListFragment : Fragment() {
 
 
         fun bind(pro: Product) {
+            productNameTv.text = pro.name
+            productRialPriceTv.text = pro.rialPrice.toString()
+            productDescriptionTv.text = pro.description
 
         }
 
@@ -145,6 +150,12 @@ class ProductListFragment : Fragment() {
     interface Callbacks {
         fun onItemSelected(itemId: Int)
         // fun onFloatButtonClicked()
+    }
+
+    companion object {
+        fun newInstance(): ProductListFragment {
+            return ProductListFragment();
+        }
     }
 
 }

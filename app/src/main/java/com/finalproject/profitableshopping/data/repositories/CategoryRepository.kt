@@ -21,7 +21,7 @@ class CategoryRepository {
         shoppingApi = retrofit.create(ShoppingApi::class.java)
     }
 
-    fun addCategory(category: String): Call<String> {
+    fun addCategory(category: Category): Call<String> {
       return shoppingApi.addCategory(category)
     }
 
@@ -39,8 +39,8 @@ class CategoryRepository {
 
     }
 
-    fun updateCategory(catId:Int,category: HashMap<String, String>):Call<String>{
-        return  shoppingApi.updateCategory(catId,category)
+    fun updateCategory(catId:Int?,category: Category):Call<String>{
+        return  shoppingApi.updateCategory(catId.toString(),category)
     }
 
     fun deleteCategory(catId:Int):Call<String>{
@@ -50,7 +50,7 @@ class CategoryRepository {
 
     companion object{
 //        internal const val BASE_URL = "https://profitableshopping.000webhostapp.com/profitable_shopping_api/api/"
-        internal const val BASE_URL = "https://profitableshopping.000webhostapp.com/profitable_shopping_api/api/"
+        internal const val BASE_URL = "http://10.0.2.2:80/profitable_shopping_api/api/"
     }
 
 }

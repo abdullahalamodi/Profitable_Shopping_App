@@ -50,5 +50,11 @@
     <string name="no_network">لا يوجد أتصال بشبكة الإنترنت</string>
     <string name="no_network_desc">الخدمة غير متوفرة لديك حاليا !! عليك ان تكون متصلاً بالأنترنت.</string>
     <string name="try_again">إعادة المحاولة</string>
+    <string name="add_product_label">اضافة منتج</string>
+    <string name="my_products">منتجاتي</string>
+    <string name="categories">الاصناف</string>
+    <string name="about_us">حول التطبيق</string>
+    <string name="settings">االاعدادات</string>
+    <string name="category_hint">ما نوع المنتج الذي تريد اضافته:</string>
 
 </resources>
