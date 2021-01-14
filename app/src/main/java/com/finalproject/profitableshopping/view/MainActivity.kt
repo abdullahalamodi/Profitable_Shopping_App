@@ -103,6 +103,13 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
                 }
                 true
             }
+            R.id.menu_login -> {
+                val intent = Intent(this, SignIn::class.java).apply {
+//                        putExtra(EXTRA_MESSAGE, message)
+                }
+                startActivity(intent)
+                true
+            }
             R.id.menu_my_products -> {
                 if (getUserToken() != null)
                     setCurrentFragment(ProductListFragment.newInstance())
