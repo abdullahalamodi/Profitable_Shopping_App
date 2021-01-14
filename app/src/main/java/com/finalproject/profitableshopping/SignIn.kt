@@ -66,6 +66,7 @@ class SignIn : AppCompatActivity() {
         if (CheckAdmin(email, password)) {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
+            finish()
         }
         val p = ProgressDialog(this)
         p.setMessage("please wait")
@@ -79,6 +80,7 @@ class SignIn : AppCompatActivity() {
                     verifyEmailAddress()
                     saveUserToken(it.result?.user?.uid.toString())
                     saveUserData(email,password)
+                    finish()
                 } else {
                     Toast.makeText(
                         this,
@@ -153,7 +155,7 @@ class SignIn : AppCompatActivity() {
     private fun adminAccount(): HashMap<String, String> {
         val admin = HashMap<String, String>()
         admin["email"] = "admin@admin.com"
-        admin["password"] = "12345"
+        admin["password"] = "123456"
         return admin
     }
 
