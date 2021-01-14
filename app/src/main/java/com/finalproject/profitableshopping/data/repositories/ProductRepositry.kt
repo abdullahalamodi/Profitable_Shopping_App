@@ -7,6 +7,7 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.stream.IntStream
 
 class ProductRepositry {
     private var shoppingApi: ShoppingApi
@@ -21,20 +22,19 @@ class ProductRepositry {
 
 
 
-    fun uploadImage(file: MultipartBody.Part,
-                    name: RequestBody,
-                    pId:Int,
-                    uId:Int) :Call<Unit>{
+    fun uploadImage(file:List< MultipartBody.Part>,
+                    pId:String,
+                    uId:String) :Call<String>{
 
-        return shoppingApi.uploadImage(file,name,pId,uId)
+        return shoppingApi.uploadImage(file,pId,uId)
 
     }
 
-    fun AddProduct(product: HashMap<String,Any>): Call<String> {
+    fun addProduct(product: Product): Call<String>{
         return shoppingApi.addProduct(product)
     }
 
-    fun getProduct(proId:Int):Call<Product>{
+    fun getProduct(proId:String):Call<Product>{
         return  shoppingApi.getProduct(proId)
     }
 
@@ -44,16 +44,16 @@ class ProductRepositry {
 
     }
 
-    fun getUserProducts(userId:Int): Call<List<Product>> {
+    fun getUserProducts(userId:String): Call<List<Product>> {
         return shoppingApi.getUserProducts(userId)
 
     }
 
-    fun updateProduct(proId:Int,product: HashMap<String, String>):Call<String>{
+    fun updateProduct(proId:String,product: Product):Call<String>{
         return  shoppingApi.updateProduct(proId,product)
     }
 
-    fun deleteProduct(proId:Int):Call<String>{
+    fun deleteProduct(proId:String):Call<String>{
         return shoppingApi.deleteProduct(proId)
     }
 

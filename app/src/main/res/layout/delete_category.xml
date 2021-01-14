@@ -31,6 +31,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
+                    android:fontFamily="@font/rb_light"
                     android:gravity="center"
                     android:text="@string/title_delete"
                     android:textColor="@color/white"
@@ -60,6 +61,7 @@
                     android:layout_marginBottom="18dp"
                     android:background="@drawable/bg4"
                     android:enabled="false"
+                    android:fontFamily="@font/rb_light"
                     android:gravity="top"
                     android:padding="20dp" />
 
@@ -80,6 +82,7 @@
                         android:layout_marginBottom="6dp"
                         android:layout_weight="1"
                         android:background="@drawable/bg4"
+                        android:fontFamily="@font/rb_light"
                         android:text="@string/category_delete"
                         android:textColor="@color/black"
                         android:textStyle="bold" />
@@ -93,6 +96,7 @@
                         android:layout_marginBottom="6dp"
                         android:layout_weight="1"
                         android:background="@drawable/bg4"
+                        android:fontFamily="@font/rb_light"
                         android:text="@string/cancel"
                         android:textColor="@android:color/black"
                         android:textStyle="bold" />

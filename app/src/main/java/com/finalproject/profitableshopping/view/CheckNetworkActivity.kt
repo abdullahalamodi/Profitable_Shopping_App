@@ -20,7 +20,7 @@ class CheckNetworkActivity : AppCompatActivity() {
         }
     }
 
-    fun checkNetwork(){
+    private fun checkNetwork(){
         val connectionManger=this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork: NetworkInfo?=connectionManger.activeNetworkInfo
         val isConnected:Boolean=activeNetwork?.isConnectedOrConnecting==true
