@@ -1,59 +1,94 @@
-package com.finalproject.profitableshopping
+package com.finalproject.profitableshopping.view.authentication.fragments
 
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Patterns
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
+import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.view.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import kotlinx.android.synthetic.main.activity_sign_in.*
+import kotlinx.android.synthetic.main.fragment_log_in.*
 
-class SignIn : AppCompatActivity() {
 
+class LogInFragment : Fragment() {
     var mAuth: FirebaseAuth? = null
-    /* lateinit var email_login : EditText
-     lateinit var passWord_login : EditText
-     lateinit var sign_up : TextView*/
+    lateinit var email_login : EditText
+    lateinit var passWord_login : EditText
+    lateinit var signUpBtn : Button
+     var loginCallbacks: LoginCallbacks?=null
 
-     lateinit var signUpBtn : Button
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign_in)
-        signUpBtn = findViewById(R.id.sign_up)
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        loginCallbacks=context as LoginCallbacks
+
+    }
+    override fun onStart() {
+        super.onStart()
+        signUpBtn.setOnClickListener {
+           /* val intent = Intent(requireContext(), SignUp::class.java)
+            startActivity(intent)
+            Toast.makeText(requireContext(), " sign up", Toast.LENGTH_LONG)
+                .show()*/
+            loginCallbacks?.onSignUpClicked()
+        }
         btn_login.setOnClickListener {
             var email = email_login.text.toString()
             var password = passWord_login.text.toString()
 
             if (email.isNotEmpty() && password.isNotEmpty()) {
 
-                if (!isValidEmail(email)) {
-                    Toast.makeText(this, "Please enter valid email", Toast.LENGTH_SHORT).show()
+                if (!isValidEmail(email.trim())) {
+                    Toast.makeText(requireContext(), "Please enter valid email", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
 
                 if (password.length < 6) {
-                    Toast.makeText(this, "Password must be 6 digit at least ", Toast.LENGTH_SHORT)
+                    Toast.makeText(requireContext(), "Password must be 6 digit at least ", Toast.LENGTH_SHORT)
                         .show()
                     return@setOnClickListener
                 }
 
                 login(email, password)
             } else {
-                Toast.makeText(this, "failed login", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "failed login", Toast.LENGTH_LONG).show()
             }
         }
+    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
 
+        }
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        val view=inflater.inflate(R.layout.fragment_log_in, container, false)
+        email_login=view.findViewById(R.id.email_login)
+        passWord_login=view.findViewById(R.id.passWord_login)
+        signUpBtn=view.findViewById(R.id.sign_up)
+        return view
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        loginCallbacks=null
+    }
     private fun isValidEmail(target: CharSequence?): Boolean {
         return if (TextUtils.isEmpty(target)) {
             false
@@ -64,26 +99,29 @@ class SignIn : AppCompatActivity() {
 
     private fun login(email: String, password: String) {
         if (CheckAdmin(email, password)) {
-            val intent = Intent(this, MainActivity::class.java)
+            saveUserToken("Admin")
+            val intent = Intent(requireContext(), MainActivity::class.java)
             startActivity(intent)
-            finish()
+            //finish()
+
         }
-        val p = ProgressDialog(this)
+        val p = ProgressDialog(requireContext())
         p.setMessage("please wait")
         p.setCanceledOnTouchOutside(false)
         p.show()
         mAuth = FirebaseAuth.getInstance()
+
         mAuth?.signInWithEmailAndPassword(email, password)
-            ?.addOnCompleteListener(this) {
+            ?.addOnCompleteListener(requireActivity()) {
                 p.dismiss()
                 if (it.isSuccessful) {
                     verifyEmailAddress()
-                    saveUserToken(it.result?.user?.uid.toString())
+                    it.result?.user?.getIdToken(true)?.result?.token?.let { it1 -> saveUserToken(it1) }
                     saveUserData(email,password)
-                    finish()
+                    //finish()
                 } else {
                     Toast.makeText(
-                        this,
+                        requireContext(),
                         "Your login Failed ${it.exception.toString()}",
                         Toast.LENGTH_LONG
                     )
@@ -91,12 +129,7 @@ class SignIn : AppCompatActivity() {
                 }
             }
 
-        signUpBtn.setOnClickListener {
-            val intent = Intent(this, SignUp::class.java)
-            startActivity(intent)
-            Toast.makeText(this, " sign up", Toast.LENGTH_LONG)
-                .show()
-        }
+
 
     }
 
@@ -106,28 +139,29 @@ class SignIn : AppCompatActivity() {
         val user: FirebaseUser? = mAuth?.currentUser
         if (user!!.isEmailVerified) {
 
-            Toast.makeText(this, "Done", Toast.LENGTH_LONG).show()
-            var intent = Intent(this, MainActivity::class.java)
+            Toast.makeText(requireContext(), "Done", Toast.LENGTH_LONG).show()
+            var intent = Intent(requireContext(), MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
         } else {
-            Toast.makeText(this, "Please verify your account", Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), "Please verify your account", Toast.LENGTH_LONG).show()
         }
     }
 
     private fun saveUserToken(token: String) {
-        val sharedPreferences: SharedPreferences = this.getSharedPreferences(
+        val sharedPreferences: SharedPreferences = requireActivity().getSharedPreferences(
             sharedPrefFile,
             Context.MODE_PRIVATE
         )
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
         editor.putString(tokenKey, token)
+
         editor.apply()
         editor.commit()
     }
 
     private fun saveUserData(email: String, password: String) {
-        val sharedPreferences: SharedPreferences = this.getSharedPreferences(
+        val sharedPreferences: SharedPreferences = requireActivity().getSharedPreferences(
             sharedPrefFile,
             Context.MODE_PRIVATE
         )
@@ -158,12 +192,20 @@ class SignIn : AppCompatActivity() {
         admin["password"] = "123456"
         return admin
     }
-
+interface LoginCallbacks{
+    fun onSignUpClicked()
+}
     companion object {
-        private const val sharedPrefFile = "user_pref";
-        private const val tokenKey = "token_key";
+        const val sharedPrefFile = "user_pref";
+        const val tokenKey = "token_key";
         private const val emailKey = "email_key";
         private const val passwordKey = "password_key";
+        @JvmStatic
+        fun newInstance() =
+            LogInFragment().apply {
+                arguments = Bundle().apply {
 
+                }
+            }
     }
 }

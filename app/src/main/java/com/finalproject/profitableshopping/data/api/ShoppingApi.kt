@@ -18,9 +18,9 @@ interface ShoppingApi {
     fun getCategoryById(@Query("id") query: Int): Call<Category>
     @GET("categories.php")
     fun getCategoryByName(@Query("name") name: String): Call<Category>
-    @FormUrlEncoded
+   // @FormUrlEncoded
     @POST("categories.php")
-    fun addCategory(@Field("name")category:Category):Call<String>
+    fun addCategory(@Body category:Category):Call<String>
     @POST("categories.php")
     fun updateCategory(@Query("id") id:String, @Body category: Category):Call<String>
     @DELETE("categories.php?")

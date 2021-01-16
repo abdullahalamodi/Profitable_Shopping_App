@@ -128,7 +128,7 @@ class ProductViewModel : ViewModel() {
             }
 
             override fun onFailure(call: Call<String>, t: Throwable) {
-                Log.d("failed", t.message!!)
+                Log.d("failed pruduct", t.message!!)
                 responseLiveData.value = 0
 
             }

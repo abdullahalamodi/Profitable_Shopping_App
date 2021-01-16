@@ -114,9 +114,10 @@ class ProductListFragment : Fragment() {
 
 
         fun bind(pro: Product) {
-            productNameTv.text = pro.name
-            productRialPriceTv.text = pro.rialPrice.toString()
-            productDescriptionTv.text = pro.description
+            this.product=pro
+            productNameTv.text = this.product.name
+            productRialPriceTv.text = this.product.toString()
+            productDescriptionTv.text = this.product.description
 
         }
 

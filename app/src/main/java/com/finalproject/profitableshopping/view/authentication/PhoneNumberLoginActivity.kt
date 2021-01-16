@@ -1,9 +1,10 @@
-package com.finalproject.profitableshopping
+package com.finalproject.profitableshopping.view.authentication
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import com.finalproject.profitableshopping.R
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
 import kotlinx.android.synthetic.main.activity_phone_number_login.*
