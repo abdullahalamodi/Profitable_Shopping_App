@@ -31,20 +31,23 @@ interface ShoppingApi {
 
     @GET("products.php")
     fun getProducts(): Call<List<Product>>
-    @GET("products.php?")
+    @GET("products.php")
     fun getUserProducts(@Query("user_id") userId: String): Call<List<Product>>
-    @GET("products.php?")
+    @GET("products.php")
     fun getProduct(@Query("id") proId: String): Call<Product>
     @POST("products.php")
     fun addProduct(@Body product: Product):Call<String>
     @POST("products.php")
-    fun updateProduct(@Query("id") id:String, @Body category: Product):Call<String>
+    fun updateProduct(@Query("id") id:String, @Body product: Product):Call<String>
     @DELETE("products.php")
     fun deleteProduct(@Query("id")id:String):Call<String>
-    @Multipart
-    @POST("products.php?{p_id}?{u_id}")
-   fun uploadImage(@Part file:List<MultipartBody.Part>,@Path("p_id")pId:String,@Path("u_id")uId:String) :Call<String>
 
+    @Multipart
+    @POST("images.php")
+    fun uploadImage(
+        @Part image: MultipartBody.Part,
+        @Part("product_id") desc: RequestBody
+    ): Call<String>
 
 
 }

@@ -1,16 +1,19 @@
 package com.finalproject.profitableshopping.view.products.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.models.Product
+import com.finalproject.profitableshopping.showMessage
 import com.finalproject.profitableshopping.viewmodel.ProductViewModel
 import com.squareup.picasso.Picasso
 
@@ -18,11 +21,25 @@ private const val ARG_PRODUCT_ID = "product_id"
 
 class ProductDetailsFragment : Fragment() {
     private var productId: String? = null
+    private lateinit var progressBar: ProgressBar
     lateinit var productViewModel: ProductViewModel
     lateinit var productImageIv: ImageView
     lateinit var productNameTv: TextView
+    lateinit var productQuantityTv: TextView
+    lateinit var productReviewsTv: TextView
     lateinit var productRialPriceTv: TextView
+    lateinit var productDollarPriceTv: TextView
     lateinit var productDescriptionTv: TextView
+    lateinit var deleteBtn: Button
+    lateinit var updateBtn: Button
+    lateinit var callbacks: Callbacks
+    lateinit var product: Product
+
+
+    override fun onStart() {
+        super.onStart()
+        callbacks = (context as Callbacks)
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,11 +57,34 @@ class ProductDetailsFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_products_details, container, false)
+        progressBar = view.findViewById(R.id.progress_circular)
         productImageIv = view.findViewById(R.id.product_image_v) as ImageView
         productNameTv = view.findViewById(R.id.product_name_Tv) as TextView
-        productRialPriceTv = view.findViewById(R.id.tv_price_products) as TextView
+        productReviewsTv = view.findViewById(R.id.reviews_tv) as TextView
+        productQuantityTv = view.findViewById(R.id.quantity_tv) as TextView
+        productRialPriceTv = view.findViewById(R.id.tv_price_rial) as TextView
+        productDollarPriceTv = view.findViewById(R.id.tv_price_dollar) as TextView
+        deleteBtn = view.findViewById(R.id.product_delete_btn) as Button
+        updateBtn = view.findViewById(R.id.product_update_btn) as Button
         productDescriptionTv =
             view.findViewById(R.id.tv_details_product) as TextView
+
+
+
+        deleteBtn.setOnClickListener {
+            showProgress(true)
+            productViewModel.deleteProduct(productId.toString()).observe(
+                viewLifecycleOwner,
+                Observer {
+                    context?.showMessage("product deleted successfully")
+                    onProductDeleted()
+                }
+            )
+        }
+
+        updateBtn.setOnClickListener {
+            callbacks.onUpdateProductClicked(productId)
+        }
 
         return view;
     }
@@ -52,19 +92,47 @@ class ProductDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        showProgress(true)
         productViewModel.productIDetailsLiveData.observe(
             viewLifecycleOwner,
             Observer { product ->
+                this.product = product
+                showProgress(false)
                 updateUi(product)
             }
         )
     }
 
+    private fun showProgress(show: Boolean) {
+        if (show)
+            progressBar.visibility = View.VISIBLE
+        else
+            progressBar.visibility = View.GONE
+    }
+
     private fun updateUi(product: Product) {
         productNameTv.text = product.name
         productRialPriceTv.text = product.rialPrice.toString()
+        productDollarPriceTv.text = product.dollarPrice.toString()
+        productQuantityTv.text = product.quantity.toString()
         productDescriptionTv.text = product.description
-//        Picasso.get().load(product.images[0].imagePath).into(productImageIv);
+        if (product.images.isNotEmpty())
+            Picasso.get().also {
+                val path = product.images[0].getUrl()
+                it.load(path)
+                    .resize(350, 350)
+                    .centerCrop()
+                    .placeholder(R.drawable.shoe)
+                    .into(productImageIv)
+            }
+
+    }
+
+    private fun onProductDeleted() {
+        activity?.supportFragmentManager
+            ?.beginTransaction()
+            ?.remove(this)
+            ?.commit()
     }
 
     companion object {
@@ -75,5 +143,9 @@ class ProductDetailsFragment : Fragment() {
                     putString(ARG_PRODUCT_ID, productId)
                 }
             }
+    }
+
+    interface Callbacks {
+        fun onUpdateProductClicked(productId: String?)
     }
 }

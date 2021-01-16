@@ -11,14 +11,16 @@ import androidx.fragment.app.Fragment
 import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.view.authentication.fragments.LogInFragment
 import com.finalproject.profitableshopping.view.authentication.fragments.SignUpFragment
+import com.finalproject.profitableshopping.data.models.Product
 import kotlinx.android.synthetic.main.activity_main.*
 import com.finalproject.profitableshopping.view.category.CategoryFragment
 import com.finalproject.profitableshopping.view.products.fragments.AddProductFragment
 import com.finalproject.profitableshopping.view.products.fragments.ProductDetailsFragment
 import com.finalproject.profitableshopping.view.products.fragments.ProductListFragment
 
-class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,LogInFragment.LoginCallbacks,
-    AddProductFragment.Callbacks,SignUpFragment.SignUpCallbacks {
+class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
+    AddProductFragment.Callbacks,
+ProductDetailsFragment.Callbacks{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -103,7 +105,7 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,LogInFra
         return when (item.itemId) {
             R.id.menu_add_product -> {
                 if (getUserToken() != null)
-                    setCurrentFragment(AddProductFragment.newInstance())
+                    setCurrentFragment(AddProductFragment.newInstance(null))
                 else {
                     /*val intent = Intent(this, SignIn::class.java).apply {
 //                        putExtra(EXTRA_MESSAGE, message)
@@ -202,6 +204,10 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,LogInFra
 
     }
 
+
+    override fun onUpdateProductClicked(productId: String?) {
+        setCurrentFragment(AddProductFragment.newInstance(productId!!))
+    }
 
 
 }
