@@ -131,12 +131,7 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
             progressBar.visibility = View.GONE
     }
 
-    private fun showUpdateDeleteBtns(show: Boolean) {
-        if (show)
-            btnsLayout.visibility = View.VISIBLE
-        else
-            btnsLayout.visibility = View.GONE
-    }
+
 
     private fun pickImages() {
         showProgress(false)

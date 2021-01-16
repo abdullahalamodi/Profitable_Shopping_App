@@ -6,7 +6,7 @@ import com.finalproject.profitableshopping.data.models.User
 
 object AppSharedPreference {
 
-    private fun saveUserToken(context: Context, token: String) {
+    fun saveUserToken(context: Context, token: String) {
         val sharedPreferences: SharedPreferences = context.getSharedPreferences(
             sharedPrefFile,
             Context.MODE_PRIVATE
@@ -17,7 +17,7 @@ object AppSharedPreference {
         editor.commit()
     }
 
-    private fun saveUserData(
+    fun saveUserData(
         context: Context,
         user: User
     ) {
@@ -34,7 +34,7 @@ object AppSharedPreference {
         editor.commit()
     }
 
-    private fun getUserToken(context: Context): String? {
+    fun getUserToken(context: Context): String? {
         val sharedPreferences: SharedPreferences = context.getSharedPreferences(
             sharedPrefFile,
             Context.MODE_PRIVATE
@@ -42,21 +42,21 @@ object AppSharedPreference {
         return sharedPreferences.getString(tokenKey, null)
     }
 
-    private fun getUserData(context: Context): User? {
+    fun getUserData(context: Context): User? {
         val sharedPreferences: SharedPreferences = context.getSharedPreferences(
             sharedPrefFile,
             Context.MODE_PRIVATE
         )
 
         return User(
-            id = sharedPreferences.getString(idKey, null)!!,
-            email = sharedPreferences.getString(emailKey, null)!!,
-            password = sharedPreferences.getString(passwordKey, null)!!,
+            id = sharedPreferences.getString(idKey, "")!!,
+            email = sharedPreferences.getString(emailKey, "")!!,
+            password = sharedPreferences.getString(passwordKey, "")!!,
             isActive = sharedPreferences.getBoolean(isActiveKey, false)
         )
     }
 
-    private fun isActive(context: Context): Boolean {
+    fun isActive(context: Context): Boolean {
         val sharedPreferences: SharedPreferences = context.getSharedPreferences(
             sharedPrefFile,
             Context.MODE_PRIVATE
@@ -64,7 +64,7 @@ object AppSharedPreference {
         return sharedPreferences.getBoolean(isActiveKey, false)
     }
 
-    private fun getUserId(context: Context): String {
+    fun getUserId(context: Context): String {
         val sharedPreferences: SharedPreferences = context.getSharedPreferences(
             sharedPrefFile,
             Context.MODE_PRIVATE

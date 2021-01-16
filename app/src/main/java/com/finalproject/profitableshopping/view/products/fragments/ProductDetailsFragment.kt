@@ -4,14 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.finalproject.profitableshopping.R
+import com.finalproject.profitableshopping.data.AppSharedPreference
 import com.finalproject.profitableshopping.data.models.Product
 import com.finalproject.profitableshopping.showMessage
 import com.finalproject.profitableshopping.viewmodel.ProductViewModel
@@ -34,11 +32,13 @@ class ProductDetailsFragment : Fragment() {
     lateinit var updateBtn: Button
     lateinit var callbacks: Callbacks
     lateinit var product: Product
+    private lateinit var btnsLayout: LinearLayout
 
 
     override fun onStart() {
         super.onStart()
         callbacks = (context as Callbacks)
+        showUpdateDeleteBtns()
     }
 
 
@@ -66,6 +66,7 @@ class ProductDetailsFragment : Fragment() {
         productDollarPriceTv = view.findViewById(R.id.tv_price_dollar) as TextView
         deleteBtn = view.findViewById(R.id.product_delete_btn) as Button
         updateBtn = view.findViewById(R.id.product_update_btn) as Button
+        btnsLayout = view.findViewById(R.id.product_btns_layout) as LinearLayout
         productDescriptionTv =
             view.findViewById(R.id.tv_details_product) as TextView
 
@@ -108,6 +109,14 @@ class ProductDetailsFragment : Fragment() {
             progressBar.visibility = View.VISIBLE
         else
             progressBar.visibility = View.GONE
+    }
+
+    private fun showUpdateDeleteBtns() {
+        AppSharedPreference
+        if (AppSharedPreference.isActive(context!!))
+            btnsLayout.visibility = View.GONE
+        else
+            btnsLayout.visibility = View.VISIBLE
     }
 
     private fun updateUi(product: Product) {

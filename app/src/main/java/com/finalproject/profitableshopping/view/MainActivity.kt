@@ -17,9 +17,12 @@ import com.finalproject.profitableshopping.view.category.CategoryFragment
 import com.finalproject.profitableshopping.view.products.fragments.AddProductFragment
 import com.finalproject.profitableshopping.view.products.fragments.ProductDetailsFragment
 import com.finalproject.profitableshopping.view.products.fragments.ProductListFragment
+import com.finalproject.profitableshopping.view.user.UserFragment
 
 class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
     AddProductFragment.Callbacks,
+    SignUpFragment.SignUpCallbacks,
+    LogInFragment.LoginCallbacks,
 ProductDetailsFragment.Callbacks{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +62,7 @@ ProductDetailsFragment.Callbacks{
                 }
                 R.id.menu_profile -> {
                     setContent("Profile")
+                    setCurrentFragment(UserFragment.newInstance())
                     true
                 }
                 else -> false
