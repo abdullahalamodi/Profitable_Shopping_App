@@ -67,5 +67,10 @@
     <string name="email_sign_up_tv">الايميل</string>
     <string name="confirmpassword">تاكيد كلمة المرور</string>
     <string name="sign_up_btn">نسجيل</string>
+    <string name="verify_Messsage">تحتاج الى تاكيد ملكية حسابك عبر الهاتف اضغط الزر ادناه للمتابعة</string>
+    <string name="phone_auth_btn">التسجيل برقم الهاتف</string>
+    <string name="get_otp">الحصول على رمز التحقق</string>
+    <string name="enter_otp">ادخل رمز التحقق</string>
+    <string name="actinve_acount">تفعيل الحساب</string>
 
 </resources>

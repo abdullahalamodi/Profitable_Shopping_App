@@ -77,7 +77,7 @@
                 android:fontFamily="@font/rb_light"
                 android:hint="@string/rail_price_product"
                 android:textDirection="rtl"
-                android:inputType="textPersonName"
+                android:inputType="numberDecimal"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
                 />
@@ -91,7 +91,7 @@
                 android:fontFamily="@font/rb_light"
                 android:hint="@string/dollar_price_product"
                 android:textDirection="rtl"
-                android:inputType="textPersonName"
+                android:inputType="numberDecimal"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
                 />
@@ -105,7 +105,7 @@
                 android:fontFamily="@font/rb_light"
                 android:hint="@string/quntity_product"
                 android:textDirection="rtl"
-                android:inputType="textPersonName"
+                android:inputType="number"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
                 />

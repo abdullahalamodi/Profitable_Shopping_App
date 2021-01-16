@@ -9,6 +9,8 @@ import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.finalproject.profitableshopping.R
+import com.finalproject.profitableshopping.view.authentication.fragments.ActiveFragment
+import com.finalproject.profitableshopping.view.authentication.fragments.ActiveUserAccountFragment
 import com.finalproject.profitableshopping.view.authentication.fragments.LogInFragment
 import com.finalproject.profitableshopping.view.authentication.fragments.SignUpFragment
 import kotlinx.android.synthetic.main.activity_main.*
@@ -18,7 +20,7 @@ import com.finalproject.profitableshopping.view.products.fragments.ProductDetail
 import com.finalproject.profitableshopping.view.products.fragments.ProductListFragment
 
 class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,LogInFragment.LoginCallbacks,
-    AddProductFragment.Callbacks,SignUpFragment.SignUpCallbacks {
+    AddProductFragment.Callbacks,SignUpFragment.SignUpCallbacks,ActiveFragment.ActiveAccountCallbacks {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -103,12 +105,14 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,LogInFra
         return when (item.itemId) {
             R.id.menu_add_product -> {
                 if (getUserToken() != null)
-                    setCurrentFragment(AddProductFragment.newInstance())
+                {
+                       if (getUserState() == true)
+                            setCurrentFragment(AddProductFragment.newInstance())
+                          else {
+                               setCurrentFragment(ActiveFragment.newInstance())
+                             }
+                }
                 else {
-                    /*val intent = Intent(this, SignIn::class.java).apply {
-//                        putExtra(EXTRA_MESSAGE, message)
-                    }
-                    startActivity(intent)*/
                     setCurrentFragment(LogInFragment.newInstance())
                 }
                 true
@@ -125,10 +129,7 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,LogInFra
                 if (getUserToken() != null)
                     setCurrentFragment(ProductListFragment.newInstance())
                 else {
-                    /*val intent = Intent(this, SignIn::class.java).apply {
-//                        putExtra(EXTRA_MESSAGE, message)
-                    }
-                    startActivity(intent)*/
+
                     setCurrentFragment(LogInFragment.newInstance())
                 }
                 true
@@ -165,6 +166,13 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,LogInFra
         )
         return sharedPreferences.getString(LogInFragment.tokenKey, null)
     }
+    private fun getUserState(): Boolean {
+        val sharedPreferences: SharedPreferences = this.getSharedPreferences(
+            LogInFragment.sharedPrefFile,
+            Context.MODE_PRIVATE
+        )
+        return sharedPreferences.getBoolean(LogInFragment.isAccountActive.toString(),false)
+    }
 
   fun logOut(token: String =""){
       val sharedPreferences: SharedPreferences = this.getSharedPreferences(
@@ -195,12 +203,15 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,LogInFra
     override fun onCreateAccountSuccess() {
         setCurrentFragment(SignUpFragment.newInstance())
     }
-
+    override fun onActiveAccount() {
+        setCurrentFragment(ActiveUserAccountFragment.newInstance())
+    }
     companion object {
         private const val sharedPrefFile = "user_pref";
         private var tokenKey = "token_key";
 
     }
+
 
 
 

@@ -116,7 +116,8 @@ class LogInFragment : Fragment() {
                 p.dismiss()
                 if (it.isSuccessful) {
                     verifyEmailAddress()
-                    it.result?.user?.getIdToken(true)?.result?.token?.let { it1 -> saveUserToken(it1) }
+                  //  it.result?.user?.getIdToken(true)?.result?.token?.let { it1 -> saveUserToken(it1) }
+                    saveUserToken(it.result?.user?.uid.toString())
                     saveUserData(email,password)
                     //finish()
                 } else {
@@ -145,6 +146,9 @@ class LogInFragment : Fragment() {
             startActivity(intent)
         } else {
             Toast.makeText(requireContext(), "Please verify your account", Toast.LENGTH_LONG).show()
+            var intent = Intent(requireContext(), MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
         }
     }
 
@@ -200,6 +204,7 @@ interface LoginCallbacks{
         const val tokenKey = "token_key";
         private const val emailKey = "email_key";
         private const val passwordKey = "password_key";
+         var isAccountActive = false;
         @JvmStatic
         fun newInstance() =
             LogInFragment().apply {
