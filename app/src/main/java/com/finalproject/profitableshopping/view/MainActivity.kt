@@ -1,26 +1,30 @@
 package com.finalproject.profitableshopping.view
 
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.*
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.view.authentication.fragments.ActiveFragment
 import com.finalproject.profitableshopping.view.authentication.fragments.ActiveUserAccountFragment
 import com.finalproject.profitableshopping.view.authentication.fragments.LogInFragment
 import com.finalproject.profitableshopping.view.authentication.fragments.SignUpFragment
-import kotlinx.android.synthetic.main.activity_main.*
 import com.finalproject.profitableshopping.view.category.CategoryFragment
 import com.finalproject.profitableshopping.view.products.fragments.AddProductFragment
 import com.finalproject.profitableshopping.view.products.fragments.ProductDetailsFragment
 import com.finalproject.profitableshopping.view.products.fragments.ProductListFragment
+import com.finalproject.profitableshopping.view.user.UserFragment
+import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,LogInFragment.LoginCallbacks,
-    AddProductFragment.Callbacks,SignUpFragment.SignUpCallbacks,ActiveFragment.ActiveAccountCallbacks {
+class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
+    LogInFragment.LoginCallbacks,
+    AddProductFragment.Callbacks, SignUpFragment.SignUpCallbacks,
+    ActiveFragment.ActiveAccountCallbacks,
+    ProductDetailsFragment.Callbacks {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -59,6 +63,7 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,LogInFra
                 }
                 R.id.menu_profile -> {
                     setContent("Profile")
+                    setCurrentFragment(UserFragment.newInstance())
                     true
                 }
                 else -> false
@@ -82,19 +87,17 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,LogInFra
 
         val inflater = menuInflater
         inflater.inflate(R.menu.main_menu, menu)
-        if(getUserToken()=="Admin"){
-                menu.findItem(R.id.menu_add_product).setVisible(false)
-                menu.findItem(R.id.menu_my_products).setVisible(false)
+        if (getUserToken() == "Admin") {
+            menu.findItem(R.id.menu_add_product).setVisible(false)
+            menu.findItem(R.id.menu_my_products).setVisible(false)
             menu.findItem(R.id.menu_login).setVisible(false)
-            }
-        else if(getUserToken() ==null || getUserToken() =="") {
+        } else if (getUserToken() == null || getUserToken() == "") {
             menu.findItem(R.id.menu_add_product).setVisible(false)
             menu.findItem(R.id.menu_my_products).setVisible(false)
             menu.findItem(R.id.menu_categories).setVisible(false)
             menu.findItem(R.id.sign_out).setVisible(false)
             menu.findItem(R.id.menu_settings).setVisible(false)
-        }
-        else {
+        } else {
             menu.findItem(R.id.menu_categories).setVisible(false)
             menu.findItem(R.id.menu_login).setVisible(false)
         }
@@ -104,24 +107,22 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,LogInFra
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_add_product -> {
-                if (getUserToken() != null)
-                {
-                       if (getUserState() == true)
-                            setCurrentFragment(AddProductFragment.newInstance())
-                          else {
-                               setCurrentFragment(ActiveFragment.newInstance())
-                             }
-                }
-                else {
+                if (getUserToken() != null) {
+                    if (getUserState())
+                        setCurrentFragment(AddProductFragment.newInstance(null))
+                    else {
+                        setCurrentFragment(ActiveFragment.newInstance())
+                    }
+                } else {
                     setCurrentFragment(LogInFragment.newInstance())
                 }
                 true
             }
             R.id.menu_login -> {
-               /* val intent = Intent(this, SignIn::class.java).apply {
-//                        putExtra(EXTRA_MESSAGE, message)
-                }
-                startActivity(intent)*/
+                /* val intent = Intent(this, SignIn::class.java).apply {
+ //                        putExtra(EXTRA_MESSAGE, message)
+                 }
+                 startActivity(intent)*/
                 setCurrentFragment(LogInFragment.newInstance())
                 true
             }
@@ -140,15 +141,15 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,LogInFra
                 else if (getUserToken() != "Admin") {
                     Toast.makeText(this, "yor are not admin", Toast.LENGTH_SHORT).show()
                 } else {
-                   /* val intent = Intent(this, SignIn::class.java).apply {
-//                        putExtra(EXTRA_MESSAGE, message)
-                    }
-                    startActivity(intent)*/
+                    /* val intent = Intent(this, SignIn::class.java).apply {
+ //                        putExtra(EXTRA_MESSAGE, message)
+                     }
+                     startActivity(intent)*/
                     setCurrentFragment(LogInFragment.newInstance())
                 }
                 true
             }
-            R.id.sign_out ->{
+            R.id.sign_out -> {
                 logOut()
                 setCurrentFragment(LogInFragment.newInstance())
                 true
@@ -158,7 +159,6 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,LogInFra
     }
 
 
-
     private fun getUserToken(): String? {
         val sharedPreferences: SharedPreferences = this.getSharedPreferences(
             LogInFragment.sharedPrefFile,
@@ -166,36 +166,41 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,LogInFra
         )
         return sharedPreferences.getString(LogInFragment.tokenKey, null)
     }
+
     private fun getUserState(): Boolean {
         val sharedPreferences: SharedPreferences = this.getSharedPreferences(
             LogInFragment.sharedPrefFile,
             Context.MODE_PRIVATE
         )
-        return sharedPreferences.getBoolean(LogInFragment.isAccountActive.toString(),false)
+        return sharedPreferences.getBoolean(LogInFragment.isAccountActive.toString(), false)
     }
 
-  fun logOut(token: String =""){
-      val sharedPreferences: SharedPreferences = this.getSharedPreferences(
-          LogInFragment.sharedPrefFile,
-          Context.MODE_PRIVATE
-      )
-      val editor: SharedPreferences.Editor = sharedPreferences.edit()
-      editor.putString(LogInFragment.tokenKey, token)
-      editor.apply()
-      editor.commit()
-  }
+    fun logOut(token: String = "") {
+        val sharedPreferences: SharedPreferences = this.getSharedPreferences(
+            LogInFragment.sharedPrefFile,
+            Context.MODE_PRIVATE
+        )
+        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+        editor.putString(LogInFragment.tokenKey, token)
+        editor.apply()
+        editor.commit()
+    }
+
     private fun addFragment(fragment: Fragment) =
         supportFragmentManager.beginTransaction().apply {
             add(R.id.container, fragment)
             addToBackStack(null)
             commit()
         }
+
     override fun onItemSelected(itemId: Int) {
         addFragment(ProductDetailsFragment.newInstance(itemId.toString()))
     }
+
     override fun onSuccessAddProduct() {
         setCurrentFragment(ProductListFragment.newInstance())
     }
+
     override fun onSignUpClicked() {
         setCurrentFragment(SignUpFragment.newInstance())
     }
@@ -203,9 +208,11 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,LogInFra
     override fun onCreateAccountSuccess() {
         setCurrentFragment(SignUpFragment.newInstance())
     }
+
     override fun onActiveAccount() {
         setCurrentFragment(ActiveUserAccountFragment.newInstance())
     }
+
     companion object {
         private const val sharedPrefFile = "user_pref";
         private var tokenKey = "token_key";
@@ -213,6 +220,9 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,LogInFra
     }
 
 
+    override fun onUpdateProductClicked(productId: String?) {
+        setCurrentFragment(AddProductFragment.newInstance(productId!!))
+    }
 
 
 }

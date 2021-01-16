@@ -26,7 +26,7 @@ class LogInFragment : Fragment() {
     lateinit var email_login : EditText
     lateinit var passWord_login : EditText
     lateinit var signUpBtn : Button
-     var loginCallbacks: LoginCallbacks?=null
+    var loginCallbacks: LoginCallbacks?=null
 
 
     override fun onAttach(context: Context) {
@@ -37,10 +37,10 @@ class LogInFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         signUpBtn.setOnClickListener {
-           /* val intent = Intent(requireContext(), SignUp::class.java)
-            startActivity(intent)
-            Toast.makeText(requireContext(), " sign up", Toast.LENGTH_LONG)
-                .show()*/
+            /* val intent = Intent(requireContext(), SignUp::class.java)
+             startActivity(intent)
+             Toast.makeText(requireContext(), " sign up", Toast.LENGTH_LONG)
+                 .show()*/
             loginCallbacks?.onSignUpClicked()
         }
         btn_login.setOnClickListener {
@@ -196,9 +196,9 @@ class LogInFragment : Fragment() {
         admin["password"] = "123456"
         return admin
     }
-interface LoginCallbacks{
-    fun onSignUpClicked()
-}
+    interface LoginCallbacks{
+        fun onSignUpClicked()
+    }
     companion object {
         const val sharedPrefFile = "user_pref";
         const val tokenKey = "token_key";
