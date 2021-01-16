@@ -126,8 +126,8 @@
 
             <ImageView
                 android:id="@+id/btn_load_photo_product"
-                android:layout_width="140dp"
-                android:layout_height="140dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:background="#ddd"
                 android:src="@drawable/ic_camera"
                 android:padding="20dp"
@@ -140,6 +140,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="12dp"
+                android:layout_marginBottom="30dp"
                 android:background="@drawable/bg3"
                 android:fontFamily="@font/rb_light"
                 android:gravity="center"

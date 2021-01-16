@@ -29,4 +29,8 @@
         android:id="@+id/menu_about"
         android:icon="@drawable/ic_person"
         android:title="@string/about_us" />
+    <item
+        android:id="@+id/sign_out"
+        android:icon="@drawable/ic_person"
+        android:title="تسجيل خروج" />
 </menu>

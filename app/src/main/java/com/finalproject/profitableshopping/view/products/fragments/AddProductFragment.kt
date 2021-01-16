@@ -64,7 +64,8 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
                 productViewModel.addProduct(product).observe(
                     this,
-                    Observer { productId ->
+                    Observer {
+
 //                        productViewModel.uploadImage(images, productId, 1).observe(
 //                            this,
 //                            Observer {
