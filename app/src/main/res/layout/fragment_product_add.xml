@@ -111,14 +111,7 @@
                     android:paddingRight="12dp"
                     android:textDirection="rtl" />
 
-            <ImageView
-                android:id="@+id/btn_load_photo_product"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:background="#ddd"
-                android:src="@drawable/ic_camera"
-                android:padding="20dp"
-                android:layout_gravity="right"/>
+
                 <EditText
                     android:id="@+id/et_desc_product"
                     android:layout_width="match_parent"

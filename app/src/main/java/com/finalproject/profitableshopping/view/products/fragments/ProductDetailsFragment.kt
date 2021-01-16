@@ -97,9 +97,13 @@ class ProductDetailsFragment : Fragment() {
         productViewModel.productIDetailsLiveData.observe(
             viewLifecycleOwner,
             Observer { product ->
-                this.product = product
                 showProgress(false)
+                if(product != null){
+                this.product = product
                 updateUi(product)
+                }else{
+                    context?.showMessage("product not found")
+                }
             }
         )
     }
