@@ -54,7 +54,27 @@
     <string name="my_products">منتجاتي</string>
     <string name="categories">الاصناف</string>
     <string name="about_us">حول التطبيق</string>
-    <string name="settings">االاعدادات</string>
+    <string name="settings">الاعدادات</string>
     <string name="category_hint">ما نوع المنتج الذي تريد اضافته:</string>
+    <string name="sign_in_tv">تسجيل دخول</string>
+    <string name="email_tv">"الايميل "</string>
+    <string name="sign_btn">تسجيل دخول</string>
+    <string name="new_user">مستخدم جديد?</string>
+    <string name="sign_up">تسجيل</string>
+    <string name="password">كلمة المرور</string>
+    <string name="sign_up_tv">انشاء حساب</string>
+    <string name="username_tv">اسم المستخدم</string>
+    <string name="email_sign_up_tv">الايميل</string>
+    <string name="confirmpassword">تاكيد كلمة المرور</string>
+    <string name="sign_up_btn">نسجيل</string>
+
+
+
+
+    //////////////////////////////////////
+    <string name="Category">Category</string>
+    <string name="Products">All Products</string>
+
+
 
 </resources>

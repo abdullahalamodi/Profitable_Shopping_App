@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.models.Product
 import com.finalproject.profitableshopping.viewmodel.ProductViewModel
+import com.squareup.picasso.Picasso
 
 class ProductListFragment : Fragment() {
     private lateinit var productViewModel: ProductViewModel
@@ -114,14 +115,26 @@ class ProductListFragment : Fragment() {
 
 
         fun bind(pro: Product) {
+            product = pro
             productNameTv.text = pro.name
             productRialPriceTv.text = pro.rialPrice.toString()
             productDescriptionTv.text = pro.description
-
+            if (product.images.isNotEmpty()){
+                Picasso.get().also {
+                    val path = product.images[0].getUrl()
+                    it.load(path)
+                        .resize(150,150)
+                        .centerCrop()
+                        .placeholder(R.drawable.shoe)
+                        .into(productImageIv)
+                }
+            }else{
+                productImageIv.setImageResource(R.drawable.shoe)
+            }
         }
 
         override fun onClick(p0: View?) {
-            //to open product fragment to  desplay  product details
+            //to open product fragment to  display  product details
             callbacks?.onItemSelected(this.product.id)
         }
     }

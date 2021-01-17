@@ -25,18 +25,19 @@ class ProductViewModel : ViewModel() {
     private val loadTrigger = MutableLiveData(Unit)
     private val productIdLiveData = MutableLiveData<String>()
     private val userIdLiveData = MutableLiveData<Int>()
+    private var product: Product? = null
 
     var productIDetailsLiveData = Transformations.switchMap(productIdLiveData) { proId ->
         getProduct(proId)
     }
-    val userProductsListLiveData: LiveData<List<Product>>
+//    val userProductsListLiveData: LiveData<List<Product>>
 
-    init {
-        refresh()
-        userProductsListLiveData = Transformations.switchMap(userIdLiveData) { useId ->
-            getUserProducts(useId.toString())
-        }
-    }
+//    init {
+//        refresh()
+//        userProductsListLiveData = Transformations.switchMap(userIdLiveData) { useId ->
+//            getUserProducts(useId.toString())
+//        }
+//    }
 
 
     init {
@@ -116,20 +117,18 @@ class ProductViewModel : ViewModel() {
         return responseLiveData
     }
 
-    fun addProduct(product: Product): MutableLiveData<Int> {
-
-        val responseLiveData: MutableLiveData<Int> = MutableLiveData()
-
+    fun addProduct(product: Product): MutableLiveData<String> {
+        val responseLiveData: MutableLiveData<String> = MutableLiveData()
         val call = productRepositry.addProduct(product)
         call.enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
-                responseLiveData.value = Integer.valueOf(response.body()!!)
+                responseLiveData.value = response.body()!!
                 Log.d("success", responseLiveData.value.toString())
             }
 
             override fun onFailure(call: Call<String>, t: Throwable) {
                 Log.d("failed", t.message!!)
-                responseLiveData.value = 0
+                responseLiveData.value = "-1"
 
             }
         })
@@ -137,11 +136,10 @@ class ProductViewModel : ViewModel() {
     }
 
     fun updateProduct(
-        proId: String,
         product: Product
     ): MutableLiveData<String> {
         val responseLiveData: MutableLiveData<String> = MutableLiveData()
-        val call = productRepositry.updateProduct(proId, product)
+        val call = productRepositry.updateProduct(product)
         call.enqueue(object : Callback<String> {
             override fun onResponse(
                 call: Call<String>,
@@ -178,38 +176,11 @@ class ProductViewModel : ViewModel() {
 
     }
 
-    fun uploadImage(images: List<Uri>, productId: Int, userId: Int): MutableLiveData<String> {
-        val responseLiveData: MutableLiveData<String> = MutableLiveData()
-        lateinit var imageFiles: MutableList<MultipartBody.Part>
-        for (im in images) {
-            val file = im.toFile()
-            val requestBody = RequestBody.create(MediaType.parse("*/*"), file)
-
-            imageFiles.add(MultipartBody.Part.createFormData("image", file.name, requestBody))
-            // val fileName = RequestBody.create(MediaType.parse("image/*"), file.name)
-        }
-        val call = productRepositry.uploadImage(
-            imageFiles,
-            productId.toString(),
-            userId.toString()
-        )
-        call.enqueue(
-            object : Callback<String> {
-                override fun onResponse(
-                    call: Call<String>,
-                    response: Response<String>
-                ) {
-                    Log.d("success", response.body()!!)
-                    responseLiveData.value = response.body() ?: "field upload image"
-                }
-
-                override fun onFailure(call: Call<String>, t: Throwable) {
-                    Log.d("failed", t.message!!)
-                    responseLiveData.value = t.message!!
-
-                }
-            }
-        )
-        return responseLiveData
+    fun uploadImage(
+        image: MultipartBody.Part,
+        productId: RequestBody
+    ): Call<String> {
+        return productRepositry.uploadImage(image, productId)
     }
+
 }

@@ -7,7 +7,7 @@ class Product (
     @SerializedName("name")
     var name: String = "",
     @SerializedName("quantity")
-    var quantity:Int=0,
+    var quantity:Int = 0,
     @SerializedName("description")
     var description: String = "",
     @SerializedName("rial_price")
@@ -19,5 +19,5 @@ class Product (
     @SerializedName("user_id")
     var userId:Int=0,
     @SerializedName("images")
-    var images:List<ImageModel> =emptyList()
+    var images:List<ImageUrl> = emptyList()
 )
