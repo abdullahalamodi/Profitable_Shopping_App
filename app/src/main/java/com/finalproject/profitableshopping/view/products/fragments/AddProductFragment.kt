@@ -173,12 +173,14 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
         super.onViewCreated(view, savedInstanceState)
         showProgress(true)
         loadCategories()
-        productViewModel.productIDetailsLiveData.observe(
-            viewLifecycleOwner,
-            Observer { product ->
-                updateUi(product)
-            }
-        )
+        if(productId !=null) {
+            productViewModel.productIDetailsLiveData.observe(
+                viewLifecycleOwner,
+                Observer { product ->
+                    updateUi(product)
+                }
+            )
+        }
     }
 
     private fun loadCategories() {
