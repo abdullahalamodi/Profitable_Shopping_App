@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
 
         val inflater = menuInflater
         inflater.inflate(R.menu.main_menu, menu)
-        if (getUserToken() == "Admin") {
+        if (getUserToken() == "Admi") {
             menu.findItem(R.id.menu_add_product).setVisible(false)
             menu.findItem(R.id.menu_my_products).setVisible(false)
             menu.findItem(R.id.menu_login).setVisible(false)

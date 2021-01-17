@@ -146,6 +146,7 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
         categoriesName = emptyList<String>().toMutableList()
         arguments?.let {
             productId = it.getString(ARG_PRODUCT_ID)
+            if(productId!=null)
             productViewModel.loadProduct(productId!!)
         }
     }
@@ -173,7 +174,7 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
         super.onViewCreated(view, savedInstanceState)
         showProgress(true)
         loadCategories()
-        if(productId !=null) {
+        if(productId !=null){
             productViewModel.productIDetailsLiveData.observe(
                 viewLifecycleOwner,
                 Observer { product ->
@@ -181,6 +182,7 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
                 }
             )
         }
+
     }
 
     private fun loadCategories() {

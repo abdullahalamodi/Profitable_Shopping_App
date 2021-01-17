@@ -1,5 +1,6 @@
 package com.finalproject.profitableshopping.view.products.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.AppSharedPreference
 import com.finalproject.profitableshopping.data.models.Product
 import com.finalproject.profitableshopping.showMessage
+import com.finalproject.profitableshopping.view.MainActivity
 import com.finalproject.profitableshopping.viewmodel.ProductViewModel
 import com.squareup.picasso.Picasso
 
@@ -97,9 +99,13 @@ class ProductDetailsFragment : Fragment() {
         productViewModel.productIDetailsLiveData.observe(
             viewLifecycleOwner,
             Observer { product ->
-                this.product = product
                 showProgress(false)
+                if(product != null){
+                this.product = product
                 updateUi(product)
+                }else{
+                    context?.showMessage("product not found")
+                }
             }
         )
     }
@@ -138,10 +144,11 @@ class ProductDetailsFragment : Fragment() {
     }
 
     private fun onProductDeleted() {
-        activity?.supportFragmentManager
+       /* activity?.supportFragmentManager
             ?.beginTransaction()
             ?.remove(this)
-            ?.commit()
+            ?.commit()*/
+        requireActivity().startActivity(Intent(requireContext(),MainActivity::class.java))
     }
 
     companion object {
