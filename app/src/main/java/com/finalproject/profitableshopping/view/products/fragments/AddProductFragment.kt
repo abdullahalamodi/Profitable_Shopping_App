@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.finalproject.profitableshopping.R
@@ -99,16 +98,11 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
         productViewModel.addProduct(product).observe(
             this,
             Observer { productId ->
-                uploadImage(productId).observe(
-                    viewLifecycleOwner,
-                    Observer {
-                        callbacks.onSuccessAddProduct()
-                        Toast.makeText(context, "تم اضافة المنتج بنجاح", Toast.LENGTH_SHORT)
-                            .show()
-                        productViewModel.refresh()
-                    }
-                )
-
+                uploadImage(productId)
+                callbacks.onSuccessAddProduct()
+                Toast.makeText(context, "تم اضافة المنتج بنجاح", Toast.LENGTH_SHORT)
+                    .show()
+                productViewModel.refresh()
             }
         )
     }
@@ -118,21 +112,13 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
         productViewModel.updateProduct(product).observe(
             this,
             Observer { productId ->
-                if(selectedImageUri != null){
-                    uploadImage(productId).observe(
-                        viewLifecycleOwner,
-                        Observer {
-                            callbacks.onSuccessAddProduct()
-                            context?.showMessage("تم نعديل المنتج بنجاح")
-                            productViewModel.refresh()
-                        }
-                    )
-                }else{
-                    showProgress(false)
-                    callbacks.onSuccessAddProduct()
-                    context?.showMessage("تم نعديل المنتج بنجاح")
-                    productViewModel.refresh()
+                selectedImageUri?.let {
+                    uploadImage(productId)
                 }
+                callbacks.onSuccessAddProduct()
+                Toast.makeText(context, "تم نعديل المنتج بنجاح", Toast.LENGTH_SHORT)
+                    .show()
+                productViewModel.refresh()
             }
         )
     }
@@ -144,6 +130,7 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
         else
             progressBar.visibility = View.GONE
     }
+
 
 
     private fun pickImages() {
@@ -159,7 +146,7 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
         categoriesName = emptyList<String>().toMutableList()
         arguments?.let {
             productId = it.getString(ARG_PRODUCT_ID)
-            if (productId != null)
+            if(productId!=null)
             productViewModel.loadProduct(productId!!)
         }
     }
@@ -187,17 +174,15 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
         super.onViewCreated(view, savedInstanceState)
         showProgress(true)
         loadCategories()
-        productViewModel.productIDetailsLiveData.observe(
-            viewLifecycleOwner,
-            Observer { product ->
-                showProgress(false)
-                if (product != null) {
+        if(productId !=null){
+            productViewModel.productIDetailsLiveData.observe(
+                viewLifecycleOwner,
+                Observer { product ->
                     updateUi(product)
-                } else {
-                    context?.showMessage("product not found")
                 }
-            }
-        )
+            )
+        }
+
     }
 
     private fun loadCategories() {
@@ -235,7 +220,7 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
         productdescriptionET.setText(product.description)
         selectedCategoryId = product.categoryId
         userId = product.userId.toString()
-        if (product.images.isNotEmpty())
+            if (product.images.isNotEmpty())
             Picasso.get().also {
                 val path = product.images[0].getUrl()
                 it.load(path)
@@ -279,20 +264,17 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
         }
     }
 
-    private fun uploadImage(productId: String): MutableLiveData<String> {
-        val responseLiveData = MutableLiveData<String>()
+    private fun uploadImage(productId: String) {
         if (selectedImageUri == null) {
             context?.showMessage("Select an Image First")
-            responseLiveData.value = ""
-            return responseLiveData
+            return
         }
         showProgress(true)
         val parcelFileDescriptor =
-            context?.contentResolver?.openFileDescriptor(selectedImageUri!!, "r", null)
-                ?: return responseLiveData
+            context?.contentResolver?.openFileDescriptor(selectedImageUri!!, "r", null) ?: return
         val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
         val file =
-            File(context?.cacheDir, context?.contentResolver?.getFileName(selectedImageUri!!)!!)
+            File(context?.cacheDir, context?.contentResolver?.getFileName(selectedImageUri!!))
         val outputStream = FileOutputStream(file)
         inputStream.copyTo(outputStream)
         progressBar.progress = 0
@@ -308,7 +290,6 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
             override fun onFailure(call: Call<String>, t: Throwable) {
                 context?.showMessage(t.message!!)
                 progressBar.progress = 0
-                responseLiveData.value = ""
             }
 
             override fun onResponse(
@@ -319,12 +300,11 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
                     context?.showMessage(it)
                     progressBar.progress = 100
                     showProgress(false)
-                    responseLiveData.value = ""
                 }
             }
 
         })
-        return responseLiveData
+
     }
 
     interface Callbacks {

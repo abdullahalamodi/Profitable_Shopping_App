@@ -146,10 +146,12 @@ class ProductViewModel : ViewModel() {
                 response: Response<String>
             ) {
                 responseLiveData.value = response.body()
+                response.body()?.let { Log.d("success update", it) }
             }
 
             override fun onFailure(call: Call<String>, t: Throwable) {
                 responseLiveData.value = t.message
+                t.message?.let { Log.d("failed update", it) }
             }
         })
         return responseLiveData
@@ -166,10 +168,12 @@ class ProductViewModel : ViewModel() {
                 response: Response<String>
             ) {
                 responseLiveData.value = response.body()
+                response.body()?.let { Log.d("success delete", it) }
             }
 
             override fun onFailure(call: Call<String>, t: Throwable) {
                 responseLiveData.value = t.message
+                t.message?.let { Log.d("failed delete", it) }
             }
         })
         return responseLiveData

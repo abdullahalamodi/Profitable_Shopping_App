@@ -93,7 +93,11 @@ class LogInFragment : Fragment() {
         return if (TextUtils.isEmpty(target)) {
             false
         } else {
-            Patterns.EMAIL_ADDRESS.matcher(target).matches()
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.FROYO) {
+                Patterns.EMAIL_ADDRESS.matcher(target).matches()
+            } else {
+               true
+            }
         }
     }
 
