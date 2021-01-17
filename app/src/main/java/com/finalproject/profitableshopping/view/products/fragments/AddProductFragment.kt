@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.finalproject.profitableshopping.R
+import com.finalproject.profitableshopping.data.AppSharedPreference
 import com.finalproject.profitableshopping.data.models.Category
 import com.finalproject.profitableshopping.data.models.Product
 import com.finalproject.profitableshopping.getFileName
@@ -78,7 +79,7 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
                     rialPrice = productRialPriceET.text.toString().toDouble(),
                     dollarPrice = productDollarPriceET.text.toString().toDouble(),
                     categoryId = selectedCategoryId,
-                    userId = 0
+                    userId = AppSharedPreference.getUserId(context!!)
                 )
                 if (isUpdate) {
                     updateProduct(product)
@@ -98,11 +99,16 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
         productViewModel.addProduct(product).observe(
             this,
             Observer { productId ->
-                uploadImage(productId)
-                callbacks.onSuccessAddProduct()
-                Toast.makeText(context, "تم اضافة المنتج بنجاح", Toast.LENGTH_SHORT)
-                    .show()
-                productViewModel.refresh()
+                uploadImage(productId).observe(
+                    viewLifecycleOwner,
+                    Observer {
+                        productViewModel.refresh()
+                        callbacks.onSuccessAddProduct()
+                        Toast.makeText(context, "تم اضافة المنتج بنجاح", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                )
+
             }
         )
     }
@@ -112,8 +118,21 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
         productViewModel.updateProduct(product).observe(
             this,
             Observer { productId ->
-                selectedImageUri?.let {
-                    uploadImage(productId)
+                if(selectedImageUri != null){
+                    uploadImage(productId).observe(
+                        viewLifecycleOwner,
+                        Observer {
+                            callbacks.onSuccessAddProduct()
+                            context?.showMessage("تم نعديل المنتج بنجاح")
+                            productViewModel.refresh()
+                        }
+                    )
+                }else{
+                    showProgress(false)
+                    productViewModel.refresh()
+                    callbacks.onSuccessAddProduct()
+                    context?.showMessage("تم نعديل المنتج بنجاح")
+                    productViewModel.refresh()
                 }
                 callbacks.onSuccessAddProduct()
                 Toast.makeText(context, "تم نعديل المنتج بنجاح", Toast.LENGTH_SHORT)

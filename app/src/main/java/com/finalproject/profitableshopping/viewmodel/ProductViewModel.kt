@@ -21,7 +21,6 @@ import java.io.File
 class ProductViewModel : ViewModel() {
 
     val productRepositry: ProductRepositry
-    val productsListLiveData: LiveData<List<Product>>
     private val loadTrigger = MutableLiveData(Unit)
     private val productIdLiveData = MutableLiveData<String>()
     private val userIdLiveData = MutableLiveData<Int>()
@@ -30,21 +29,13 @@ class ProductViewModel : ViewModel() {
     var productIDetailsLiveData = Transformations.switchMap(productIdLiveData) { proId ->
         getProduct(proId)
     }
-//    val userProductsListLiveData: LiveData<List<Product>>
 
-//    init {
-//        refresh()
-//        userProductsListLiveData = Transformations.switchMap(userIdLiveData) { useId ->
-//            getUserProducts(useId.toString())
-//        }
-//    }
-
+    var productsListLiveData = Transformations.switchMap(loadTrigger) {
+        getProducts()
+    }
 
     init {
         productRepositry = ProductRepositry()
-        productsListLiveData = Transformations.switchMap(loadTrigger) {
-            getProducts()
-        }
         refresh()
     }
 

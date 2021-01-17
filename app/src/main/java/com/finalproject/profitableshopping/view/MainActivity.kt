@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -18,6 +19,7 @@ import com.finalproject.profitableshopping.view.products.fragments.AddProductFra
 import com.finalproject.profitableshopping.view.products.fragments.ProductDetailsFragment
 import com.finalproject.profitableshopping.view.products.fragments.ProductListFragment
 import com.finalproject.profitableshopping.view.user.UserFragment
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
@@ -25,9 +27,12 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
     AddProductFragment.Callbacks, SignUpFragment.SignUpCallbacks,
     ActiveFragment.ActiveAccountCallbacks,
     ProductDetailsFragment.Callbacks {
+
+    private lateinit var buttonNav :BottomNavigationMenuView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         //hide app bar elevation
         supportActionBar?.elevation = 0.0f
 
@@ -71,6 +76,14 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
         }
     }
 
+    fun showButtonNavigation(show:Boolean){
+        if (show)
+            buttonNav.visibility = View.VISIBLE
+        else
+            buttonNav.visibility = View.GONE
+
+    }
+
     private fun setCurrentFragment(fragment: Fragment) =
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.container, fragment)
@@ -108,11 +121,11 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
         return when (item.itemId) {
             R.id.menu_add_product -> {
                 if (getUserToken() != null) {
-                    if (getUserState())
+//                    if (getUserState())
                         setCurrentFragment(AddProductFragment.newInstance(null))
-                    else {
-                        setCurrentFragment(ActiveFragment.newInstance())
-                    }
+//                    else {
+//                        setCurrentFragment(ActiveFragment.newInstance())
+//                    }
                 } else {
                     setCurrentFragment(LogInFragment.newInstance())
                 }
@@ -222,6 +235,10 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
 
     override fun onUpdateProductClicked(productId: String?) {
         setCurrentFragment(AddProductFragment.newInstance(productId!!))
+    }
+
+    override fun onDeleteProductClicked() {
+        setCurrentFragment(ProductListFragment.newInstance())
     }
 
 

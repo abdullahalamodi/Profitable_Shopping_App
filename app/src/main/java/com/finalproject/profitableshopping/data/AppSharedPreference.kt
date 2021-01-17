@@ -26,7 +26,7 @@ object AppSharedPreference {
             Context.MODE_PRIVATE
         )
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
-        editor.putString(idKey, user.id)
+        editor.putInt(idKey, Integer.valueOf(user.id))
         editor.putString(emailKey, user.email)
         editor.putString(passwordKey, user.password)
         editor.putBoolean(isActiveKey, user.isActive)
@@ -39,7 +39,7 @@ object AppSharedPreference {
             sharedPrefFile,
             Context.MODE_PRIVATE
         )
-        return sharedPreferences.getString(tokenKey, null)
+        return sharedPreferences.getString(tokenKey, "")
     }
 
     fun getUserData(context: Context): User? {
@@ -64,12 +64,12 @@ object AppSharedPreference {
         return sharedPreferences.getBoolean(isActiveKey, false)
     }
 
-    fun getUserId(context: Context): String {
+    fun getUserId(context: Context): Int {
         val sharedPreferences: SharedPreferences = context.getSharedPreferences(
             sharedPrefFile,
             Context.MODE_PRIVATE
         )
-        return sharedPreferences.getString(idKey, null)!!
+        return sharedPreferences.getInt(idKey, -1)
     }
 
     private const val sharedPrefFile = "user_pref";

@@ -35,13 +35,18 @@ class ProductListFragment : Fragment() {
              //to open product fragment to  add new product
              callbacks?.onFloatButtonClicked()
          }*/
-
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        productViewModel.refresh()
     }
 
     override fun onAttach(context: Context) {

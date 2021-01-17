@@ -75,10 +75,12 @@ class ProductDetailsFragment : Fragment() {
 
 
         deleteBtn.setOnClickListener {
+            productViewModel.refresh()
             showProgress(true)
             productViewModel.deleteProduct(productId.toString()).observe(
                 viewLifecycleOwner,
                 Observer {
+                    showProgress(false)
                     context?.showMessage("product deleted successfully")
                     onProductDeleted()
                 }
@@ -88,8 +90,7 @@ class ProductDetailsFragment : Fragment() {
         updateBtn.setOnClickListener {
             callbacks.onUpdateProductClicked(productId)
         }
-
-        return view;
+        return view
     }
 
 
@@ -147,8 +148,8 @@ class ProductDetailsFragment : Fragment() {
        /* activity?.supportFragmentManager
             ?.beginTransaction()
             ?.remove(this)
-            ?.commit()*/
-        requireActivity().startActivity(Intent(requireContext(),MainActivity::class.java))
+            ?.commit()
+        callbacks.onDeleteProductClicked()
     }
 
     companion object {
@@ -163,5 +164,6 @@ class ProductDetailsFragment : Fragment() {
 
     interface Callbacks {
         fun onUpdateProductClicked(productId: String?)
+        fun onDeleteProductClicked()
     }
 }
