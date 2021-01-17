@@ -118,7 +118,7 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
         productViewModel.updateProduct(product).observe(
             this,
             Observer { productId ->
-                selectedImageUri?.let {
+                if(selectedImageUri != null){
                     uploadImage(productId).observe(
                         viewLifecycleOwner,
                         Observer {
@@ -127,6 +127,11 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
                             productViewModel.refresh()
                         }
                     )
+                }else{
+                    showProgress(false)
+                    callbacks.onSuccessAddProduct()
+                    context?.showMessage("تم نعديل المنتج بنجاح")
+                    productViewModel.refresh()
                 }
             }
         )
