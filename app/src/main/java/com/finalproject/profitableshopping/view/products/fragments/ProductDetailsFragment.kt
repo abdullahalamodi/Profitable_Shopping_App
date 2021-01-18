@@ -145,7 +145,7 @@ class ProductDetailsFragment : Fragment() {
     }
 
     private fun onProductDeleted() {
-       /* activity?.supportFragmentManager
+        activity?.supportFragmentManager
             ?.beginTransaction()
             ?.remove(this)
             ?.commit()

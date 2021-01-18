@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.finalproject.profitableshopping.R
@@ -283,14 +284,17 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
         }
     }
 
-    private fun uploadImage(productId: String) {
+    private fun uploadImage(productId: String):MutableLiveData<String> {
+        var responseLiveData = MutableLiveData<String>()
         if (selectedImageUri == null) {
             context?.showMessage("Select an Image First")
-            return
+            responseLiveData.value = ""
+            return responseLiveData
         }
         showProgress(true)
         val parcelFileDescriptor =
-            context?.contentResolver?.openFileDescriptor(selectedImageUri!!, "r", null) ?: return
+            context?.contentResolver?.openFileDescriptor(selectedImageUri!!, "r", null) ?:
+        return responseLiveData
         val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
         val file =
             File(context?.cacheDir, context?.contentResolver?.getFileName(selectedImageUri!!))
@@ -323,7 +327,8 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
             }
 
         })
-
+        responseLiveData.value = ""
+        return responseLiveData
     }
 
     interface Callbacks {

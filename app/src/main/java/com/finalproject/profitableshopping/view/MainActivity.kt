@@ -101,7 +101,7 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
 
         val inflater = menuInflater
         inflater.inflate(R.menu.main_menu, menu)
-        if (getUserToken() == "Admi") {
+        if (getUserToken() == "Admin") {
             menu.findItem(R.id.menu_add_product).setVisible(false)
             menu.findItem(R.id.menu_my_products).setVisible(false)
             menu.findItem(R.id.menu_login).setVisible(false)
@@ -150,17 +150,17 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
                 true
             }
             R.id.menu_categories -> {
-                if (getUserToken() != null && getUserToken() == "Admin")
+//                if (getUserToken() != null && getUserToken() == "Admin")
                     setCurrentFragment(CategoryFragment.newInstance())
-                else if (getUserToken() != "Admin") {
-                    Toast.makeText(this, "yor are not admin", Toast.LENGTH_SHORT).show()
-                } else {
-                    /* val intent = Intent(this, SignIn::class.java).apply {
- //                        putExtra(EXTRA_MESSAGE, message)
-                     }
-                     startActivity(intent)*/
-                    setCurrentFragment(LogInFragment.newInstance())
-                }
+//                else if (getUserToken() != "Admin") {
+//                    Toast.makeText(this, "yor are not admin", Toast.LENGTH_SHORT).show()
+//                } else {
+//                    /* val intent = Intent(this, SignIn::class.java).apply {
+// //                        putExtra(EXTRA_MESSAGE, message)
+//                     }
+//                     startActivity(intent)*/
+//                    setCurrentFragment(LogInFragment.newInstance())
+//                }
                 true
             }
             R.id.sign_out -> {
