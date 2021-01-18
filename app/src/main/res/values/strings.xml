@@ -69,12 +69,9 @@
     <string name="sign_up_btn">نسجيل</string>
 
 
-
-
     //////////////////////////////////////
-    <string name="Category">Category</string>
-    <string name="Products">All Products</string>
-
+    <string name="Category">الأصناف</string>
+    <string name="Products">المنتجات</string>
 
 
 </resources>

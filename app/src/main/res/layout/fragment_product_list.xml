@@ -12,6 +12,23 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <EditText
+            android:id="@+id/et_search_product"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="12dp"
+            android:background="@drawable/bg9"
+            android:drawableRight="@drawable/ic_search"
+            android:ems="10"
+            android:fontFamily="@font/rb_light"
+            android:hint="search...."
+            android:imeOptions="actionSearch"
+            android:maxLines="1"
+            android:padding="12dp"
+            android:singleLine="true"
+            android:textSize="14sp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_product"
