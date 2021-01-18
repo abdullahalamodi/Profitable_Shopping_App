@@ -114,13 +114,17 @@ class CategoryFragment : Fragment() {
         var categoryUpdeteDeleteLy: LinearLayout =
             view.findViewById(R.id.ly_update_delete_category) as LinearLayout
 
+
         ////////////////////this function to update the category
+
         fun categoryDialogUpdate(cat: Category) {
+
             val alertBuilder = AlertDialog.Builder(requireContext())
             val view = layoutInflater.inflate(R.layout.update_category, null)
             alertBuilder.setView(view)
             val alertDialog = alertBuilder.create()
             alertDialog.show()
+
             view.ed_update_category.setText(cat.name)
             Toast.makeText(requireContext(), cat.id.toString() + ".", Toast.LENGTH_SHORT).show()
             view.btn_update.setOnClickListener {
@@ -145,12 +149,15 @@ class CategoryFragment : Fragment() {
         }
 
         ////////////////////this function to delete the category
+
         fun categoryDialogDelete(cat: Category) {
+
             var alertBuilder = AlertDialog.Builder(requireContext())
             val view = layoutInflater.inflate(R.layout.delete_category, null)
             alertBuilder.setView(view)
             var alertDialog = alertBuilder.create()
             alertDialog.show()
+
             view.ed_delete_category.setText(cat.name)
             view.btn_delete.setOnClickListener {
                 showProgress(true)
@@ -166,6 +173,7 @@ class CategoryFragment : Fragment() {
                 )
                 alertDialog.dismiss()
             }
+
             view.btn_exit.setOnClickListener {
                 alertDialog.dismiss()
             }

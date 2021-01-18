@@ -18,6 +18,7 @@ import com.finalproject.profitableshopping.view.category.CategoryFragment
 import com.finalproject.profitableshopping.view.products.fragments.AddProductFragment
 import com.finalproject.profitableshopping.view.products.fragments.ProductDetailsFragment
 import com.finalproject.profitableshopping.view.products.fragments.ProductListFragment
+import com.finalproject.profitableshopping.view.products.fragments.ShowAllProductsFragment
 import com.finalproject.profitableshopping.view.user.UserFragment
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -54,8 +55,8 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
                     true
                 }
                 R.id.menu_shopping_cart -> {
-//                    setContent("Cart")
-//                    setCurrentFragment(productListFragment)
+                      setContent("Cart")
+                      setCurrentFragment(ShowAllProductsFragment.newInstance())
                     true
                 }
                 R.id.menu_search -> {

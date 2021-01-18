@@ -73,4 +73,10 @@
     <string name="enter_otp">ادخل رمز التحقق</string>
     <string name="actinve_acount">تفعيل الحساب</string>
 
+
+    //////////////////////////////////////
+    <string name="Category">الأصناف</string>
+    <string name="Products">المنتجات</string>
+
+
 </resources>
