@@ -1,13 +1,14 @@
 package com.finalproject.profitableshopping.data.api
 
 import com.finalproject.profitableshopping.data.models.Category
+import com.finalproject.profitableshopping.data.models.Order
+import com.finalproject.profitableshopping.data.models.OrderItem
 import com.finalproject.profitableshopping.data.models.Product
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
 import retrofit2.Call
 import retrofit2.http.*
-import kotlin.collections.HashMap
 
 interface ShoppingApi {
 
@@ -48,6 +49,13 @@ interface ShoppingApi {
         @Part image: MultipartBody.Part,
         @Part("product_id") desc: RequestBody
     ): Call<String>
+  //car API partion
+    @POST("order.php")
+    fun createCart(@Body order: Order):Call<Int>
+    @POST("order.pho")
+    fun addOrder(@Body orderItem:OrderItem):Call<String>
 
+    @GET("order.php ?")
+    fun getUserCartItems(@Query("user_id") userId: String, @Query("order_id") orderId: Int):Call<List<OrderItem>>
 
 }

@@ -1,11 +1,12 @@
 package com.finalproject.profitableshopping.view.products.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -13,13 +14,12 @@ import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.AppSharedPreference
 import com.finalproject.profitableshopping.data.models.Product
 import com.finalproject.profitableshopping.showMessage
-import com.finalproject.profitableshopping.view.MainActivity
 import com.finalproject.profitableshopping.viewmodel.ProductViewModel
 import com.squareup.picasso.Picasso
 
 private const val ARG_PRODUCT_ID = "product_id"
 
-class ProductDetailsFragment : Fragment() {
+class ProductDetailsFragment : Fragment(),AdapterView.OnItemSelectedListener {
     private var productId: String? = null
     private lateinit var progressBar: ProgressBar
     lateinit var productViewModel: ProductViewModel
@@ -148,8 +148,42 @@ class ProductDetailsFragment : Fragment() {
         activity?.supportFragmentManager
             ?.beginTransaction()
             ?.remove(this)
-            ?.commit()
+            ?.commit()8*/
         callbacks.onDeleteProductClicked()
+    }
+    fun openOptionsDialog(pro: Product){
+        var alertBuilder = AlertDialog.Builder(requireContext())
+        val view = layoutInflater.inflate(R.layout.cart_item_option_dialog, null)
+        val quantityEd=view.findViewById(R.id.ed_category_name) as EditText
+        val colorSV=view.findViewById(R.id.spinner_product_color) as Spinner
+        val sizeSV=view.findViewById(R.id.spinner_product_size) as Spinner
+        val addToCartBtn=view.findViewById<Button>(R.id.btn_add_to_cart)
+        val exitBtn=view.findViewById<Button>(R.id.btn_exit)
+        alertBuilder.setView(view)
+        var alertDialog = alertBuilder.create()
+        alertDialog.show()
+        val colors= listOf<String>("red","blue","yelew")
+        val sizes= listOf<String>("L","Xl","XXL")
+        val colorAdapter = ArrayAdapter(
+            requireContext(),
+            R.layout.support_simple_spinner_dropdown_item,
+            colors
+        )
+        val sizeAdapter = ArrayAdapter(
+            requireContext(),
+            R.layout.support_simple_spinner_dropdown_item,
+            sizes
+        )
+
+        colorAdapter.setDropDownViewResource(
+            android.R.layout.simple_spinner_dropdown_item)
+        colorSV.adapter = colorAdapter
+
+        sizeAdapter.setDropDownViewResource(
+            android.R.layout.simple_spinner_dropdown_item)
+        sizeSV.adapter = sizeAdapter
+
+
     }
 
     companion object {
@@ -165,5 +199,14 @@ class ProductDetailsFragment : Fragment() {
     interface Callbacks {
         fun onUpdateProductClicked(productId: String?)
         fun onDeleteProductClicked()
+    }
+
+    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+        val item = p0?.get(p2).toString()
+
+    }
+
+    override fun onNothingSelected(p0: AdapterView<*>?) {
+        TODO("Not yet implemented")
     }
 }

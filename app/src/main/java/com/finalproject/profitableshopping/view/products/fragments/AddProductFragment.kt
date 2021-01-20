@@ -100,7 +100,7 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
         productViewModel.addProduct(product).observe(
             this,
             Observer { productId ->
-                uploadImage(productId).observe(
+              /*  uploadImage(productId).observe(
                     viewLifecycleOwner,
                     Observer {
                         productViewModel.refresh()
@@ -108,7 +108,7 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
                         Toast.makeText(context, "تم اضافة المنتج بنجاح", Toast.LENGTH_SHORT)
                             .show()
                     }
-                )
+                )*/
 
             }
         )
@@ -120,14 +120,15 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
             this,
             Observer { productId ->
                 if(selectedImageUri != null){
-                    uploadImage(productId).observe(
+                    /*uploadImage(productId).observe(
                         viewLifecycleOwner,
                         Observer {
                             callbacks.onSuccessAddProduct()
                             context?.showMessage("تم نعديل المنتج بنجاح")
                             productViewModel.refresh()
                         }
-                    )
+                    )*/
+
                 }else{
                     showProgress(false)
                     productViewModel.refresh()
@@ -313,6 +314,7 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
             override fun onFailure(call: Call<String>, t: Throwable) {
                 context?.showMessage(t.message!!)
                 progressBar.progress = 0
+                UriLiveData.value=t.message
             }
 
             override fun onResponse(
@@ -323,6 +325,7 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
                     context?.showMessage(it)
                     progressBar.progress = 100
                     showProgress(false)
+                    UriLiveData.value=it
                 }
             }
 

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="6dp">
 
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
                     android:layout_margin="10dp"
                     android:fontFamily="@font/rb_light"
                     android:gravity="center"
-                    android:text="@string/title_delete"
+                    android:text="@string/card_item_options"
                     android:textColor="@color/white"
                     android:textSize="22sp" />
 
@@ -50,20 +50,58 @@
                 android:padding="4dp">
 
 
+
                 <EditText
                     android:id="@+id/ed_category_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="@string/quantity_option"
                     android:layout_gravity="top"
+                    android:inputType="number"
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="28sp"
                     android:layout_marginRight="8dp"
                     android:layout_marginBottom="18dp"
                     android:background="@drawable/bg4"
-                    android:enabled="false"
+                    android:enabled="true"
                     android:fontFamily="@font/rb_light"
                     android:gravity="top"
                     android:padding="20dp" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <Spinner
+                        android:id="@+id/spinner_product_color"
+                        android:padding="12dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:entries="@array/category"
+                        ></Spinner>
+                    <TextView
+                        android:padding="12dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="اختر لون المنتج"></TextView>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <Spinner
+                        android:id="@+id/spinner_product_size"
+                        android:padding="12dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:entries="@array/category"
+                        ></Spinner>
+                    <TextView
+                        android:padding="12dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="اختر حجم المنتج"></TextView>
+                </LinearLayout>
 
 
                 <LinearLayout
@@ -74,7 +112,7 @@
                     android:weightSum="2">
 
                     <Button
-                        android:id="@+id/btn_delete"
+                        android:id="@+id/btn_add_to_cart"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="6dp"
@@ -83,7 +121,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/bg4"
                         android:fontFamily="@font/rb_light"
-                        android:text="@string/category_delete"
+                        android:text="@string/add_item_to_cart"
                         android:textColor="@color/black"
                         android:textStyle="bold" />
 
