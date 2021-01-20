@@ -1,7 +1,5 @@
 package com.finalproject.profitableshopping.view
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -9,11 +7,14 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import ccom.finalproject.profitableshopping.view.products.dialogs.OrderItemOptions
 import com.finalproject.profitableshopping.R
+import com.finalproject.profitableshopping.data.AppSharedPreference
 import com.finalproject.profitableshopping.view.authentication.fragments.ActiveFragment
 import com.finalproject.profitableshopping.view.authentication.fragments.ActiveUserAccountFragment
 import com.finalproject.profitableshopping.view.authentication.fragments.LogInFragment
 import com.finalproject.profitableshopping.view.authentication.fragments.SignUpFragment
+import com.finalproject.profitableshopping.view.cart.CartFragment
 import com.finalproject.profitableshopping.view.category.CategoryFragment
 import com.finalproject.profitableshopping.view.products.fragments.AddProductFragment
 import com.finalproject.profitableshopping.view.products.fragments.ProductDetailsFragment
@@ -43,6 +44,10 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
             val fragmentTransaction = fragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.container, ProductListFragment.newInstance())
                 .commit()
+            //setCurrentFragment(CartFragment.newInstance())
+           /* OrderItemOptions.newInstance("1111").apply {
+                show(supportFragmentManager,"options")
+            }*/
         }
 
 
@@ -55,10 +60,11 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
                 }
                 R.id.menu_shopping_cart -> {
 //                    setContent("Cart")
-//                    setCurrentFragment(productListFragment)
+                   setCurrentFragment(CartFragment.newInstance())
                     true
                 }
                 R.id.menu_search -> {
+
 //                    setContent("Search")
                     true
                 }
@@ -100,7 +106,7 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
 
         val inflater = menuInflater
         inflater.inflate(R.menu.main_menu, menu)
-        if (getUserToken() == "Admi") {
+        if (getUserToken() == "Admin") {
             menu.findItem(R.id.menu_add_product).setVisible(false)
             menu.findItem(R.id.menu_my_products).setVisible(false)
             menu.findItem(R.id.menu_login).setVisible(false)
@@ -136,6 +142,9 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
  //                        putExtra(EXTRA_MESSAGE, message)
                  }
                  startActivity(intent)*/
+
+
+
                 setCurrentFragment(LogInFragment.newInstance())
                 true
             }
@@ -173,30 +182,34 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
 
 
     private fun getUserToken(): String? {
-        val sharedPreferences: SharedPreferences = this.getSharedPreferences(
-            LogInFragment.sharedPrefFile,
+       /* val sharedPreferences: SharedPreferences = this.getSharedPreferences(
+            AppSharedPreference.sharedPrefFile,
             Context.MODE_PRIVATE
         )
-        return sharedPreferences.getString(LogInFragment.tokenKey, null)
+        return sharedPreferences.getString(AppSharedPreference.tokenKey, null)*/
+        return AppSharedPreference.getUserToken(this)
     }
 
     private fun getUserState(): Boolean {
-        val sharedPreferences: SharedPreferences = this.getSharedPreferences(
-            LogInFragment.sharedPrefFile,
+        /*val sharedPreferences: SharedPreferences = this.getSharedPreferences(
+            AppSharedPreference.sharedPrefFile,
             Context.MODE_PRIVATE
+
         )
-        return sharedPreferences.getBoolean(LogInFragment.isAccountActive.toString(), false)
+        sharedPreferences.getBoolean(AppSharedPreference.isActiveKey.toString(), false)*/
+        return AppSharedPreference.isActive(this)
     }
 
     fun logOut(token: String = "") {
-        val sharedPreferences: SharedPreferences = this.getSharedPreferences(
+        /*val sharedPreferences: SharedPreferences = this.getSharedPreferences(
             LogInFragment.sharedPrefFile,
             Context.MODE_PRIVATE
         )
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
         editor.putString(LogInFragment.tokenKey, token)
         editor.apply()
-        editor.commit()
+        editor.commit()*/
+        AppSharedPreference.saveUserToken(this,token)
     }
 
     private fun addFragment(fragment: Fragment) =

@@ -151,7 +151,7 @@ class CategoryFragment : Fragment() {
             alertBuilder.setView(view)
             var alertDialog = alertBuilder.create()
             alertDialog.show()
-            view.ed_delete_category.setText(cat.name)
+            view.ed_category_name.setText(cat.name)
             view.btn_delete.setOnClickListener {
                 showProgress(true)
                 val response = categoryViewModel.deleteCategory(cat.id!!)

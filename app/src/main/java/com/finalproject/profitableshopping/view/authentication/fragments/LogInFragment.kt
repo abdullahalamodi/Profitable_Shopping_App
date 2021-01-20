@@ -15,6 +15,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import com.finalproject.profitableshopping.R
+import com.finalproject.profitableshopping.data.AppSharedPreference
+import com.finalproject.profitableshopping.data.models.User
 import com.finalproject.profitableshopping.view.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -157,27 +159,29 @@ class LogInFragment : Fragment() {
     }
 
     private fun saveUserToken(token: String) {
-        val sharedPreferences: SharedPreferences = requireActivity().getSharedPreferences(
-            sharedPrefFile,
+       /* val sharedPreferences: SharedPreferences = requireActivity().getSharedPreferences(
+            AppSharedPreference.sharedPrefFile,
             Context.MODE_PRIVATE
         )
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
-        editor.putString(tokenKey, token)
+        editor.putString(AppSharedPreference.tokenKey, token)
 
         editor.apply()
-        editor.commit()
+        editor.commit()*/
+        AppSharedPreference.saveUserToken(requireContext(),token)
     }
 
     private fun saveUserData(email: String, password: String) {
-        val sharedPreferences: SharedPreferences = requireActivity().getSharedPreferences(
-            sharedPrefFile,
+      /*  val sharedPreferences: SharedPreferences = requireActivity().getSharedPreferences(
+            AppSharedPreference.sharedPrefFile,
             Context.MODE_PRIVATE
         )
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
-        editor.putString(emailKey, email)
-        editor.putString(passwordKey, password)
+        editor.putString(AppSharedPreference.emailKey, email)
+        editor.putString(AppSharedPreference.passwordKey, password)
         editor.apply()
-        editor.commit()
+        editor.commit()*/
+        AppSharedPreference.saveUserData(requireContext(), User("",email,password,"772967092",true))
     }
 
 

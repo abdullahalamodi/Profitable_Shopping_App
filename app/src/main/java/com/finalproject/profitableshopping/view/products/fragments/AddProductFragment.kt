@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.finalproject.profitableshopping.R
@@ -99,7 +100,7 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
         productViewModel.addProduct(product).observe(
             this,
             Observer { productId ->
-                uploadImage(productId).observe(
+              /*  uploadImage(productId).observe(
                     viewLifecycleOwner,
                     Observer {
                         productViewModel.refresh()
@@ -107,7 +108,7 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
                         Toast.makeText(context, "تم اضافة المنتج بنجاح", Toast.LENGTH_SHORT)
                             .show()
                     }
-                )
+                )*/
 
             }
         )
@@ -119,14 +120,15 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
             this,
             Observer { productId ->
                 if(selectedImageUri != null){
-                    uploadImage(productId).observe(
+                    /*uploadImage(productId).observe(
                         viewLifecycleOwner,
                         Observer {
                             callbacks.onSuccessAddProduct()
                             context?.showMessage("تم نعديل المنتج بنجاح")
                             productViewModel.refresh()
                         }
-                    )
+                    )*/
+
                 }else{
                     showProgress(false)
                     productViewModel.refresh()
@@ -283,14 +285,16 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
         }
     }
 
-    private fun uploadImage(productId: String) {
+    private fun uploadImage(productId: String): MutableLiveData<String> {
+        val UriLiveData= MutableLiveData<String>()
         if (selectedImageUri == null) {
             context?.showMessage("Select an Image First")
-            return
+            UriLiveData.value=""
+            return UriLiveData
         }
         showProgress(true)
         val parcelFileDescriptor =
-            context?.contentResolver?.openFileDescriptor(selectedImageUri!!, "r", null) ?: return
+            context?.contentResolver?.openFileDescriptor(selectedImageUri!!, "r", null) ?: return UriLiveData
         val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
         val file =
             File(context?.cacheDir, context?.contentResolver?.getFileName(selectedImageUri!!))
@@ -309,6 +313,7 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
             override fun onFailure(call: Call<String>, t: Throwable) {
                 context?.showMessage(t.message!!)
                 progressBar.progress = 0
+                UriLiveData.value=t.message
             }
 
             override fun onResponse(
@@ -319,11 +324,13 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
                     context?.showMessage(it)
                     progressBar.progress = 100
                     showProgress(false)
+                    UriLiveData.value=it
                 }
             }
 
         })
 
+        return UriLiveData
     }
 
     interface Callbacks {
