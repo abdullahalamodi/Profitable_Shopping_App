@@ -286,7 +286,7 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
     }
 
     private fun uploadImage(productId: String):MutableLiveData<String> {
-        var responseLiveData = MutableLiveData<String>()
+        val responseLiveData = MutableLiveData<String>()
         if (selectedImageUri == null) {
             context?.showMessage("Select an Image First")
             responseLiveData.value = ""
@@ -298,7 +298,7 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
         return responseLiveData
         val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
         val file =
-            File(context?.cacheDir, context?.contentResolver?.getFileName(selectedImageUri!!))
+            File(context?.cacheDir, context?.contentResolver?.getFileName(selectedImageUri!!)!!)
         val outputStream = FileOutputStream(file)
         inputStream.copyTo(outputStream)
         progressBar.progress = 0

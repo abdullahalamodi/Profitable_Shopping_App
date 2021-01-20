@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModel
 import com.finalproject.profitableshopping.data.repositories.CategoryRepository
 
 import com.finalproject.profitableshopping.data.models.Category
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 import retrofit2.Call
 import retrofit2.Callback
@@ -136,6 +138,14 @@ class CategoryViewModel : ViewModel() {
             }
         })
         return responseLiveData
+    }
+
+
+    fun uploadImage(
+        image: MultipartBody.Part,
+        productId: RequestBody
+    ): Call<String> {
+        return repository.uploadImage(image, productId)
     }
 }
 
