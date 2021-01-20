@@ -83,7 +83,7 @@ class OrderItemOptions() : DialogFragment(), AdapterView.OnItemSelectedListener 
             if(quantityEd.text.isNotEmpty()&&colorSV.prompt.isNotEmpty()&&sizeSV.prompt.isNotEmpty()){
                 if (!checkCart())
                   createCart()
-                else if (AppSharedPreference.getOrderState(requireContext())){
+                else if (!AppSharedPreference.getOrderState(requireContext())){
                     createCart()
                 }
                /* var order=OrderItem(

@@ -1,9 +1,6 @@
 package com.finalproject.profitableshopping.data.api
 
-import com.finalproject.profitableshopping.data.models.Category
-import com.finalproject.profitableshopping.data.models.Order
-import com.finalproject.profitableshopping.data.models.OrderItem
-import com.finalproject.profitableshopping.data.models.Product
+import com.finalproject.profitableshopping.data.models.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
@@ -49,13 +46,24 @@ interface ShoppingApi {
         @Part image: MultipartBody.Part,
         @Part("product_id") desc: RequestBody
     ): Call<String>
-  //car API partion
+  //car API  method
     @POST("order.php")
     fun createCart(@Body order: Order):Call<Int>
     @POST("order.pho")
     fun addOrder(@Body orderItem:OrderItem):Call<String>
+    @DELETE("order.pho")
+    fun deleteOrder(@Query("orderItem_id") orderItem:Int):Call<String>
 
     @GET("order.php ?")
     fun getUserCartItems(@Query("user_id") userId: String, @Query("order_id") orderId: Int):Call<List<OrderItem>>
+    // favorite method
+    @POST("favorite.php")
+    fun createFavorite(@Body favorite: Favorite):Call<Int>
+    @POST("favorite.pho")
+    fun addFavoriteItem(@Body FavoriteItem:FavoriteItem):Call<String>
 
+    @GET("favorite.php ?")
+    fun getFavoriteItems( @Query("favorite_id") favoriteId: Int):Call<List<FavoriteItem>>
+    @DELETE("favorite.pho")
+    fun deleteFavoriteItem(@Query("FavoriteItem_id") FavoriteItemId:Int):Call<String>
 }

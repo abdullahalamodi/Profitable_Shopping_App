@@ -87,12 +87,12 @@ class CartViewModel : ViewModel() {
             object :retrofit2.Callback<String>{
                 override fun onResponse(call: Call<String>, response: Response<String>) {
                     message.value= response.body()
-                    Log.d("success cart",response.body()!!)
+                    Log.d("success add item",response.body()!!)
                 }
 
                 override fun onFailure(call: Call<String>, t: Throwable) {
-                    Log.d("success cart",t.message!!)
-                    message.value= message.value
+                    Log.d("failed  add item",t.message!!)
+                    message.value= t.message
                 }
             }
         )

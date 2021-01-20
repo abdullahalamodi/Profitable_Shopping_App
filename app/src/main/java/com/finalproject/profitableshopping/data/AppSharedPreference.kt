@@ -96,6 +96,24 @@ object AppSharedPreference {
         editor.apply()
         editor.commit()
     }
+    fun getFavoriteId(context: Context):Int{
+        val sharedPreferences: SharedPreferences = context.getSharedPreferences(
+            sharedPrefFile,
+            Context.MODE_PRIVATE
+        )
+        return sharedPreferences.getInt(myFavorite, -1)
+    }
+    fun setFavoriteId(context: Context, favoriteId: Int?){
+        val sharedPreferences: SharedPreferences = context.getSharedPreferences(
+            sharedPrefFile,
+            Context.MODE_PRIVATE
+        )
+        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+        editor.putInt(myFavorite, favoriteId!!)
+
+        editor.apply()
+        editor.commit()
+    }
     fun setCartState(context: Context,isCart:Boolean){
         val sharedPreferences: SharedPreferences = context.getSharedPreferences(
             sharedPrefFile,
@@ -139,6 +157,7 @@ object AppSharedPreference {
      const val isActiveKey = "isActive_key";
      const val hasCart = "hasCart";
      const val myCartId = "myCartId";
+     const val myFavorite = "myFavorite";
      const val isBought = "isBought";
 
 
