@@ -41,11 +41,11 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
 
         val isFragmentContainerEmpty = savedInstanceState == null
         if (isFragmentContainerEmpty) {
-            /*val fragmentManager = supportFragmentManager
+            val fragmentManager = supportFragmentManager
             val fragmentTransaction = fragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.container, ProductListFragment.newInstance())
-                .commit()*/
-            setCurrentFragment(FavoriteFragment.newInstance())
+                .commit()
+           // setCurrentFragment(FavoriteFragment.newInstance())
            /* OrderItemOptions.newInstance("1111").apply {
                 show(supportFragmentManager,"options")
             }*/
