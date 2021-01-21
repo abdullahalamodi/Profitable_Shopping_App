@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import ccom.finalproject.profitableshopping.view.products.dialogs.OrderItemOptions
 import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.AppSharedPreference
 import com.finalproject.profitableshopping.view.authentication.fragments.ActiveFragment
@@ -46,7 +45,7 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
             fragmentTransaction.replace(R.id.container, ProductListFragment.newInstance())
                 .commit()
             //setCurrentFragment(CartFragment.newInstance())
-           /* OrderItemOptions.newInstance("1111").apply {
+           /* com.finalproject.profitableshopping.view.cart.dialogs.OrderItemOptions.newInstance("1111").apply {
                 show(supportFragmentManager,"options")
             }*/
         }

@@ -24,6 +24,7 @@ import com.finalproject.profitableshopping.view.products.fragments.AddProductFra
 
 import com.finalproject.profitableshopping.viewmodel.CategoryViewModel
 import kotlinx.android.synthetic.main.delete_category.view.*
+import kotlinx.android.synthetic.main.fragment_catergory_list.view.*
 import kotlinx.android.synthetic.main.update_category.view.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -256,7 +257,7 @@ class CategoryFragment : Fragment(),UploadRequestBody.UploadCallback {
             var alertDialog = alertBuilder.create()
             alertDialog.show()
 
-            view.ed_delete_category.setText(cat.name)
+            view.ed_category_name.setText(cat.name)
             view.btn_delete.setOnClickListener {
                 showProgress(true)
                 val response = categoryViewModel.deleteCategory(cat.id!!)

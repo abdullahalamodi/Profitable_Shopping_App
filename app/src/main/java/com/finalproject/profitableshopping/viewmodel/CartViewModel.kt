@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.finalproject.profitableshopping.data.models.Order
-import com.finalproject.profitableshopping.data.models.OrderItem
+import com.finalproject.profitableshopping.data.models.OrderDetails
 import com.finalproject.profitableshopping.data.repositories.CartRepositry
 import retrofit2.Call
 import retrofit2.Callback
@@ -15,57 +15,29 @@ import retrofit2.Response
 class CartViewModel : ViewModel() {
     private val cartIdLiveData = MutableLiveData<Int>()
     private val userIdLiveData = MutableLiveData<Int>()
-    val pro= mutableListOf<OrderItem>()
+//    val pro = mutableListOf<OrderDetails>()
     val cartRepositry: CartRepositry
 
-    var orderListLiveData=Transformations.switchMap(cartIdLiveData){carId ->
-
-        getCartItemList(userIdLiveData.value.toString(),carId)
-
+    var orderListLiveData = Transformations.switchMap(cartIdLiveData){carId ->
+        getCartItemList(carId)
     }
 
     init {
         cartRepositry= CartRepositry()
-        pro.add(OrderItem(
-            null ,
-            "galexy",
-            1,
-            20,
-            "red",
-            "xl",
-            2350.0
-        ))
-        pro.add(OrderItem(
-            null ,
-            "iphone",
-
-            1,
-            20,
-            "red",
-            "xl",
-            2350.0
-        ))
-        pro.add(OrderItem(
-            null ,
-            "labtop",
-            1,
-            20,
-            "red",
-            "xl",
-            2350.0
-        ))
     }
+
     fun loadUser(useId: Int) {
         userIdLiveData.value = useId
     }
     fun loadOrder(orderId: Int) {
         cartIdLiveData.value = orderId
-
     }
+
+
     fun createCart(order: Order): LiveData<Int> {
         val cartId: MutableLiveData<Int> = MutableLiveData<Int>()
-        val call=cartRepositry.createCart(order)
-        call.enqueue(object :retrofit2.Callback<Int>{
+        val call = cartRepositry.createCart(order)
+        call.enqueue(object :Callback<Int>{
             override fun onResponse(call: Call<Int>, response: Response<Int>) {
                 cartId.value=response.body()
                 Log.d("create cart",cartId.value.toString())
@@ -80,11 +52,11 @@ class CartViewModel : ViewModel() {
         return cartId
     }
 
-    fun addToCart(order: OrderItem) :LiveData<String>{
+    fun addToCart(order: OrderDetails) :LiveData<String>{
         val message: MutableLiveData<String> = MutableLiveData<String>()
-        val call=cartRepositry.addOrder(order)
+        val call = cartRepositry.addOrder(order)
         call.enqueue(
-            object :retrofit2.Callback<String>{
+            object :Callback<String>{
                 override fun onResponse(call: Call<String>, response: Response<String>) {
                     message.value= response.body()
                     Log.d("success cart",response.body()!!)
@@ -98,20 +70,39 @@ class CartViewModel : ViewModel() {
         )
         return message
     }
-    fun getCartItemList(userId:String,cartId:Int):LiveData<List<OrderItem>> {
-        val orderList= MutableLiveData<List<OrderItem>>()
-        val call=cartRepositry.getOrders(userId,cartId)
+
+    fun buy(id: Int) :LiveData<String>{
+        val message: MutableLiveData<String> = MutableLiveData<String>()
+        val call = cartRepositry.buy(id)
         call.enqueue(
-            object :Callback<List<OrderItem>>{
+            object :Callback<String>{
+                override fun onResponse(call: Call<String>, response: Response<String>) {
+                    message.value= response.body()
+                    Log.d("success cart",response.body()!!)
+                }
+
+                override fun onFailure(call: Call<String>, t: Throwable) {
+                    Log.d("success cart",t.message!!)
+                    message.value= message.value
+                }
+            }
+        )
+        return message
+    }
+    private fun getCartItemList(cartId:Int):LiveData<List<OrderDetails>> {
+        val orderList= MutableLiveData<List<OrderDetails>>()
+        val call=cartRepositry.getOrders(cartId)
+        call.enqueue(
+            object :Callback<List<OrderDetails>>{
                 override fun onResponse(
-                    call: Call<List<OrderItem>>,
-                    response: Response<List<OrderItem>>
+                    call: Call<List<OrderDetails>>,
+                    response: Response<List<OrderDetails>>
                 ) {
-                    orderList.value=response.body()
+                    orderList.value = response.body()?: emptyList()
                     Log.d("success get order","success get orders")
                 }
 
-                override fun onFailure(call: Call<List<OrderItem>>, t: Throwable) {
+                override fun onFailure(call: Call<List<OrderDetails>>, t: Throwable) {
                     Log.d("faild get order",t.message!!)
                     orderList.value= emptyList()
                 }
@@ -121,15 +112,26 @@ class CartViewModel : ViewModel() {
 
         return orderList
     }
-    fun changeOrderState(orderId: Int,isBought: Boolean):LiveData<String>{
-        val message=MutableLiveData<String>()
-        return message
+
+    fun deleteCart(catId: Int): MutableLiveData<String> {
+        val responseLiveData: MutableLiveData<String> = MutableLiveData()
+        val call = cartRepositry.deleteOrder(catId)
+        call.enqueue(object : Callback<String> {
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                responseLiveData.value = response.body()!!
+                Log.d("delet cat",response.body()!!)
+            }
+
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                responseLiveData.value = t.message!!
+                Log.d("delet failed",t.message!!)
+            }
+        })
+        return responseLiveData
     }
-
-    fun deleteOrder(cartId: Int) :LiveData<String>{
-        val message=MutableLiveData<String>()
+    fun changeOrderState(order_id: Int,is_paid: Boolean):LiveData<String>{
+        val message= MutableLiveData<String>()
         return message
-
     }
 
 }

@@ -143,9 +143,9 @@ class CategoryViewModel : ViewModel() {
 
     fun uploadImage(
         image: MultipartBody.Part,
-        productId: RequestBody
+        catId: RequestBody
     ): Call<String> {
-        return repository.uploadImage(image, productId)
+        return repository.uploadImage(image, catId)
     }
 }
 

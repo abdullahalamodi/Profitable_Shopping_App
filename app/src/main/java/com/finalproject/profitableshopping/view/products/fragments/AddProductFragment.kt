@@ -314,7 +314,7 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
             override fun onFailure(call: Call<String>, t: Throwable) {
                 context?.showMessage(t.message!!)
                 progressBar.progress = 0
-                UriLiveData.value=t.message
+                responseLiveData.value=t.message
             }
 
             override fun onResponse(
@@ -325,7 +325,7 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
                     context?.showMessage(it)
                     progressBar.progress = 100
                     showProgress(false)
-                    UriLiveData.value=it
+                    responseLiveData.value=it
                 }
             }
 

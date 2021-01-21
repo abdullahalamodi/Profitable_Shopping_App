@@ -50,9 +50,9 @@ class CategoryRepository {
     }
 
     fun uploadImage(image: MultipartBody.Part,
-                    productId: RequestBody
+                    catId: RequestBody
     ) :Call<String>{
-        return shoppingApi.uploadImage(image,productId)
+        return shoppingApi.uploadCategoryImage(image,catId)
 
     }
 

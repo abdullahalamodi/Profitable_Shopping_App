@@ -2,7 +2,7 @@ package com.finalproject.profitableshopping.data.repositories
 
 import com.finalproject.profitableshopping.data.api.ShoppingApi
 import com.finalproject.profitableshopping.data.models.Order
-import com.finalproject.profitableshopping.data.models.OrderItem
+import com.finalproject.profitableshopping.data.models.OrderDetails
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -19,12 +19,19 @@ class CartRepositry(){
     }
     fun createCart(order: Order): Call<Int> {
         return shoppingApi.createCart(order)
+    }
+    fun addOrder(order:OrderDetails):Call<String>{
+        return shoppingApi.addOrderDetails(order)
+    }
 
+    fun deleteOrder(id:Int):Call<String>{
+        return shoppingApi.deleteOrder(id.toString())
     }
-    fun addOrder(order:OrderItem):Call<String>{
-        return shoppingApi.addOrder(order)
+    fun getOrders(cartId: Int):Call<List<OrderDetails>>{
+        return shoppingApi.getUserCartItems(cartId.toString())
     }
-    fun getOrders(userId: String, cartId: Int):Call<List<OrderItem>>{
-        return shoppingApi.getUserCartItems(userId,cartId)
+
+    fun buy(cartId: Int):Call<String>{
+        return shoppingApi.buy(cartId.toString())
     }
 }
