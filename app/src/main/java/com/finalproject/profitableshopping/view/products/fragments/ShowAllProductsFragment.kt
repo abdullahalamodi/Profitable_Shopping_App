@@ -35,6 +35,7 @@ class ShowAllProductsFragment : Fragment() {
         CategoryAdapter(emptyList())
     private var adapterProducts: ShowAllProductsFragment.ProductAdapter =
         ProductAdapter(emptyList())
+    var category_id: Int = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,6 +94,12 @@ class ShowAllProductsFragment : Fragment() {
         allProductsRecyclerView.adapter = adapterProducts
     }
 
+    private fun updateUIFliter(id:Category) {
+        this.productsList = productsList
+        adapterProducts = ProductAdapter(productsList)
+        allProductsRecyclerView.adapter = adapterProducts
+    }
+
 
     companion object {
 
@@ -105,12 +112,18 @@ class ShowAllProductsFragment : Fragment() {
         View.OnClickListener {
         var categoryNameTv: TextView = view.findViewById(R.id.tv_name_category) as TextView
 
+        var category = Category()
+
         fun bind(cat: Category) {
             categoryNameTv.text = cat.name
         }
 
-        override fun onClick(v: View?) {
+        init {
+            view.setOnClickListener(this)
+        }
 
+        override fun onClick(v: View?) {
+            category_id = this.category.id!!
         }
 
     }
@@ -153,8 +166,9 @@ class ShowAllProductsFragment : Fragment() {
         var productImageIv = view.findViewById(R.id.img_product_main) as ImageView
         var productNameTv: TextView = view.findViewById(R.id.tv_name_product_main) as TextView
         var productRialPriceTv: TextView = view.findViewById(R.id.tv_price_product_main) as TextView
-       /* var productDescriptionTv: TextView =
-            view.findViewById(R.id.tv_description_product) as TextView*/
+
+        /* var productDescriptionTv: TextView =
+             view.findViewById(R.id.tv_description_product) as TextView*/
         var product = Product()
 
         init {
@@ -166,7 +180,7 @@ class ShowAllProductsFragment : Fragment() {
             product = pro
             productNameTv.text = pro.name
             productRialPriceTv.text = pro.rialPrice.toString()
-           // productDescriptionTv.text = pro.description
+            // productDescriptionTv.text = pro.description
 
         }
 

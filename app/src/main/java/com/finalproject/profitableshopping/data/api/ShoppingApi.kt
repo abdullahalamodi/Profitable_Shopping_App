@@ -3,6 +3,7 @@ package com.finalproject.profitableshopping.data.api
 
 
 import com.finalproject.profitableshopping.data.models.Category
+import com.finalproject.profitableshopping.data.models.Comment
 import com.finalproject.profitableshopping.data.models.Order
 import com.finalproject.profitableshopping.data.models.OrderDetails
 import com.finalproject.profitableshopping.data.models.Product
@@ -89,4 +90,18 @@ interface ShoppingApi {
     @DELETE("favorite.pho")
     fun deleteFavoriteItem(@Query("FavoriteItem_id") FavoriteItemId:Int):Call<String>
 
+    // comment method
+
+    @GET("comments.php")
+    fun getComments(): Call<List<Comment>>
+    @GET("comments.php")
+    fun getUserComments(@Query("user_id") userId: String): Call<List<Comment>>
+    @GET("comments.php")
+    fun getComment(@Query("id") commentId: String): Call<Comment>
+    @POST("comments.php")
+    fun addComment(@Body comment: Comment):Call<String>
+    @POST("comments.php")
+    fun updateComment(@Query("id") id:String, @Body comment: Comment):Call<String>
+    @DELETE("comments.php")
+    fun deleteComment(@Query("id")id:String):Call<String>
 }

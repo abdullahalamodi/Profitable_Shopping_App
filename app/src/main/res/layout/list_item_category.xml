@@ -32,7 +32,7 @@
                 android:layout_margin="10dp"
                 android:gravity="center|right"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="3">
 
 
                 <ImageView
@@ -54,6 +54,14 @@
                     android:textColor="#000"
                     android:textSize="16sp"
                     android:fontFamily="@font/rb_light"/>
+
+                <ImageView
+                    android:id="@+id/img_category"
+                    android:layout_width="0dp"
+                    android:layout_height="55dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/laptop" />
+
 
             </LinearLayout>
 

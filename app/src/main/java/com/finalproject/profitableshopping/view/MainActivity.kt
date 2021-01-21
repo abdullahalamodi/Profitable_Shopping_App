@@ -6,6 +6,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.AppSharedPreference
@@ -13,14 +14,20 @@ import com.finalproject.profitableshopping.view.authentication.fragments.ActiveF
 import com.finalproject.profitableshopping.view.authentication.fragments.ActiveUserAccountFragment
 import com.finalproject.profitableshopping.view.authentication.fragments.LogInFragment
 import com.finalproject.profitableshopping.view.authentication.fragments.SignUpFragment
+import com.finalproject.profitableshopping.data.models.Product
+import com.finalproject.profitableshopping.view.category.CategoryActivity
+import kotlinx.android.synthetic.main.activity_main.*
 import com.finalproject.profitableshopping.view.cart.CartFragment
 import com.finalproject.profitableshopping.view.category.CategoryFragment
+import com.finalproject.profitableshopping.view.products.ManageProductActivity
+import com.finalproject.profitableshopping.view.products.fragments.*
 import com.finalproject.profitableshopping.view.favorite.FavoriteFragment
 import com.finalproject.profitableshopping.view.products.fragments.AddProductFragment
 import com.finalproject.profitableshopping.view.products.fragments.ProductDetailsFragment
 import com.finalproject.profitableshopping.view.products.fragments.ProductListFragment
 import com.finalproject.profitableshopping.view.products.fragments.ShowAllProductsFragment
 import com.finalproject.profitableshopping.view.user.UserFragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -37,6 +44,20 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
 
         //hide app bar elevation
         supportActionBar?.elevation = 0.0f
+
+      //  val nested_content =findViewById<View>(R.id.container) as NestedScrollView
+        bottomNav = findViewById<View>(R.id.bottomNav) as BottomNavigationView
+        val n =findViewById<View>(R.id.container)
+       n.setOnScrollChangeListener() { v, X, Y, oldScrollX, oldScrollY ->
+            if ( Y < oldScrollY) {
+                anim(false)
+            }
+            if ( Y > oldScrollY) {
+                anim(true)
+            }
+        }
+
+       // supportActionBar?.hide()
 
 
         val isFragmentContainerEmpty = savedInstanceState == null
@@ -64,6 +85,7 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
                 R.id.menu_search -> {
 
 //                    setContent("Search")
+                    setCurrentFragment(ShowAllProductsFragment.newInstance())
                     true
                 }
                 R.id.menu_notification -> {
@@ -105,13 +127,16 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
 
         val inflater = menuInflater
         inflater.inflate(R.menu.main_menu, menu)
-        if (getUserToken() == "Admin") {
+        if(getUserToken()=="Admin"){
+                menu.findItem(R.id.menu_add_product).setVisible(false)
+                menu.findItem(R.id.menu_my_products).setVisible(false)
+                menu.findItem(R.id.menu_login).setVisible(false)
+                menu.findItem(R.id.menu_my_products).setVisible(true)
+
+        }
+        else if(getUserToken() ==null || getUserToken() =="") {
             menu.findItem(R.id.menu_add_product).setVisible(false)
-            menu.findItem(R.id.menu_my_products).setVisible(false)
-            menu.findItem(R.id.menu_login).setVisible(false)
-        } else if (getUserToken() == null || getUserToken() == "") {
-            menu.findItem(R.id.menu_add_product).setVisible(false)
-            menu.findItem(R.id.menu_my_products).setVisible(false)
+           // menu.findItem(R.id.menu_my_products).setVisible(false)
             menu.findItem(R.id.menu_categories).setVisible(false)
             menu.findItem(R.id.sign_out).setVisible(false)
             menu.findItem(R.id.menu_settings).setVisible(false)
@@ -148,26 +173,33 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
                 true
             }
             R.id.menu_my_products -> {
-                if (getUserToken() != null)
-                    setCurrentFragment(ProductListFragment.newInstance())
-                else {
+                startActivity(Intent(this, ManageProductActivity::class.java))
 
-                    setCurrentFragment(LogInFragment.newInstance())
-                }
+                // if (getUserToken() != null)
+              //      setCurrentFragment(ProductListFragment.newInstance())
+               // else {
+                    /*val intent = Intent(this, SignIn::class.java).apply {
+//                        putExtra(EXTRA_MESSAGE, message)
+                    }
+                    startActivity(intent)*/
+                /*    setCurrentFragment(LogInFragment.newInstance())
+                }*/
                 true
             }
             R.id.menu_categories -> {
-//                if (getUserToken() != null && getUserToken() == "Admin")
-                    setCurrentFragment(CategoryFragment.newInstance())
-//                else if (getUserToken() != "Admin") {
-//                    Toast.makeText(this, "yor are not admin", Toast.LENGTH_SHORT).show()
-//                } else {
-//                    /* val intent = Intent(this, SignIn::class.java).apply {
-// //                        putExtra(EXTRA_MESSAGE, message)
-//                     }
-//                     startActivity(intent)*/
-//                    setCurrentFragment(LogInFragment.newInstance())
-//                }
+                if (getUserToken() != null && getUserToken() == "Admin")
+                   // setCurrentFragment(CategoryFragment.newInstance())
+                    startActivity(Intent(this, CategoryActivity::class.java))
+
+                else if (getUserToken() != "Admin") {
+                    Toast.makeText(this, "yor are not admin", Toast.LENGTH_SHORT).show()
+                } else {
+                   /* val intent = Intent(this, SignIn::class.java).apply {
+//                        putExtra(EXTRA_MESSAGE, message)
+                    }
+                    startActivity(intent)*/
+                    setCurrentFragment(LogInFragment.newInstance())
+                }
                 true
             }
             R.id.sign_out -> {
@@ -219,7 +251,7 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
         }
 
     override fun onItemSelected(itemId: Int) {
-        addFragment(ProductDetailsFragment.newInstance(itemId.toString()))
+        addFragment(DetailsOfAllProductsFragment.newInstance(itemId.toString()))
     }
 
     override fun onSuccessAddProduct() {
@@ -254,4 +286,11 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
     }
 
 
+    var isNavHide = false
+    private fun anim(hide: Boolean) {
+        if (isNavHide && hide || !isNavHide && !hide) return
+        isNavHide = hide
+        val moveY = if (hide) 2 * bottomNav!!.height else 0
+        bottomNav!!.animate().translationY(moveY.toFloat()).setStartDelay(100).setDuration(300).start()
+    }
 }

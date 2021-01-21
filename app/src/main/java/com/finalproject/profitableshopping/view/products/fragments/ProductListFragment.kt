@@ -67,12 +67,11 @@ class ProductListFragment : Fragment() {
 
     private fun filterList(filterItem: String) {
         var tempList: MutableList<Product> = ArrayList();
-        for (d in adapter.productsList){
-            if(filterItem in d.name){
+        for (d in adapter.productsList) {
+            if (filterItem in d.name) {
                 tempList.add(d)
             }
         }
-
         adapter.updateList(tempList)
     }
 
@@ -80,7 +79,6 @@ class ProductListFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
-
     }
 
     override fun onResume() {
@@ -121,16 +119,10 @@ class ProductListFragment : Fragment() {
             Observer { prodcts ->
                 showProgress(false)
                 updateUI(prodcts)
-
             }
         )
-
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        callbacks = null
-    }
 
     private fun updateUI(productsList: List<Product>) {
         adapter = ProductAdapter(productsList)
@@ -158,23 +150,23 @@ class ProductListFragment : Fragment() {
             view.setOnClickListener(this)
         }
 
-
         fun bind(pro: Product) {
             product = pro
             productNameTv.text = pro.name
             productRialPriceTv.text = pro.rialPrice.toString()
             productDescriptionTv.text = pro.description
-            if (product.images.isNotEmpty()){
+
+            if (product.images.isNotEmpty()) {
                 Picasso.get().also {
                     val path = product.images[0].getUrl()
                     it.load(path)
-                        .resize(150,150)
+                        .resize(150, 150)
                         .centerCrop()
-                        .placeholder(R.drawable.shoe)
+                        .placeholder(R.drawable.laptop)
                         .into(productImageIv)
                 }
-            }else{
-                productImageIv.setImageResource(R.drawable.shoe)
+            } else {
+                productImageIv.setImageResource(R.drawable.laptop)
             }
         }
 
@@ -205,15 +197,28 @@ class ProductListFragment : Fragment() {
             return productsList.size
         }
 
-        fun updateList(list : List<Product>){
-            productsList =list
+        fun updateList(list: List<Product>) {
+            productsList = list
             notifyDataSetChanged();
         }
     }
 
+
+    /////////////////////////////////////////////////////
+
     interface Callbacks {
         fun onItemSelected(itemId: Int)
         // fun onFloatButtonClicked()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callbacks = context as Callbacks
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        callbacks = null
     }
 
     companion object {

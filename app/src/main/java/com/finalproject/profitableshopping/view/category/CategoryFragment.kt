@@ -23,6 +23,7 @@ import com.finalproject.profitableshopping.view.products.UploadRequestBody
 import com.finalproject.profitableshopping.view.products.fragments.AddProductFragment
 
 import com.finalproject.profitableshopping.viewmodel.CategoryViewModel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.delete_category.view.*
 import kotlinx.android.synthetic.main.fragment_catergory_list.view.*
 import kotlinx.android.synthetic.main.update_category.view.*
@@ -46,6 +47,7 @@ class CategoryFragment : Fragment(),UploadRequestBody.UploadCallback {
     private lateinit var categoryRecyclerView: RecyclerView
     private lateinit var categoriesList: List<Category>
     private lateinit var progressBar: ProgressBar
+    private lateinit var addCatFloatingABtn: FloatingActionButton
     private var adapter: CategoryAdapter? = CategoryAdapter(emptyList())
     private var openMoreOptions = true
     private var selectedImageUri: Uri? = null
@@ -71,6 +73,11 @@ class CategoryFragment : Fragment(),UploadRequestBody.UploadCallback {
                 }
             )
         }
+
+       addCatFloatingABtn.setOnClickListener{
+           var bottomSheetAddCat =AddCategoryFragment();
+           bottomSheetAddCat.show(childFragmentManager,"Tag")
+       }
     }
 
 
@@ -90,6 +97,7 @@ class CategoryFragment : Fragment(),UploadRequestBody.UploadCallback {
         addBtn = view.findViewById(R.id.add_category_btn)
         categoryRecyclerView.layoutManager = LinearLayoutManager(context)
         progressBar = view.findViewById(R.id.progress_circular)
+        addCatFloatingABtn = view.findViewById(R.id.floatingBtn_add_cat_)
         return view
     }
 
@@ -210,8 +218,7 @@ class CategoryFragment : Fragment(),UploadRequestBody.UploadCallback {
         var categoryUpdateTv: TextView = view.findViewById(R.id.tv_update_category) as TextView
         var categoryDeleteTv: TextView = view.findViewById(R.id.tv_delete_category) as TextView
         var categoryMoreOPtionIV: ImageView = view.findViewById(R.id.img_more_options) as ImageView
-        var categoryUpdeteDeleteLy: LinearLayout =
-            view.findViewById(R.id.ly_update_delete_category) as LinearLayout
+        var categoryUpdeteDeleteLy: LinearLayout = view.findViewById(R.id.ly_update_delete_category) as LinearLayout
 
 
         ////////////////////this function to update the category
