@@ -86,10 +86,7 @@ class ProductListFragment : Fragment() {
         productViewModel.refresh()
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        callbacks = context as Callbacks
-    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,

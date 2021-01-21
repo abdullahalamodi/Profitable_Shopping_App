@@ -99,52 +99,11 @@ class OrderItemOptions() : DialogFragment(), AdapterView.OnItemSelectedListener 
     }
 
 
-    override fun onStart() {
-        super.onStart()
-        addToCartBtn.setOnClickListener {
-            if(quantityEd.text.isNotEmpty()&&colorSV.prompt.isNotEmpty()&&sizeSV.prompt.isNotEmpty()){
-                if (!checkCart())
-                  createCart()
-                else if (!AppSharedPreference.getOrderState(requireContext())){
-                    createCart()
-                }
-               /* var order=OrderItem(
-                    null ,
-                    product?.id!!.toString(),
-                    AppSharedPreference.getUserId(requireContext()).toString(),
-                    AppSharedPreference.getCartId(requireContext()),
-                    quantityEd.text.toString().toInt(),
-                    selectedColor,
-                    selectedSizer,
-                    quantityEd.text.toString().toInt()* product!!.rialPrice
-                )*/
-                val order=OrderItem(
-                    null ,
-                    "labtop",
-                    1,
-                    20,
-                    "red",
-                    "xl",
-                    2350.0
-                )
-                carttViewModel.pro.add(order)
-                /*carttViewModel.addToCart(
-                  order).observe(
-                    this,
-                    Observer {
-
-                    }
-                )*/
-
-
-
-
-
 
     private fun addItem(){
         val orderDetails = OrderDetails(
             product_id = product?.id!!,
-            order_id = AppSharedPreference.getCartId(requireContext()),
+            order_id = AppSharedPreference.getCartId(requireContext())?.toInt()!!,
             quantity = quantityEd.text.toString().toInt(),
             color = selectedColor,
             size = selectedSizer,
@@ -191,7 +150,7 @@ class OrderItemOptions() : DialogFragment(), AdapterView.OnItemSelectedListener 
     }
 
     private fun checkCart(): Boolean {
-        return AppSharedPreference.getCartId(requireContext()) != -1
+        return AppSharedPreference.getCartId(requireContext()) != "-1"
     }
 
     companion object {

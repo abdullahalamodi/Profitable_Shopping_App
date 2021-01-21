@@ -17,21 +17,20 @@ class CartRepositry(){
             .build()
         shoppingApi = retrofit.create(ShoppingApi::class.java)
     }
-    fun createCart(order: Order): Call<Int> {
+    fun createCart(order: Order): Call<String> {
         return shoppingApi.createCart(order)
     }
     fun addOrder(order:OrderDetails):Call<String>{
         return shoppingApi.addOrderDetails(order)
     }
 
-    fun deleteOrder(id:Int):Call<String>{
-        return shoppingApi.deleteOrder(id.toString())
+    fun deleteOrder(id:String):Call<String>{
+        return shoppingApi.deleteOrder(id)
     }
     fun getOrders(cartId: Int):Call<List<OrderDetails>>{
         return shoppingApi.getUserCartItems(cartId.toString())
     }
-
-    fun buy(cartId: Int):Call<String>{
+    fun buy(cartId: String):Call<String>{
         return shoppingApi.buy(cartId.toString())
     }
 }
