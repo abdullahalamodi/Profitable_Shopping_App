@@ -1,5 +1,6 @@
 package com.finalproject.profitableshopping.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -38,6 +39,7 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
     ProductDetailsFragment.Callbacks {
 
     private lateinit var buttonNav :BottomNavigationMenuView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -46,7 +48,7 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
         supportActionBar?.elevation = 0.0f
 
       //  val nested_content =findViewById<View>(R.id.container) as NestedScrollView
-        bottomNav = findViewById<View>(R.id.bottomNav) as BottomNavigationView
+/*        buttonNav = findViewById<View>(R.id.bottomNav) as BottomNavigationView
         val n =findViewById<View>(R.id.container)
        n.setOnScrollChangeListener() { v, X, Y, oldScrollX, oldScrollY ->
             if ( Y < oldScrollY) {
@@ -55,7 +57,7 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
             if ( Y > oldScrollY) {
                 anim(true)
             }
-        }
+        }*/
 
        // supportActionBar?.hide()
 

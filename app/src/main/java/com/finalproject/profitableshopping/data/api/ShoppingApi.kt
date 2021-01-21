@@ -2,13 +2,10 @@ package com.finalproject.profitableshopping.data.api
 
 
 
-import com.finalproject.profitableshopping.data.models.Category
-import com.finalproject.profitableshopping.data.models.Comment
-import com.finalproject.profitableshopping.data.models.Order
-import com.finalproject.profitableshopping.data.models.OrderDetails
-import com.finalproject.profitableshopping.data.models.Product
+import com.finalproject.profitableshopping.data.models.*
 
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 
 import retrofit2.Call
@@ -73,12 +70,12 @@ interface ShoppingApi {
     @POST("order.php")
     fun createCart(@Body order: Order):Call<Int>
     @POST("order.pho")
-    fun addOrder(@Body orderItem:OrderItem):Call<String>
+    fun addOrder(@Body orderItem:OrderDetails):Call<String>
     @DELETE("order.pho")
     fun deleteOrder(@Query("orderItem_id") orderItem:Int):Call<String>
 
     @GET("order.php ?")
-    fun getUserCartItems(@Query("user_id") userId: String, @Query("order_id") orderId: Int):Call<List<OrderItem>>
+    fun getUserCartItems(@Query("user_id") userId: String, @Query("order_id") orderId: Int):Call<List<OrderDetails>>
     // favorite method
     @POST("favorite.php")
     fun createFavorite(@Body favorite: Favorite):Call<Int>
@@ -97,7 +94,7 @@ interface ShoppingApi {
     @GET("comments.php")
     fun getUserComments(@Query("user_id") userId: String): Call<List<Comment>>
     @GET("comments.php")
-    fun getComment(@Query("id") commentId: String): Call<Comment>
+    fun getComment(@Query("id") commentId: Int): Call<Comment>
     @POST("comments.php")
     fun addComment(@Body comment: Comment):Call<String>
     @POST("comments.php")
