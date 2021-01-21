@@ -55,6 +55,8 @@ class ShowAllProductsFragment : Fragment() {
         allProductsRecyclerView = view.findViewById(R.id.rv_all_products)
         hCategoryRecyclerView.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
+        
         allProductsRecyclerView.layoutManager = LinearLayoutManager(context)
         allProductsRecyclerView.adapter = adapterProducts
 

@@ -10,7 +10,10 @@ import android.widget.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.finalproject.profitableshopping.R
+import com.finalproject.profitableshopping.data.models.Comment
 import com.finalproject.profitableshopping.data.models.Product
+import com.finalproject.profitableshopping.viewmodel.CategoryViewModel
+import com.finalproject.profitableshopping.viewmodel.CommentViewModel
 import com.finalproject.profitableshopping.viewmodel.ProductViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.squareup.picasso.Picasso
@@ -33,6 +36,8 @@ class DetailsOfAllProductsFragment : Fragment() {
     lateinit var ratingBtn: FloatingActionButton
     lateinit var callbacks: ProductDetailsFragment.Callbacks
     lateinit var product: Product
+    private lateinit var commentViewModel: CommentViewModel
+
 
 
     override fun onStart() {
@@ -86,8 +91,15 @@ class DetailsOfAllProductsFragment : Fragment() {
         builder.setView(itemView)
         builder.setNegativeButton("Cancel") { dialogInterface, i -> dialogInterface.dismiss() }
         builder.setPositiveButton("Ok") { dialogInterface, i ->
-
-            //
+            val comment =Comment()
+            comment.rate= ratingBar.rating.toInt()
+            val response = commentViewModel.addComment(comment)
+            response.observe(
+                viewLifecycleOwner,
+                Observer { message ->
+                    Toast.makeText(context, message.toString(), Toast.LENGTH_SHORT).show()
+                }
+            )
         }
 
         val dialog= builder.create()
