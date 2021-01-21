@@ -1,11 +1,14 @@
 package com.finalproject.profitableshopping.data.api
 
+
+
 import com.finalproject.profitableshopping.data.models.Category
 import com.finalproject.profitableshopping.data.models.Order
 import com.finalproject.profitableshopping.data.models.OrderDetails
 import com.finalproject.profitableshopping.data.models.Product
+
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
+
 
 import retrofit2.Call
 import retrofit2.http.*
@@ -65,22 +68,25 @@ interface ShoppingApi {
         @Part("product_id") desc: RequestBody
     ): Call<String>
 
+  //car API  method
+    @POST("order.php")
+    fun createCart(@Body order: Order):Call<Int>
+    @POST("order.pho")
+    fun addOrder(@Body orderItem:OrderItem):Call<String>
+    @DELETE("order.pho")
+    fun deleteOrder(@Query("orderItem_id") orderItem:Int):Call<String>
 
-    //car API partion
-    @POST("orders.php")
-    fun createCart(@Body order: Order): Call<Int>
+    @GET("order.php ?")
+    fun getUserCartItems(@Query("user_id") userId: String, @Query("order_id") orderId: Int):Call<List<OrderItem>>
+    // favorite method
+    @POST("favorite.php")
+    fun createFavorite(@Body favorite: Favorite):Call<Int>
+    @POST("favorite.pho")
+    fun addFavoriteItem(@Body FavoriteItem:FavoriteItem):Call<String>
 
-    @POST("orderDetails.pho")
-    fun addOrderDetails(@Body orderDetails: OrderDetails): Call<String>
+    @GET("favorite.php ?")
+    fun getFavoriteItems( @Query("favorite_id") favoriteId: Int):Call<List<FavoriteItem>>
+    @DELETE("favorite.pho")
+    fun deleteFavoriteItem(@Query("FavoriteItem_id") FavoriteItemId:Int):Call<String>
 
-    @POST("orders.pho")
-    fun buy(@Body id: String): Call<String>
-
-    @GET("order_details.php?")
-    fun getUserCartItems(
-        @Query("order_id") order_id: String
-    ): Call<List<OrderDetails>>
-
-    @DELETE("oder_details.php")
-    fun deleteOrder(@Query("order_id") order_id: String): Call<String>
 }

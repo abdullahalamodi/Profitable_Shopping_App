@@ -15,6 +15,7 @@ import com.finalproject.profitableshopping.view.authentication.fragments.LogInFr
 import com.finalproject.profitableshopping.view.authentication.fragments.SignUpFragment
 import com.finalproject.profitableshopping.view.cart.CartFragment
 import com.finalproject.profitableshopping.view.category.CategoryFragment
+import com.finalproject.profitableshopping.view.favorite.FavoriteFragment
 import com.finalproject.profitableshopping.view.products.fragments.AddProductFragment
 import com.finalproject.profitableshopping.view.products.fragments.ProductDetailsFragment
 import com.finalproject.profitableshopping.view.products.fragments.ProductListFragment
@@ -44,10 +45,7 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
             val fragmentTransaction = fragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.container, ProductListFragment.newInstance())
                 .commit()
-            //setCurrentFragment(CartFragment.newInstance())
-           /* com.finalproject.profitableshopping.view.cart.dialogs.OrderItemOptions.newInstance("1111").apply {
-                show(supportFragmentManager,"options")
-            }*/
+
         }
 
 
@@ -103,6 +101,7 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu to use in the action bar
+
 
         val inflater = menuInflater
         inflater.inflate(R.menu.main_menu, menu)
