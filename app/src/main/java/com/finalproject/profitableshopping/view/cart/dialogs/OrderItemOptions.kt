@@ -133,7 +133,7 @@ class OrderItemOptions() : DialogFragment(), AdapterView.OnItemSelectedListener 
         val order=Order(
             null,
             "${date.get(Calendar.DAY_OF_MONTH)+date.get(Calendar.MONTH)}",
-            AppSharedPreference.getUserId(requireContext()),
+            AppSharedPreference.getUserId(requireContext())!!.toInt(),
             0.0,
             false
         )

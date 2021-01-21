@@ -102,7 +102,8 @@ class SignUpFragment : Fragment() {
                 if (it.isSuccessful) {
                     sendEmailVerification()
                     // create favorite for user
-                    favoriteViewModel.createFavorite(Favorite(null,AppSharedPreference.getUserId(requireContext()),"1-1-2021")).observe(
+                    favoriteViewModel.createFavorite(Favorite(null,
+                        AppSharedPreference.getUserId(requireContext())!!.toInt(),"1-1-2021")).observe(
                         this,
                         Observer {
                             AppSharedPreference.setFavoriteId(requireContext(),it)

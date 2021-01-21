@@ -26,7 +26,7 @@ object AppSharedPreference {
             Context.MODE_PRIVATE
         )
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
-        editor.putInt(idKey, Integer.valueOf(user.id))
+        editor.putString(idKey, user.id)
         editor.putString(emailKey, user.email)
         editor.putString(passwordKey, user.password)
         editor.putBoolean(isActiveKey, user.isActive)
@@ -71,12 +71,12 @@ object AppSharedPreference {
         return sharedPreferences.getBoolean(hasCart, false)
     }
 
-    fun getUserId(context: Context): Int {
+    fun getUserId(context: Context): String? {
         val sharedPreferences: SharedPreferences = context.getSharedPreferences(
             sharedPrefFile,
             Context.MODE_PRIVATE
         )
-        return sharedPreferences.getInt(idKey, -1)
+        return sharedPreferences.getString(idKey, "-1")
     }
     fun getCartId(context: Context):Int{
         val sharedPreferences: SharedPreferences = context.getSharedPreferences(
