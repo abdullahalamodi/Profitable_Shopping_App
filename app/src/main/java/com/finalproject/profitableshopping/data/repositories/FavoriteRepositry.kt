@@ -4,7 +4,7 @@ import com.finalproject.profitableshopping.data.api.ShoppingApi
 import com.finalproject.profitableshopping.data.models.Favorite
 import com.finalproject.profitableshopping.data.models.FavoriteItem
 import com.finalproject.profitableshopping.data.models.Order
-import com.finalproject.profitableshopping.data.models.OrderItem
+import com.finalproject.profitableshopping.data.models.OrderDetails
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

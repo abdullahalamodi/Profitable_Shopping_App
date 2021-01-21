@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.finalproject.profitableshopping.data.models.Favorite
 import com.finalproject.profitableshopping.data.models.FavoriteItem
-import com.finalproject.profitableshopping.data.models.OrderItem
+//import com.finalproject.profitableshopping.data.models.OrderItem
 import com.finalproject.profitableshopping.data.repositories.CartRepositry
 import com.finalproject.profitableshopping.data.repositories.FavoriteRepositry
 import retrofit2.Call
