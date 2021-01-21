@@ -20,13 +20,9 @@ class ProductRepositry {
         shoppingApi = retrofit.create(ShoppingApi::class.java)
     }
 
-
-
-    fun uploadImage(file:List< MultipartBody.Part>,
-                    pId:String,
-                    uId:String) :Call<String>{
-
-        return shoppingApi.uploadImage(file,pId,uId)
+    fun uploadImage(image:MultipartBody.Part,
+                    productId:RequestBody) :Call<String>{
+        return shoppingApi.uploadImage(image,productId)
 
     }
 
@@ -49,8 +45,8 @@ class ProductRepositry {
 
     }
 
-    fun updateProduct(proId:String,product: Product):Call<String>{
-        return  shoppingApi.updateProduct(proId,product)
+    fun updateProduct(product: Product):Call<String>{
+        return  shoppingApi.updateProduct(product.id.toString(),product)
     }
 
     fun deleteProduct(proId:String):Call<String>{

@@ -14,11 +14,19 @@
       },
       "oauth_client": [
         {
-          "client_id": "355575946145-uempdk0ku8hr9grcnn8aha4nir3j4o7i.apps.googleusercontent.com",
+          "client_id": "355575946145-1bkkfdeabt1r0i1t6rn209nljnma8upi.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.finalproject.profitableshopping",
-            "certificate_hash": "2a47be23362556d3ff9dc21482cd355422e0e9a1"
+            "certificate_hash": "0bd9c24004fb6ef7e18eddcea4415dd46d12012c"
+          }
+        },
+        {
+          "client_id": "355575946145-fbbv0d5k116dshhkk83fdl2afb91tm2m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.finalproject.profitableshopping",
+            "certificate_hash": "f0543f34692d470e51bc299e4f2d0aef009d8c8b"
           }
         },
         {

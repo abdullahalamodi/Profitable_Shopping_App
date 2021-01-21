@@ -127,10 +127,12 @@ class CategoryViewModel : ViewModel() {
         call.enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 responseLiveData.value = response.body()!!
+                Log.d("delet cat",response.body()!!)
             }
 
             override fun onFailure(call: Call<String>, t: Throwable) {
                 responseLiveData.value = t.message!!
+                Log.d("delet failed",t.message!!)
             }
         })
         return responseLiveData

@@ -2,9 +2,12 @@ package com.finalproject.profitableshopping.view.products.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -17,10 +20,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.models.Product
 import com.finalproject.profitableshopping.viewmodel.ProductViewModel
+import com.squareup.picasso.Picasso
 
 class ProductListFragment : Fragment() {
     private lateinit var productViewModel: ProductViewModel
     private lateinit var productsRv: RecyclerView
+    private lateinit var searchEt: EditText
     private var adapter: ProductAdapter = ProductAdapter(emptyList())
     private lateinit var progressBar: ProgressBar
 
@@ -35,12 +40,48 @@ class ProductListFragment : Fragment() {
              callbacks?.onFloatButtonClicked()
          }*/
 
+        searchEt.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                filterList(s.toString())
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                productViewModel.productsListLiveData.observe(
+                    viewLifecycleOwner,
+                    Observer { prodcts ->
+                        showProgress(false)
+                        updateUI(prodcts)
+                    }
+                )
+            }
+        })
     }
+
+    private fun filterList(filterItem: String) {
+        var tempList: MutableList<Product> = ArrayList();
+        for (d in adapter.productsList){
+            if(filterItem in d.name){
+                tempList.add(d)
+            }
+        }
+
+        adapter.updateList(tempList)
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        productViewModel.refresh()
     }
 
     override fun onAttach(context: Context) {
@@ -58,6 +99,7 @@ class ProductListFragment : Fragment() {
             R.layout.fragment_product_list, container, false
         )
         productsRv = view.findViewById(R.id.rv_product)
+        searchEt = view.findViewById(R.id.et_search_product)
         progressBar = view.findViewById(R.id.progress_circular)
         productsRv.layoutManager = GridLayoutManager(context, 2)
         //  addFbtn =view.findViewById()
@@ -114,20 +156,33 @@ class ProductListFragment : Fragment() {
 
 
         fun bind(pro: Product) {
+            product = pro
             productNameTv.text = pro.name
             productRialPriceTv.text = pro.rialPrice.toString()
             productDescriptionTv.text = pro.description
-
+            if (product.images.isNotEmpty()){
+                Picasso.get().also {
+                    val path = product.images[0].getUrl()
+                    it.load(path)
+                        .resize(150,150)
+                        .centerCrop()
+                        .placeholder(R.drawable.shoe)
+                        .into(productImageIv)
+                }
+            }else{
+                productImageIv.setImageResource(R.drawable.shoe)
+            }
         }
 
         override fun onClick(p0: View?) {
-            //to open product fragment to  desplay  product details
+            //to open product fragment to  display  product details
             callbacks?.onItemSelected(this.product.id)
         }
     }
 
-    private inner class ProductAdapter(val productsList: List<Product>) :
+    private inner class ProductAdapter(var productsList: List<Product>) :
         RecyclerView.Adapter<ProductHolder>() {
+
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductHolder {
             // need to change inflate to be product list item xml
             val view: View = layoutInflater.inflate(
@@ -144,6 +199,11 @@ class ProductListFragment : Fragment() {
 
         override fun getItemCount(): Int {
             return productsList.size
+        }
+
+        fun updateList(list : List<Product>){
+            productsList =list
+            notifyDataSetChanged();
         }
     }
 
