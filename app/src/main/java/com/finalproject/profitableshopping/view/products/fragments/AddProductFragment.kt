@@ -90,7 +90,6 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
             }
         }
 
-
     }
 
 

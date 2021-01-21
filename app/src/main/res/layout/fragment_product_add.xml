@@ -72,31 +72,42 @@
                     android:paddingRight="12dp"
                     android:textDirection="rtl" />
 
-                <EditText
-                    android:id="@+id/et_rial_price_product"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="55dp"
-                    android:layout_margin="6dp"
-                    android:background="@drawable/et_bg"
-                    android:fontFamily="@font/rb_light"
-                    android:hint="@string/rail_price_product"
-                    android:inputType="textPersonName"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="12dp"
-                    android:textDirection="rtl" />
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
 
-                <EditText
-                    android:id="@+id/et_dollar_price_product"
-                    android:layout_width="match_parent"
-                    android:layout_height="55dp"
-                    android:layout_margin="6dp"
-                    android:background="@drawable/et_bg"
-                    android:fontFamily="@font/rb_light"
-                    android:hint="@string/dollar_price_product"
-                    android:inputType="textPersonName"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="12dp"
-                    android:textDirection="rtl" />
+                    <EditText
+                        android:id="@+id/et_rial_price_product"
+                        android:layout_width="0dp"
+                        android:layout_height="55dp"
+                        android:layout_margin="6dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/et_bg"
+                        android:fontFamily="@font/rb_light"
+                        android:hint="@string/rail_price_product"
+                        android:inputType="textPersonName"
+                        android:paddingLeft="12dp"
+                        android:paddingRight="12dp"
+                        android:textDirection="rtl" />
+
+                    <EditText
+                        android:id="@+id/et_dollar_price_product"
+                        android:layout_width="0dp"
+                        android:layout_height="55dp"
+                        android:layout_margin="6dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/et_bg"
+                        android:fontFamily="@font/rb_light"
+                        android:hint="@string/dollar_price_product"
+                        android:inputType="textPersonName"
+                        android:paddingLeft="12dp"
+                        android:paddingRight="12dp"
+                        android:textDirection="rtl" />
+
+                </LinearLayout>
+
 
                 <EditText
                     android:id="@+id/et_quantity_product"
@@ -111,14 +122,38 @@
                     android:paddingRight="12dp"
                     android:textDirection="rtl" />
 
-            <ImageView
-                android:id="@+id/btn_load_photo_product"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:background="#ddd"
-                android:src="@drawable/ic_camera"
-                android:padding="20dp"
-                android:layout_gravity="right"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center|end"
+                    android:weightSum="2"
+                    android:layout_marginEnd="12dp">
+
+
+                    <ImageView
+                        android:id="@+id/btn_load_photo_product"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_gravity="center|start"
+                        android:background="#ddd"
+                        android:padding="20dp"
+                        android:src="@drawable/ic_camera"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/rb_light"
+                        android:gravity="start"
+                        android:layout_marginStart="22dp"
+                        android:text="@string/txt_add_photo_product"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
                 <EditText
                     android:id="@+id/et_desc_product"
                     android:layout_width="match_parent"
@@ -132,15 +167,15 @@
                     android:paddingRight="12dp"
                     android:textDirection="rtl" />
 
-                <ImageView
-                    android:id="@+id/btn_load_photo_product"
-                    android:layout_width="140dp"
-                    android:layout_height="140dp"
-                    android:layout_gravity="right"
-                    android:background="#ddd"
-                    android:padding="20dp"
-                    android:src="@drawable/ic_camera" />
-
+                <!--     <ImageView
+                         android:id="@+id/btn_load_photo_product"
+                         android:layout_width="140dp"
+                         android:layout_height="140dp"
+                         android:layout_gravity="right"
+                         android:background="#ddd"
+                         android:padding="20dp"
+                         android:src="@drawable/ic_camera" />
+     -->
 
                 <Button
                     android:id="@+id/btn_add_product"
@@ -164,8 +199,8 @@
             android:id="@+id/progress_circular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:padding="10dp" />
     </FrameLayout>
 
 </ScrollView>

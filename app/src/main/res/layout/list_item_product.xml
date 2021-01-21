@@ -9,7 +9,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="12dp"
+        android:layout_margin="6dp"
         app:cardCornerRadius="12dp"
         app:cardElevation="8dp">
 
@@ -25,11 +25,11 @@
 
             <ImageView
                 android:id="@+id/ImgV_product"
-                android:layout_width="140dp"
-                android:layout_height="140dp"
+                android:layout_width="130dp"
+                android:layout_height="130dp"
                 android:layout_gravity="center"
-                android:layout_margin="12dp"
-                android:src="@drawable/shoe" />
+                android:layout_margin="4dp"
+                android:src="@drawable/laptop" />
 
             <View
                 android:layout_width="match_parent"
@@ -47,41 +47,45 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tv_name_product"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1.2"
-                        android:gravity="center"
-                        android:padding="12dp"
-                        android:text="Glasses"
-                        android:textColor="@color/black"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/tv_price_product"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_weight="0.8"
+                        android:fontFamily="@font/rb_light"
                         android:gravity="center"
-                        android:padding="12dp"
+                        android:padding="8dp"
                         android:text="120$"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="20sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_name_product"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/rb_light"
+                        android:gravity="center"
+                        android:padding="2dp"
+                        android:text="Glasses"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+
                 </LinearLayout>
 
                 <TextView
                     android:id="@+id/tv_description_product"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
+                    android:layout_marginRight="10dp"
                     android:layout_marginBottom="6dp"
+                    android:fontFamily="@font/rb_light"
                     android:gravity="center"
-                    android:padding="10dp"
+                    android:paddingLeft="10dp"
                     android:text="We have anice glassess of many colors and size try to use one."
                     android:textColor="@color/lightGray"
                     android:textStyle="bold" />
