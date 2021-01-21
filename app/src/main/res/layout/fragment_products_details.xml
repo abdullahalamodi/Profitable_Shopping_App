@@ -19,7 +19,18 @@
             android:layout_height="160dp"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
-            android:src="@drawable/glasses3" />
+            android:src="@drawable/ic_search" />
+
+        <Button
+            android:id="@+id/product_cart_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg3"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_marginBottom="-50dp"
+            android:fontFamily="@font/rb_light"
+            android:text="اضافة للسلة" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,6 +38,7 @@
             android:layout_marginTop="22dp"
             android:background="@drawable/detail_page_bg"
             android:orientation="vertical">
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -159,6 +171,7 @@
                     android:textStyle="bold"
                     android:fontFamily="@font/rb_light"
                     android:text="تعديل" />
+
             </LinearLayout>
         </LinearLayout>
 

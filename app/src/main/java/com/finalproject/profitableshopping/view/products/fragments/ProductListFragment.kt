@@ -2,9 +2,12 @@ package com.finalproject.profitableshopping.view.products.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -26,6 +29,7 @@ import kotlinx.android.synthetic.main.delete_category.view.*
 class ProductListFragment : Fragment() {
     private lateinit var productViewModel: ProductViewModel
     private lateinit var productsRv: RecyclerView
+    private lateinit var searchEt: EditText
     private var adapter: ProductAdapter = ProductAdapter(emptyList())
     private lateinit var progressBar: ProgressBar
 
@@ -39,6 +43,37 @@ class ProductListFragment : Fragment() {
              //to open product fragment to  add new product
              callbacks?.onFloatButtonClicked()
          }*/
+
+        searchEt.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                filterList(s.toString())
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                productViewModel.productsListLiveData.observe(
+                    viewLifecycleOwner,
+                    Observer { prodcts ->
+                        showProgress(false)
+                        updateUI(prodcts)
+                    }
+                )
+            }
+        })
+    }
+
+    private fun filterList(filterItem: String) {
+        var tempList: MutableList<Product> = ArrayList();
+        for (d in adapter.productsList){
+            if(filterItem in d.name){
+                tempList.add(d)
+            }
+        }
+
+        adapter.updateList(tempList)
     }
 
 
@@ -68,6 +103,7 @@ class ProductListFragment : Fragment() {
             R.layout.fragment_product_list, container, false
         )
         productsRv = view.findViewById(R.id.rv_product)
+        searchEt = view.findViewById(R.id.et_search_product)
         progressBar = view.findViewById(R.id.progress_circular)
         productsRv.layoutManager = GridLayoutManager(context, 2)
         //  addFbtn =view.findViewById()
@@ -143,13 +179,14 @@ class ProductListFragment : Fragment() {
         }
 
         override fun onClick(p0: View?) {
-            //to open product fragment to  desplay  product details
+            //to open product fragment to  display  product details
             callbacks?.onItemSelected(this.product.id)
         }
     }
 
-    private inner class ProductAdapter(val productsList: List<Product>) :
+    private inner class ProductAdapter(var productsList: List<Product>) :
         RecyclerView.Adapter<ProductHolder>() {
+
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductHolder {
             // need to change inflate to be product list item xml
             val view: View = layoutInflater.inflate(
@@ -166,6 +203,11 @@ class ProductListFragment : Fragment() {
 
         override fun getItemCount(): Int {
             return productsList.size
+        }
+
+        fun updateList(list : List<Product>){
+            productsList =list
+            notifyDataSetChanged();
         }
     }
 

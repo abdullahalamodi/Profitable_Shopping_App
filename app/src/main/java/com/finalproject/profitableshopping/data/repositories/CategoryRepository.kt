@@ -3,6 +3,8 @@ package com.finalproject.profitableshopping.data.repositories
 import com.finalproject.profitableshopping.data.api.ShoppingApi
 import com.finalproject.profitableshopping.data.models.Category
 import com.google.gson.GsonBuilder
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 
 import retrofit2.Call
@@ -47,11 +49,19 @@ class CategoryRepository {
         return shoppingApi.deleteCategory(catId.toString())
     }
 
+    fun uploadImage(image: MultipartBody.Part,
+                    catId: RequestBody
+    ) :Call<String>{
+        return shoppingApi.uploadCategoryImage(image,catId)
+
+    }
+
 
     companion object{
+        //internal const val BASE_URL = "http://192.168.1.36:80/profitable_shopping_api/api/"
        // internal const val BASE_URL = "https://profitableshopping.000webhostapp.com/profitable_shopping_api/api/"
-        internal const val BASE_URL = "http://192.168.191.1:8080/profitable_shopping_api/api/"
-//        internal const val BASE_URL = "http://10.0.2.2:80/profitable_shopping_api/api/"
+//        internal const val BASE_URL = "http://192.168.191.1:8080/profitable_shopping_api/api/"
+        internal const val BASE_URL = "http://10.0.2.2:80/profitable_shopping_api/api/"
     }
 
 }

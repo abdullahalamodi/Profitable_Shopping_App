@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import ccom.finalproject.profitableshopping.view.products.dialogs.OrderItemOptions
 import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.AppSharedPreference
 import com.finalproject.profitableshopping.view.authentication.fragments.ActiveFragment
@@ -20,6 +19,7 @@ import com.finalproject.profitableshopping.view.favorite.FavoriteFragment
 import com.finalproject.profitableshopping.view.products.fragments.AddProductFragment
 import com.finalproject.profitableshopping.view.products.fragments.ProductDetailsFragment
 import com.finalproject.profitableshopping.view.products.fragments.ProductListFragment
+import com.finalproject.profitableshopping.view.products.fragments.ShowAllProductsFragment
 import com.finalproject.profitableshopping.view.user.UserFragment
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -45,10 +45,7 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
             val fragmentTransaction = fragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.container, ProductListFragment.newInstance())
                 .commit()
-           // setCurrentFragment(FavoriteFragment.newInstance())
-           /* OrderItemOptions.newInstance("1111").apply {
-                show(supportFragmentManager,"options")
-            }*/
+
         }
 
 
@@ -160,17 +157,17 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
                 true
             }
             R.id.menu_categories -> {
-                if (getUserToken() != null && getUserToken() == "Admin")
+//                if (getUserToken() != null && getUserToken() == "Admin")
                     setCurrentFragment(CategoryFragment.newInstance())
-                else if (getUserToken() != "Admin") {
-                    Toast.makeText(this, "yor are not admin", Toast.LENGTH_SHORT).show()
-                } else {
-                    /* val intent = Intent(this, SignIn::class.java).apply {
- //                        putExtra(EXTRA_MESSAGE, message)
-                     }
-                     startActivity(intent)*/
-                    setCurrentFragment(LogInFragment.newInstance())
-                }
+//                else if (getUserToken() != "Admin") {
+//                    Toast.makeText(this, "yor are not admin", Toast.LENGTH_SHORT).show()
+//                } else {
+//                    /* val intent = Intent(this, SignIn::class.java).apply {
+// //                        putExtra(EXTRA_MESSAGE, message)
+//                     }
+//                     startActivity(intent)*/
+//                    setCurrentFragment(LogInFragment.newInstance())
+//                }
                 true
             }
             R.id.sign_out -> {

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FBF8EC"
+    tools:context=".view.products.fragments.ShowAllProductsFragment">
+
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:orientation="vertical">
+
+       <EditText
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:background="@drawable/bg9"
+           android:layout_marginLeft="12dp"
+           android:layout_marginRight="12dp"
+           android:layout_marginTop="8dp"
+           android:hint="search...."
+           android:ems="10"
+           android:padding="12dp"
+           android:drawableRight="@drawable/ic_search"
+           android:fontFamily="@font/rb_light"/>
+
+       <TextView
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="@string/Category"
+           android:textSize="18sp"
+           android:textColor="@color/colorPrimary"
+           android:fontFamily="@font/rb_light"
+           android:textStyle="bold"
+           android:layout_marginTop="6dp"
+           android:paddingLeft="12dp"
+           android:paddingRight="12dp"/>
+
+       <androidx.recyclerview.widget.RecyclerView
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="horizontal"
+           android:id="@+id/rv_all_categories"
+           android:layout_margin="4dp"/>
+
+       <TextView
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="@string/Products"
+           android:textSize="18sp"
+           android:textColor="@color/colorPrimary"
+           android:fontFamily="@font/rb_light"
+           android:textStyle="bold"
+           android:paddingLeft="12dp"
+           android:paddingRight="12dp"
+           android:layout_marginBottom="4dp"/>
+
+       <androidx.recyclerview.widget.RecyclerView
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:id="@+id/rv_all_products"
+           android:layout_margin="4dp"
+           tools:listitem="@layout/list_item_main_product"/>
+
+   </LinearLayout>
+
+</FrameLayout>
