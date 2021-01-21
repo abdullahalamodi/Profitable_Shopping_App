@@ -13,7 +13,6 @@ fun Context.showMessage(message: String) {
         message,
         Toast.LENGTH_SHORT
     ).show()
-
 }
 
 fun ContentResolver.getFileName(fileUri: Uri): String {
