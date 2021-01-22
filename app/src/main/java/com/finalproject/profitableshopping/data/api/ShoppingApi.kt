@@ -1,7 +1,6 @@
 package com.finalproject.profitableshopping.data.api
 
 
-
 import com.finalproject.profitableshopping.data.models.*
 
 import okhttp3.MultipartBody
@@ -66,39 +65,56 @@ interface ShoppingApi {
         @Part("product_id") desc: RequestBody
     ): Call<String>
 
-  //car API  method
-    @POST("order.php")
-    fun createCart(@Body order: Order):Call<Int>
-    @POST("order.pho")
-    fun addOrder(@Body orderItem:OrderDetails):Call<String>
-    @DELETE("order.pho")
-    fun deleteOrder(@Query("orderItem_id") orderItem:Int):Call<String>
+    //cart API  method
+    @POST("orders.php")
+    fun createCart(@Body order: Order): Call<String>
 
-    @GET("order.php ?")
-    fun getUserCartItems(@Query("user_id") userId: String, @Query("order_id") orderId: Int):Call<List<OrderDetails>>
+    @POST("orderDetails.pho")
+    fun addOrderDetails(@Body orderDetails: OrderDetails): Call<String>
+
+    @POST("orders.pho")
+    fun buy(@Body id: String): Call<String>
+
+    @GET("order_details.php?")
+    fun getUserCartItems(
+        @Query("order_id") order_id: String
+    ): Call<List<OrderDetails>>
+
+    @DELETE("orders.pho")
+    fun deleteOrder(@Query("order_id") orderId: String): Call<String>
+
+    @DELETE("order_details.php")
+    fun removeOrderDetails(@Query("id") id: String): Call<String>
+
     // favorite method
     @POST("favorite.php")
-    fun createFavorite(@Body favorite: Favorite):Call<Int>
-    @POST("favorite.pho")
-    fun addFavoriteItem(@Body FavoriteItem:FavoriteItem):Call<String>
+    fun createFavorite(@Body favorite: Favorite): Call<Int>
 
-    @GET("favorite.php ?")
-    fun getFavoriteItems( @Query("favorite_id") favoriteId: Int):Call<List<FavoriteItem>>
+    @POST("favorite.pho")
+    fun addFavoriteItem(@Body FavoriteItem: FavoriteItem): Call<String>
+
+    @GET("favorite.php?")
+    fun getFavoriteItems(@Query("favorite_id") favoriteId: Int): Call<List<FavoriteItem>>
+
     @DELETE("favorite.pho")
-    fun deleteFavoriteItem(@Query("FavoriteItem_id") FavoriteItemId:Int):Call<String>
+    fun deleteFavoriteItem(@Query("FavoriteItem_id") FavoriteItemId: Int): Call<String>
 
     // comment method
-
     @GET("comments.php")
     fun getComments(): Call<List<Comment>>
+
     @GET("comments.php")
     fun getUserComments(@Query("user_id") userId: String): Call<List<Comment>>
+
     @GET("comments.php")
     fun getComment(@Query("id") commentId: Int): Call<Comment>
+
     @POST("comments.php")
-    fun addComment(@Body comment: Comment):Call<String>
+    fun addComment(@Body comment: Comment): Call<String>
+
     @POST("comments.php")
-    fun updateComment(@Query("id") id:String, @Body comment: Comment):Call<String>
+    fun updateComment(@Query("id") id: String, @Body comment: Comment): Call<String>
+
     @DELETE("comments.php")
-    fun deleteComment(@Query("id")id:String):Call<String>
+    fun deleteComment(@Query("id") id: String): Call<String>
 }
