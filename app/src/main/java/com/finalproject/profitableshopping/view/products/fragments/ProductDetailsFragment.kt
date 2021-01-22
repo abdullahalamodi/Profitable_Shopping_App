@@ -14,7 +14,7 @@ import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.AppSharedPreference
 import com.finalproject.profitableshopping.data.models.Product
 import com.finalproject.profitableshopping.showMessage
-import com.finalproject.profitableshopping.view.report.dialog.ComplainDialog
+import com.finalproject.profitableshopping.viewmodel.CartViewModel
 import com.finalproject.profitableshopping.viewmodel.ProductViewModel
 import com.squareup.picasso.Picasso
 
@@ -32,12 +32,14 @@ class ProductDetailsFragment : Fragment(),AdapterView.OnItemSelectedListener {
     lateinit var productDollarPriceTv: TextView
     lateinit var productDescriptionTv: TextView
     lateinit var deleteBtn: Button
-    lateinit var reportBtn: Button
     lateinit var updateBtn: Button
     lateinit var callbacks: Callbacks
     lateinit var product: Product
-    var  userId=""
     private lateinit var btnsLayout: LinearLayout
+    private lateinit var cartBtn: Button
+    private lateinit var carttViewModel:CartViewModel
+
+
 
 
     override fun onStart() {
@@ -50,6 +52,7 @@ class ProductDetailsFragment : Fragment(),AdapterView.OnItemSelectedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
+        carttViewModel = ViewModelProviders.of(this).get(CartViewModel::class.java)
         arguments?.let {
             productId = it.getString(ARG_PRODUCT_ID)
             productViewModel.loadProduct(productId!!)
@@ -71,18 +74,13 @@ class ProductDetailsFragment : Fragment(),AdapterView.OnItemSelectedListener {
         productDollarPriceTv = view.findViewById(R.id.tv_price_dollar) as TextView
         deleteBtn = view.findViewById(R.id.product_delete_btn) as Button
         updateBtn = view.findViewById(R.id.product_update_btn) as Button
-        reportBtn = view.findViewById(R.id.product_report_btn) as Button
         btnsLayout = view.findViewById(R.id.product_btns_layout) as LinearLayout
+        cartBtn = view.findViewById(R.id.product_cart_btn) as Button
         productDescriptionTv =
             view.findViewById(R.id.tv_details_product) as TextView
 
 
-        reportBtn.setOnClickListener {
-          ComplainDialog.newInstance(productId!!,userId).apply {
-              show(this@ProductDetailsFragment.getParentFragmentManager(), "report")
-          }
 
-        }
         deleteBtn.setOnClickListener {
             productViewModel.refresh()
             showProgress(true)
@@ -99,6 +97,10 @@ class ProductDetailsFragment : Fragment(),AdapterView.OnItemSelectedListener {
         updateBtn.setOnClickListener {
             callbacks.onUpdateProductClicked(productId)
         }
+
+        cartBtn.setOnClickListener {
+            
+        }
         return view
     }
 
@@ -113,7 +115,6 @@ class ProductDetailsFragment : Fragment(),AdapterView.OnItemSelectedListener {
                 if(product != null){
                 this.product = product
                 updateUi(product)
-                    userId=product.userId.toString()
                 }else{
                     context?.showMessage("product not found")
                 }
@@ -155,45 +156,11 @@ class ProductDetailsFragment : Fragment(),AdapterView.OnItemSelectedListener {
     }
 
     private fun onProductDeleted() {
-       /* activity?.supportFragmentManager
+        activity?.supportFragmentManager
             ?.beginTransaction()
             ?.remove(this)
-            ?.commit()8*/
+            ?.commit()
         callbacks.onDeleteProductClicked()
-    }
-    fun openOptionsDialog(pro: Product){
-        var alertBuilder = AlertDialog.Builder(requireContext())
-        val view = layoutInflater.inflate(R.layout.cart_item_option_dialog, null)
-        val quantityEd=view.findViewById(R.id.ed_category_name) as EditText
-        val colorSV=view.findViewById(R.id.spinner_product_color) as Spinner
-        val sizeSV=view.findViewById(R.id.spinner_product_size) as Spinner
-        val addToCartBtn=view.findViewById<Button>(R.id.btn_add_to_cart)
-        val exitBtn=view.findViewById<Button>(R.id.btn_exit)
-        alertBuilder.setView(view)
-        var alertDialog = alertBuilder.create()
-        alertDialog.show()
-        val colors= listOf<String>("red","blue","yelew")
-        val sizes= listOf<String>("L","Xl","XXL")
-        val colorAdapter = ArrayAdapter(
-            requireContext(),
-            R.layout.support_simple_spinner_dropdown_item,
-            colors
-        )
-        val sizeAdapter = ArrayAdapter(
-            requireContext(),
-            R.layout.support_simple_spinner_dropdown_item,
-            sizes
-        )
-
-        colorAdapter.setDropDownViewResource(
-            android.R.layout.simple_spinner_dropdown_item)
-        colorSV.adapter = colorAdapter
-
-        sizeAdapter.setDropDownViewResource(
-            android.R.layout.simple_spinner_dropdown_item)
-        sizeSV.adapter = sizeAdapter
-
-
     }
 
     companion object {
@@ -217,6 +184,6 @@ class ProductDetailsFragment : Fragment(),AdapterView.OnItemSelectedListener {
     }
 
     override fun onNothingSelected(p0: AdapterView<*>?) {
-        TODO("Not yet implemented")
+
     }
 }

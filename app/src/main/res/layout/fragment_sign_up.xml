@@ -9,9 +9,11 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:background="@color/colorPrimary" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -142,13 +144,13 @@
                         android:id="@+id/btn_register"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
                         android:layout_marginLeft="-4dp"
+                        android:layout_marginTop="16dp"
                         android:layout_marginRight="-4dp"
                         android:background="@drawable/btn_rounded_primary"
+                        android:padding="18dp"
                         android:text="@string/sign_up_btn"
                         android:textAllCaps="false"
-                        android:padding="18dp"
                         android:textColor="@android:color/white"
                         android:textStyle="bold" />
                 </LinearLayout>

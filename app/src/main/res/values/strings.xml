@@ -76,4 +76,10 @@
     <string name="quantity_option">ادخل الكمية المطلوبة</string>
     <string name="add_item_to_cart">اضافة الى السلة</string>
 
+
+    //////////////////////////////////////
+    <string name="Category">الأصناف</string>
+    <string name="Products">المنتجات</string>
+
+
 </resources>
