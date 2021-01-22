@@ -1,5 +1,6 @@
 package com.finalproject.profitableshopping.data.api
 
+import com.finalproject.profitableshopping.data.Complain
 import com.finalproject.profitableshopping.data.models.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -66,4 +67,21 @@ interface ShoppingApi {
     fun getFavoriteItems( @Query("favorite_id") favoriteId: Int):Call<List<FavoriteItem>>
     @DELETE("favorite.pho")
     fun deleteFavoriteItem(@Query("FavoriteItem_id") FavoriteItemId:Int):Call<String>
+
+    // complain method API
+    @POST("complains.php")
+    fun addComplain(@Body complain:Complain):Call<String>
+    @GET("complains.php")
+    fun getComplains():Call<List<Complain>>
+    @GET()
+    fun getComplain(@Query("id") complainId:Int):Call<Complain>
+
+    // Reports method API
+    @POST("reports.php")
+    fun addReport(@Body report:Report):Call<String>
+    @GET("reports.php")
+    fun getUserReports(@Query("to_id") userId:String):Call<List<Report>>
+    @GET("reports.php")
+    fun getProductReports(@Query("product_id") productId:String):Call<List<Report>>
+
 }

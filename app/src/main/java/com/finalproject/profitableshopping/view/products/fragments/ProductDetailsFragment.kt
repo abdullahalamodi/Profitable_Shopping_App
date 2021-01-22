@@ -14,6 +14,7 @@ import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.AppSharedPreference
 import com.finalproject.profitableshopping.data.models.Product
 import com.finalproject.profitableshopping.showMessage
+import com.finalproject.profitableshopping.view.report.dialog.ComplainDialog
 import com.finalproject.profitableshopping.viewmodel.ProductViewModel
 import com.squareup.picasso.Picasso
 
@@ -31,9 +32,11 @@ class ProductDetailsFragment : Fragment(),AdapterView.OnItemSelectedListener {
     lateinit var productDollarPriceTv: TextView
     lateinit var productDescriptionTv: TextView
     lateinit var deleteBtn: Button
+    lateinit var reportBtn: Button
     lateinit var updateBtn: Button
     lateinit var callbacks: Callbacks
     lateinit var product: Product
+    var  userId=""
     private lateinit var btnsLayout: LinearLayout
 
 
@@ -68,12 +71,18 @@ class ProductDetailsFragment : Fragment(),AdapterView.OnItemSelectedListener {
         productDollarPriceTv = view.findViewById(R.id.tv_price_dollar) as TextView
         deleteBtn = view.findViewById(R.id.product_delete_btn) as Button
         updateBtn = view.findViewById(R.id.product_update_btn) as Button
+        reportBtn = view.findViewById(R.id.product_report_btn) as Button
         btnsLayout = view.findViewById(R.id.product_btns_layout) as LinearLayout
         productDescriptionTv =
             view.findViewById(R.id.tv_details_product) as TextView
 
 
+        reportBtn.setOnClickListener {
+          ComplainDialog.newInstance(productId!!,userId).apply {
+              show(this@ProductDetailsFragment.getParentFragmentManager(), "report")
+          }
 
+        }
         deleteBtn.setOnClickListener {
             productViewModel.refresh()
             showProgress(true)
@@ -104,6 +113,7 @@ class ProductDetailsFragment : Fragment(),AdapterView.OnItemSelectedListener {
                 if(product != null){
                 this.product = product
                 updateUi(product)
+                    userId=product.userId.toString()
                 }else{
                     context?.showMessage("product not found")
                 }
