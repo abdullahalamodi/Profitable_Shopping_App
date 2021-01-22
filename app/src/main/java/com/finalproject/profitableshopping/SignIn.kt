@@ -19,7 +19,7 @@ class SignIn : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign_in)
+   // setContentView(R.layout.activity_sign_in)
         btn_login.setOnClickListener {
             var email = email_login.text.toString()
             var password = passWord_login.text.toString()
@@ -46,7 +46,7 @@ class SignIn : AppCompatActivity() {
             }
 
         sign_up.setOnClickListener {
-            var intent= Intent(this,SignUp::class.java)
+        //    var intent= Intent(this,SignUp::class.java)
             startActivity(intent)
         }
 

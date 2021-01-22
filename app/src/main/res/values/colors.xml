@@ -43,7 +43,17 @@
     <color name="blue_600">#1E88E5</color>
     <color name="grey_60">#666666</color>
     <color name="grey_20">#cccccc</color>
+    <color name="grey_5">#f2f2f2</color>
+    <color name="overlay_dark_30">#4D000000</color>
     <color name="blue_grey_300">#90A4AE</color>
     <color name="colorPrimaryLight">#1E88E5</color>
+
+
+    <color name="deep_orange_400">#FF7043</color>
+
+
+    <color name="grey_90">#263238</color>
+
+    <color name="grey_80">#37474F</color>
 
 </resources>
