@@ -33,7 +33,7 @@ class CartFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         buyBtn.setOnClickListener {
-            carttViewModel.buy(AppSharedPreference.getCartId(requireContext()))
+            carttViewModel.buy(AppSharedPreference.getCartId(requireContext())!!)
                 .observe(
                     this,
                     Observer {
@@ -43,7 +43,7 @@ class CartFragment : Fragment() {
         }
         clearCartBtn.setOnClickListener {
 
-            carttViewModel.deleteCart(AppSharedPreference.getCartId(requireContext())).observe(
+            carttViewModel.deleteCart(AppSharedPreference.getCartId(requireContext())!!).observe(
                 this,
                 Observer {
                     AppSharedPreference.setCartId(requireContext(), null)

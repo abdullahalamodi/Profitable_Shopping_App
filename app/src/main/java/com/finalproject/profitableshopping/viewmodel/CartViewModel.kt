@@ -34,18 +34,18 @@ class CartViewModel : ViewModel() {
     }
 
 
-    fun createCart(order: Order): LiveData<Int> {
-        val cartId: MutableLiveData<Int> = MutableLiveData<Int>()
+    fun createCart(order: Order): LiveData<String> {
+        val cartId: MutableLiveData<String> = MutableLiveData<String>()
         val call = cartRepositry.createCart(order)
-        call.enqueue(object :Callback<Int>{
-            override fun onResponse(call: Call<Int>, response: Response<Int>) {
+        call.enqueue(object :Callback<String>{
+            override fun onResponse(call: Call<String>, response: Response<String>) {
                 cartId.value=response.body()
                 Log.d("create cart",cartId.value.toString())
             }
 
-            override fun onFailure(call: Call<Int>, t: Throwable) {
+            override fun onFailure(call: Call<String>, t: Throwable) {
                 Log.d("faild creat cart",t.message!!)
-                cartId.value=-1
+                cartId.value= "-1"
             }
 
         })
@@ -71,7 +71,7 @@ class CartViewModel : ViewModel() {
         return message
     }
 
-    fun buy(id: Int) :LiveData<String>{
+    fun buy(id: String) :LiveData<String>{
         val message: MutableLiveData<String> = MutableLiveData<String>()
         val call = cartRepositry.buy(id)
         call.enqueue(
@@ -113,7 +113,7 @@ class CartViewModel : ViewModel() {
         return orderList
     }
 
-    fun deleteCart(catId: Int): MutableLiveData<String> {
+    fun deleteCart(catId: String): MutableLiveData<String> {
         val responseLiveData: MutableLiveData<String> = MutableLiveData()
         val call = cartRepositry.deleteOrder(catId)
         call.enqueue(object : Callback<String> {
