@@ -1,5 +1,8 @@
 package com.finalproject.profitableshopping.view.category
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,20 +10,36 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.models.Category
+import com.finalproject.profitableshopping.getFileName
+import com.finalproject.profitableshopping.showMessage
+import com.finalproject.profitableshopping.view.products.UploadRequestBody
+import com.finalproject.profitableshopping.view.products.fragments.AddProductFragment
 
 import com.finalproject.profitableshopping.viewmodel.CategoryViewModel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.delete_category.view.*
+import kotlinx.android.synthetic.main.fragment_catergory_list.view.*
 import kotlinx.android.synthetic.main.update_category.view.*
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
 
 const val USER_ID_ARG = "userId";
 
-class CategoryFragment : Fragment() {
+class CategoryFragment : Fragment(),UploadRequestBody.UploadCallback {
 
     private lateinit var categoryNameEt: EditText
     private lateinit var addBtn: Button
@@ -28,11 +47,17 @@ class CategoryFragment : Fragment() {
     private lateinit var categoryRecyclerView: RecyclerView
     private lateinit var categoriesList: List<Category>
     private lateinit var progressBar: ProgressBar
+    private lateinit var addCatFloatingABtn: FloatingActionButton
     private var adapter: CategoryAdapter? = CategoryAdapter(emptyList())
     private var openMoreOptions = true
+    private var selectedImageUri: Uri? = null
 
     override fun onStart() {
         super.onStart()
+//        pickImagesV.setOnClickListener {
+//            showProgress(true)
+//            pickImages()
+//        }
         addBtn.setOnClickListener {
             showProgress(true)
             val catMap = Category();
@@ -48,6 +73,11 @@ class CategoryFragment : Fragment() {
                 }
             )
         }
+
+       addCatFloatingABtn.setOnClickListener{
+           var bottomSheetAddCat =AddCategoryFragment();
+           bottomSheetAddCat.show(childFragmentManager,"Tag")
+       }
     }
 
 
@@ -67,6 +97,7 @@ class CategoryFragment : Fragment() {
         addBtn = view.findViewById(R.id.add_category_btn)
         categoryRecyclerView.layoutManager = LinearLayoutManager(context)
         progressBar = view.findViewById(R.id.progress_circular)
+        addCatFloatingABtn = view.findViewById(R.id.floatingBtn_add_cat_)
         return view
     }
 
@@ -96,8 +127,84 @@ class CategoryFragment : Fragment() {
             progressBar.visibility = View.GONE
     }
 
-    companion object {
+    private fun pickImages() {
+        showProgress(false)
+        openImageChooser()
+    }
 
+    private fun openImageChooser() {
+        Intent(Intent.ACTION_PICK).also {
+            it.type = "image/*"
+            val mimeTypes = arrayOf("image/jpeg", "image/png")
+            it.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
+            startActivityForResult(it, AddProductFragment.REQUEST_CODE_PICK_IMAGE)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                AddProductFragment.REQUEST_CODE_PICK_IMAGE -> {
+                    selectedImageUri = data?.data
+//                    pickImagesV.setImageURI(selectedImageUri)
+                }
+            }
+        }
+    }
+
+    private fun uploadImage(productId: String): MutableLiveData<String> {
+        val responseLiveData = MutableLiveData<String>()
+        if (selectedImageUri == null) {
+            context?.showMessage("Select an Image First")
+            responseLiveData.value = ""
+            return responseLiveData
+        }
+        showProgress(true)
+        val parcelFileDescriptor =
+            context?.contentResolver?.openFileDescriptor(selectedImageUri!!, "r", null) ?:
+            return responseLiveData
+        val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
+        val file =
+            File(context?.cacheDir, context?.contentResolver?.getFileName(selectedImageUri!!)!!)
+        val outputStream = FileOutputStream(file)
+        inputStream.copyTo(outputStream)
+        progressBar.progress = 0
+        val body = UploadRequestBody(file, "image", this)
+        categoryViewModel.uploadImage(
+            MultipartBody.Part.createFormData(
+                "image",
+                file.name,
+                body
+            ),
+            RequestBody.create(MediaType.parse("multipart/form-data"), productId)
+        ).enqueue(object : Callback<String> {
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                context?.showMessage(t.message!!)
+                progressBar.progress = 0
+            }
+
+            override fun onResponse(
+                call: Call<String>,
+                response: Response<String>
+            ) {
+                response.body()?.let {
+                    context?.showMessage(it)
+                    progressBar.progress = 100
+                    showProgress(false)
+                }
+            }
+
+        })
+        responseLiveData.value = ""
+        return responseLiveData
+    }
+
+
+
+
+    companion object {
+        const val REQUEST_CODE_PICK_IMAGE = 101
         @JvmStatic
         fun newInstance() = CategoryFragment()
 
@@ -111,8 +218,7 @@ class CategoryFragment : Fragment() {
         var categoryUpdateTv: TextView = view.findViewById(R.id.tv_update_category) as TextView
         var categoryDeleteTv: TextView = view.findViewById(R.id.tv_delete_category) as TextView
         var categoryMoreOPtionIV: ImageView = view.findViewById(R.id.img_more_options) as ImageView
-        var categoryUpdeteDeleteLy: LinearLayout =
-            view.findViewById(R.id.ly_update_delete_category) as LinearLayout
+        var categoryUpdeteDeleteLy: LinearLayout = view.findViewById(R.id.ly_update_delete_category) as LinearLayout
 
 
         ////////////////////this function to update the category
@@ -158,7 +264,7 @@ class CategoryFragment : Fragment() {
             var alertDialog = alertBuilder.create()
             alertDialog.show()
 
-            view.ed_delete_category.setText(cat.name)
+            view.ed_category_name.setText(cat.name)
             view.btn_delete.setOnClickListener {
                 showProgress(true)
                 val response = categoryViewModel.deleteCategory(cat.id!!)
@@ -226,6 +332,10 @@ class CategoryFragment : Fragment() {
         override fun getItemCount(): Int {
             return categoriesList.size
         }
+    }
+
+    override fun onProgressUpdate(percentage: Int) {
+        progressBar.progress = percentage
     }
 
 

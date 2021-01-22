@@ -11,6 +11,8 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.ContentLoadingProgressBar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -18,9 +20,11 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.finalproject.profitableshopping.R
+import com.finalproject.profitableshopping.data.models.Category
 import com.finalproject.profitableshopping.data.models.Product
 import com.finalproject.profitableshopping.viewmodel.ProductViewModel
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.delete_category.view.*
 
 class ProductListFragment : Fragment() {
     private lateinit var productViewModel: ProductViewModel
@@ -63,12 +67,11 @@ class ProductListFragment : Fragment() {
 
     private fun filterList(filterItem: String) {
         var tempList: MutableList<Product> = ArrayList();
-        for (d in adapter.productsList){
-            if(filterItem in d.name){
+        for (d in adapter.productsList) {
+            if (filterItem in d.name) {
                 tempList.add(d)
             }
         }
-
         adapter.updateList(tempList)
     }
 
@@ -76,7 +79,6 @@ class ProductListFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
-
     }
 
     override fun onResume() {
@@ -117,16 +119,10 @@ class ProductListFragment : Fragment() {
             Observer { prodcts ->
                 showProgress(false)
                 updateUI(prodcts)
-
             }
         )
-
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        callbacks = null
-    }
 
     private fun updateUI(productsList: List<Product>) {
         adapter = ProductAdapter(productsList)
@@ -154,23 +150,23 @@ class ProductListFragment : Fragment() {
             view.setOnClickListener(this)
         }
 
-
         fun bind(pro: Product) {
             product = pro
             productNameTv.text = pro.name
             productRialPriceTv.text = pro.rialPrice.toString()
             productDescriptionTv.text = pro.description
-            if (product.images.isNotEmpty()){
+
+            if (product.images.isNotEmpty()) {
                 Picasso.get().also {
                     val path = product.images[0].getUrl()
                     it.load(path)
-                        .resize(150,150)
+                        .resize(150, 150)
                         .centerCrop()
-                        .placeholder(R.drawable.shoe)
+                        .placeholder(R.drawable.laptop)
                         .into(productImageIv)
                 }
-            }else{
-                productImageIv.setImageResource(R.drawable.shoe)
+            } else {
+                productImageIv.setImageResource(R.drawable.laptop)
             }
         }
 
@@ -201,15 +197,28 @@ class ProductListFragment : Fragment() {
             return productsList.size
         }
 
-        fun updateList(list : List<Product>){
-            productsList =list
+        fun updateList(list: List<Product>) {
+            productsList = list
             notifyDataSetChanged();
         }
     }
 
+
+    /////////////////////////////////////////////////////
+
     interface Callbacks {
         fun onItemSelected(itemId: Int)
         // fun onFloatButtonClicked()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callbacks = context as Callbacks
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        callbacks = null
     }
 
     companion object {
@@ -217,5 +226,6 @@ class ProductListFragment : Fragment() {
             return ProductListFragment();
         }
     }
+
 
 }

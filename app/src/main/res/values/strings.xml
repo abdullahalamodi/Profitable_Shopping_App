@@ -24,6 +24,10 @@
     <string name="cancel">الغاء</string>
     <string name="title_update">تعديل الصنف</string>
     <string name="title_delete">حذف الصنف</string>
+
+    <string name="txt_add_photo">قم بأختيار صورة الصنف</string>
+    <string name="txt_add_photo_product">قم بأختيار صورة المنتج</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="spiner_nothing_selected_message">you have to choose category</string>
@@ -72,6 +76,9 @@
     <string name="get_otp">الحصول على رمز التحقق</string>
     <string name="enter_otp">ادخل رمز التحقق</string>
     <string name="actinve_acount">تفعيل الحساب</string>
+    <string name="card_item_options">تفضيلات المنتج</string>
+    <string name="quantity_option">ادخل الكمية المطلوبة</string>
+    <string name="add_item_to_cart">اضافة الى السلة</string>
 
 
     //////////////////////////////////////

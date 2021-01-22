@@ -3,6 +3,8 @@ package com.finalproject.profitableshopping.data.repositories
 import com.finalproject.profitableshopping.data.api.ShoppingApi
 import com.finalproject.profitableshopping.data.models.Category
 import com.google.gson.GsonBuilder
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 
 import retrofit2.Call
@@ -45,6 +47,13 @@ class CategoryRepository {
 
     fun deleteCategory(catId:Int):Call<String>{
         return shoppingApi.deleteCategory(catId.toString())
+    }
+
+    fun uploadImage(image: MultipartBody.Part,
+                    catId: RequestBody
+    ) :Call<String>{
+        return shoppingApi.uploadCategoryImage(image,catId)
+
     }
 
 

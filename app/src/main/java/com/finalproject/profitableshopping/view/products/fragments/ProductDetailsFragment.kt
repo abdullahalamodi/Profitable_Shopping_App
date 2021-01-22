@@ -1,11 +1,12 @@
 package com.finalproject.profitableshopping.view.products.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -13,13 +14,13 @@ import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.AppSharedPreference
 import com.finalproject.profitableshopping.data.models.Product
 import com.finalproject.profitableshopping.showMessage
-import com.finalproject.profitableshopping.view.MainActivity
+import com.finalproject.profitableshopping.viewmodel.CartViewModel
 import com.finalproject.profitableshopping.viewmodel.ProductViewModel
 import com.squareup.picasso.Picasso
 
 private const val ARG_PRODUCT_ID = "product_id"
 
-class ProductDetailsFragment : Fragment() {
+class ProductDetailsFragment : Fragment(),AdapterView.OnItemSelectedListener {
     private var productId: String? = null
     private lateinit var progressBar: ProgressBar
     lateinit var productViewModel: ProductViewModel
@@ -35,6 +36,10 @@ class ProductDetailsFragment : Fragment() {
     lateinit var callbacks: Callbacks
     lateinit var product: Product
     private lateinit var btnsLayout: LinearLayout
+    private lateinit var cartBtn: Button
+    private lateinit var carttViewModel:CartViewModel
+
+
 
 
     override fun onStart() {
@@ -47,6 +52,7 @@ class ProductDetailsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
+        carttViewModel = ViewModelProviders.of(this).get(CartViewModel::class.java)
         arguments?.let {
             productId = it.getString(ARG_PRODUCT_ID)
             productViewModel.loadProduct(productId!!)
@@ -69,6 +75,7 @@ class ProductDetailsFragment : Fragment() {
         deleteBtn = view.findViewById(R.id.product_delete_btn) as Button
         updateBtn = view.findViewById(R.id.product_update_btn) as Button
         btnsLayout = view.findViewById(R.id.product_btns_layout) as LinearLayout
+        cartBtn = view.findViewById(R.id.product_cart_btn) as Button
         productDescriptionTv =
             view.findViewById(R.id.tv_details_product) as TextView
 
@@ -89,6 +96,10 @@ class ProductDetailsFragment : Fragment() {
 
         updateBtn.setOnClickListener {
             callbacks.onUpdateProductClicked(productId)
+        }
+
+        cartBtn.setOnClickListener {
+            
         }
         return view
     }
@@ -165,5 +176,14 @@ class ProductDetailsFragment : Fragment() {
     interface Callbacks {
         fun onUpdateProductClicked(productId: String?)
         fun onDeleteProductClicked()
+    }
+
+    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+        val item = p0?.get(p2).toString()
+
+    }
+
+    override fun onNothingSelected(p0: AdapterView<*>?) {
+
     }
 }

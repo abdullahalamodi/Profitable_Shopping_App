@@ -12,7 +12,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.finalproject.profitableshopping.R
+import com.finalproject.profitableshopping.data.AppSharedPreference
+import com.finalproject.profitableshopping.data.models.Favorite
+import com.finalproject.profitableshopping.viewmodel.FavoriteViewModel
 import com.google.firebase.auth.FirebaseAuth
 
 class SignUpFragment : Fragment() {
@@ -24,6 +29,7 @@ class SignUpFragment : Fragment() {
     lateinit var registerBtn: Button
     lateinit var auth: FirebaseAuth
     var signUpCallbacks:SignUpCallbacks?=null
+    private lateinit var favoriteViewModel: FavoriteViewModel
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -58,6 +64,7 @@ class SignUpFragment : Fragment() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        favoriteViewModel= ViewModelProviders.of(this).get(FavoriteViewModel::class.java)
         arguments?.let {
 
         }
@@ -94,6 +101,13 @@ class SignUpFragment : Fragment() {
                 p.dismiss()
                 if (it.isSuccessful) {
                     sendEmailVerification()
+                    // create favorite for user
+                    favoriteViewModel.createFavorite(Favorite(null,AppSharedPreference.getUserId(requireContext()),"1-1-2021")).observe(
+                        this,
+                        Observer {
+                            AppSharedPreference.setFavoriteId(requireContext(),it)
+                        }
+                    )
                 } else {
                     Toast.makeText(requireContext(), " You registered Failed ${it.exception.toString()}", Toast.LENGTH_LONG)
                         .show()

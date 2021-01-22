@@ -92,7 +92,6 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
             }
         }
 
-
     }
 
 
@@ -100,7 +99,7 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
         productViewModel.addProduct(product).observe(
             this,
             Observer { productId ->
-                uploadImage(productId).observe(
+              /*  uploadImage(productId).observe(
                     viewLifecycleOwner,
                     Observer {
                         productViewModel.refresh()
@@ -108,7 +107,7 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
                         Toast.makeText(context, "تم اضافة المنتج بنجاح", Toast.LENGTH_SHORT)
                             .show()
                     }
-                )
+                )*/
 
             }
         )
@@ -120,14 +119,15 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
             this,
             Observer { productId ->
                 if(selectedImageUri != null){
-                    uploadImage(productId).observe(
+                    /*uploadImage(productId).observe(
                         viewLifecycleOwner,
                         Observer {
                             callbacks.onSuccessAddProduct()
                             context?.showMessage("تم نعديل المنتج بنجاح")
                             productViewModel.refresh()
                         }
-                    )
+                    )*/
+
                 }else{
                     showProgress(false)
                     productViewModel.refresh()
@@ -285,7 +285,7 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
     }
 
     private fun uploadImage(productId: String):MutableLiveData<String> {
-        var responseLiveData = MutableLiveData<String>()
+        val responseLiveData = MutableLiveData<String>()
         if (selectedImageUri == null) {
             context?.showMessage("Select an Image First")
             responseLiveData.value = ""
@@ -297,7 +297,7 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
         return responseLiveData
         val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
         val file =
-            File(context?.cacheDir, context?.contentResolver?.getFileName(selectedImageUri!!))
+            File(context?.cacheDir, context?.contentResolver?.getFileName(selectedImageUri!!)!!)
         val outputStream = FileOutputStream(file)
         inputStream.copyTo(outputStream)
         progressBar.progress = 0
@@ -313,6 +313,7 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
             override fun onFailure(call: Call<String>, t: Throwable) {
                 context?.showMessage(t.message!!)
                 progressBar.progress = 0
+                responseLiveData.value=t.message
             }
 
             override fun onResponse(
@@ -323,6 +324,7 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
                     context?.showMessage(it)
                     progressBar.progress = 100
                     showProgress(false)
+                    responseLiveData.value=it
                 }
             }
 

@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModel
 import com.finalproject.profitableshopping.data.repositories.CategoryRepository
 
 import com.finalproject.profitableshopping.data.models.Category
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 import retrofit2.Call
 import retrofit2.Callback
@@ -127,15 +129,23 @@ class CategoryViewModel : ViewModel() {
         call.enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 responseLiveData.value = response.body()!!
-                Log.d("delet cat",response.body()!!)
+                Log.d("delete cat",response.body()!!)
             }
 
             override fun onFailure(call: Call<String>, t: Throwable) {
                 responseLiveData.value = t.message!!
-                Log.d("delet failed",t.message!!)
+                Log.d("delete failed",t.message!!)
             }
         })
         return responseLiveData
+    }
+
+
+    fun uploadImage(
+        image: MultipartBody.Part,
+        catId: RequestBody
+    ): Call<String> {
+        return repository.uploadImage(image, catId)
     }
 }
 
