@@ -31,6 +31,6 @@ class CartRepositry(){
         return shoppingApi.getUserCartItems(cartId.toString())
     }
     fun buy(cartId: String):Call<String>{
-        return shoppingApi.buy(cartId.toString())
+        return shoppingApi.buy(cartId)
     }
 }
