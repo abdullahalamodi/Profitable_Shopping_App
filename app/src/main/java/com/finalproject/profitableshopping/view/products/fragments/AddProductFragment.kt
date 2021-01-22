@@ -80,12 +80,14 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
                     rialPrice = productRialPriceET.text.toString().toDouble(),
                     dollarPrice = productDollarPriceET.text.toString().toDouble(),
                     categoryId = selectedCategoryId,
-                    userId = AppSharedPreference.getUserId(context!!)
+                    userId = AppSharedPreference.getUserId(context!!)!!.toInt()
                 )
                 if (isUpdate) {
                     updateProduct(product)
+                    showProgress(false)
                 } else {
                     addProduct(product)
+                    showProgress(false)
                 }
             } else {
                 Toast.makeText(context, "some fields empty", Toast.LENGTH_SHORT).show()
@@ -99,15 +101,16 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
         productViewModel.addProduct(product).observe(
             this,
             Observer { productId ->
-              /*  uploadImage(productId).observe(
+                showProgress(true)
+                uploadImage(productId).observe(
                     viewLifecycleOwner,
                     Observer {
                         productViewModel.refresh()
                         callbacks.onSuccessAddProduct()
                         Toast.makeText(context, "تم اضافة المنتج بنجاح", Toast.LENGTH_SHORT)
                             .show()
-                    }
-                )*/
+                   showProgress(false) }
+                )
 
             }
         )
@@ -118,15 +121,17 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
         productViewModel.updateProduct(product).observe(
             this,
             Observer { productId ->
+                showProgress(true)
                 if(selectedImageUri != null){
-                    /*uploadImage(productId).observe(
+                    uploadImage(productId).observe(
                         viewLifecycleOwner,
                         Observer {
                             callbacks.onSuccessAddProduct()
                             context?.showMessage("تم نعديل المنتج بنجاح")
                             productViewModel.refresh()
+                            showProgress(false)
                         }
-                    )*/
+                    )
 
                 }else{
                     showProgress(false)
