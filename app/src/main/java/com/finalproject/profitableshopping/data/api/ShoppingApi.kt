@@ -121,6 +121,8 @@ interface ShoppingApi {
 
     @DELETE("comments.php")
     fun deleteComment(@Query("id") id: String): Call<String>
+
+    //complain
     @POST("complains.php")
      fun addComplain(@Body complain: Complain): Call<String>
     @GET("complains.php")
