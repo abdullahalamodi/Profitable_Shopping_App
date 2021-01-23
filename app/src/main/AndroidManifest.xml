@@ -16,17 +16,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.UpdateInfoActivity">
+        <activity android:name=".view.user.UpdateInfoActivity">
 
         </activity>
-        <activity android:name=".view.ResetPasswordActivity" />
-        <activity android:name=".view.UserProfileActivity">
+        <activity android:name=".view.user.ResetPasswordActivity" />
+        <activity android:name=".view.user.UserProfileActivity">
 
         </activity>
-        <activity android:name=".view.UserManageActivity">
+        <activity android:name=".view.user.UserManageActivity">
 
         </activity>
-        <activity android:name=".view.MapActivity" >
+        <activity android:name=".view.user.MapActivity" >
 
         </activity>
         <activity android:name=".view.category.CategoryActivity" />
