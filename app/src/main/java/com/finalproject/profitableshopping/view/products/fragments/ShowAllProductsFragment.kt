@@ -82,18 +82,9 @@ class ShowAllProductsFragment : Fragment() {
             Observer { prodcts ->
                 //   showProgress(false)
                 updateUIProducts(prodcts)
-
             }
         )
-  var cat =Category()
-        productViewModel.getProductsByIdOfCat(cat.id).observe(
-            viewLifecycleOwner,
-            Observer { products ->
-                //   showProgress(false)
-                updateUIProducts(products)
 
-            }
-        )
     }
 
     private fun updateUICategory(categoriesList: List<Category>) {

@@ -67,7 +67,7 @@ class OrderItemOptions() : DialogFragment(), AdapterView.OnItemSelectedListener 
         proId = arguments?.getString("proId")!!
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
         carttViewModel = ViewModelProviders.of(this).get(CartViewModel::class.java)
-        productViewModel.loadProduct(proId!!)
+        productViewModel.loadProduct(proId)
         productViewModel.productIDetailsLiveData.observe(
             viewLifecycleOwner,
             Observer { pro ->
