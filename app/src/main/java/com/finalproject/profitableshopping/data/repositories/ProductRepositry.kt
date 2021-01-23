@@ -33,6 +33,10 @@ class ProductRepositry {
         return  shoppingApi.getProduct(proId)
     }
 
+    fun getProductByIdOfCat(catId: Int?):Call<List<Product>>{
+        return  shoppingApi.getProductsByIdOfCat(catId)
+    }
+
 
     fun getProducts():Call<List<Product>>{
         return shoppingApi.getProducts()

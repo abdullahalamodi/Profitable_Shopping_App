@@ -123,7 +123,7 @@ class OrderItemOptions() : DialogFragment(), AdapterView.OnItemSelectedListener 
 
     private fun createCart() {
         val order = Order(
-            user_id = AppSharedPreference.getUserId(requireContext())
+        //    user_id = AppSharedPreference.getUserId(requireContext())
         )
         carttViewModel.createCart(
             order

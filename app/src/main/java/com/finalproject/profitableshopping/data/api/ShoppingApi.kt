@@ -53,6 +53,9 @@ interface ShoppingApi {
     @GET("products.php")
     fun getProduct(@Query("id") proId: String): Call<Product>
 
+    @GET("products.php")
+    fun getProductsByIdOfCat(@Query("id") categoryId: Int?): Call<List<Product>>
+
     @POST("products.php")
     fun addProduct(@Body product: Product): Call<String>
     @POST("products.php?")
@@ -124,17 +127,19 @@ interface ShoppingApi {
     @DELETE("comments.php")
     fun deleteComment(@Query("id") id: String): Call<String>
 
-    //complain
+    // complain method API
     @POST("complains.php")
-     fun addComplain(@Body complain: Complain): Call<String>
+    fun addComplain(@Body complain:Complain):Call<String>
     @GET("complains.php")
-     fun getComplains(): Call<List<Complain>>
-    @GET("complains.php")
-     fun getComplain(@Query("id")complainId: Int): Call<Complain>
+    fun getComplains():Call<List<Complain>>
+    @GET()
+    fun getComplain(@Query("id") complainId:Int):Call<Complain>
+
+    // Reports method API
     @POST("reports.php")
-    abstract fun addReport(@Body report: Report): Call<String>
+    fun addReport(@Body report:Report):Call<String>
     @GET("reports.php")
-    abstract fun getUserReports( @Query("to_id")userId: String): Call<List<Report>>
+    fun getUserReports(@Query("to_id") userId:String):Call<List<Report>>
     @GET("reports.php")
-    abstract fun getProductReports(@Query("product_id")productId: String): Call<List<Report>>
+    fun getProductReports(@Query("product_id") productId:String):Call<List<Report>>
 }
