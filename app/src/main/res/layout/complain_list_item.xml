@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="15"
+        android:gravity="center_vertical"
+        >
+        <CheckBox
+            android:layout_weight="1"
+            android:id="@+id/complain_check_box"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:textColor="@color/colorPrimary"
+            android:clickable="true">
+        </CheckBox>
+        <TextView
+            android:id="@+id/complain_title_tv"
+            android:layout_margin="5dp"
+            android:layout_weight="14"
+            android:layout_width="0dp"
+            android:text="complain title"
+            android:layout_height="wrap_content"></TextView>
+
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

@@ -221,6 +221,7 @@ class ManageProductsFragment : Fragment() {
     override fun onDetach() {
         super.onDetach()
         callbacks = null
+
     }
     companion object {
         fun newInstance(): ManageProductsFragment {

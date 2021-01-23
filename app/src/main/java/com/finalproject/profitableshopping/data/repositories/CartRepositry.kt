@@ -21,7 +21,7 @@ class CartRepositry(){
         return shoppingApi.createCart(order)
     }
     fun addOrder(order:OrderDetails):Call<String>{
-        return shoppingApi.addOrderDetails(order)
+       return shoppingApi.addOrderDetails(order)
     }
 
     fun deleteOrder(id:String):Call<String>{
@@ -31,6 +31,6 @@ class CartRepositry(){
         return shoppingApi.getUserCartItems(cartId.toString())
     }
     fun buy(cartId: String):Call<String>{
-        return shoppingApi.buy(cartId.toString())
+        return shoppingApi.buy(cartId)
     }
 }

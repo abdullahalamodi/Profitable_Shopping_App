@@ -1,6 +1,7 @@
 package com.finalproject.profitableshopping.data.api
 
 
+import com.finalproject.profitableshopping.data.Complain
 import com.finalproject.profitableshopping.data.models.*
 
 import okhttp3.MultipartBody
@@ -51,9 +52,9 @@ interface ShoppingApi {
 
     @POST("products.php")
     fun addProduct(@Body product: Product): Call<String>
-
     @POST("products.php?")
     fun updateProduct(@Query("id") id: String, @Body product: Product): Call<String>
+
 
     @DELETE("products.php")
     fun deleteProduct(@Query("id") id: String): Call<String>
@@ -117,4 +118,16 @@ interface ShoppingApi {
 
     @DELETE("comments.php")
     fun deleteComment(@Query("id") id: String): Call<String>
+    @POST("complains.php")
+     fun addComplain(@Body complain: Complain): Call<String>
+    @GET("complains.php")
+     fun getComplains(): Call<List<Complain>>
+    @GET("complains.php")
+     fun getComplain(@Query("id")complainId: Int): Call<Complain>
+    @POST("reports.php")
+    abstract fun addReport(@Body report: Report): Call<String>
+    @GET("reports.php")
+    abstract fun getUserReports( @Query("to_id")userId: String): Call<List<Report>>
+    @GET("reports.php")
+    abstract fun getProductReports(@Query("product_id")productId: String): Call<List<Report>>
 }
