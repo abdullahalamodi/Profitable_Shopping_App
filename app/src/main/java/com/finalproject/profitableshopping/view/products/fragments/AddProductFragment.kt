@@ -79,7 +79,7 @@ class AddProductFragment : Fragment(),
                     rialPrice = productRialPriceET.text.toString().toDouble(),
                     dollarPrice = productDollarPriceET.text.toString().toDouble(),
                     categoryId = selectedCategoryId,
-                    userId = AppSharedPreference.getUserId(requireContext())?.toInt()!!
+                    userId = AppSharedPreference.getUserId(requireContext())!!
                 )
                 if (isUpdate) {
                     updateProduct(product)

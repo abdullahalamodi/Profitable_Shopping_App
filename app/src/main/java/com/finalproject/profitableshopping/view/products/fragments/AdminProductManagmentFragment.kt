@@ -1,6 +1,7 @@
 package com.finalproject.profitableshopping.view.products.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -8,12 +9,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.finalproject.profitableshopping.R
-import com.finalproject.profitableshopping.data.models.OrderDetails
 import com.finalproject.profitableshopping.data.models.Product
 import com.finalproject.profitableshopping.showMessage
 import com.finalproject.profitableshopping.viewmodel.ProductViewModel
@@ -49,6 +50,7 @@ class AdminProductManagmentFragment : Fragment() {
             viewLifecycleOwner,
             Observer {
                 updateUI(it)
+                Toast.makeText(requireContext(),it.size.toString(),Toast.LENGTH_LONG).show()
             }
 
         )
@@ -59,14 +61,20 @@ class AdminProductManagmentFragment : Fragment() {
     }
     inner class AdminMangeHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        var productImgV = view.findViewById<ImageView>(R.id.product_image_v)
+        var productImgV = view.findViewById<ImageView>(R.id.ImgV_product)
         var prodctNameTv = view.findViewById<TextView>(R.id.product_name_tv)
         var hideProductBtn = view.findViewById<Button>(R.id.hide_btn)
         var product = Product()
 init {
     hideProductBtn.setOnClickListener {
-        this.product.isHide=true
-        productViewModel.updateProduct(this.product)
+        this.product.isActive = hideProductBtn.text=="إظهار"
+
+        productViewModel.updateProductCase(this.product).observe(
+            viewLifecycleOwner,
+            Observer {
+                Toast.makeText(requireContext(),it,Toast.LENGTH_LONG).show()
+            }
+        )
         productViewModel.productsListLiveData.observe(
             viewLifecycleOwner,
             Observer {
@@ -81,7 +89,7 @@ init {
 
         fun bind(product: Product) {
             this.product=product
-
+/*
             productViewModel.loadProduct(this.product.id.toString())
             productViewModel.productIDetailsLiveData.observe(
                 viewLifecycleOwner,
@@ -90,14 +98,17 @@ init {
                     if (product != null) {
                         this.product = product
                         prodctNameTv.text = this.product.name
+                        Log.d("pro name",product.name)
                     } else {
                         context?.showMessage("product not found")
                     }
+                    prodctNameTv.text = this.product.name
                 }
-            )
+            )*/
             prodctNameTv.text = this.product.name
-            if(this.product.isHide){
-                hideProductBtn.text="إخفء"
+
+            if(this.product.isActive){
+                hideProductBtn.text="إخفاء"
             }else
                 hideProductBtn.text="إظهار"
 

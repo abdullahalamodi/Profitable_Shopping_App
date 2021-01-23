@@ -54,7 +54,7 @@
                     android:layout_weight="1"
                     android:text=" اخفاء"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="20sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"></Button>
             </LinearLayout>
 
