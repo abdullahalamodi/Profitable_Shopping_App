@@ -1,19 +1,40 @@
 {
   "project_info": {
+<<<<<<< HEAD
+    "project_number": "355575946145",
+    "project_id": "profitableshopping-123",
+    "storage_bucket": "profitableshopping-123.appspot.com"
+=======
     "project_number": "227395489988",
     "project_id": "profitableshopping-e4d5a",
     "storage_bucket": "profitableshopping-e4d5a.appspot.com"
+>>>>>>> upstream/main
   },
   "client": [
     {
       "client_info": {
+<<<<<<< HEAD
+        "mobilesdk_app_id": "1:355575946145:android:958c6bbe3156a7722d09e0",
+=======
         "mobilesdk_app_id": "1:227395489988:android:2bb121d2534a05aa1a3991",
+>>>>>>> upstream/main
         "android_client_info": {
           "package_name": "com.finalproject.profitableshopping"
         }
       },
       "oauth_client": [
         {
+<<<<<<< HEAD
+          "client_id": "355575946145-1bkkfdeabt1r0i1t6rn209nljnma8upi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.finalproject.profitableshopping",
+            "certificate_hash": "0bd9c24004fb6ef7e18eddcea4415dd46d12012c"
+          }
+        },
+        {
+          "client_id": "355575946145-7thhko5r3st0jtlqe7uubi7qc0iijuek.apps.googleusercontent.com",
+=======
           "client_id": "227395489988-qj6p584mb1d4i63kt8d030hou8qfd67i.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -23,19 +44,28 @@
         },
         {
           "client_id": "227395489988-n324m11g7f2rsthg2c8o2rp2dvf0mib3.apps.googleusercontent.com",
+>>>>>>> upstream/main
           "client_type": 3
         }
       ],
       "api_key": [
         {
+<<<<<<< HEAD
+          "current_key": "AIzaSyAzxsZRBL-osQzLdj_Af51CHHG7joN4ixg"
+=======
           "current_key": "AIzaSyAShDLZjaBRNyjq_HR145BPpbOCZ08tWKc"
+>>>>>>> upstream/main
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
+<<<<<<< HEAD
+              "client_id": "355575946145-7thhko5r3st0jtlqe7uubi7qc0iijuek.apps.googleusercontent.com",
+=======
               "client_id": "227395489988-n324m11g7f2rsthg2c8o2rp2dvf0mib3.apps.googleusercontent.com",
+>>>>>>> upstream/main
               "client_type": 3
             }
           ]
