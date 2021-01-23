@@ -40,7 +40,10 @@ class ProductRepositry {
 
     fun getProducts():Call<List<Product>>{
         return shoppingApi.getProducts()
+    }
 
+    fun getProductsFroManage():Call<List<Product>>{
+        return shoppingApi.getProductsForMange("mange")
     }
 
     fun getUserProducts(userId:String): Call<List<Product>> {

@@ -122,19 +122,19 @@ class MainActivity : AppCompatActivity(),
         if (getUserToken() == "admin") {
             menu.findItem(R.id.menu_login).setVisible(false)
             menu.findItem(R.id.menu_categories).setVisible(true)
+            menu.findItem(R.id.menu_product_manage).setVisible(true)
             menu.findItem(R.id.menu_my_products).setVisible(false)
             menu.findItem(R.id.sign_out).setVisible(true)
-            menu.findItem(R.id.menu_product_manage).setVisible(true)
         } else if (getUserToken() == "user") {
             menu.findItem(R.id.menu_login).setVisible(false)
-            menu.findItem(R.id.menu_product_manage).setVisible(true)
             menu.findItem(R.id.menu_categories).setVisible(false)
+            menu.findItem(R.id.menu_product_manage).setVisible(false)
             menu.findItem(R.id.menu_my_products).setVisible(true)
             menu.findItem(R.id.sign_out).setVisible(true)
         } else {
-            menu.findItem(R.id.menu_product_manage).setVisible(false)
             menu.findItem(R.id.menu_login).setVisible(true)
             menu.findItem(R.id.menu_categories).setVisible(false)
+            menu.findItem(R.id.menu_product_manage).setVisible(false)
             menu.findItem(R.id.menu_my_products).setVisible(false)
             menu.findItem(R.id.sign_out).setVisible(false)
         }
@@ -165,7 +165,7 @@ class MainActivity : AppCompatActivity(),
             }
             R.id.menu_categories -> {
                 when {
-                    getUserToken() == "Admin"
+                    getUserToken() == "admin"
                         // setCurrentFragment(CategoryFragment.newInstance())
                     -> startActivity(Intent(this, CategoryActivity::class.java))
                     getUserToken() != "quest" -> {

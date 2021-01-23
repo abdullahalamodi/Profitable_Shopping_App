@@ -18,6 +18,7 @@ class ProductViewModel : ViewModel() {
     private val loadTrigger = MutableLiveData(Unit)
     private val userLoadTrigger = MutableLiveData<String>()
     private val categoryLoadTrigger = MutableLiveData<String>()
+    private val manageLoadTrigger = MutableLiveData<Unit>()
     private val productIdLiveData = MutableLiveData<String>()
     private val userIdLiveData = MutableLiveData<Int>()
     private var product: Product? = null
@@ -38,6 +39,10 @@ class ProductViewModel : ViewModel() {
         getCategoryProducts(categoryId)
     }
 
+    var manageProductsLiveData = Transformations.switchMap(manageLoadTrigger) {
+        getProductsForMange()
+    }
+
     init {
         productRepositry = ProductRepositry()
         refresh()
@@ -45,6 +50,10 @@ class ProductViewModel : ViewModel() {
 
     fun refresh() {
         loadTrigger.value = Unit
+    }
+
+    fun refreshMangeList() {
+        manageLoadTrigger.value = Unit
     }
 
     fun refreshUserList(userId: String) {
@@ -58,6 +67,25 @@ class ProductViewModel : ViewModel() {
     private fun getProducts(): MutableLiveData<List<Product>> {
         val responseLiveData: MutableLiveData<List<Product>> = MutableLiveData()
         val call = productRepositry.getProducts()
+        call.enqueue(object : Callback<List<Product>> {
+            override fun onResponse(
+                call: Call<List<Product>>,
+                response: Response<List<Product>>
+            ) {
+                responseLiveData.value = response.body() ?: emptyList()
+            }
+
+            override fun onFailure(call: Call<List<Product>>, t: Throwable) {
+                Log.d("Failed ", t.message!!)
+                responseLiveData.value = emptyList()
+            }
+        })
+        return responseLiveData
+    }
+
+    private fun getProductsForMange(): MutableLiveData<List<Product>> {
+        val responseLiveData: MutableLiveData<List<Product>> = MutableLiveData()
+        val call = productRepositry.getProductsFroManage()
         call.enqueue(object : Callback<List<Product>> {
             override fun onResponse(
                 call: Call<List<Product>>,

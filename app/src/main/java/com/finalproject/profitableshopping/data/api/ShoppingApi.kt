@@ -44,6 +44,10 @@ interface ShoppingApi {
     @GET("products.php")
     fun getProducts(): Call<List<Product>>
 
+    //product methods
+    @GET("products.php")
+    fun getProductsForMange(@Query("manage") mange: String): Call<List<Product>>
+
     @GET("products.php")
     fun getUserProducts(@Query("user_id") userId: String): Call<List<Product>>
 
@@ -58,10 +62,15 @@ interface ShoppingApi {
 
     @POST("products.php")
     fun addProduct(@Body product: Product): Call<String>
-    @POST("products.php?")
+
+    @POST("products.php")
     fun updateProduct(@Query("id") id: String, @Body product: Product): Call<String>
-    @POST("products.php?")
-    fun updateProductCase(@Query("id") id: String,@Query("is_active") isActive: Boolean): Call<String>
+
+    @POST("products.php")
+    fun updateProductCase(
+        @Query("id") id: String,
+        @Query("is_active") isActive: Int
+    ): Call<String>
 
 
     @DELETE("products.php")
