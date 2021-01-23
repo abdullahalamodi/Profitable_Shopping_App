@@ -157,6 +157,28 @@ class ProductViewModel : ViewModel() {
         return responseLiveData
     }
 
+    fun updateProductCase(
+        product: Product
+    ): MutableLiveData<String> {
+        val responseLiveData: MutableLiveData<String> = MutableLiveData()
+        val call = productRepositry.updateProductCase(product)
+        call.enqueue(object : Callback<String> {
+            override fun onResponse(
+                call: Call<String>,
+                response: Response<String>
+            ) {
+                responseLiveData.value = response.body()
+                response.body()?.let { Log.d("success update case", it) }
+            }
+
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                responseLiveData.value = t.message
+                t.message?.let { Log.d("failed update case", it) }
+            }
+        })
+        return responseLiveData
+
+    }
     fun updateProduct(
         product: Product
     ): MutableLiveData<String> {
