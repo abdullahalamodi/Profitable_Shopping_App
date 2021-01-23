@@ -17,10 +17,7 @@ import com.finalproject.profitableshopping.view.authentication.fragments.SignUpF
 import com.finalproject.profitableshopping.view.cart.CartFragment
 import com.finalproject.profitableshopping.view.category.CategoryActivity
 import com.finalproject.profitableshopping.view.products.ManageProductActivity
-import com.finalproject.profitableshopping.view.products.fragments.AddProductFragment
-import com.finalproject.profitableshopping.view.products.fragments.DetailsOfAllProductsFragment
-import com.finalproject.profitableshopping.view.products.fragments.ProductListFragment
-import com.finalproject.profitableshopping.view.products.fragments.ShowAllProductsFragment
+import com.finalproject.profitableshopping.view.products.fragments.*
 import com.finalproject.profitableshopping.view.user.UserFragment
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -127,12 +124,15 @@ class MainActivity : AppCompatActivity(),
             menu.findItem(R.id.menu_categories).setVisible(true)
             menu.findItem(R.id.menu_my_products).setVisible(false)
             menu.findItem(R.id.sign_out).setVisible(true)
+            menu.findItem(R.id.menu_product_manage).setVisible(true)
         } else if (getUserToken() == "user") {
             menu.findItem(R.id.menu_login).setVisible(false)
+            menu.findItem(R.id.menu_product_manage).setVisible(true)
             menu.findItem(R.id.menu_categories).setVisible(false)
             menu.findItem(R.id.menu_my_products).setVisible(true)
             menu.findItem(R.id.sign_out).setVisible(true)
         } else {
+            menu.findItem(R.id.menu_product_manage).setVisible(false)
             menu.findItem(R.id.menu_login).setVisible(true)
             menu.findItem(R.id.menu_categories).setVisible(false)
             menu.findItem(R.id.menu_my_products).setVisible(false)
@@ -175,6 +175,10 @@ class MainActivity : AppCompatActivity(),
                         setCurrentFragment(LogInFragment.newInstance())
                     }
                 }
+                true
+            }
+            R.id.menu_product_manage -> {
+                setCurrentFragment(AdminProductManagmentFragment.newInstance())
                 true
             }
             R.id.sign_out -> {

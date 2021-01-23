@@ -15,6 +15,10 @@
         android:id="@+id/menu_categories"
         android:icon="@drawable/ic_search"
         android:title="@string/categories" />
+    <item
+        android:id="@+id/menu_product_manage"
+        android:icon="@drawable/ic_search"
+        android:title="ادارة المنتجات" />
 
     <item
         android:id="@+id/menu_settings"
