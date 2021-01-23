@@ -18,6 +18,8 @@ class Product (
     var categoryId:Int=0,
     @SerializedName("user_id")
     var userId:Int=0,
+    @SerializedName("is_active")
+    var isHide:Boolean=false,
     @SerializedName("images")
     var images:List<ImageUrl> = emptyList()
 )

@@ -52,9 +52,9 @@ interface ShoppingApi {
 
     @POST("products.php")
     fun addProduct(@Body product: Product): Call<String>
-
     @POST("products.php?")
     fun updateProduct(@Query("id") id: String, @Body product: Product): Call<String>
+
 
     @DELETE("products.php")
     fun deleteProduct(@Query("id") id: String): Call<String>
