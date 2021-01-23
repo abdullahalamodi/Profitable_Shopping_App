@@ -34,7 +34,7 @@ interface ShoppingApi {
     fun deleteCategory(@Query("id") id: String): Call<String>
 
     @Multipart
-    @POST("images.php")
+    @POST("image.php")
     fun uploadCategoryImage(
         @Part image: MultipartBody.Part,
         @Part("category_id") desc: RequestBody
@@ -46,6 +46,9 @@ interface ShoppingApi {
 
     @GET("products.php")
     fun getUserProducts(@Query("user_id") userId: String): Call<List<Product>>
+
+    @GET("products.php")
+    fun getCategoryProducts(@Query("category_id") category_id: String): Call<List<Product>>
 
     @GET("products.php")
     fun getProduct(@Query("id") proId: String): Call<Product>

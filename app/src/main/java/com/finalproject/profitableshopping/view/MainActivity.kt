@@ -7,7 +7,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.AppSharedPreference
@@ -15,30 +14,26 @@ import com.finalproject.profitableshopping.view.authentication.fragments.ActiveF
 import com.finalproject.profitableshopping.view.authentication.fragments.ActiveUserAccountFragment
 import com.finalproject.profitableshopping.view.authentication.fragments.LogInFragment
 import com.finalproject.profitableshopping.view.authentication.fragments.SignUpFragment
-import com.finalproject.profitableshopping.data.models.Product
-import com.finalproject.profitableshopping.view.category.CategoryActivity
-import kotlinx.android.synthetic.main.activity_main.*
 import com.finalproject.profitableshopping.view.cart.CartFragment
-import com.finalproject.profitableshopping.view.category.CategoryFragment
+import com.finalproject.profitableshopping.view.category.CategoryActivity
 import com.finalproject.profitableshopping.view.products.ManageProductActivity
-import com.finalproject.profitableshopping.view.products.fragments.*
-import com.finalproject.profitableshopping.view.favorite.FavoriteFragment
 import com.finalproject.profitableshopping.view.products.fragments.AddProductFragment
-import com.finalproject.profitableshopping.view.products.fragments.ProductDetailsFragment
+import com.finalproject.profitableshopping.view.products.fragments.DetailsOfAllProductsFragment
 import com.finalproject.profitableshopping.view.products.fragments.ProductListFragment
 import com.finalproject.profitableshopping.view.products.fragments.ShowAllProductsFragment
 import com.finalproject.profitableshopping.view.user.UserFragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
+class MainActivity : AppCompatActivity(),
+    ProductListFragment.Callbacks,
     LogInFragment.LoginCallbacks,
-    AddProductFragment.Callbacks, SignUpFragment.SignUpCallbacks,
+    SignUpFragment.SignUpCallbacks,
     ActiveFragment.ActiveAccountCallbacks,
-    ProductDetailsFragment.Callbacks {
+    ShowAllProductsFragment.Callbacks,
+    DetailsOfAllProductsFragment.Callbacks {
 
-    private lateinit var buttonNav :BottomNavigationMenuView
+    private lateinit var buttonNav: BottomNavigationMenuView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +42,7 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
         //hide app bar elevation
         supportActionBar?.elevation = 0.0f
 
-      //  val nested_content =findViewById<View>(R.id.container) as NestedScrollView
+        //  val nested_content =findViewById<View>(R.id.container) as NestedScrollView
 /*        buttonNav = findViewById<View>(R.id.bottomNav) as BottomNavigationView
         val n =findViewById<View>(R.id.container)
        n.setOnScrollChangeListener() { v, X, Y, oldScrollX, oldScrollY ->
@@ -59,7 +54,7 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
             }
         }*/
 
-       // supportActionBar?.hide()
+        // supportActionBar?.hide()
 
 
         val isFragmentContainerEmpty = savedInstanceState == null
@@ -81,7 +76,7 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
                 }
                 R.id.menu_shopping_cart -> {
 //                    setContent("Cart")
-                   setCurrentFragment(CartFragment.newInstance())
+                    setCurrentFragment(CartFragment.newInstance())
                     true
                 }
                 R.id.menu_search -> {
@@ -104,7 +99,7 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
         }
     }
 
-    fun showButtonNavigation(show:Boolean){
+    fun showButtonNavigation(show: Boolean) {
         if (show)
             buttonNav.visibility = View.VISIBLE
         else
@@ -125,82 +120,60 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu to use in the action bar
-
-
         val inflater = menuInflater
         inflater.inflate(R.menu.main_menu, menu)
-        if(getUserToken()=="Admin"){
-                menu.findItem(R.id.menu_add_product).setVisible(false)
-                menu.findItem(R.id.menu_my_products).setVisible(false)
-                menu.findItem(R.id.menu_login).setVisible(false)
-                menu.findItem(R.id.menu_my_products).setVisible(true)
-
-        }
-        else if(getUserToken() ==null || getUserToken() =="") {
-            menu.findItem(R.id.menu_add_product).setVisible(false)
-           // menu.findItem(R.id.menu_my_products).setVisible(false)
-            menu.findItem(R.id.menu_categories).setVisible(false)
-            menu.findItem(R.id.sign_out).setVisible(false)
-            menu.findItem(R.id.menu_settings).setVisible(false)
-        } else {
-            menu.findItem(R.id.menu_categories).setVisible(false)
+        if (getUserToken() == "admin") {
             menu.findItem(R.id.menu_login).setVisible(false)
+            menu.findItem(R.id.menu_categories).setVisible(true)
+            menu.findItem(R.id.menu_my_products).setVisible(false)
+            menu.findItem(R.id.sign_out).setVisible(true)
+        } else if (getUserToken() == "user") {
+            menu.findItem(R.id.menu_login).setVisible(false)
+            menu.findItem(R.id.menu_categories).setVisible(false)
+            menu.findItem(R.id.menu_my_products).setVisible(true)
+            menu.findItem(R.id.sign_out).setVisible(true)
+        } else {
+            menu.findItem(R.id.menu_login).setVisible(true)
+            menu.findItem(R.id.menu_categories).setVisible(false)
+            menu.findItem(R.id.menu_my_products).setVisible(false)
+            menu.findItem(R.id.sign_out).setVisible(false)
         }
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.menu_add_product -> {
-                if (getUserToken() != null) {
-//                    if (getUserState())
-                        setCurrentFragment(AddProductFragment.newInstance(null))
-//                    else {
-//                        setCurrentFragment(ActiveFragment.newInstance())
-//                    }
-                } else {
-                    setCurrentFragment(LogInFragment.newInstance())
-                }
-                true
-            }
+//            R.id.menu_add_product -> {
+//                if (getUserToken() != null) {
+////                    if (getUserState())
+//                    setCurrentFragment(AddProductFragment.newInstance(null))
+////                    else {
+////                        setCurrentFragment(ActiveFragment.newInstance())
+////                    }
+//                } else {
+//                    setCurrentFragment(LogInFragment.newInstance())
+//                }
+//                true
+//            }
             R.id.menu_login -> {
-                /* val intent = Intent(this, SignIn::class.java).apply {
- //                        putExtra(EXTRA_MESSAGE, message)
-                 }
-                 startActivity(intent)*/
-
-
-
                 setCurrentFragment(LogInFragment.newInstance())
                 true
             }
             R.id.menu_my_products -> {
                 startActivity(Intent(this, ManageProductActivity::class.java))
-
-                // if (getUserToken() != null)
-              //      setCurrentFragment(ProductListFragment.newInstance())
-               // else {
-                    /*val intent = Intent(this, SignIn::class.java).apply {
-//                        putExtra(EXTRA_MESSAGE, message)
-                    }
-                    startActivity(intent)*/
-                /*    setCurrentFragment(LogInFragment.newInstance())
-                }*/
                 true
             }
             R.id.menu_categories -> {
-                if (getUserToken() != null && getUserToken() == "Admin")
-                   // setCurrentFragment(CategoryFragment.newInstance())
-                    startActivity(Intent(this, CategoryActivity::class.java))
-
-                else if (getUserToken() != "Admin") {
-                    Toast.makeText(this, "yor are not admin", Toast.LENGTH_SHORT).show()
-                } else {
-                   /* val intent = Intent(this, SignIn::class.java).apply {
-//                        putExtra(EXTRA_MESSAGE, message)
+                when {
+                    getUserToken() == "Admin"
+                        // setCurrentFragment(CategoryFragment.newInstance())
+                    -> startActivity(Intent(this, CategoryActivity::class.java))
+                    getUserToken() != "quest" -> {
+                        Toast.makeText(this, "yor are not admin", Toast.LENGTH_SHORT).show()
                     }
-                    startActivity(intent)*/
-                    setCurrentFragment(LogInFragment.newInstance())
+                    else -> {
+                        setCurrentFragment(LogInFragment.newInstance())
+                    }
                 }
                 true
             }
@@ -215,34 +188,15 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
 
 
     private fun getUserToken(): String? {
-       /* val sharedPreferences: SharedPreferences = this.getSharedPreferences(
-            AppSharedPreference.sharedPrefFile,
-            Context.MODE_PRIVATE
-        )
-        return sharedPreferences.getString(AppSharedPreference.tokenKey, null)*/
         return AppSharedPreference.getUserToken(this)
     }
 
     private fun getUserState(): Boolean {
-        /*val sharedPreferences: SharedPreferences = this.getSharedPreferences(
-            AppSharedPreference.sharedPrefFile,
-            Context.MODE_PRIVATE
-
-        )
-        sharedPreferences.getBoolean(AppSharedPreference.isActiveKey.toString(), false)*/
         return AppSharedPreference.isActive(this)
     }
 
-    fun logOut(token: String = "") {
-        /*val sharedPreferences: SharedPreferences = this.getSharedPreferences(
-            LogInFragment.sharedPrefFile,
-            Context.MODE_PRIVATE
-        )
-        val editor: SharedPreferences.Editor = sharedPreferences.edit()
-        editor.putString(LogInFragment.tokenKey, token)
-        editor.apply()
-        editor.commit()*/
-        AppSharedPreference.saveUserToken(this,token)
+    private fun logOut(token: String = "") {
+        AppSharedPreference.saveUserToken(this, token)
     }
 
     private fun addFragment(fragment: Fragment) =
@@ -256,12 +210,12 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
         addFragment(DetailsOfAllProductsFragment.newInstance(itemId.toString()))
     }
 
-    override fun onSuccessAddProduct() {
-        setCurrentFragment(ProductListFragment.newInstance())
-    }
-
     override fun onSignUpClicked() {
         setCurrentFragment(SignUpFragment.newInstance())
+    }
+
+    override fun onLoginSuccess() {
+        setCurrentFragment(ProductListFragment.newInstance())
     }
 
     override fun onCreateAccountSuccess() {
@@ -272,27 +226,16 @@ class MainActivity : AppCompatActivity(), ProductListFragment.Callbacks,
         setCurrentFragment(ActiveUserAccountFragment.newInstance())
     }
 
-    companion object {
-        private const val sharedPrefFile = "user_pref";
-        private var tokenKey = "token_key";
-
-    }
-
-
-    override fun onUpdateProductClicked(productId: String?) {
-        setCurrentFragment(AddProductFragment.newInstance(productId!!))
-    }
-
-    override fun onDeleteProductClicked() {
-        setCurrentFragment(ProductListFragment.newInstance())
-    }
-
-
     var isNavHide = false
     private fun anim(hide: Boolean) {
         if (isNavHide && hide || !isNavHide && !hide) return
         isNavHide = hide
         val moveY = if (hide) 2 * bottomNav!!.height else 0
-        bottomNav!!.animate().translationY(moveY.toFloat()).setStartDelay(100).setDuration(300).start()
+        bottomNav!!.animate().translationY(moveY.toFloat()).setStartDelay(100).setDuration(300)
+            .start()
+    }
+
+    override fun onAddToCartClicked() {
+
     }
 }

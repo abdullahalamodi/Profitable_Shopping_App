@@ -38,7 +38,7 @@ class DetailsOfAllProductsFragment : Fragment() {
     lateinit var productDescriptionTv: TextView
     lateinit var ratingBtn: FloatingActionButton
     lateinit var reportBtn:Button
-    lateinit var callbacks: ProductDetailsFragment.Callbacks
+    lateinit var callbacks: Callbacks
     lateinit var product: Product
     var countOfReports:Int=0
     var productReports:List<Report> = emptyList()
@@ -46,7 +46,7 @@ class DetailsOfAllProductsFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        callbacks = (context as ProductDetailsFragment.Callbacks)
+//        callbacks = (context as Callbacks)
     }
 
 
@@ -73,8 +73,7 @@ class DetailsOfAllProductsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        var view = inflater.inflate(R.layout.fragment_details_of_all_products, container, false)
-
+        val view = inflater.inflate(R.layout.fragment_details_of_all_products, container, false)
         //  progressBar = view.findViewById(R.id.progress_circular)
         productImageIv = view.findViewById(R.id.img_product_details) as ImageView
         productNameTv = view.findViewById(R.id.tv_product_name_details) as TextView
@@ -121,7 +120,7 @@ class DetailsOfAllProductsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //  showProgress(true)
+//          showProgress(true)
         productViewModel.productIDetailsLiveData.observe(
             viewLifecycleOwner,
             Observer { product ->
@@ -149,6 +148,10 @@ class DetailsOfAllProductsFragment : Fragment() {
                     .into(productImageIv)
 
             }
+    }
+
+    interface Callbacks{
+        fun onAddToCartClicked()
     }
 
     companion object {

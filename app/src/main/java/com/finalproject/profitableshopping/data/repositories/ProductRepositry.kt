@@ -42,7 +42,10 @@ class ProductRepositry {
 
     fun getUserProducts(userId:String): Call<List<Product>> {
         return shoppingApi.getUserProducts(userId)
+    }
 
+    fun getCategoryProducts(categoryId:String): Call<List<Product>> {
+        return shoppingApi.getCategoryProducts(categoryId)
     }
 
     fun updateProduct(product: Product):Call<String>{

@@ -1,25 +1,24 @@
 package com.finalproject.profitableshopping.view.products.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.lifecycle.Observer
 import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.models.Category
 import com.finalproject.profitableshopping.data.models.Product
-import com.finalproject.profitableshopping.view.category.CategoryFragment
+import com.finalproject.profitableshopping.showMessage
 import com.finalproject.profitableshopping.viewmodel.CategoryViewModel
 import com.finalproject.profitableshopping.viewmodel.ProductViewModel
-import java.util.*
+import com.squareup.picasso.Picasso
 
 
 class ShowAllProductsFragment : Fragment() {
@@ -28,15 +27,20 @@ class ShowAllProductsFragment : Fragment() {
     private lateinit var productViewModel: ProductViewModel
     private lateinit var hCategoryRecyclerView: RecyclerView
     private lateinit var allProductsRecyclerView: RecyclerView
-    private lateinit var categoriesList: List<Category>
+    private lateinit var categoriesList: MutableList<Category>
     private lateinit var productsList: List<Product>
     private lateinit var progressBar: ProgressBar
+    private lateinit var callbacks: Callbacks
     private var adapterCategories: ShowAllProductsFragment.CategoryAdapter? =
         CategoryAdapter(emptyList())
     private var adapterProducts: ShowAllProductsFragment.ProductAdapter =
         ProductAdapter(emptyList())
-    var category_id: Int = 0
 
+
+    override fun onStart() {
+        super.onStart()
+        callbacks = (context as Callbacks)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,7 +77,7 @@ class ShowAllProductsFragment : Fragment() {
             }
         )
 
-        productViewModel.productsListLiveData.observe(
+        productViewModel.categoryProductsLiveData.observe(
             viewLifecycleOwner,
             Observer { prodcts ->
                 //   showProgress(false)
@@ -83,7 +87,7 @@ class ShowAllProductsFragment : Fragment() {
     }
 
     private fun updateUICategory(categoriesList: List<Category>) {
-        this.categoriesList = categoriesList
+        this.categoriesList = categoriesList as MutableList<Category>
         adapterCategories = CategoryAdapter(categoriesList)
         hCategoryRecyclerView.adapter = adapterCategories
     }
@@ -94,28 +98,51 @@ class ShowAllProductsFragment : Fragment() {
         allProductsRecyclerView.adapter = adapterProducts
     }
 
-    private fun updateUIFliter(id:Category) {
+    private fun updateUIFliter(id: Category) {
         this.productsList = productsList
         adapterProducts = ProductAdapter(productsList)
         allProductsRecyclerView.adapter = adapterProducts
     }
 
+    interface Callbacks {
+        fun onItemSelected(itemId: Int)
+        // fun onFloatButtonClicked()
+    }
+
 
     companion object {
-
         @JvmStatic
         fun newInstance() = ShowAllProductsFragment()
-
     }
 
     private inner class CategoryHolder(view: View) : RecyclerView.ViewHolder(view),
         View.OnClickListener {
         var categoryNameTv: TextView = view.findViewById(R.id.tv_name_category) as TextView
-
+        var categoryImageV: ImageView = view.findViewById(R.id.category_image_view) as ImageView
+        var checkIcon: ImageView = view.findViewById(R.id.check_icon) as ImageView
         var category = Category()
-
+        var selectedId = 0;
         fun bind(cat: Category) {
+            category = cat;
             categoryNameTv.text = cat.name
+            if (cat.path != "" && cat.path != null) {
+                Picasso.get().also {
+                    val path = cat.getUrl()
+                    it.load(path)
+                        .resize(60, 60)
+                        .centerCrop()
+                        .placeholder(R.drawable.laptop)
+                        .into(categoryImageV)
+                }
+            } else {
+                categoryImageV.setImageResource(R.drawable.laptop)
+            }
+
+            if (cat.checked) {
+                checkIcon.visibility = View.VISIBLE
+            } else {
+                checkIcon.visibility = View.GONE
+            }
         }
 
         init {
@@ -123,7 +150,17 @@ class ShowAllProductsFragment : Fragment() {
         }
 
         override fun onClick(v: View?) {
-            category_id = this.category.id!!
+            selectedId = category.id!!
+            clearCheckIcon()
+            categoriesList[position].checked = true
+            productViewModel.refreshCategoryList(selectedId.toString())
+            adapterCategories?.notifyDataSetChanged()
+        }
+
+        fun clearCheckIcon(){
+            categoriesList.forEach {category ->
+                category.checked = false
+            }
         }
 
     }
@@ -186,9 +223,11 @@ class ShowAllProductsFragment : Fragment() {
 
         override fun onClick(p0: View?) {
             //to open product fragment to  display  product details
-
+            callbacks.onItemSelected(product.id)
         }
     }
+
+
 
     private inner class ProductAdapter(val productsList: List<Product>) :
         RecyclerView.Adapter<ShowAllProductsFragment.ProductHolder>() {

@@ -40,8 +40,11 @@ class OrderItemOptions() : DialogFragment(), AdapterView.OnItemSelectedListener 
                 && colorSV.prompt.isNotEmpty()
                 && sizeSV.prompt.isNotEmpty()
             ) {
-                if (checkCart())
-                    addItem()
+                if (checkCart()){
+                    AppSharedPreference.getCartId(requireContext())
+                    AppSharedPreference.getUserId(requireContext())
+//                    addItem()
+                }
                 else {
                     createCart()
                 }
@@ -120,7 +123,7 @@ class OrderItemOptions() : DialogFragment(), AdapterView.OnItemSelectedListener 
 
     private fun createCart() {
         val order = Order(
-            user_id = AppSharedPreference.getUserId(requireContext())
+            user_id = AppSharedPreference.getUserId(requireContext())?.toInt()!!
         )
         carttViewModel.createCart(
             order

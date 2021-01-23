@@ -42,7 +42,6 @@ class CartFragment : Fragment() {
                 )
         }
         clearCartBtn.setOnClickListener {
-
             carttViewModel.deleteCart(AppSharedPreference.getCartId(requireContext())!!).observe(
                 this,
                 Observer {
@@ -56,7 +55,7 @@ class CartFragment : Fragment() {
         super.onCreate(savedInstanceState)
         carttViewModel = ViewModelProviders.of(this).get(CartViewModel::class.java)
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
-         carttViewModel.loadUser(AppSharedPreference.getUserId(requireContext()))
+         carttViewModel.loadUser(AppSharedPreference.getUserId(requireContext())!!)
 //         carttViewModel.loadOrder(AppSharedPreference.getCartId(requireContext()))
          carttViewModel.loadOrder(2)
     }

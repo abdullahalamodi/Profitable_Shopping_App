@@ -29,6 +29,7 @@ object AppSharedPreference {
         editor.putString(idKey, user.id)
         editor.putString(emailKey, user.email)
         editor.putString(passwordKey, user.password)
+        editor.putString(phoneKey, user.phone)
         editor.putBoolean(isActiveKey, user.isActive)
         editor.apply()
         editor.commit()
@@ -50,8 +51,9 @@ object AppSharedPreference {
 
         return User(
             id = sharedPreferences.getString(idKey, "")!!,
-            email = sharedPreferences.getString(emailKey, "")!!,
+            email = sharedPreferences.getString(emailKey, "no found")!!,
             password = sharedPreferences.getString(passwordKey, "")!!,
+            phone = sharedPreferences.getString(phoneKey, "")!!,
             isActive = sharedPreferences.getBoolean(isActiveKey, false)
         )
     }
@@ -63,6 +65,7 @@ object AppSharedPreference {
         )
         return sharedPreferences.getBoolean(isActiveKey, false)
     }
+
     fun checkHasCart(context: Context): Boolean {
         val sharedPreferences: SharedPreferences = context.getSharedPreferences(
             sharedPrefFile,
@@ -78,14 +81,16 @@ object AppSharedPreference {
         )
         return sharedPreferences.getString(idKey, "-1")
     }
-    fun getCartId(context: Context):String?{
+
+    fun getCartId(context: Context): String? {
         val sharedPreferences: SharedPreferences = context.getSharedPreferences(
             sharedPrefFile,
             Context.MODE_PRIVATE
         )
         return sharedPreferences.getString(myCartId, "-1")
     }
-    fun setCartId(context: Context, cartId: String?){
+
+    fun setCartId(context: Context, cartId: String?) {
         val sharedPreferences: SharedPreferences = context.getSharedPreferences(
             sharedPrefFile,
             Context.MODE_PRIVATE
@@ -96,14 +101,16 @@ object AppSharedPreference {
         editor.apply()
         editor.commit()
     }
-    fun getFavoriteId(context: Context):Int{
+
+    fun getFavoriteId(context: Context): Int {
         val sharedPreferences: SharedPreferences = context.getSharedPreferences(
             sharedPrefFile,
             Context.MODE_PRIVATE
         )
         return sharedPreferences.getInt(myFavorite, -1)
     }
-    fun setFavoriteId(context: Context, favoriteId: Int?){
+
+    fun setFavoriteId(context: Context, favoriteId: Int?) {
         val sharedPreferences: SharedPreferences = context.getSharedPreferences(
             sharedPrefFile,
             Context.MODE_PRIVATE
@@ -114,7 +121,8 @@ object AppSharedPreference {
         editor.apply()
         editor.commit()
     }
-    fun setCartState(context: Context,isCart:Boolean){
+
+    fun setCartState(context: Context, isCart: Boolean) {
         val sharedPreferences: SharedPreferences = context.getSharedPreferences(
             sharedPrefFile,
             Context.MODE_PRIVATE
@@ -125,7 +133,8 @@ object AppSharedPreference {
         editor.apply()
         editor.commit()
     }
-    fun setOrderState(context: Context,isDone:Boolean){
+
+    fun setOrderState(context: Context, isDone: Boolean) {
         val sharedPreferences: SharedPreferences = context.getSharedPreferences(
             sharedPrefFile,
             Context.MODE_PRIVATE
@@ -136,29 +145,29 @@ object AppSharedPreference {
         editor.apply()
         editor.commit()
     }
-    fun getOrderState(context: Context):Boolean{
+
+    fun getOrderState(context: Context): Boolean {
         val sharedPreferences: SharedPreferences = context.getSharedPreferences(
             sharedPrefFile,
             Context.MODE_PRIVATE
         )
 
-       return sharedPreferences.getBoolean(isBought, false)
+        return sharedPreferences.getBoolean(isBought, false)
 
     }
 
 
-
-
     const val sharedPrefFile = "user_pref";
     const val tokenKey = "token_key";
-    private const val idKey = "id_key";
+    const val idKey = "id_key";
     const val emailKey = "email_key";
+    const val phoneKey = "phone_key";
     const val passwordKey = "password_key";
-     const val isActiveKey = "isActive_key";
-     const val hasCart = "hasCart";
-     const val myCartId = "myCartId";
-     const val myFavorite = "myFavorite";
-     const val isBought = "isBought";
+    const val isActiveKey = "isActive_key";
+    const val hasCart = "hasCart";
+    const val myCartId = "myCartId";
+    const val myFavorite = "myFavorite";
+    const val isBought = "isBought";
 
 
 }

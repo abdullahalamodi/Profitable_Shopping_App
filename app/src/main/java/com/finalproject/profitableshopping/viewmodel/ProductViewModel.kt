@@ -1,27 +1,23 @@
 package com.finalproject.profitableshopping.viewmodel
 
-import android.net.Uri
 import android.util.Log
-import androidx.core.net.toFile
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.finalproject.profitableshopping.data.models.Product
-import com.finalproject.profitableshopping.data.repositories.CategoryRepository
 import com.finalproject.profitableshopping.data.repositories.ProductRepositry
-import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.File
 
 class ProductViewModel : ViewModel() {
 
     val productRepositry: ProductRepositry
     private val loadTrigger = MutableLiveData(Unit)
+    private val userLoadTrigger = MutableLiveData<String>()
+    private val categoryLoadTrigger = MutableLiveData<String>()
     private val productIdLiveData = MutableLiveData<String>()
     private val userIdLiveData = MutableLiveData<Int>()
     private var product: Product? = null
@@ -34,6 +30,14 @@ class ProductViewModel : ViewModel() {
         getProducts()
     }
 
+    var userProductsLiveData = Transformations.switchMap(userLoadTrigger) { userId ->
+        getUserProducts(userId)
+    }
+
+    var categoryProductsLiveData = Transformations.switchMap(categoryLoadTrigger) { categoryId ->
+        getCategoryProducts(categoryId)
+    }
+
     init {
         productRepositry = ProductRepositry()
         refresh()
@@ -43,6 +47,13 @@ class ProductViewModel : ViewModel() {
         loadTrigger.value = Unit
     }
 
+    fun refreshUserList(userId: String) {
+        userLoadTrigger.value = userId
+    }
+
+    fun refreshCategoryList(categoryId: String) {
+        categoryLoadTrigger.value = categoryId
+    }
 
     private fun getProducts(): MutableLiveData<List<Product>> {
         val responseLiveData: MutableLiveData<List<Product>> = MutableLiveData()
@@ -63,13 +74,33 @@ class ProductViewModel : ViewModel() {
         return responseLiveData
     }
 
+
     fun loadUser(useId: Int) {
         userIdLiveData.value = useId
     }
 
-    fun getUserProducts(userId: String): MutableLiveData<List<Product>> {
+    private fun getUserProducts(userId: String): MutableLiveData<List<Product>> {
         val responseLiveData: MutableLiveData<List<Product>> = MutableLiveData()
         val call = productRepositry.getUserProducts(userId)
+        call.enqueue(object : Callback<List<Product>> {
+            override fun onResponse(
+                call: Call<List<Product>>,
+                response: Response<List<Product>>
+            ) {
+                responseLiveData.value = response.body() ?: emptyList()
+            }
+
+            override fun onFailure(call: Call<List<Product>>, t: Throwable) {
+                Log.d("Faild ", t.message!!)
+                responseLiveData.value = emptyList()
+            }
+        })
+        return responseLiveData
+    }
+
+    private fun getCategoryProducts(categoryId: String): MutableLiveData<List<Product>> {
+        val responseLiveData: MutableLiveData<List<Product>> = MutableLiveData()
+        val call = productRepositry.getCategoryProducts(categoryId)
         call.enqueue(object : Callback<List<Product>> {
             override fun onResponse(
                 call: Call<List<Product>>,

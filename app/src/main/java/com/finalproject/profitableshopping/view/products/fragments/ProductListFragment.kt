@@ -32,18 +32,11 @@ class ProductListFragment : Fragment() {
     private lateinit var searchEt: EditText
     private var adapter: ProductAdapter = ProductAdapter(emptyList())
     private lateinit var progressBar: ProgressBar
-
-    // private lateinit var addFbtn: FloatingActionButton
     private lateinit var loadingProgressBar: ContentLoadingProgressBar
     var callbacks: Callbacks? = null
 
     override fun onStart() {
         super.onStart()
-        /* addFbtn.setOnClickListener {
-             //to open product fragment to  add new product
-             callbacks?.onFloatButtonClicked()
-         }*/
-
         searchEt.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 filterList(s.toString())
@@ -101,8 +94,6 @@ class ProductListFragment : Fragment() {
         searchEt = view.findViewById(R.id.et_search_product)
         progressBar = view.findViewById(R.id.progress_circular)
         productsRv.layoutManager = GridLayoutManager(context, 2)
-        //  addFbtn =view.findViewById()
-        //    loadingProgressBar=view.findViewById()
         productsRv.adapter = adapter
 
         return view
