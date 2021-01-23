@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProviders
@@ -16,10 +15,8 @@ import androidx.lifecycle.Observer
 import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.models.Category
 import com.finalproject.profitableshopping.data.models.Product
-import com.finalproject.profitableshopping.view.category.CategoryFragment
 import com.finalproject.profitableshopping.viewmodel.CategoryViewModel
 import com.finalproject.profitableshopping.viewmodel.ProductViewModel
-import java.util.*
 
 
 class ShowAllProductsFragment : Fragment() {
@@ -55,8 +52,6 @@ class ShowAllProductsFragment : Fragment() {
         allProductsRecyclerView = view.findViewById(R.id.rv_all_products)
         hCategoryRecyclerView.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-
-        
         allProductsRecyclerView.layoutManager = LinearLayoutManager(context)
         allProductsRecyclerView.adapter = adapterProducts
 
@@ -80,6 +75,16 @@ class ShowAllProductsFragment : Fragment() {
             Observer { prodcts ->
                 //   showProgress(false)
                 updateUIProducts(prodcts)
+
+            }
+        )
+  var cat =Category()
+        productViewModel.getProductsByIdOfCat(cat.id).observe(
+            viewLifecycleOwner,
+            Observer { products ->
+                //   showProgress(false)
+                updateUIProducts(products)
+
             }
         )
     }
@@ -91,12 +96,6 @@ class ShowAllProductsFragment : Fragment() {
     }
 
     private fun updateUIProducts(productsList: List<Product>) {
-        this.productsList = productsList
-        adapterProducts = ProductAdapter(productsList)
-        allProductsRecyclerView.adapter = adapterProducts
-    }
-
-    private fun updateUIFliter(id:Category) {
         this.productsList = productsList
         adapterProducts = ProductAdapter(productsList)
         allProductsRecyclerView.adapter = adapterProducts
@@ -114,7 +113,6 @@ class ShowAllProductsFragment : Fragment() {
         View.OnClickListener {
         var categoryNameTv: TextView = view.findViewById(R.id.tv_name_category) as TextView
 
-        var category = Category()
 
         fun bind(cat: Category) {
             categoryNameTv.text = cat.name
@@ -125,7 +123,15 @@ class ShowAllProductsFragment : Fragment() {
         }
 
         override fun onClick(v: View?) {
-            category_id = this.category.id!!
+            var cat =Category()
+            productViewModel.getProductsByIdOfCat(cat.id).observe(
+                viewLifecycleOwner,
+                Observer { products ->
+                    //   showProgress(false)
+                    updateUIProducts(products)
+
+                }
+            )
         }
 
     }

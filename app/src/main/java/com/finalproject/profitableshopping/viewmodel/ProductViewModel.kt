@@ -1,22 +1,16 @@
 package com.finalproject.profitableshopping.viewmodel
 
-import android.net.Uri
 import android.util.Log
-import androidx.core.net.toFile
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.finalproject.profitableshopping.data.models.Product
-import com.finalproject.profitableshopping.data.repositories.CategoryRepository
 import com.finalproject.profitableshopping.data.repositories.ProductRepositry
-import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.File
 
 class ProductViewModel : ViewModel() {
 
@@ -62,6 +56,27 @@ class ProductViewModel : ViewModel() {
         })
         return responseLiveData
     }
+
+     fun getProductsByIdOfCat(categoryId: Int?):MutableLiveData<List<Product>> {
+        val responseLiveData: MutableLiveData<List<Product>> = MutableLiveData()
+        val call = productRepositry.getProductByIdOfCat(categoryId)
+        call.enqueue(object : Callback<List<Product>> {
+            override fun onResponse(
+                call: Call<List<Product>>,
+                response: Response<List<Product>>
+            ) {
+                responseLiveData.value = response.body() ?: emptyList()
+            }
+
+            override fun onFailure(call: Call<List<Product>>, t: Throwable) {
+                Log.d("Failed ", t.message!!)
+                responseLiveData.value = emptyList()
+            }
+        })
+        return responseLiveData
+    }
+
+
 
     fun loadUser(useId: Int) {
         userIdLiveData.value = useId

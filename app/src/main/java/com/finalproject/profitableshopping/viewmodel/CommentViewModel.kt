@@ -45,7 +45,6 @@ class CommentViewModel : ViewModel() {
             override fun onResponse(call: Call<Comment>, response: Response<Comment>) {
                 responseLiveData.value = response.body() ?: Comment(id = -1)
             }
-
             override fun onFailure(call: Call<Comment>, t: Throwable) {
                 Log.d(" Get comment failed", t.message!!)
                 responseLiveData.value = Comment(id = -1)
@@ -54,7 +53,7 @@ class CommentViewModel : ViewModel() {
         return responseLiveData
     }
 
-    private fun getComments(): MutableLiveData<List<Comment>> {
+     fun getComments(): MutableLiveData<List<Comment>> {
         val responseLiveData: MutableLiveData<List<Comment>> = MutableLiveData()
         val call = commentRepository.getComments()
         call.enqueue(object : Callback<List<Comment>> {

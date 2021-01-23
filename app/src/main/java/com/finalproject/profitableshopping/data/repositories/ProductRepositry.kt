@@ -7,7 +7,6 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.stream.IntStream
 
 class ProductRepositry {
     private var shoppingApi: ShoppingApi
@@ -32,6 +31,10 @@ class ProductRepositry {
 
     fun getProduct(proId:String):Call<Product>{
         return  shoppingApi.getProduct(proId)
+    }
+
+    fun getProductByIdOfCat(catId: Int?):Call<List<Product>>{
+        return  shoppingApi.getProductsByIdOfCat(catId)
     }
 
 
