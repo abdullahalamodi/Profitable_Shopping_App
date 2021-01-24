@@ -1,7 +1,9 @@
 package com.finalproject.profitableshopping.view.report.dialog
 
+import android.app.Activity
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
@@ -24,7 +26,7 @@ class ComplainDialog :DialogFragment(){
   lateinit var complainRv:RecyclerView
     lateinit var complainViewModel:ComplainViewModel
     lateinit var reportViewModel: ReportViewModel
-    var adapter=ComplainAdapter(emptyList())
+   lateinit var adapter:ComplainAdapter
     var complainId:Int=0
     var productId:String=""
     var userId:String=""
@@ -36,14 +38,17 @@ class ComplainDialog :DialogFragment(){
         }
         complainViewModel= ViewModelProviders.of(this).get(ComplainViewModel::class.java)
         reportViewModel= ViewModelProviders.of(this).get(ReportViewModel::class.java)
-        val view = layoutInflater.inflate(R.layout.complain_dialog, null)
-        complainRv=view.findViewById(R.id.complain_recycler_view)
+        val view = activity?.layoutInflater?.inflate(R.layout.complain_dialog,null)
+        complainRv= view!!.findViewById(R.id.complain_recycler_view)
         complainRv.layoutManager=LinearLayoutManager(requireContext())
+        complainRv.adapter=ComplainAdapter(complainViewModel.comp)
         complainViewModel.complainListLiveData.observe(
             this,
             Observer {
 
-                adapter=ComplainAdapter(it)
+               // adapter=ComplainAdapter(it)
+               // adapter=ComplainAdapter(complainViewModel.comp)
+                Log.d("coplain list", complainViewModel.comp.size.toString())
             }
         )
 
@@ -84,6 +89,7 @@ class ComplainDialog :DialogFragment(){
 
         override fun onBindViewHolder(holder: ComplainHoldrer, position: Int) {
             val complain=complainList[position]
+            Log.d("complain title",complainList.size.toString())
             holder.bind(complain)
         }
 
@@ -102,7 +108,8 @@ class ComplainDialog :DialogFragment(){
         }
         fun bind(complain:Complain){
             this.complain=complain
-            complainTitleTv.text=this.complain.title
+            complainTitleTv.text=complain.title
+
 
         }
         override fun onClick(p0: View?) {

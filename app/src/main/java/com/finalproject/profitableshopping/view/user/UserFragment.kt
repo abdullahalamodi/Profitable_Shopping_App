@@ -31,11 +31,12 @@ class UserFragment : Fragment() {
         return view
     }
 
-    fun updateUi(){
+    private fun updateUi(){
         val user = AppSharedPreference.getUserData(context!!)
         emailTv.text = "email : "+user?.email
         phoneTv.text = "phone :"+user?.phone
         isActiveTv.text = "i sActive :"+user?.isActive.toString()
+        isActiveTv.text = "user id  :"+user?.id.toString()
     }
 
     companion object {

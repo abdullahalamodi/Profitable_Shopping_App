@@ -12,6 +12,7 @@ class UploadRequestBody(
     private val file: File,
     private val contentType: String,
     private val callback: UploadCallback
+
 ) : RequestBody() {
 
     override fun contentType() = MediaType.parse("$contentType/*")

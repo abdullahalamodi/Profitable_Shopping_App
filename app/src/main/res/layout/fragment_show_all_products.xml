@@ -42,6 +42,7 @@
            android:layout_height="wrap_content"
            android:orientation="horizontal"
            android:id="@+id/rv_all_categories"
+           tools:listitem="@layout/list_item_main_categories"
            android:layout_margin="4dp"/>
 
        <TextView

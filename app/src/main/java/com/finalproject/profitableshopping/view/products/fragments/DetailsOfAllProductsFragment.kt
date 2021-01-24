@@ -10,11 +10,16 @@ import android.widget.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.finalproject.profitableshopping.R
+import com.finalproject.profitableshopping.data.firebase.Firebase
 import com.finalproject.profitableshopping.data.models.Product
+import com.finalproject.profitableshopping.data.models.Report
+import com.finalproject.profitableshopping.view.report.dialog.ComplainDialog
 import com.finalproject.profitableshopping.viewmodel.ProductViewModel
+import com.finalproject.profitableshopping.viewmodel.ReportViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_products_details.*
 
 private const val ARG_PRODUCT_ID = "product_id"
 
@@ -23,6 +28,7 @@ class DetailsOfAllProductsFragment : Fragment() {
     private var productId: String? = null
     private lateinit var progressBar: ProgressBar
     lateinit var productViewModel: ProductViewModel
+    lateinit var reportViewModel: ReportViewModel
     lateinit var productImageIv: ImageView
     lateinit var productNameTv: TextView
     lateinit var productQuantityTv: TextView
@@ -31,22 +37,34 @@ class DetailsOfAllProductsFragment : Fragment() {
     lateinit var productDollarPriceTv: TextView
     lateinit var productDescriptionTv: TextView
     lateinit var ratingBtn: FloatingActionButton
-    lateinit var callbacks: ProductDetailsFragment.Callbacks
+    lateinit var reportBtn:Button
+    lateinit var callbacks: Callbacks
     lateinit var product: Product
+    var countOfReports:Int=0
+    var productReports:List<Report> = emptyList()
 
 
     override fun onStart() {
         super.onStart()
-        callbacks = (context as ProductDetailsFragment.Callbacks)
+//        callbacks = (context as Callbacks)
     }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
+        reportViewModel = ViewModelProviders.of(this).get(ReportViewModel::class.java)
         arguments?.let {
             productId = it.getString(ARG_PRODUCT_ID)
             productViewModel.loadProduct(productId!!)
+           reportViewModel.getProductReports(productId!!).observe(
+               this,
+               Observer {
+                   countOfReports=it.size
+                   productReports=it
+
+               }
+           )
         }
     }
 
@@ -55,8 +73,7 @@ class DetailsOfAllProductsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        var view = inflater.inflate(R.layout.fragment_details_of_all_products, container, false)
-
+        val view = inflater.inflate(R.layout.fragment_details_of_all_products, container, false)
         //  progressBar = view.findViewById(R.id.progress_circular)
         productImageIv = view.findViewById(R.id.img_product_details) as ImageView
         productNameTv = view.findViewById(R.id.tv_product_name_details) as TextView
@@ -66,9 +83,16 @@ class DetailsOfAllProductsFragment : Fragment() {
         productDollarPriceTv = view.findViewById(R.id.tv_product_price_details) as TextView
         productDescriptionTv = view.findViewById(R.id.tv_product_desc_details) as TextView
         ratingBtn = view.findViewById(R.id.btn_rating) as FloatingActionButton
+        reportBtn=view.findViewById(R.id.btnShowreport)
+        productReviewsTv = view.findViewById(R.id.tv_product_reports) as TextView
 
         ratingBtn.setOnClickListener {
             showDialogRating()
+        }
+        reportBtn.setOnClickListener {
+            ComplainDialog.newInstance(productId!!,product.userId.toString()).apply {
+                show(this@DetailsOfAllProductsFragment.parentFragmentManager,"report")
+            }
         }
 
         return view
@@ -96,7 +120,7 @@ class DetailsOfAllProductsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //  showProgress(true)
+//          showProgress(true)
         productViewModel.productIDetailsLiveData.observe(
             viewLifecycleOwner,
             Observer { product ->
@@ -111,6 +135,7 @@ class DetailsOfAllProductsFragment : Fragment() {
         productNameTv.text = product.name
         productRialPriceTv.text = product.rialPrice.toString()
         productDollarPriceTv.text = product.dollarPrice.toString()
+        productReviewsTv.text=countOfReports.toString()
         //     productQuantityTv.text = product.quantity.toString()
         productDescriptionTv.text = product.description
         if (product.images.isNotEmpty())
@@ -121,7 +146,12 @@ class DetailsOfAllProductsFragment : Fragment() {
                     .centerCrop()
                     .placeholder(R.drawable.shoe)
                     .into(productImageIv)
+
             }
+    }
+
+    interface Callbacks{
+        fun onAddToCartClicked()
     }
 
     companion object {

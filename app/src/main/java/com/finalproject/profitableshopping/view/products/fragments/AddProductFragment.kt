@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -36,7 +35,7 @@ import java.io.FileOutputStream
 
 private const val ARG_PRODUCT_ID = "product_id"
 
-class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
+class AddProductFragment : Fragment(),
     UploadRequestBody.UploadCallback {
     lateinit var productNameET: EditText
     lateinit var productdescriptionET: EditText
@@ -80,7 +79,7 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
                     rialPrice = productRialPriceET.text.toString().toDouble(),
                     dollarPrice = productDollarPriceET.text.toString().toDouble(),
                     categoryId = selectedCategoryId,
-                    userId = AppSharedPreference.getUserId(context!!)!!.toInt()
+                    userId = AppSharedPreference.getUserId(requireContext())!!
                 )
                 if (isUpdate) {
                     updateProduct(product)
@@ -101,17 +100,17 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
         productViewModel.addProduct(product).observe(
             this,
             Observer { productId ->
-                showProgress(true)
                 uploadImage(productId).observe(
                     viewLifecycleOwner,
                     Observer {
-                        productViewModel.refresh()
-                        callbacks.onSuccessAddProduct()
-                        Toast.makeText(context, "تم اضافة المنتج بنجاح", Toast.LENGTH_SHORT)
-                            .show()
-                   showProgress(false) }
+                        if (!it.isNullOrEmpty()) {
+                            callbacks.onSuccessAddProduct()
+                            productViewModel.refreshUserList(userId!!)
+                            Toast.makeText(context, "تم اضافة المنتج بنجاح", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    }
                 )
-
             }
         )
     }
@@ -121,29 +120,24 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
         productViewModel.updateProduct(product).observe(
             this,
             Observer { productId ->
-                showProgress(true)
-                if(selectedImageUri != null){
+                if (selectedImageUri != null) {
                     uploadImage(productId).observe(
                         viewLifecycleOwner,
                         Observer {
-                            callbacks.onSuccessAddProduct()
-                            context?.showMessage("تم نعديل المنتج بنجاح")
-                            productViewModel.refresh()
-                            showProgress(false)
+                            if (!it.isNullOrEmpty()) {
+                                callbacks.onSuccessAddProduct()
+                                context?.showMessage("تم نعديل المنتج بنجاح")
+                                productViewModel.refreshUserList(userId!!)
+                            }
                         }
                     )
-
-                }else{
+                } else {
                     showProgress(false)
-                    productViewModel.refresh()
                     callbacks.onSuccessAddProduct()
+                    productViewModel.refresh()
                     context?.showMessage("تم نعديل المنتج بنجاح")
                     productViewModel.refresh()
                 }
-                callbacks.onSuccessAddProduct()
-                Toast.makeText(context, "تم نعديل المنتج بنجاح", Toast.LENGTH_SHORT)
-                    .show()
-                productViewModel.refresh()
             }
         )
     }
@@ -155,7 +149,6 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
         else
             progressBar.visibility = View.GONE
     }
-
 
 
     private fun pickImages() {
@@ -171,8 +164,8 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
         categoriesName = emptyList<String>().toMutableList()
         arguments?.let {
             productId = it.getString(ARG_PRODUCT_ID)
-            if(productId!=null)
-            productViewModel.loadProduct(productId!!)
+            if (productId != null)
+                productViewModel.loadProduct(productId!!)
         }
     }
 
@@ -188,7 +181,7 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
         productRialPriceET = view.findViewById(R.id.et_rial_price_product)
         productDollarPriceET = view.findViewById(R.id.et_dollar_price_product)
         productQuantityET = view.findViewById(R.id.et_quantity_product)
-        pickImagesV = view.findViewById(R.id.btn_load_photo_product)
+        pickImagesV = view.findViewById(R.id.load_image_btn)
         addProductBtn = view.findViewById(R.id.btn_add_product)
         progressBar = view.findViewById(R.id.progress_circular)
 
@@ -199,7 +192,7 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
         super.onViewCreated(view, savedInstanceState)
         showProgress(true)
         loadCategories()
-        if(productId !=null){
+        if (productId != null) {
             productViewModel.productIDetailsLiveData.observe(
                 viewLifecycleOwner,
                 Observer { product ->
@@ -230,6 +223,27 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
                     android.R.layout.simple_spinner_dropdown_item
                 )
                 selectCategorySv.adapter = dataAdapter
+
+                selectCategorySv.onItemSelectedListener =
+                    object : AdapterView.OnItemSelectedListener {
+                        override fun onItemSelected(
+                            p0: AdapterView<*>?,
+                            p1: View?,
+                            p2: Int,
+                            p3: Long
+                        ) {
+                            val item = categoriesList[p2]
+                            selectCategorySv.prompt = item.name
+                            selectedCategoryId = categoriesList[p2].id!!
+                        }
+
+                        override fun onNothingSelected(p0: AdapterView<*>?) {
+                            selectCategorySv.prompt =
+                                getString(R.string.spiner_nothing_selected_message)
+                        }
+
+
+                    }
             }
         )
     }
@@ -245,7 +259,7 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
         productdescriptionET.setText(product.description)
         selectedCategoryId = product.categoryId
         userId = product.userId.toString()
-            if (product.images.isNotEmpty())
+        if (product.images.isNotEmpty())
             Picasso.get().also {
                 val path = product.images[0].getUrl()
                 it.load(path)
@@ -289,7 +303,7 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
         }
     }
 
-    private fun uploadImage(productId: String):MutableLiveData<String> {
+    private fun uploadImage(productId: String): MutableLiveData<String> {
         val responseLiveData = MutableLiveData<String>()
         if (selectedImageUri == null) {
             context?.showMessage("Select an Image First")
@@ -298,8 +312,8 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
         }
         showProgress(true)
         val parcelFileDescriptor =
-            context?.contentResolver?.openFileDescriptor(selectedImageUri!!, "r", null) ?:
-        return responseLiveData
+            context?.contentResolver?.openFileDescriptor(selectedImageUri!!, "r", null)
+                ?: return responseLiveData
         val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
         val file =
             File(context?.cacheDir, context?.contentResolver?.getFileName(selectedImageUri!!)!!)
@@ -318,7 +332,7 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
             override fun onFailure(call: Call<String>, t: Throwable) {
                 context?.showMessage(t.message!!)
                 progressBar.progress = 0
-                responseLiveData.value=t.message
+                responseLiveData.value = t.message
             }
 
             override fun onResponse(
@@ -329,7 +343,7 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
                     context?.showMessage(it)
                     progressBar.progress = 100
                     showProgress(false)
-                    responseLiveData.value=it
+                    responseLiveData.value = it
                 }
             }
 
@@ -343,16 +357,6 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener,
         // fun onFloatButtonClicked()
     }
 
-    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-        val item = p0?.get(p2).toString()
-        selectCategorySv.prompt = item
-        selectedCategoryId = categoriesList[p2].id!!
-    }
-
-    override fun onNothingSelected(p0: AdapterView<*>?) {
-        selectCategorySv.prompt =
-            getString(R.string.spiner_nothing_selected_message)
-    }
 
     override fun onProgressUpdate(percentage: Int) {
         progressBar.progress = percentage

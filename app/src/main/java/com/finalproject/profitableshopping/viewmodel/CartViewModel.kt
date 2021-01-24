@@ -14,7 +14,7 @@ import retrofit2.Response
 
 class CartViewModel : ViewModel() {
     private val cartIdLiveData = MutableLiveData<Int>()
-    private val userIdLiveData = MutableLiveData<Int>()
+    private val userIdLiveData = MutableLiveData<String>()
 //    val pro = mutableListOf<OrderDetails>()
     val cartRepositry: CartRepositry
 
@@ -26,7 +26,7 @@ class CartViewModel : ViewModel() {
         cartRepositry= CartRepositry()
     }
 
-    fun loadUser(useId: Int) {
+    fun loadUser(useId: String?) {
         userIdLiveData.value = useId
     }
     fun loadOrder(orderId: Int) {

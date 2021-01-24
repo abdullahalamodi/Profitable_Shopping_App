@@ -4,43 +4,42 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.finalproject.profitableshopping.R
+import com.finalproject.profitableshopping.data.AppSharedPreference
 import com.finalproject.profitableshopping.data.models.Product
+import com.finalproject.profitableshopping.showMessage
 import com.finalproject.profitableshopping.viewmodel.ProductViewModel
 import com.squareup.picasso.Picasso
 
 private const val ARG_PRODUCT_ID = "product_id"
 
 class ManageProductsFragment : Fragment() {
-    private var productId: String? = null
+    private lateinit var userId: String
     private lateinit var productViewModel: ProductViewModel
     private lateinit var manageProductsRv: RecyclerView
     private lateinit var productSearchEt: EditText
-    private lateinit var showAddProductBtn: Button
+    private lateinit var addProductBtn: Button
     private var openMoreOptions = true
-    private var adapterManageProduct: ManageProductsFragment.ManageProductAdapter = ManageProductAdapter(emptyList())
+    private var adapterManageProduct: ManageProductsFragment.ManageProductAdapter =
+        ManageProductAdapter(emptyList())
     private lateinit var progressBar: ProgressBar
-    var callbacks: ManageProductsFragment.Callbacks? = null
-
+    var callbacks: Callbacks? = null
 
 
     override fun onStart() {
         super.onStart()
-
-        showAddProductBtn.setOnClickListener {
-
+        addProductBtn.setOnClickListener {
+            callbacks?.onAddProductClicked()
         }
-
         productSearchEt.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 filterList(s.toString())
@@ -64,12 +63,11 @@ class ManageProductsFragment : Fragment() {
 
     private fun filterList(filterItem: String) {
         var tempList: MutableList<Product> = ArrayList();
-        for (d in adapterManageProduct.productsList){
-            if(filterItem in d.name){
+        for (d in adapterManageProduct.productsList) {
+            if (filterItem in d.name) {
                 tempList.add(d)
             }
         }
-
         adapterManageProduct.updateList(tempList)
     }
 
@@ -77,7 +75,8 @@ class ManageProductsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
-
+        userId = AppSharedPreference.getUserId(context!!)!!
+        productViewModel.refreshUserList(userId)
     }
 
 
@@ -89,7 +88,7 @@ class ManageProductsFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_manage_products, container, false)
         manageProductsRv = view.findViewById(R.id.rv_manage_product)
         productSearchEt = view.findViewById(R.id.et_search_manage_product)
-        showAddProductBtn = view.findViewById(R.id.btn_add_manage_product)
+        addProductBtn = view.findViewById(R.id.btn_add_manage_product)
         progressBar = view.findViewById(R.id.progress_circular_manage_product)
         manageProductsRv.layoutManager = LinearLayoutManager(context)
         manageProductsRv.adapter = adapterManageProduct
@@ -99,7 +98,7 @@ class ManageProductsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         showProgress(true)
-        productViewModel.productsListLiveData.observe(
+        productViewModel.userProductsLiveData.observe(
             viewLifecycleOwner,
             Observer { prodcts ->
                 showProgress(false)
@@ -120,17 +119,27 @@ class ManageProductsFragment : Fragment() {
             progressBar.visibility = View.GONE
     }
 
+
+    private fun onProductDeleted() {
+        productViewModel.refreshUserList(userId)
+    }
+
     private inner class ManageProductHolder(view: View) : RecyclerView.ViewHolder(view),
         View.OnClickListener {
 
         var manageProductImageIv = view.findViewById(R.id.img_manage_product) as ImageView
-        var manageProductNameTv: TextView = view.findViewById(R.id.tv_name_manage_product) as TextView
-        var manageProductRialPriceTv: TextView = view.findViewById(R.id.tv_price_manage_product) as TextView
-        var manageProductMoreOptionIV: ImageView = view.findViewById(R.id.img_more_options_product) as ImageView
-        var manageProductUpdateOptionTV: TextView = view.findViewById(R.id.tv_update_manage_product) as TextView
-        var manageProductDeleteOptionTV: TextView = view.findViewById(R.id.tv_delete_manage_product) as TextView
-        var productUpdateDeleteLy: LinearLayout = view.findViewById(R.id.ly_update_delete_product) as LinearLayout
-
+        var manageProductNameTv: TextView =
+            view.findViewById(R.id.tv_name_manage_product) as TextView
+        var manageProductRialPriceTv: TextView =
+            view.findViewById(R.id.tv_price_manage_product) as TextView
+        var manageProductMoreOptionIV: ImageView =
+            view.findViewById(R.id.img_more_options_product) as ImageView
+        var manageProductUpdateOptionTV: TextView =
+            view.findViewById(R.id.tv_update_manage_product) as TextView
+        var manageProductDeleteOptionTV: TextView =
+            view.findViewById(R.id.tv_delete_manage_product) as TextView
+        var productUpdateDeleteLy: LinearLayout =
+            view.findViewById(R.id.ly_update_delete_product) as LinearLayout
 
         var product = Product()
 
@@ -142,7 +151,7 @@ class ManageProductsFragment : Fragment() {
         fun bind(pro: Product) {
             product = pro
             manageProductNameTv.text = pro.name
-            manageProductRialPriceTv.text = pro.rialPrice.toString()
+            manageProductRialPriceTv.text = "RY:" + pro.rialPrice.toString()
 
             manageProductMoreOptionIV.setOnClickListener {
                 if (openMoreOptions) {
@@ -154,25 +163,33 @@ class ManageProductsFragment : Fragment() {
                 }
 
                 manageProductUpdateOptionTV.setOnClickListener {
-
+                    callbacks?.onUpdateProductClicked(pro.id.toString())
                 }
 
                 manageProductDeleteOptionTV.setOnClickListener {
-
+                    productViewModel.refresh()
+                    showProgress(true)
+                    productViewModel.deleteProduct(pro.id.toString()).observe(
+                        viewLifecycleOwner,
+                        Observer {
+                            showProgress(false)
+                            context?.showMessage("product deleted successfully")
+                            onProductDeleted()
+                        }
+                    )
                 }
             }
 
-
-            if (product.images.isNotEmpty()){
+            if (product.images.isNotEmpty()) {
                 Picasso.get().also {
                     val path = product.images[0].getUrl()
                     it.load(path)
-                        .resize(150,150)
+                        .resize(45, 45)
                         .centerCrop()
                         .placeholder(R.drawable.shoe)
                         .into(manageProductImageIv)
                 }
-            }else{
+            } else {
                 manageProductImageIv.setImageResource(R.drawable.shoe)
             }
         }
@@ -203,14 +220,17 @@ class ManageProductsFragment : Fragment() {
             return productsList.size
         }
 
-        fun updateList(list : List<Product>){
-            productsList =list
+        fun updateList(list: List<Product>) {
+            productsList = list
             notifyDataSetChanged();
         }
     }
 
     interface Callbacks {
         fun onItemSelected(itemId: Int)
+        fun onUpdateProductClicked(productId: String?)
+        fun onDeleteProductClicked()
+        fun onAddProductClicked()
     }
 
     override fun onAttach(context: Context) {
@@ -221,7 +241,9 @@ class ManageProductsFragment : Fragment() {
     override fun onDetach() {
         super.onDetach()
         callbacks = null
+
     }
+
     companion object {
         fun newInstance(): ManageProductsFragment {
             return newInstance();

@@ -11,8 +11,6 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.ContentLoadingProgressBar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -20,11 +18,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.finalproject.profitableshopping.R
-import com.finalproject.profitableshopping.data.models.Category
 import com.finalproject.profitableshopping.data.models.Product
 import com.finalproject.profitableshopping.viewmodel.ProductViewModel
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.delete_category.view.*
 
 class ProductListFragment : Fragment() {
     private lateinit var productViewModel: ProductViewModel
@@ -32,18 +28,11 @@ class ProductListFragment : Fragment() {
     private lateinit var searchEt: EditText
     private var adapter: ProductAdapter = ProductAdapter(emptyList())
     private lateinit var progressBar: ProgressBar
-
-    // private lateinit var addFbtn: FloatingActionButton
     private lateinit var loadingProgressBar: ContentLoadingProgressBar
     var callbacks: Callbacks? = null
 
     override fun onStart() {
         super.onStart()
-        /* addFbtn.setOnClickListener {
-             //to open product fragment to  add new product
-             callbacks?.onFloatButtonClicked()
-         }*/
-
         searchEt.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 filterList(s.toString())
@@ -101,8 +90,6 @@ class ProductListFragment : Fragment() {
         searchEt = view.findViewById(R.id.et_search_product)
         progressBar = view.findViewById(R.id.progress_circular)
         productsRv.layoutManager = GridLayoutManager(context, 2)
-        //  addFbtn =view.findViewById()
-        //    loadingProgressBar=view.findViewById()
         productsRv.adapter = adapter
 
         return view
@@ -133,7 +120,7 @@ class ProductListFragment : Fragment() {
             progressBar.visibility = View.GONE
     }
 
-    private inner class ProductHolder(view: View) : RecyclerView.ViewHolder(view),
+    private inner class ProductHolder(val view: View) : RecyclerView.ViewHolder(view),
         View.OnClickListener {
         // need to change next variable inflate to be comfortable with product item xml file
         var productImageIv = view.findViewById(R.id.ImgV_product) as ImageView
@@ -149,22 +136,28 @@ class ProductListFragment : Fragment() {
 
         fun bind(pro: Product) {
             product = pro
-            productNameTv.text = pro.name
-            productRialPriceTv.text = pro.rialPrice.toString()
-            productDescriptionTv.text = pro.description
+            if(pro.isActive){
+                 view.visibility=View.GONE
+            }else{
+                view.visibility=View.VISIBLE
+                productNameTv.text = pro.name
+                productRialPriceTv.text = pro.rialPrice.toString()
+                productDescriptionTv.text = pro.description
 
-            if (product.images.isNotEmpty()) {
-                Picasso.get().also {
-                    val path = product.images[0].getUrl()
-                    it.load(path)
-                        .resize(150, 150)
-                        .centerCrop()
-                        .placeholder(R.drawable.laptop)
-                        .into(productImageIv)
+                if (product.images.isNotEmpty()) {
+                    Picasso.get().also {
+                        val path = product.images[0].getUrl()
+                        it.load(path)
+                            .resize(150, 150)
+                            .centerCrop()
+                            .placeholder(R.drawable.laptop)
+                            .into(productImageIv)
+                    }
+                } else {
+                    productImageIv.setImageResource(R.drawable.laptop)
                 }
-            } else {
-                productImageIv.setImageResource(R.drawable.laptop)
             }
+
         }
 
         override fun onClick(p0: View?) {

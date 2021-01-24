@@ -40,8 +40,11 @@ class OrderItemOptions() : DialogFragment(), AdapterView.OnItemSelectedListener 
                 && colorSV.prompt.isNotEmpty()
                 && sizeSV.prompt.isNotEmpty()
             ) {
-                if (checkCart())
-                    addItem()
+                if (checkCart()){
+                    AppSharedPreference.getCartId(requireContext())
+                    AppSharedPreference.getUserId(requireContext())
+//                    addItem()
+                }
                 else {
                     createCart()
                 }
