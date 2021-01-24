@@ -24,10 +24,8 @@ class ComplainViewModel:ViewModel() {
 
     init {
 
-        comp.add(Complain(1," منتج وهمي"))
-        comp.add(Complain(2,"غير مطابق للمواصفات"))
-        comp.add(Complain(3," اغلاء من السوقي"))
-        comp.add(Complain(4," مواعيد التوصيل غير مضبوطة"))
+
+
         complainRepositry= ComplainRepositry()
         complainListLiveData=getComplains()
     }

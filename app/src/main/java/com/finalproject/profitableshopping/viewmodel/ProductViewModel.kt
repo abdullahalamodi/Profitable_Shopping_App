@@ -77,6 +77,7 @@ class ProductViewModel : ViewModel() {
                 response: Response<List<Product>>
             ) {
                 responseLiveData.value = response.body() ?: emptyList()
+                Log.d("get products","success")
             }
 
             override fun onFailure(call: Call<List<Product>>, t: Throwable) {
