@@ -1,6 +1,7 @@
 package com.finalproject.profitableshopping.viewmodel
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.finalproject.profitableshopping.data.models.Category
@@ -53,55 +54,40 @@ class CommentViewModel : ViewModel() {
         return responseLiveData
     }
 
-     fun getComments(): MutableLiveData<List<Comment>> {
+    fun getComments(): MutableLiveData<List<Comment>> {
         val responseLiveData: MutableLiveData<List<Comment>> = MutableLiveData()
-        val call = commentRepository.getComments()
-        call.enqueue(object : Callback<List<Comment>> {
-            override fun onResponse(
-                call: Call<List<Comment>>,
-                response: Response<List<Comment>>
-            ) {
+        val call = repository.getComments()
+        call.enqueue(object : Callback<List<Comment>>{
+            override fun onResponse(call: Call<List<Comment>>, response: Response<List<Comment>>) {
                 responseLiveData.value = response.body() ?: emptyList()
+                Log.d("success get","success get")
             }
 
             override fun onFailure(call: Call<List<Comment>>, t: Throwable) {
-                Log.d("Get Comments Failed ", t.message!!)
+                Log.d("commentFailed", t.message!!)
                 responseLiveData.value = emptyList()
             }
         })
         return responseLiveData
     }
 
-    fun updateComment(comment: Comment): MutableLiveData<String> {
+    fun addComment(comment: Comment): LiveData<String>{
         val responseLiveData: MutableLiveData<String> = MutableLiveData()
-        val call = commentRepository.updateComment(comment)
+        val call = repository.addComment(comment)
         call.enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
-                responseLiveData.value = response.body()!!
+                responseLiveData.value = response.body() ?:" empty"
+                Log.d("success", response.body()!!)
             }
 
             override fun onFailure(call: Call<String>, t: Throwable) {
-                responseLiveData.value = t.message!!
+                Log.d("commentFailed", t.message!!)
+                responseLiveData.value = ""
             }
         })
         return responseLiveData
 
-    }
 
-    fun deleteComment(catId: Int): MutableLiveData<String> {
-        val responseLiveData: MutableLiveData<String> = MutableLiveData()
-        val call = commentRepository.deleteComment(catId)
-        call.enqueue(object : Callback<String> {
-            override fun onResponse(call: Call<String>, response: Response<String>) {
-                responseLiveData.value = response.body()!!
-                Log.d("delete comment", response.body()!!)
-            }
 
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                responseLiveData.value = t.message!!
-                Log.d("Delete failed try again", t.message!!)
-            }
-        })
-        return responseLiveData
     }
 }

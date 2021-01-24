@@ -18,7 +18,10 @@ import com.finalproject.profitableshopping.view.cart.CartFragment
 import com.finalproject.profitableshopping.view.category.CategoryActivity
 import com.finalproject.profitableshopping.view.products.ManageProductActivity
 import com.finalproject.profitableshopping.view.products.fragments.*
-import com.finalproject.profitableshopping.view.user.UserFragment
+import com.finalproject.profitableshopping.view.user.ManageUserProfileFragment
+import com.finalproject.profitableshopping.view.user.RestPasswordFragment
+import com.finalproject.profitableshopping.view.user.UpdateInfoFragment
+import com.finalproject.profitableshopping.view.user.UserManageProfileFragment
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -28,7 +31,9 @@ class MainActivity : AppCompatActivity(),
     SignUpFragment.SignUpCallbacks,
     ActiveFragment.ActiveAccountCallbacks,
     ShowAllProductsFragment.Callbacks,
-    DetailsOfAllProductsFragment.Callbacks {
+    DetailsOfAllProductsFragment.Callbacks,
+UserManageProfileFragment.Callbacks,
+ManageUserProfileFragment.Callbacks{
 
     private lateinit var menu: Menu
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -86,7 +91,7 @@ class MainActivity : AppCompatActivity(),
                 }
                 R.id.menu_profile -> {
                     setContent("Profile")
-                    setCurrentFragment(UserFragment.newInstance())
+                    setCurrentFragment(ManageUserProfileFragment.newInstance())
                     true
                 }
                 else -> false
@@ -184,6 +189,7 @@ class MainActivity : AppCompatActivity(),
                 setCurrentFragment(AdminProductManagmentFragment.newInstance())
                 true
             }
+
             R.id.sign_out -> {
                 logOut()
                 setCurrentFragment(LogInFragment.newInstance())
@@ -248,5 +254,18 @@ class MainActivity : AppCompatActivity(),
 
     override fun onAddToCartClicked() {
 
+    }
+
+    override fun onRestPasswordClicked() {
+       setCurrentFragment(RestPasswordFragment.newInstance())
+    }
+
+    override fun onUpdateClicked() {
+        setCurrentFragment(UpdateInfoFragment.newInstance())
+    }
+
+    override fun onOpenProfile() {
+        setCurrentFragment(UserManageProfileFragment
+            .newInstance())
     }
 }

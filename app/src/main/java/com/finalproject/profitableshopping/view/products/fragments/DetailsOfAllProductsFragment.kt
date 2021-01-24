@@ -11,14 +11,17 @@ import android.widget.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.finalproject.profitableshopping.R
+import com.finalproject.profitableshopping.data.AppSharedPreference
 import com.finalproject.profitableshopping.data.firebase.Firebase
 import com.finalproject.profitableshopping.data.AppSharedPreference
+import com.finalproject.profitableshopping.data.models.Comment
 import com.finalproject.profitableshopping.data.models.Comment
 import com.finalproject.profitableshopping.data.models.Product
 import com.finalproject.profitableshopping.data.models.Report
 import com.finalproject.profitableshopping.view.report.dialog.ComplainDialog
 import com.finalproject.profitableshopping.showMessage
 import com.finalproject.profitableshopping.viewmodel.CategoryViewModel
+import com.finalproject.profitableshopping.viewmodel.CommentViewModel
 import com.finalproject.profitableshopping.viewmodel.CommentViewModel
 import com.finalproject.profitableshopping.viewmodel.ProductViewModel
 import com.finalproject.profitableshopping.viewmodel.ReportViewModel
@@ -37,6 +40,7 @@ class DetailsOfAllProductsFragment : Fragment() {
     private lateinit var progressBar: ProgressBar
     lateinit var productViewModel: ProductViewModel
     lateinit var reportViewModel: ReportViewModel
+    lateinit var commentViewModel: CommentViewModel
     lateinit var productImageIv: ImageView
     lateinit var productNameTv: TextView
     lateinit var productQuantityTv: TextView
@@ -67,6 +71,7 @@ class DetailsOfAllProductsFragment : Fragment() {
         commentViewModel = ViewModelProviders.of(this).get(CommentViewModel::class.java)
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
         reportViewModel = ViewModelProviders.of(this).get(ReportViewModel::class.java)
+        commentViewModel = ViewModelProviders.of(this).get(CommentViewModel::class.java)
         arguments?.let {
             productId = it.getString(ARG_PRODUCT_ID)
             productViewModel.loadProduct(productId!!)
@@ -214,7 +219,18 @@ class DetailsOfAllProductsFragment : Fragment() {
     interface Callbacks{
         fun onAddToCartClicked()
     }
+    fun averageOfRating(comments: List<Comment>){
+        var totul :Int =0
+        if(comments.size>0) {
+            for (i in comments) {
+                totul += i.rate
+            }
+            var average = totul / comments.size
+            ratingBar.rating = average.toFloat()
+        }else
+            Log.d("no data","no data")
 
+    }
     companion object {
         @JvmStatic
         fun newInstance(productId: String) =

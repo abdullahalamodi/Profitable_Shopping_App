@@ -19,6 +19,10 @@
         android:id="@+id/menu_product_manage"
         android:icon="@drawable/ic_search"
         android:title="ادارة المنتجات" />
+    <item
+        android:id="@+id/menu_myAcount"
+        android:icon="@drawable/ic_search"
+        android:title="احساب المستخدم" />
 
     <item
         android:id="@+id/menu_settings"
