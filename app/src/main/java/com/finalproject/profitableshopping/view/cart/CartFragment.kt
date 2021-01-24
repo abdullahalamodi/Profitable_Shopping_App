@@ -54,7 +54,7 @@ class CartFragment : Fragment() {
         super.onCreate(savedInstanceState)
         carttViewModel = ViewModelProviders.of(this).get(CartViewModel::class.java)
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
-         carttViewModel.loadOrder(4)
+         carttViewModel.loadOrder(AppSharedPreference.getCartId(requireContext())?.toInt()!!)
     }
 
     override fun onCreateView(
