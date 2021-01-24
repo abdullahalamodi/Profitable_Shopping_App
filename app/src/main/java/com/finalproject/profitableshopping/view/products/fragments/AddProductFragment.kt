@@ -311,6 +311,7 @@ class AddProductFragment : Fragment(),
             return responseLiveData
         }
         showProgress(true)
+
         val parcelFileDescriptor =
             context?.contentResolver?.openFileDescriptor(selectedImageUri!!, "r", null)
                 ?: return responseLiveData
