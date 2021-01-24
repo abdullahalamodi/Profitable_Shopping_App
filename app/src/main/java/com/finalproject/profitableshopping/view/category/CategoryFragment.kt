@@ -221,7 +221,8 @@ class CategoryFragment : Fragment(),UploadRequestBody.UploadCallback {
             }
 
             categoryDeleteTv.setOnClickListener {
-                categoryDialogDelete(cat)
+                //disable delete in category
+//                categoryDialogDelete(cat)
             }
         }
 

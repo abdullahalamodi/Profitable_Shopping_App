@@ -122,7 +122,7 @@ interface ShoppingApi {
 
     // comment method
     @GET("comments.php")
-    fun getComments(): Call<List<Comment>>
+    fun getProductComments(@Query("product_id") userId: String): Call<List<Comment>>
 
     @GET("comments.php")
     fun getUserComments(@Query("user_id") userId: String): Call<List<Comment>>

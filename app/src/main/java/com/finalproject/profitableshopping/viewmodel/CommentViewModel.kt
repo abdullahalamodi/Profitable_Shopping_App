@@ -52,9 +52,9 @@ class CommentViewModel : ViewModel() {
         return responseLiveData
     }
 
-    fun getComments(): MutableLiveData<List<Comment>> {
+    fun getProductComments(productId:String): MutableLiveData<List<Comment>> {
         val responseLiveData: MutableLiveData<List<Comment>> = MutableLiveData()
-        val call = commentRepository.getComments()
+        val call = commentRepository.getProductComments(productId)
         call.enqueue(object : Callback<List<Comment>> {
             override fun onResponse(call: Call<List<Comment>>, response: Response<List<Comment>>) {
                 responseLiveData.value = response.body() ?: emptyList()
