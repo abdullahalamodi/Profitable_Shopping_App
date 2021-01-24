@@ -93,7 +93,7 @@ interface ShoppingApi {
     fun addOrderDetails(@Body orderDetails: OrderDetails): Call<String>
 
     @POST("orders.php")
-    fun buy(@Body id: String): Call<String>
+    fun buy(@Query("id") id: String): Call<String>
 
     @GET("order_details.php?")
     fun getUserCartItems(
@@ -101,11 +101,10 @@ interface ShoppingApi {
     ): Call<List<OrderDetails>>
 
     @DELETE("orders.php")
-    fun deleteOrder(@Query("order_id") orderId: String): Call<String>
+    fun deleteOrder(@Query("id") orderId: String): Call<String>
 
     @DELETE("order_details.php")
     fun removeOrderDetails(@Query("id") id: String): Call<String>
-
 
 
     // favorite method

@@ -24,6 +24,8 @@ class CartFragment : Fragment() {
     lateinit var carttViewModel: CartViewModel
     private lateinit var productViewModel: ProductViewModel
     lateinit var cartRV: RecyclerView
+    lateinit var totalPriceV: TextView
+    var totalPrice: Double = 0.0
     lateinit var buyBtn: TextView
     lateinit var clearCartBtn: TextView
     private var adapter: CartAdapter = CartAdapter(emptyList())
@@ -63,6 +65,7 @@ class CartFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_cart2, container, false)
         cartRV = view.findViewById(R.id.cart_resuclerview)
+        totalPriceV = view.findViewById(R.id.total_tv)
         buyBtn = view.findViewById(R.id.buy_btn)
         clearCartBtn = view.findViewById(R.id.clear_cart_btn)
         cartRV.layoutManager = LinearLayoutManager(requireContext())
@@ -82,6 +85,14 @@ class CartFragment : Fragment() {
     private fun updateUI(orders: List<OrderDetails>) {
         adapter = CartAdapter(orders)
         cartRV.adapter = adapter
+        setTotalPrice(orders)
+    }
+
+    private fun setTotalPrice(orders: List<OrderDetails>){
+        orders.forEach { details ->
+            totalPrice +=details.total_price
+        }
+        totalPriceV.text = totalPrice.toString()
     }
 
     companion object {
