@@ -83,14 +83,16 @@ interface ShoppingApi {
         @Part("product_id") desc: RequestBody
     ): Call<String>
 
+
+
     //cart API  method
     @POST("orders.php")
     fun createCart(@Body order: Order): Call<String>
 
-    @POST("orderDetails.pho")
+    @POST("order_details.php")
     fun addOrderDetails(@Body orderDetails: OrderDetails): Call<String>
 
-    @POST("orders.pho")
+    @POST("orders.php")
     fun buy(@Body id: String): Call<String>
 
     @GET("order_details.php?")
@@ -98,23 +100,25 @@ interface ShoppingApi {
         @Query("order_id") order_id: String
     ): Call<List<OrderDetails>>
 
-    @DELETE("orders.pho")
+    @DELETE("orders.php")
     fun deleteOrder(@Query("order_id") orderId: String): Call<String>
 
     @DELETE("order_details.php")
     fun removeOrderDetails(@Query("id") id: String): Call<String>
 
+
+
     // favorite method
     @POST("favorite.php")
     fun createFavorite(@Body favorite: Favorite): Call<Int>
 
-    @POST("favorite.pho")
+    @POST("favorite.php")
     fun addFavoriteItem(@Body FavoriteItem: FavoriteItem): Call<String>
 
     @GET("favorite.php?")
     fun getFavoriteItems(@Query("favorite_id") favoriteId: Int): Call<List<FavoriteItem>>
 
-    @DELETE("favorite.pho")
+    @DELETE("favorite.php")
     fun deleteFavoriteItem(@Query("FavoriteItem_id") FavoriteItemId: Int): Call<String>
 
     // comment method

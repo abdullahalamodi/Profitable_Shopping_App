@@ -17,7 +17,7 @@ class CartViewModel : ViewModel() {
 //    val pro = mutableListOf<OrderDetails>()
     val cartRepositry: CartRepositry
 
-    var orderListLiveData = Transformations.switchMap(cartIdLiveData){carId ->
+    var orderDetailsListLiveData = Transformations.switchMap(cartIdLiveData){ carId ->
         getCartItemList(carId)
     }
 
@@ -56,7 +56,7 @@ class CartViewModel : ViewModel() {
             object :Callback<String>{
                 override fun onResponse(call: Call<String>, response: Response<String>) {
                     message.value= response.body()
-                    Log.d("success cart",response.body()!!)
+                    Log.d("success cart",response.body()?:"")
                 }
 
                 override fun onFailure(call: Call<String>, t: Throwable) {

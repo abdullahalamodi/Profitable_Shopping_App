@@ -51,7 +51,7 @@
 
 
                 <EditText
-                    android:id="@+id/ed_category_name"
+                    android:id="@+id/ed_quantity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top"

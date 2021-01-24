@@ -64,6 +64,10 @@ class ProductViewModel : ViewModel() {
         categoryLoadTrigger.value = categoryId
     }
 
+    fun loadProduct(proId: String) {
+        productIdLiveData.value = proId
+    }
+
     private fun getProducts(): MutableLiveData<List<Product>> {
         val responseLiveData: MutableLiveData<List<Product>> = MutableLiveData()
         val call = productRepositry.getProducts()
@@ -145,9 +149,7 @@ class ProductViewModel : ViewModel() {
         return responseLiveData
     }
 
-    fun loadProduct(proId: String) {
-        productIdLiveData.value = proId
-    }
+
 
     private fun getProduct(proId: String): MutableLiveData<Product> {
         val responseLiveData: MutableLiveData<Product> = MutableLiveData()

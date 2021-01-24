@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="15"
+    android:layout_marginBottom="70dp"
     tools:context=".view.cart.CartFragment">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -18,28 +18,31 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_weight="2"
-        android:weightSum="2">
+        android:orientation="horizontal">
 
-        <Button
+        <TextView
             android:id="@+id/buy_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:padding="15dp"
+            android:gravity="center"
             android:background="@drawable/bg10"
-            tools:text="شراء"
-            android:fontFamily="@font/rb_light"
-            android:textStyle="bold"/>
-        <Button
+            android:text="شراء"
+            android:textColor="#000"
+            android:fontFamily="@font/rb_light" />
+        <TextView
             android:id="@+id/clear_cart_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="#000"
+            android:padding="15dp"
+            android:gravity="center"
             android:background="@color/colorPrimary"
             android:fontFamily="@font/rb_light"
-            android:textStyle="bold"
-            tools:text="الغاء"/>
+            android:text="الغاء"
+            />
     </LinearLayout>
 
 

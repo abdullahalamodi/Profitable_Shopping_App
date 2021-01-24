@@ -119,7 +119,7 @@ class SignUpFragment : Fragment() {
                     favoriteViewModel.createFavorite(
                         Favorite(
                             null,
-                            AppSharedPreference.getUserId(requireContext())?.toInt()!!,
+                            AppSharedPreference.getUserId(requireContext())!!,
                             "1-1-2021"
                         )
                     ).observe(

@@ -60,7 +60,7 @@ class ComplainDialog :DialogFragment(){
              val report=Report(
                  id=null,
                  complainId = complainId,
-                 fromId = AppSharedPreference.getUserId(requireContext())!!,
+                 from_id = AppSharedPreference.getUserId(requireContext())!!,
                  to_id =userId,
                  productId = productId,
                  date = "22-1-2021"
