@@ -22,14 +22,19 @@ private const val ARG_PRODUCT_P = "product_p"
 
 class OrderItemOptions : DialogFragment() {
     lateinit var quantityEd: EditText
+    lateinit var plusBtn: Button
+    lateinit var menusBtn: Button
     lateinit var colorSV: Spinner
     lateinit var sizeSV: Spinner
+    lateinit var totalPriceV: TextView
     lateinit var addToCartBtn: Button
     lateinit var exitBtn: Button
     var selectedColor = " "
     var selectedSizer = " "
     var proId: String = ""
-    var quantity: Int = 0
+    var productQuantity: Int = 0
+    var productPrice: Double = 0.0
+    var quantity: Int = 1
     var price: Double = 0.0
     lateinit var carttViewModel: CartViewModel
     val colors = listOf("red", "blue", "yellow")
@@ -38,9 +43,7 @@ class OrderItemOptions : DialogFragment() {
     override fun onStart() {
         super.onStart()
         addToCartBtn.setOnClickListener {
-            if (quantityEd.text.isNotEmpty()
-                && quantityEd.text.toString().toInt() <= quantity
-                && !colorSV.prompt.isNullOrEmpty()
+            if (!colorSV.prompt.isNullOrEmpty()
                 && !sizeSV.prompt.isNullOrEmpty()
             ) {
                 if (checkCart()) {
@@ -60,13 +63,18 @@ class OrderItemOptions : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val view = activity?.layoutInflater?.inflate(R.layout.cart_item_option_dialog, null)
         quantityEd = view!!.findViewById(R.id.ed_quantity)
+        plusBtn = view.findViewById(R.id.plus_btn)
+        menusBtn = view.findViewById(R.id.menus_btn)
         colorSV = view.findViewById(R.id.spinner_product_color)
         sizeSV = view.findViewById(R.id.spinner_product_size)
+        totalPriceV = view.findViewById(R.id.total_tv)
         addToCartBtn = view.findViewById<Button>(R.id.btn_add_to_cart)
         exitBtn = view.findViewById<Button>(R.id.btn_exit)
         proId = arguments?.getString(ARG_PRODUCT_ID)!!
-        quantity = arguments?.getInt(ARG_PRODUCT_Q)!!
-        price = arguments?.getDouble(ARG_PRODUCT_P)!!
+        productQuantity = arguments?.getInt(ARG_PRODUCT_Q)!!
+        productPrice = arguments?.getDouble(ARG_PRODUCT_P)!!
+        price = productPrice
+        totalPriceV.text = price.toString()
         carttViewModel = ViewModelProviders.of(this).get(CartViewModel::class.java)
         val colorAdapter = ArrayAdapter(
             requireContext(),
@@ -107,6 +115,22 @@ class OrderItemOptions : DialogFragment() {
             }
 
         }
+
+        plusBtn.setOnClickListener {
+            if (quantity < productQuantity) {
+                quantity += 1;
+                quantityEd.setText(quantity.toString())
+                totalPriceV.text = price.toString()
+            }
+        }
+
+        menusBtn.setOnClickListener {
+            if (quantity > 1) {
+                quantity -= 1;
+                quantityEd.setText(quantity.toString())
+                totalPriceV.text = price.toString()
+            }
+        }
         return AlertDialog.Builder(requireContext(), R.style.ThemeOverlay_MaterialComponents)
             .setView(view)
             .create()
@@ -121,17 +145,8 @@ class OrderItemOptions : DialogFragment() {
             quantity = quantityEd.text.toString().toInt(),
             color = selectedColor,
             size = selectedSizer,
-            price = price
+            price = productPrice
         )
-//        requireActivity().showMessage(
-//            orderDetails.color
-//                    + "\n" + orderDetails.price
-//                    + "\n" + orderDetails.order_id
-//                    + "\n" + orderDetails.product_id
-//                    + "\n" + orderDetails.size
-//                    + "\n" +orderDetails.quantity
-//
-//        )
         carttViewModel.addToCart(orderDetails).observe(
             requireActivity(),
             Observer {
