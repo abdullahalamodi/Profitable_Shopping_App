@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment
 import com.finalproject.profitableshopping.R
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import kotlinx.android.synthetic.main.activity_user_profile.*
+import kotlinx.android.synthetic.main.fragment_user_profile.*
 import java.io.IOException
 import java.util.*
 
