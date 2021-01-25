@@ -4,7 +4,6 @@ data class Report (
     val id:Int?,
     var from_id:String="",
     var to_id:String="",
-    var complainId:Int?,
-    var date:String="",
-    var productId:String=""
+    var complain_id:Int?,
+    var product_id:Int?
 )

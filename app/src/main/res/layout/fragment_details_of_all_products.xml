@@ -352,9 +352,15 @@
                 android:layout_margin="8dp"
                 android:text="Show Comment"
                 android:textColor="@color/white"
-                android:visibility="gone"
-                app:cornerRadius="4dp" />
+                app:cornerRadius="4dp"/>
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/comments_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                />
             <Button
                 android:id="@+id/btnShowreport"
                 android:layout_width="match_parent"

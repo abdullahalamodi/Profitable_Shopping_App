@@ -1,7 +1,7 @@
 package com.finalproject.profitableshopping.data.api
 
 
-import com.finalproject.profitableshopping.data.Complain
+import com.finalproject.profitableshopping.data.models.Complain
 import com.finalproject.profitableshopping.data.models.*
 
 import okhttp3.MultipartBody
@@ -93,7 +93,7 @@ interface ShoppingApi {
     fun addOrderDetails(@Body orderDetails: OrderDetails): Call<String>
 
     @POST("orders.php")
-    fun buy(@Body id: String): Call<String>
+    fun buy(@Query("id") id: String): Call<String>
 
     @GET("order_details.php?")
     fun getUserCartItems(
@@ -101,11 +101,10 @@ interface ShoppingApi {
     ): Call<List<OrderDetails>>
 
     @DELETE("orders.php")
-    fun deleteOrder(@Query("order_id") orderId: String): Call<String>
+    fun deleteOrder(@Query("id") orderId: String): Call<String>
 
     @DELETE("order_details.php")
     fun removeOrderDetails(@Query("id") id: String): Call<String>
-
 
 
     // favorite method
@@ -123,7 +122,7 @@ interface ShoppingApi {
 
     // comment method
     @GET("comments.php")
-    fun getComments(): Call<List<Comment>>
+    fun getProductComments(@Query("product_id") userId: String): Call<List<Comment>>
 
     @GET("comments.php")
     fun getUserComments(@Query("user_id") userId: String): Call<List<Comment>>
@@ -142,7 +141,7 @@ interface ShoppingApi {
 
     // complain method API
     @POST("complains.php")
-    fun addComplain(@Body complain:Complain):Call<String>
+    fun addComplain(@Body complain: Complain):Call<String>
     @GET("complains.php")
     fun getComplains():Call<List<Complain>>
     @GET()

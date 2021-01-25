@@ -27,8 +27,8 @@ class CommentRepository {
         return  shoppingApi.getComment(commentId)
     }
 
-    fun getComments():Call<List<Comment>>{
-        return shoppingApi.getComments()
+    fun getProductComments(productId:String):Call<List<Comment>>{
+        return shoppingApi.getProductComments(productId)
     }
 
     fun getUserComments(userId:String): Call<List<Comment>> {

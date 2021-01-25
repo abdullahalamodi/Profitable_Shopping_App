@@ -223,7 +223,8 @@ class CategoryFragment : Fragment(),UploadRequestBody.UploadCallback {
             }
 
             categoryDeleteTv.setOnClickListener {
-                categoryDialogDelete(cat)
+                //disable delete in category
+//                categoryDialogDelete(cat)
             }
         }
 
@@ -243,7 +244,6 @@ class CategoryFragment : Fragment(),UploadRequestBody.UploadCallback {
             )
             return CategoryHolder(view)
         }
-
         override fun onBindViewHolder(holder: CategoryHolder, position: Int) {
             val category = categoriesList[position]
             holder.bind(category)

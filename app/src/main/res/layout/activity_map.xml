@@ -4,15 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.user.MapActivity">
-
-
     <fragment
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
-        tools:context=".MapsActivity"
-        tools:layout="@android:layout/simple_spinner_dropdown_item" />
+        tools:context=".MapActivity">
+
+    </fragment>
 
     <EditText
         android:id="@+id/editText"
@@ -45,7 +44,4 @@
 
         android:text="update"
         />
-
-
-
 </FrameLayout>
