@@ -56,14 +56,14 @@ class AddCategoryFragment : BottomSheetDialogFragment(), UploadRequestBody.Uploa
                 viewLifecycleOwner,
                 Observer { id ->
                     showProgress(false)
-                    uploadImage(id).observe(
-                        viewLifecycleOwner,
-                        Observer {
-                            showProgress(false)
-                            categoryViewModel.refresh()
-                            dismiss()
-                        }
-                    )
+//                    uploadImage(id).observe(
+//                        viewLifecycleOwner,
+//                        Observer {
+//                            showProgress(false)
+//                            categoryViewModel.refresh()
+//                            dismiss()
+//                        }
+//                    )
                 }
             )
 
@@ -126,52 +126,52 @@ class AddCategoryFragment : BottomSheetDialogFragment(), UploadRequestBody.Uploa
         }
     }
 
-    private fun uploadImage(productId: String): MutableLiveData<String> {
-        val responseLiveData = MutableLiveData<String>()
-        if (selectedImageUri == null) {
-            context?.showMessage("Select an Image First")
-            responseLiveData.value = ""
-            return responseLiveData
-        }
-        showProgress(true)
-        val parcelFileDescriptor =
-            context?.contentResolver?.openFileDescriptor(selectedImageUri!!, "r", null)
-                ?: return responseLiveData
-        val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
-        val file =
-            File(context?.cacheDir, context?.contentResolver?.getFileName(selectedImageUri!!)!!)
-        val outputStream = FileOutputStream(file)
-        inputStream.copyTo(outputStream)
-        progressBar.progress = 0
-        val body = UploadRequestBody(file, "image", this)
-        categoryViewModel.uploadImage(
-            MultipartBody.Part.createFormData(
-                "image",
-                file.name,
-                body
-            ),
-            RequestBody.create(MediaType.parse("multipart/form-data"), productId)
-        ).enqueue(object : Callback<String> {
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                context?.showMessage(t.message!!)
-                progressBar.progress = 0
-            }
-
-            override fun onResponse(
-                call: Call<String>,
-                response: Response<String>
-            ) {
-                response.body()?.let {
-                    context?.showMessage(it)
-                    progressBar.progress = 100
-                    showProgress(false)
-                }
-            }
-
-        })
-        responseLiveData.value = ""
-        return responseLiveData
-    }
+//    private fun uploadImage(productId: String): MutableLiveData<String> {
+//        val responseLiveData = MutableLiveData<String>()
+//        if (selectedImageUri == null) {
+//            context?.showMessage("Select an Image First")
+//            responseLiveData.value = ""
+//            return responseLiveData
+//        }
+//        showProgress(true)
+//        val parcelFileDescriptor =
+//            context?.contentResolver?.openFileDescriptor(selectedImageUri!!, "r", null)
+//                ?: return responseLiveData
+//        val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
+//        val file =
+//            File(context?.cacheDir, context?.contentResolver?.getFileName(selectedImageUri!!)!!)
+//        val outputStream = FileOutputStream(file)
+//        inputStream.copyTo(outputStream)
+//        progressBar.progress = 0
+//        val body = UploadRequestBody(file, "image", this)
+//        categoryViewModel.uploadImage(
+//            MultipartBody.Part.createFormData(
+//                "image",
+//                file.name,
+//                body
+//            ),
+//            RequestBody.create(MediaType.parse("multipart/form-data"), productId)
+//        ).enqueue(object : Callback<String> {
+//            override fun onFailure(call: Call<String>, t: Throwable) {
+//                context?.showMessage(t.message!!)
+//                progressBar.progress = 0
+//            }
+//
+//            override fun onResponse(
+//                call: Call<String>,
+//                response: Response<String>
+//            ) {
+//                response.body()?.let {
+//                    context?.showMessage(it)
+//                    progressBar.progress = 100
+//                    showProgress(false)
+//                }
+//            }
+//
+//        })
+//        responseLiveData.value = ""
+//        return responseLiveData
+//    }
 
 
     override fun onProgressUpdate(percentage: Int) {

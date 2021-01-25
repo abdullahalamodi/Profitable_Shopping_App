@@ -1,22 +1,25 @@
 package com.finalproject.profitableshopping.view.products.fragments
 
-import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.Button
+import android.widget.ProgressBar
+import android.widget.RatingBar
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
+import com.denzcoskun.imageslider.ImageSlider
+import com.denzcoskun.imageslider.constants.ScaleTypes
+import com.denzcoskun.imageslider.models.SlideModel
 import com.finalproject.profitableshopping.R
-import com.finalproject.profitableshopping.data.AppSharedPreference
 import com.finalproject.profitableshopping.data.models.Comment
 import com.finalproject.profitableshopping.data.models.Product
 import com.finalproject.profitableshopping.data.models.Report
-import com.finalproject.profitableshopping.view.MainActivity
 import com.finalproject.profitableshopping.view.cart.dialogs.OrderItemOptions
 import com.finalproject.profitableshopping.view.report.dialog.AddComplainDialog
 import com.finalproject.profitableshopping.view.report.dialog.ComplainDialog
@@ -24,7 +27,6 @@ import com.finalproject.profitableshopping.viewmodel.CommentViewModel
 import com.finalproject.profitableshopping.viewmodel.ProductViewModel
 import com.finalproject.profitableshopping.viewmodel.ReportViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.squareup.picasso.Picasso
 
 
 private const val ARG_PRODUCT_ID = "product_id"
@@ -36,7 +38,7 @@ class DetailsOfAllProductsFragment : Fragment() {
     lateinit var productViewModel: ProductViewModel
     lateinit var reportViewModel: ReportViewModel
     lateinit var commentViewModel: CommentViewModel
-    lateinit var productImageIv: ImageView
+//    lateinit var productImageIv: ImageView
     lateinit var productNameTv: TextView
     lateinit var productQuantityTv: TextView
     lateinit var productReviewsTv: TextView
@@ -57,6 +59,7 @@ class DetailsOfAllProductsFragment : Fragment() {
     var countOfReports: Int = 0
     var productReports: List<Report> = emptyList()
     lateinit var comment: Comment
+    lateinit var imageSlider: ImageSlider
 
 
     override fun onAttach(context: Context) {
@@ -101,7 +104,7 @@ class DetailsOfAllProductsFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_details_of_all_products, container, false)
         //  progressBar = view.findViewById(R.id.progress_circular)
-        productImageIv = view.findViewById(R.id.img_product_details) as ImageView
+//        productImageIv = view.findViewById(R.id.img_product_details) as ImageView
         productNameTv = view.findViewById(R.id.tv_product_name_details) as TextView
         showCommentBtn = view.findViewById(R.id.btnShowComment) as Button
         //  productReviewsTv = view.findViewById(R.id.reviews_tv) as TextView
@@ -118,7 +121,7 @@ class DetailsOfAllProductsFragment : Fragment() {
         ratingBar = view.findViewById(R.id.ratingBar) as RatingBar
         commentsRecyclerView = view.findViewById(R.id.comments_recycler_view)
         showComments = view.findViewById(R.id.btnShowComment)
-
+        imageSlider = view.findViewById(R.id.img_product_details)
 
 
         reportBtn.setOnClickListener {
@@ -199,16 +202,28 @@ class DetailsOfAllProductsFragment : Fragment() {
         productReviewsTv.text = countOfReports.toString()
         //     productQuantityTv.text = product.quantity.toString()
         productDescriptionTv.text = product.description
-        if (product.images.isNotEmpty())
-            Picasso.get().also {
-                val path = product.images[0].getUrl()
-                it.load(path)
-                    .resize(350, 350)
-                    .centerCrop()
-                    .placeholder(R.drawable.shoe)
-                    .into(productImageIv)
-
+        if (product.images.isNotEmpty()){
+            val slideModels: MutableList<SlideModel> = ArrayList()
+            product.images.forEach { image ->
+                slideModels.add(
+                    SlideModel(
+                        image.getUrl(),
+                        ""
+                    )
+                )
             }
+            imageSlider.setImageList(slideModels, ScaleTypes.CENTER_CROP)
+        }
+//            Picasso.get().also {
+//                val path = product.images[0].getUrl()
+//                it.load(path)
+//                    .resize(350, 350)
+//                    .centerCrop()
+//                    .placeholder(R.drawable.shoe)
+//                    .into(productImageIv)
+//
+//            }
+
     }
 
     interface Callbacks {

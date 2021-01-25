@@ -28,6 +28,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
 }
 
 dependencies {
@@ -79,5 +80,12 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.5'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.5'
 
+    //view pager 2
+    def viewPagerVersion = "1.0.0"
+    implementation "androidx.viewpager2:viewpager2:$viewPagerVersion"
+
+    dependencies {
+        implementation 'com.github.denzcoskun:ImageSlideshow:0.0.7'
+    }
 
 }

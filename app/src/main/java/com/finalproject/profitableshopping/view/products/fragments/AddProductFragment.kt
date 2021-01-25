@@ -43,6 +43,8 @@ class AddProductFragment : Fragment(),
     lateinit var productDollarPriceET: EditText
     lateinit var productQuantityET: EditText
     lateinit var pickImagesV: ImageView
+    lateinit var pickImagesV2: ImageView
+    lateinit var pickImagesV3: ImageView
     lateinit var selectCategorySv: Spinner
     lateinit var addProductBtn: Button
     lateinit var productViewModel: ProductViewModel
@@ -50,7 +52,7 @@ class AddProductFragment : Fragment(),
     lateinit var categoriesName: MutableList<String>
     lateinit var categoriesList: MutableList<Category>
     lateinit var callbacks: Callbacks
-    private var selectedImageUri: Uri? = null
+    private var selectedImageUri: MutableList<Uri>? = null
     var selectedCategoryId = 0
     private lateinit var progressBar: ProgressBar
     private lateinit var btnsLayout: LinearLayout
@@ -66,6 +68,14 @@ class AddProductFragment : Fragment(),
     override fun onStart() {
         super.onStart()
         pickImagesV.setOnClickListener {
+            showProgress(true)
+            pickImages()
+        }
+        pickImagesV2.setOnClickListener {
+            showProgress(true)
+            pickImages()
+        }
+        pickImagesV2.setOnClickListener {
             showProgress(true)
             pickImages()
         }
@@ -182,9 +192,11 @@ class AddProductFragment : Fragment(),
         productDollarPriceET = view.findViewById(R.id.et_dollar_price_product)
         productQuantityET = view.findViewById(R.id.et_quantity_product)
         pickImagesV = view.findViewById(R.id.load_image_btn)
+        pickImagesV2 = view.findViewById(R.id.load_image_btn2)
+        pickImagesV3 = view.findViewById(R.id.load_image_btn3)
         addProductBtn = view.findViewById(R.id.btn_add_product)
         progressBar = view.findViewById(R.id.progress_circular)
-
+        selectedImageUri = mutableListOf()
         return view
     }
 
@@ -296,8 +308,12 @@ class AddProductFragment : Fragment(),
         if (resultCode == RESULT_OK) {
             when (requestCode) {
                 REQUEST_CODE_PICK_IMAGE -> {
-                    selectedImageUri = data?.data
-                    pickImagesV.setImageURI(selectedImageUri)
+                    selectedImageUri?.add(data?.data!!)
+                    pickImagesV.setImageURI(selectedImageUri?.get(0)?:Uri.EMPTY)
+                    if (selectedImageUri?.size!! > 1)
+                    pickImagesV2.setImageURI(selectedImageUri?.get(1))
+                    if (selectedImageUri?.size!! > 2)
+                    pickImagesV3.setImageURI(selectedImageUri?.get(2))
                 }
             }
         }
@@ -312,20 +328,25 @@ class AddProductFragment : Fragment(),
         }
         showProgress(true)
 
-        val parcelFileDescriptor =
-            context?.contentResolver?.openFileDescriptor(selectedImageUri!!, "r", null)
-                ?: return responseLiveData
-        val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
-        val file =
-            File(context?.cacheDir, context?.contentResolver?.getFileName(selectedImageUri!!)!!)
-        val outputStream = FileOutputStream(file)
-        inputStream.copyTo(outputStream)
-        progressBar.progress = 0
-        val body = UploadRequestBody(file, "image", this)
+        val files:MutableList<File> = mutableListOf()
+        var index = 0;
+        selectedImageUri!!.forEach {imageUri ->
+            val parcelFileDescriptor =
+                context?.contentResolver?.openFileDescriptor(imageUri, "r", null)
+                    ?: return responseLiveData
+            val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
+            files.add(
+                File(context?.cacheDir, context?.contentResolver?.getFileName(imageUri)!!))
+            val outputStream = FileOutputStream(files[index++])
+            inputStream.copyTo(outputStream)
+            progressBar.progress = 0
+        }
+
+        val body = UploadRequestBody(files, "image", this)
         productViewModel.uploadImage(
             MultipartBody.Part.createFormData(
                 "image",
-                file.name,
+                files[0].name,
                 body
             ),
             RequestBody.create(MediaType.parse("multipart/form-data"), productId)
