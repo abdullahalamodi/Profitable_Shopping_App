@@ -63,7 +63,6 @@ ManageUserProfileFragment.Callbacks{
             val fragmentTransaction = fragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.container, ProductListFragment.newInstance())
                 .commit()
-
         }
 
 
@@ -72,6 +71,7 @@ ManageUserProfileFragment.Callbacks{
                 R.id.menu_home -> {
                     setContent("Home")
                     setCurrentFragment(ProductListFragment.newInstance())
+                    showButtonNavigation(true)
                     true
                 }
                 R.id.menu_shopping_cart -> {

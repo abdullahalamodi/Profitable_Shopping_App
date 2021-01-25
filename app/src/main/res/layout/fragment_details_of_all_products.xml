@@ -52,7 +52,7 @@
         android:id="@+id/btn_rating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_star"
+        android:src="@drawable/ic_favorite"
         app:backgroundTint="@android:color/white"
         app:elevation="6dp"
         app:layout_anchor="@id/app_bar_layout"
@@ -82,13 +82,86 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingTop="24dp">
+                    android:paddingTop="28dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2"
+                        android:layout_marginLeft="12dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_person"
+                            app:backgroundTint="@android:color/white"
+                            app:elevation="6dp"
+                            android:layout_margin="2dp"
+                            app:layout_anchorGravity="bottom|right|start" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="6dp"
+                            android:text="Maimoona Mohammed"
+                            android:textStyle="bold"
+                            android:layout_gravity="center_vertical"
+                            android:fontFamily="@font/rb_light"/>
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <Button
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="اتصال"
+                            android:drawableRight="@drawable/ic_call"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/rb_light"
+                            android:background="@drawable/bg4"
+                           android:layout_margin="6dp" />
+
+                        <Button
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="6dp"
+                            android:text="دردش"
+                            android:drawableRight="@drawable/ic_chat"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/rb_light"
+                            android:background="@drawable/bg4"
+                            />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardElevation="5dp"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/tv_product_name_details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="6dp"
                         android:fontFamily="@font/rb_light"
                         android:padding="12dp"
                         android:text="@string/name_product"
@@ -105,12 +178,13 @@
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="RY"
                             android:layout_gravity="center"
+                            android:layout_weight="1"
                             android:gravity="center"
+                            android:text="RY"
+                            android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textSize="18sp"/>
+                            android:visibility="gone"/>
 
                         <TextView
                             android:id="@+id/tv_product_price_rial_details"
@@ -118,6 +192,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="9"
                             android:fontFamily="@font/rb_light"
+                            android:layout_marginLeft="10dp"
                             android:text="60,000"
                             android:textColor="@color/colorPrimary"
                             android:textSize="18sp"
@@ -136,7 +211,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:src="@drawable/ic_attach_money"/>
+                            android:src="@drawable/ic_attach_money"
+                            android:visibility="gone"/>
 
                         <TextView
                             android:id="@+id/tv_product_price_details"
@@ -147,6 +223,38 @@
                             android:text="100$"
                             android:textColor="@color/colorPrimary"
                             android:textSize="18sp"
+                            android:layout_marginLeft="10dp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/layout_qun"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:textDirection="rtl">
+
+
+
+                        <TextView
+                            android:id="@+id/tv_product_quantity_details"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="9"
+                            android:fontFamily="@font/rb_light"
+                            android:text="26"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="الكمية :"
+                            android:textSize="19sp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="10dp"
                             android:textStyle="bold" />
 
                     </LinearLayout>
@@ -155,27 +263,25 @@
                         android:id="@+id/tv_product_desc_details"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="9"
+                        android:layout_margin="8dp"
                         android:fontFamily="@font/rb_light"
                         android:text="This mobile is the best one from our product."
                         android:textColor="@color/lightGray"
                         android:textSize="18sp"
-                        android:layout_margin="8dp"
                         android:textStyle="bold" />
 
 
-
-                     <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
-                         android:id="@+id/btn_number"
-                         android:layout_width="100dp"
-                         android:layout_height="30dp"
-                         app:textSize="8sp"
-                         app:initialNumber="1"
-                         app:backGroundColor="@color/colorAccent"
-                         android:layout_marginTop="8dp"
-                         android:layout_marginLeft="8dp"
-                         android:layout_marginBottom="18dp"
-                         android:visibility="gone"/>
+                    <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
+                        android:id="@+id/btn_number"
+                        android:layout_width="100dp"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="18dp"
+                        android:visibility="gone"
+                        app:backGroundColor="@color/colorAccent"
+                        app:initialNumber="1"
+                        app:textSize="8sp" />
 
                 </LinearLayout>
 
@@ -194,42 +300,45 @@
 
                     <RatingBar
                         android:id="@+id/ratingBar"
+                        style="?android:attr/ratingBarStyleIndicator"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        style="?android:attr/ratingBarStyleIndicator"
+                        android:isIndicator="true"
                         android:numStars="5"
-                        android:stepSize="0.5"
-                        android:isIndicator="true"/>
-                     <LinearLayout
-                         android:layout_width="match_parent"
-                         android:layout_height="wrap_content">
-                         <TextView
-                             android:id="@+id/tv_product_description_details"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                             android:layout_marginTop="12dp"
-                             android:fontFamily="@font/rb_light"
-                             android:lineSpacingMultiplier="1.5"
-                             android:padding="12dp"
-                             android:text="عدد البلاغات"
-                             android:textColor="@color/black"
-                             android:textSize="14sp"
-                             android:textStyle="bold" />
-                         <TextView
-                             android:id="@+id/tv_product_reports"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                             android:layout_marginTop="12dp"
-                             android:fontFamily="@font/rb_light"
-                             android:lineSpacingMultiplier="1.5"
-                             android:padding="12dp"
-                             android:text="0"
-                             android:textColor="@color/black"
-                             android:textSize="14sp"
-                             android:textStyle="bold" />
+                        android:stepSize="0.5" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/tv_product_description_details"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:fontFamily="@font/rb_light"
+                            android:lineSpacingMultiplier="1.5"
+                            android:padding="12dp"
+                            android:text="عدد البلاغات"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_product_reports"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:fontFamily="@font/rb_light"
+                            android:lineSpacingMultiplier="1.5"
+                            android:padding="12dp"
+                            android:text="0"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
 
 
-                     </LinearLayout>
+                    </LinearLayout>
 
 
                 </LinearLayout>
@@ -240,7 +349,9 @@
                 android:id="@+id/btnShowComment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
                 android:layout_margin="8dp"
+                android:text="Show Comment"
                 android:textColor="@color/white"
                 android:layout_alignParentBottom="true"
                 android:text="Show Comment"
@@ -257,12 +368,17 @@
                 android:id="@+id/btnShowreport"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:textColor="@color/white"
                 android:layout_alignParentBottom="true"
-                android:text="بلغ عن المنتج "
+                android:layout_margin="8dp"
+                android:background="@color/colorPrimary"
                 android:enabled="true"
-                app:cornerRadius="4dp"/>
+                android:fontFamily="@font/rb_light"
+                android:text="بلغ عن المنتج "
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:cornerRadius="4dp"
+                android:layout_marginBottom="20dp"/>
 
 
         </LinearLayout>

@@ -7,6 +7,4 @@
     tools:listitem="@layout/admin_product_manegment_item_list"
     tools:context=".view.products.fragments.AdminProductManagmentFragment">
 
-/>
-
 </androidx.recyclerview.widget.RecyclerView>

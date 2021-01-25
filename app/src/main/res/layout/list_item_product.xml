@@ -28,7 +28,6 @@
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_gravity="center"
-                android:layout_margin="4dp"
                 android:src="@drawable/laptop" />
 
             <View
@@ -50,25 +49,12 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/tv_price_product"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:fontFamily="@font/rb_light"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:text="120$"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <TextView
                         android:id="@+id/tv_name_product"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/rb_light"
                         android:gravity="center"
-                        android:padding="2dp"
+                        android:padding="4dp"
                         android:text="Glasses"
                         android:textColor="@color/black"
                         android:textSize="14sp"
@@ -85,10 +71,50 @@
                     android:layout_marginBottom="6dp"
                     android:fontFamily="@font/rb_light"
                     android:gravity="center"
+                    android:visibility="gone"
                     android:paddingLeft="10dp"
                     android:text="We have anice glassess of many colors and size try to use one."
                     android:textColor="@color/lightGray"
                     android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+                    android:layout_gravity="center"
+                    android:gravity="center">
+
+                    <RatingBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:background="#FFFFFF"
+                        android:longClickable="false"
+                        android:numStars="5"
+                        android:stepSize="0.5"
+                        android:layout_marginLeft="6dp"
+                        android:layout_marginRight="6dp"
+                        android:isIndicator="true"
+                        android:progressTint="@android:color/holo_orange_light"
+                        android:rating="0"
+                        style="?android:attr/ratingBarStyleSmall"
+                        android:theme="@style/Widget.AppCompat.RatingBar.Small"/>
+
+                    <TextView
+                        android:id="@+id/tv_price_product"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/rb_light"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="120$"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
