@@ -8,12 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.finalproject.profitableshopping.R
+import com.finalproject.profitableshopping.data.firebase.NotifationActivity
+import com.finalproject.profitableshopping.view.MainActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class ManageUserProfileFragment : Fragment() {
 
     lateinit var manage : FloatingActionButton
     lateinit var location: FloatingActionButton
+    lateinit var notifationM: FloatingActionButton
     var callbacks:Callbacks?=null
 
 
@@ -35,6 +38,11 @@ class ManageUserProfileFragment : Fragment() {
             val intent = Intent(requireContext(), MapActivity::class.java)
             startActivity(intent)
         }
+    notifationM.setOnClickListener {
+            val intent = Intent(requireContext(), NotifationActivity::class.java)
+            startActivity(intent)
+
+        }
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +59,7 @@ class ManageUserProfileFragment : Fragment() {
        val view= inflater.inflate(R.layout.fragment_manage_user, container, false)
         manage=view.findViewById(R.id.UserManage)
         location=view.findViewById(R.id.location)
+        notifationM=view.findViewById(R.id.notification)
         return view
     }
 

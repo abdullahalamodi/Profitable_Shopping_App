@@ -5,10 +5,12 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import com.finalproject.profitableshopping.R
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -23,8 +25,7 @@ import java.util.*
 class MapActivity : AppCompatActivity(),OnMapReadyCallback {
     private var mMap: GoogleMap? = null
     private lateinit var databaseReference: DatabaseReference
-    lateinit var clickButton : Button
-
+    lateinit var clickButton: Button
 
     //   private lateinit var locationListener: LocationListener
     private var locationManager: LocationManager? = null
@@ -34,29 +35,37 @@ class MapActivity : AppCompatActivity(),OnMapReadyCallback {
     private var editTextLatitude: EditText? = null
     private var editTextLongitude: EditText? = null
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
 
-        clickButton = findViewById(R.id.button)
-        clickButton.setOnClickListener {
-            databaseReference.child("latitude").push().setValue(editTextLatitude?.getText().toString());
-            databaseReference.child("longitude").push().setValue(editTextLongitude?.getText().toString());
-        }
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+        supportActionBar
+        clickButton = findViewById(R.id.button)
+        clickButton.setOnClickListener {
+            databaseReference.child("latitude").push()
+                .setValue(editTextLatitude?.getText().toString());
+            databaseReference.child("longitude").push()
+                .setValue(editTextLongitude?.getText().toString());
+        }
+
+
+
+
         ActivityCompat.requestPermissions(
             this,
             arrayOf(
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ),
-            PackageManager.PERMISSION_GRANTED)
+            PackageManager.PERMISSION_GRANTED
+        )
         editTextLatitude = findViewById(R.id.editText);
         editTextLongitude = findViewById(R.id.editText2);
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Location")
-
         databaseReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 //   val latitude= dataSnapshot.getValue()
@@ -74,13 +83,17 @@ class MapActivity : AppCompatActivity(),OnMapReadyCallback {
                         )
                     val stringLat = databaseLatitudeString.split(", ".toRegex()).toTypedArray()
                     Arrays.sort(stringLat)
-                    val latitude = stringLat[stringLat.size - 1].split("=".toRegex()).toTypedArray()[1]
+                    val latitude =
+                        stringLat[stringLat.size - 1].split("=".toRegex()).toTypedArray()[1]
                     val stringLong = databaseLongitudedeString.split(", ".toRegex()).toTypedArray()
                     Arrays.sort(stringLong)
-                    val longitude = stringLong[stringLong.size - 1].split("=".toRegex()).toTypedArray()[1]
+                    val longitude =
+                        stringLong[stringLong.size - 1].split("=".toRegex()).toTypedArray()[1]
                     val latLng = LatLng(latitude.toDouble(), longitude.toDouble())
-                    mMap!!.addMarker(MarkerOptions().position(latLng).title("$latitude , $longitude"))
-                    mMap!!.moveCamera(CameraUpdateFactory.newLatLng(latLng))
+                    mMap?.addMarker(
+                        MarkerOptions().position(latLng).title("$latitude , $longitude")
+                    )
+                    mMap?.moveCamera(CameraUpdateFactory.newLatLng(latLng))
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -91,17 +104,20 @@ class MapActivity : AppCompatActivity(),OnMapReadyCallback {
 
             }
         })
-
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
         var locationListener: LocationListener = object : LocationListener {
             override fun onLocationChanged(location: Location) {
                 try {
-                    editTextLatitude!!.setText(java.lang.Double.toString(location.latitude))
-                    editTextLongitude!!.setText(java.lang.Double.toString(location.longitude))
+                    // editTextLatitude?.setText(""+location.latitude)
+                    // editTextLongitude?.setText(""+location.longitude)
+
+                    //   editTextLatitude?.setText(java.lang.Double.toString(location.latitude))
+                    //editTextLongitude?.setText(java.lang.Double.toString(location.longitude))
                 } catch (e: java.lang.Exception) {
                     e.printStackTrace()
                 }
@@ -124,7 +140,9 @@ class MapActivity : AppCompatActivity(),OnMapReadyCallback {
 
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager?
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(
-                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             return
         }
         try {
@@ -145,3 +163,11 @@ class MapActivity : AppCompatActivity(),OnMapReadyCallback {
         }
     }
 }
+
+
+
+
+
+
+
+

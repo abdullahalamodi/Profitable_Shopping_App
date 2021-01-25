@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 
 const val TOPIC = "/topics/myTopic2"
 class NotifationActivity : AppCompatActivity() {
-    val TAG = "MainActivity"
+    val TAG = "NotifationActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
 
 
