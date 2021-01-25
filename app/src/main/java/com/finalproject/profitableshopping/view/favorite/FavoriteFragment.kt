@@ -93,11 +93,11 @@ class FavoriteFragment : Fragment() {
         var productImageIv = view.findViewById(R.id.ImgV_product_fav) as ImageView
         var productNameTv: TextView = view.findViewById(R.id.tv_name_product_fav) as TextView
         var productRialPriceTv: TextView = view.findViewById(R.id.tv_price_product_fav) as TextView
-        var deleteBtn: Button = view.findViewById(R.id.btn_delete_fav) as Button
+        var deleteImageView: ImageView = view.findViewById(R.id.img_delete_fav) as ImageView
         var favoriteItem = FavoriteItem(null)
         init {
-            deleteBtn.setOnClickListener {
-               favoriteViewModel.deleteFavoriteItem(this.favoriteItem.favoriteId).observe(
+            deleteImageView.setOnClickListener {
+               favoriteViewModel.deleteFavoriteItem(this.favoriteItem.favorite_id).observe(
                    this@FavoriteFragment,
                    Observer {
 
@@ -120,7 +120,7 @@ class FavoriteFragment : Fragment() {
 
         fun bind(fav: FavoriteItem) {
             this.favoriteItem = fav
-            productViewModel.loadProduct(favoriteItem.productId)
+            productViewModel.loadProduct(favoriteItem.product_id)
             productViewModel.productIDetailsLiveData.observe(
                 this@FavoriteFragment,
                 Observer {pro ->

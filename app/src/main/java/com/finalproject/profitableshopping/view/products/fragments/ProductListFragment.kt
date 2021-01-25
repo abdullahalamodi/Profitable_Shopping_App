@@ -76,7 +76,6 @@ class ProductListFragment : Fragment() {
     }
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -136,27 +135,23 @@ class ProductListFragment : Fragment() {
 
         fun bind(pro: Product) {
             product = pro
-            if(pro.isActive){
-                 view.visibility=View.GONE
-            }else{
-                view.visibility=View.VISIBLE
-                productNameTv.text = pro.name
-                productRialPriceTv.text = pro.rialPrice.toString()
-                productDescriptionTv.text = pro.description
+            productNameTv.text = pro.name
+            productRialPriceTv.text = pro.rialPrice.toString()
+            productDescriptionTv.text = pro.description
 
-                if (product.images.isNotEmpty()) {
-                    Picasso.get().also {
-                        val path = product.images[0].getUrl()
-                        it.load(path)
-                            .resize(150, 150)
-                            .centerCrop()
-                            .placeholder(R.drawable.laptop)
-                            .into(productImageIv)
-                    }
-                } else {
-                    productImageIv.setImageResource(R.drawable.laptop)
+            if (product.images.isNotEmpty()) {
+                Picasso.get().also {
+                    val path = product.images[0].getUrl()
+                    it.load(path)
+                        .resize(150, 150)
+                        .centerCrop()
+                        .placeholder(R.drawable.laptop)
+                        .into(productImageIv)
                 }
+            } else {
+                productImageIv.setImageResource(R.drawable.laptop)
             }
+
 
         }
 

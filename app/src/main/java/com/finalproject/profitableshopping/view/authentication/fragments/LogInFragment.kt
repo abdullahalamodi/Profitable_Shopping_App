@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.finalproject.profitableshopping.R
@@ -27,6 +28,7 @@ class LogInFragment : Fragment() {
     lateinit var email_login: EditText
     lateinit var passWord_login: EditText
     lateinit var signUpBtn: Button
+    lateinit var questView: TextView
     var loginCallbacks: LoginCallbacks? = null
 
 
@@ -38,6 +40,8 @@ class LogInFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
+
+        setHasOptionsMenu(false)
         signUpBtn.setOnClickListener {
             /* val intent = Intent(requireContext(), SignUp::class.java)
              startActivity(intent)
@@ -90,6 +94,11 @@ class LogInFragment : Fragment() {
         email_login = view.findViewById(R.id.email_login)
         passWord_login = view.findViewById(R.id.passWord_login)
         signUpBtn = view.findViewById(R.id.sign_up)
+        questView = view.findViewById(R.id.quest_v)
+
+        questView.setOnClickListener {
+            goAsQuest()
+        }
         return view
     }
 
@@ -186,10 +195,16 @@ class LogInFragment : Fragment() {
             admin["password"] == password
         ) {
             saveUserToken("admin")
-            saveUserData("1", email, password)
+            saveUserData("-1", email, password)
             return true
         }
         return false
+    }
+
+    private fun goAsQuest() {
+            saveUserToken("quest")
+            saveUserData("0", "", "")
+        loginCallbacks?.onLoginSuccess()
     }
 
     private fun checkLocalUser(email: String, password: String): Boolean {

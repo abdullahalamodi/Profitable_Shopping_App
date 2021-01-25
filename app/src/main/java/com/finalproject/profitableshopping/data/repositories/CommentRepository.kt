@@ -39,8 +39,8 @@ class CommentRepository {
         return  shoppingApi.updateComment(comment.id.toString(),comment)
     }
 
-    fun deleteComment(commentId:String):Call<String>{
-        return shoppingApi.deleteComment(commentId)
+    fun deleteComment(commentId:Int):Call<String>{
+        return shoppingApi.deleteComment(commentId.toString())
     }
 
 }

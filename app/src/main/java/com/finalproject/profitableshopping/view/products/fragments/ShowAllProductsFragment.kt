@@ -84,6 +84,7 @@ class ShowAllProductsFragment : Fragment() {
                 updateUIProducts(prodcts)
             }
         )
+
     }
 
     private fun updateUICategory(categoriesList: List<Category>) {

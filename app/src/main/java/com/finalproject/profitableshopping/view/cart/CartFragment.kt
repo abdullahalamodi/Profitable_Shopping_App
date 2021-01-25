@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -25,8 +24,8 @@ class CartFragment : Fragment() {
     lateinit var carttViewModel: CartViewModel
     private lateinit var productViewModel: ProductViewModel
     lateinit var cartRV: RecyclerView
-    lateinit var buyBtn: Button
-    lateinit var clearCartBtn: Button
+    lateinit var buyBtn: TextView
+    lateinit var clearCartBtn: TextView
     private var adapter: CartAdapter = CartAdapter(emptyList())
 
 
@@ -55,9 +54,7 @@ class CartFragment : Fragment() {
         super.onCreate(savedInstanceState)
         carttViewModel = ViewModelProviders.of(this).get(CartViewModel::class.java)
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
-         carttViewModel.loadUser(AppSharedPreference.getUserId(requireContext())!!)
-//         carttViewModel.loadOrder(AppSharedPreference.getCartId(requireContext()))
-         carttViewModel.loadOrder(2)
+         carttViewModel.loadOrder(AppSharedPreference.getCartId(requireContext())?.toInt()!!)
     }
 
     override fun onCreateView(
@@ -74,7 +71,7 @@ class CartFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        carttViewModel.orderListLiveData.observe(
+        carttViewModel.orderDetailsListLiveData.observe(
             viewLifecycleOwner,
             Observer {
                 updateUI(it)
@@ -97,7 +94,7 @@ class CartFragment : Fragment() {
 
     inner class CartHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        var productImgV = view.findViewById<ImageView>(R.id.product_image_v)
+        var productImgV = view.findViewById<ImageView>(R.id.ImgV_product)
         var prodctNameTv = view.findViewById<TextView>(R.id.product_name_tv)
         var priceTv = view.findViewById<TextView>(R.id.price_tv)
         var colorTv = view.findViewById<TextView>(R.id.color_tv)
@@ -107,8 +104,8 @@ class CartFragment : Fragment() {
         var product = Product()
 
 
-        fun bind(order: OrderDetails) {
-            this.orderItem = order
+        fun bind(orderDetails: OrderDetails) {
+            this.orderItem = orderDetails
             productViewModel.loadProduct(this.orderItem.product_id.toString())
             productViewModel.productIDetailsLiveData.observe(
                 viewLifecycleOwner,
@@ -124,16 +121,16 @@ class CartFragment : Fragment() {
             )
             prodctNameTv.text = this.orderItem.product_id.toString()
             priceTv.text = "RY : " + this.orderItem.total_price.toString()
-            quantityTv.text = this.orderItem.quantity.toString()
-            colorTv.text = this.orderItem.color
-            sizeTv.text = this.orderItem.size
+            quantityTv.text = "Q : "+this.orderItem.quantity.toString()
+            colorTv.text = "COLOR : "+this.orderItem.color
+            sizeTv.text = "SIZE : "+this.orderItem.size
             if (this.product.images.isNotEmpty()) {
                 Picasso.get().also {
                     val path = this.product.images[0].getUrl()
                     it.load(path)
                         .resize(75, 75)
                         .centerCrop()
-                        .placeholder(R.drawable.shoe)
+                        .placeholder(R.drawable.laptop)
                         .into(productImgV)
                 }
             }

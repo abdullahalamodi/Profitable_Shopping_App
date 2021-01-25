@@ -14,11 +14,10 @@ import retrofit2.Response
 
 class CartViewModel : ViewModel() {
     private val cartIdLiveData = MutableLiveData<Int>()
-    private val userIdLiveData = MutableLiveData<String>()
 //    val pro = mutableListOf<OrderDetails>()
     val cartRepositry: CartRepositry
 
-    var orderListLiveData = Transformations.switchMap(cartIdLiveData){carId ->
+    var orderDetailsListLiveData = Transformations.switchMap(cartIdLiveData){ carId ->
         getCartItemList(carId)
     }
 
@@ -26,9 +25,7 @@ class CartViewModel : ViewModel() {
         cartRepositry= CartRepositry()
     }
 
-    fun loadUser(useId: String?) {
-        userIdLiveData.value = useId
-    }
+
     fun loadOrder(orderId: Int) {
         cartIdLiveData.value = orderId
     }
@@ -59,7 +56,7 @@ class CartViewModel : ViewModel() {
             object :Callback<String>{
                 override fun onResponse(call: Call<String>, response: Response<String>) {
                     message.value= response.body()
-                    Log.d("success cart",response.body()!!)
+                    Log.d("success cart",response.body()?:"")
                 }
 
                 override fun onFailure(call: Call<String>, t: Throwable) {

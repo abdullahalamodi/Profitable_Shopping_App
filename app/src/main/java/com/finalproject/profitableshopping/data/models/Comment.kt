@@ -8,7 +8,7 @@ class Comment( var id: Int = 0,
                @SerializedName("rate")
                var rate:Int = 0,
                @SerializedName("user_id")
-               var userId: Int = 0,
+               var userId: String = "0",
                @SerializedName("product_id")
                var productId: Int = 0,
                @SerializedName("date")

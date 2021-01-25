@@ -2,23 +2,26 @@ package com.finalproject.profitableshopping.view.products.fragments
 
 import android.app.AlertDialog
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.finalproject.profitableshopping.R
+import com.finalproject.profitableshopping.data.AppSharedPreference
 import com.finalproject.profitableshopping.data.firebase.Firebase
+import com.finalproject.profitableshopping.data.models.Comment
 import com.finalproject.profitableshopping.data.models.Product
 import com.finalproject.profitableshopping.data.models.Report
+import com.finalproject.profitableshopping.view.cart.dialogs.OrderItemOptions
 import com.finalproject.profitableshopping.view.report.dialog.ComplainDialog
+import com.finalproject.profitableshopping.viewmodel.CommentViewModel
 import com.finalproject.profitableshopping.viewmodel.ProductViewModel
 import com.finalproject.profitableshopping.viewmodel.ReportViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.squareup.picasso.Picasso
 
 private const val ARG_PRODUCT_ID = "product_id"
@@ -29,6 +32,7 @@ class DetailsOfAllProductsFragment : Fragment() {
     private lateinit var progressBar: ProgressBar
     lateinit var productViewModel: ProductViewModel
     lateinit var reportViewModel: ReportViewModel
+    lateinit var commentViewModel: CommentViewModel
     lateinit var productImageIv: ImageView
     lateinit var productNameTv: TextView
     lateinit var productQuantityTv: TextView
@@ -36,12 +40,16 @@ class DetailsOfAllProductsFragment : Fragment() {
     lateinit var productRialPriceTv: TextView
     lateinit var productDollarPriceTv: TextView
     lateinit var productDescriptionTv: TextView
+    lateinit var productCommentDescriptionTv: TextView
     lateinit var ratingBtn: FloatingActionButton
-    lateinit var reportBtn:Button
+    lateinit var cartBtn: FloatingActionButton
+    lateinit var reportBtn: Button
+    lateinit var ratingBar: RatingBar
     lateinit var callbacks: Callbacks
     lateinit var product: Product
-    var countOfReports:Int=0
-    var productReports:List<Report> = emptyList()
+    var countOfReports: Int = 0
+    var productReports: List<Report> = emptyList()
+    lateinit var comment: Comment
 
 
     override fun onStart() {
@@ -52,19 +60,18 @@ class DetailsOfAllProductsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        commentViewModel = ViewModelProviders.of(this).get(CommentViewModel::class.java)
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
         reportViewModel = ViewModelProviders.of(this).get(ReportViewModel::class.java)
         arguments?.let {
             productId = it.getString(ARG_PRODUCT_ID)
             productViewModel.loadProduct(productId!!)
-           reportViewModel.getProductReports(productId!!).observe(
-               this,
-               Observer {
-                   countOfReports=it.size
-                   productReports=it
-
-               }
-           )
+            reportViewModel.getProductReports(productId!!).observe(
+                this,
+                Observer {
+                    countOfReports = it.size
+                }
+            )
         }
     }
 
@@ -82,20 +89,47 @@ class DetailsOfAllProductsFragment : Fragment() {
         productRialPriceTv = view.findViewById(R.id.tv_product_price_rial_details) as TextView
         productDollarPriceTv = view.findViewById(R.id.tv_product_price_details) as TextView
         productDescriptionTv = view.findViewById(R.id.tv_product_desc_details) as TextView
+        productCommentDescriptionTv =
+            view.findViewById(R.id.tv_product_description_details) as TextView
         ratingBtn = view.findViewById(R.id.btn_rating) as FloatingActionButton
-        reportBtn=view.findViewById(R.id.btnShowreport)
+        cartBtn = view.findViewById(R.id.btn_cart) as FloatingActionButton
+        reportBtn = view.findViewById(R.id.btnShowreport)
         productReviewsTv = view.findViewById(R.id.tv_product_reports) as TextView
+        ratingBar = view.findViewById(R.id.ratingBar) as RatingBar
+
 
         ratingBtn.setOnClickListener {
             showDialogRating()
         }
         reportBtn.setOnClickListener {
-            ComplainDialog.newInstance(productId!!,product.userId.toString()).apply {
-                show(this@DetailsOfAllProductsFragment.parentFragmentManager,"report")
+            ComplainDialog.newInstance(productId!!, product.userId.toString()).apply {
+                show(this@DetailsOfAllProductsFragment.parentFragmentManager, "report")
+            }
+        }
+
+        cartBtn.setOnClickListener {
+            OrderItemOptions.newInstance(product.id.toString(),product.quantity,product.rialPrice).apply {
+                show(this@DetailsOfAllProductsFragment.parentFragmentManager, "cart")
             }
         }
 
         return view
+    }
+
+    private fun averageOfRating(comments: List<Comment>) {
+        var totul: Int = 0
+        if (comments.size > 0) {
+            for (i in comments)
+                totul += i.rate
+            var average = totul / comments.size
+            ratingBar.rating = average.toFloat()
+            Toast.makeText(context, "your rating $average", Toast.LENGTH_SHORT).show()
+
+        } else {
+            Log.d("no data", "no data")
+            Toast.makeText(context, "no data", Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     private fun showDialogRating() {
@@ -103,18 +137,39 @@ class DetailsOfAllProductsFragment : Fragment() {
         builder.setTitle("Rating product")
         builder.setMessage("Please fill information")
         val itemView = LayoutInflater.from(context).inflate(R.layout.layout_rating_comment, null)
-
-        val ratingBar = itemView.findViewById<RatingBar>(R.id.ratingBar)
+        val ratingBar = itemView.findViewById<RatingBar>(R.id.rating_bar_product)
         val edt_comment = itemView.findViewById<EditText>(R.id.et_comment)
 
         builder.setView(itemView)
         builder.setNegativeButton("Cancel") { dialogInterface, i -> dialogInterface.dismiss() }
         builder.setPositiveButton("Ok") { dialogInterface, i ->
+            if (ratingBar != null) {
+                val ratingBarValue = ratingBar.rating.toString()
+                Toast.makeText(
+                    this@DetailsOfAllProductsFragment.context,
+                    "Rating is: " + ratingBarValue, Toast.LENGTH_SHORT
+                ).show()
 
-            //
+                var comment = Comment(
+                    rate = ratingBar.rating.toInt(),
+                    title = edt_comment.text.toString(),
+                    productId = product.id,
+                    userId = AppSharedPreference.getUserId(context!!)!!
+                )
+                val response = commentViewModel.addComment(comment)
+                response.observe(
+                    viewLifecycleOwner,
+                    Observer { message ->
+                        Toast.makeText(context, message.toString(), Toast.LENGTH_SHORT).show()
+                    }
+                )
+            } else {
+                Toast.makeText(context, "you should ", Toast.LENGTH_SHORT).show()
+
+            }
         }
 
-        val dialog= builder.create()
+        val dialog = builder.create()
         dialog.show()
     }
 
@@ -129,13 +184,20 @@ class DetailsOfAllProductsFragment : Fragment() {
                 updateUi(product)
             }
         )
+
+        commentViewModel.getComments().observe(
+            viewLifecycleOwner,
+            Observer { it ->
+                averageOfRating(it)
+            }
+        )
     }
 
     private fun updateUi(product: Product) {
         productNameTv.text = product.name
         productRialPriceTv.text = product.rialPrice.toString()
         productDollarPriceTv.text = product.dollarPrice.toString()
-        productReviewsTv.text=countOfReports.toString()
+        productReviewsTv.text = countOfReports.toString()
         //     productQuantityTv.text = product.quantity.toString()
         productDescriptionTv.text = product.description
         if (product.images.isNotEmpty())
@@ -150,7 +212,7 @@ class DetailsOfAllProductsFragment : Fragment() {
             }
     }
 
-    interface Callbacks{
+    interface Callbacks {
         fun onAddToCartClicked()
     }
 

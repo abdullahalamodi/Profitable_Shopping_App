@@ -18,7 +18,10 @@ import com.finalproject.profitableshopping.view.cart.CartFragment
 import com.finalproject.profitableshopping.view.category.CategoryActivity
 import com.finalproject.profitableshopping.view.products.ManageProductActivity
 import com.finalproject.profitableshopping.view.products.fragments.*
-import com.finalproject.profitableshopping.view.user.UserFragment
+import com.finalproject.profitableshopping.view.user.ManageUserProfileFragment
+import com.finalproject.profitableshopping.view.user.RestPasswordFragment
+import com.finalproject.profitableshopping.view.user.UpdateInfoFragment
+import com.finalproject.profitableshopping.view.user.UserManageProfileFragment
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -28,10 +31,11 @@ class MainActivity : AppCompatActivity(),
     SignUpFragment.SignUpCallbacks,
     ActiveFragment.ActiveAccountCallbacks,
     ShowAllProductsFragment.Callbacks,
-    DetailsOfAllProductsFragment.Callbacks {
+    DetailsOfAllProductsFragment.Callbacks,
+UserManageProfileFragment.Callbacks,
+ManageUserProfileFragment.Callbacks{
 
-    private lateinit var buttonNav: BottomNavigationMenuView
-
+    private lateinit var menu: Menu
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -77,7 +81,6 @@ class MainActivity : AppCompatActivity(),
                     true
                 }
                 R.id.menu_search -> {
-
 //                    setContent("Search")
                     setCurrentFragment(ShowAllProductsFragment.newInstance())
                     true
@@ -88,7 +91,7 @@ class MainActivity : AppCompatActivity(),
                 }
                 R.id.menu_profile -> {
                     setContent("Profile")
-                    setCurrentFragment(UserFragment.newInstance())
+                    setCurrentFragment(ManageUserProfileFragment.newInstance())
                     true
                 }
                 else -> false
@@ -96,12 +99,11 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
-    fun showButtonNavigation(show: Boolean) {
+    private fun showButtonNavigation(show: Boolean) {
         if (show)
-            buttonNav.visibility = View.VISIBLE
+            bottomNav.visibility = View.VISIBLE
         else
-            buttonNav.visibility = View.GONE
-
+            bottomNav.visibility = View.GONE
     }
 
     private fun setCurrentFragment(fragment: Fragment) =
@@ -119,26 +121,31 @@ class MainActivity : AppCompatActivity(),
         // Inflate the menu to use in the action bar
         val inflater = menuInflater
         inflater.inflate(R.menu.main_menu, menu)
+        this.menu = menu
+        filterMenuItems(menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    private fun filterMenuItems(menu: Menu){
         if (getUserToken() == "admin") {
             menu.findItem(R.id.menu_login).setVisible(false)
             menu.findItem(R.id.menu_categories).setVisible(true)
+            menu.findItem(R.id.menu_product_manage).setVisible(true)
             menu.findItem(R.id.menu_my_products).setVisible(false)
             menu.findItem(R.id.sign_out).setVisible(true)
-            menu.findItem(R.id.menu_product_manage).setVisible(true)
         } else if (getUserToken() == "user") {
             menu.findItem(R.id.menu_login).setVisible(false)
-            menu.findItem(R.id.menu_product_manage).setVisible(true)
             menu.findItem(R.id.menu_categories).setVisible(false)
+            menu.findItem(R.id.menu_product_manage).setVisible(false)
             menu.findItem(R.id.menu_my_products).setVisible(true)
             menu.findItem(R.id.sign_out).setVisible(true)
         } else {
-            menu.findItem(R.id.menu_product_manage).setVisible(false)
             menu.findItem(R.id.menu_login).setVisible(true)
             menu.findItem(R.id.menu_categories).setVisible(false)
+            menu.findItem(R.id.menu_product_manage).setVisible(false)
             menu.findItem(R.id.menu_my_products).setVisible(false)
             menu.findItem(R.id.sign_out).setVisible(false)
         }
-        return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -157,6 +164,7 @@ class MainActivity : AppCompatActivity(),
 //            }
             R.id.menu_login -> {
                 setCurrentFragment(LogInFragment.newInstance())
+                showButtonNavigation(false)
                 true
             }
             R.id.menu_my_products -> {
@@ -165,7 +173,7 @@ class MainActivity : AppCompatActivity(),
             }
             R.id.menu_categories -> {
                 when {
-                    getUserToken() == "Admin"
+                    getUserToken() == "admin"
                         // setCurrentFragment(CategoryFragment.newInstance())
                     -> startActivity(Intent(this, CategoryActivity::class.java))
                     getUserToken() != "quest" -> {
@@ -181,9 +189,11 @@ class MainActivity : AppCompatActivity(),
                 setCurrentFragment(AdminProductManagmentFragment.newInstance())
                 true
             }
+
             R.id.sign_out -> {
                 logOut()
                 setCurrentFragment(LogInFragment.newInstance())
+                showButtonNavigation(false)
                 true
             }
             else -> return super.onOptionsItemSelected(item)
@@ -201,6 +211,7 @@ class MainActivity : AppCompatActivity(),
 
     private fun logOut(token: String = "") {
         AppSharedPreference.saveUserToken(this, token)
+        filterMenuItems(menu)
     }
 
     private fun addFragment(fragment: Fragment) =
@@ -220,6 +231,8 @@ class MainActivity : AppCompatActivity(),
 
     override fun onLoginSuccess() {
         setCurrentFragment(ProductListFragment.newInstance())
+        showButtonNavigation(true)
+        filterMenuItems(menu)
     }
 
     override fun onCreateAccountSuccess() {
@@ -241,5 +254,18 @@ class MainActivity : AppCompatActivity(),
 
     override fun onAddToCartClicked() {
 
+    }
+
+    override fun onRestPasswordClicked() {
+       setCurrentFragment(RestPasswordFragment.newInstance())
+    }
+
+    override fun onUpdateClicked() {
+        setCurrentFragment(UpdateInfoFragment.newInstance())
+    }
+
+    override fun onOpenProfile() {
+        setCurrentFragment(UserManageProfileFragment
+            .newInstance())
     }
 }
