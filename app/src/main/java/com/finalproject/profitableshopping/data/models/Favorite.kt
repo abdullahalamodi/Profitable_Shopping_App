@@ -2,7 +2,6 @@ package com.finalproject.profitableshopping.data.models
 
 data class Favorite(
     var id: Int?,
-    var user_id: String = "0",
-    var date: String = ""
+    var user_id: String = "0"
 ) {
 }
