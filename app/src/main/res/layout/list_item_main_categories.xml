@@ -3,8 +3,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="6dp"
-    android:gravity="center">
+    android:gravity="center"
+    android:layout_margin="6dp">
 
     <ImageView
         android:id="@+id/check_icon"
@@ -18,14 +18,15 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:paddingTop="10dp">
 
         <ImageView
             android:id="@+id/category_image_view"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_gravity="center"
-            android:src="@drawable/ic_camera" />
+            android:background="@drawable/bg13"
+            android:src="@drawable/ic_camera"/>
 
         <TextView
             android:id="@+id/tv_name_category"

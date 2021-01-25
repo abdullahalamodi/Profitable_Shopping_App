@@ -21,7 +21,7 @@ private const val ARG_PRODUCT_Q = "product_q"
 private const val ARG_PRODUCT_P = "product_p"
 
 class OrderItemOptions : DialogFragment() {
-    lateinit var quantityEd: EditText
+    lateinit var quantityEd: TextView
     lateinit var plusBtn: Button
     lateinit var menusBtn: Button
     lateinit var colorSV: Spinner
@@ -119,7 +119,8 @@ class OrderItemOptions : DialogFragment() {
         plusBtn.setOnClickListener {
             if (quantity < productQuantity) {
                 quantity += 1;
-                quantityEd.setText(quantity.toString())
+                price += productPrice;
+                quantityEd.text = quantity.toString()
                 totalPriceV.text = price.toString()
             }
         }
@@ -127,7 +128,8 @@ class OrderItemOptions : DialogFragment() {
         menusBtn.setOnClickListener {
             if (quantity > 1) {
                 quantity -= 1;
-                quantityEd.setText(quantity.toString())
+                price -= productPrice;
+                quantityEd.text = quantity.toString()
                 totalPriceV.text = price.toString()
             }
         }

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -18,10 +19,7 @@ import com.finalproject.profitableshopping.view.cart.CartFragment
 import com.finalproject.profitableshopping.view.category.CategoryActivity
 import com.finalproject.profitableshopping.view.products.ManageProductActivity
 import com.finalproject.profitableshopping.view.products.fragments.*
-import com.finalproject.profitableshopping.view.user.ManageUserProfileFragment
-import com.finalproject.profitableshopping.view.user.RestPasswordFragment
-import com.finalproject.profitableshopping.view.user.UpdateInfoFragment
-import com.finalproject.profitableshopping.view.user.UserManageProfileFragment
+import com.finalproject.profitableshopping.view.user.*
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -36,6 +34,7 @@ UserManageProfileFragment.Callbacks,
 ManageUserProfileFragment.Callbacks{
 
     private lateinit var menu: Menu
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -64,7 +63,6 @@ ManageUserProfileFragment.Callbacks{
             val fragmentTransaction = fragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.container, ProductListFragment.newInstance())
                 .commit()
-
         }
 
 
@@ -73,6 +71,7 @@ ManageUserProfileFragment.Callbacks{
                 R.id.menu_home -> {
                     setContent("Home")
                     setCurrentFragment(ProductListFragment.newInstance())
+                    showButtonNavigation(true)
                     true
                 }
                 R.id.menu_shopping_cart -> {
@@ -192,7 +191,7 @@ ManageUserProfileFragment.Callbacks{
 
             R.id.sign_out -> {
                 logOut()
-                setCurrentFragment(LogInFragment.newInstance())
+              setCurrentFragment(LogInFragment.newInstance())
                 showButtonNavigation(false)
                 true
             }
@@ -243,8 +242,9 @@ ManageUserProfileFragment.Callbacks{
         setCurrentFragment(ActiveUserAccountFragment.newInstance())
     }
 
-    var isNavHide = false
-    private fun anim(hide: Boolean) {
+
+    private var isNavHide = false
+    public fun anim(hide: Boolean) {
         if (isNavHide && hide || !isNavHide && !hide) return
         isNavHide = hide
         val moveY = if (hide) 2 * bottomNav!!.height else 0
@@ -256,6 +256,10 @@ ManageUserProfileFragment.Callbacks{
 
     }
 
+    override fun onDetailsOpen(show:Boolean) {
+       showButtonNavigation(show)
+    }
+
     override fun onRestPasswordClicked() {
        setCurrentFragment(RestPasswordFragment.newInstance())
     }
@@ -265,7 +269,6 @@ ManageUserProfileFragment.Callbacks{
     }
 
     override fun onOpenProfile() {
-        setCurrentFragment(UserManageProfileFragment
-            .newInstance())
+        setCurrentFragment(UserManageProfileFragment.newInstance())
     }
 }

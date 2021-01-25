@@ -144,6 +144,7 @@
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:id="@+id/Evalution"
                         android:clickable="true"
                         android:tint="@color/grey_80"
                         app:backgroundTint="@android:color/white"
@@ -203,23 +204,23 @@
                     android:gravity="center"
                     android:minWidth="100dp"
                     android:orientation="vertical">
-
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:clickable="true"
                         android:tint="@color/grey_80"
+                        android:id="@+id/notification"
                         app:backgroundTint="@android:color/white"
                         app:elevation="1dp"
                         app:fabSize="normal"
                         app:rippleColor="@color/deep_orange_400"
-                        app:srcCompat="@drawable/ic_baseline_insert_emoticon_24" />
+                        app:srcCompat="@drawable/ic_baseline_location_on_24" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/spacing_medium"
-                        android:text="Notification"
+                        android:text="Location"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2" />
 
                 </LinearLayout>

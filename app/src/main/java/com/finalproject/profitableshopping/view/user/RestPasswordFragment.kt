@@ -9,7 +9,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.finalproject.profitableshopping.R
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.activity_reset_password.*
+import kotlinx.android.synthetic.main.fragment_rest_password.*
+
 
 class RestPasswordFragment : Fragment() {
     private var mAuth: FirebaseAuth? = null

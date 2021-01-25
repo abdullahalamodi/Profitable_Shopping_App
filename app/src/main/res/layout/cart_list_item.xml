@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:padding="8dp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textDirection="rtl"
-        app:cardCornerRadius="10dp"
         android:layout_marginLeft="60dp"
         android:layout_marginBottom="4dp"
+        android:textDirection="rtl"
+        app:cardCornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,65 +36,79 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1.2"
+                    android:fontFamily="@font/rb_light"
+                    android:gravity="center"
                     android:text="product name"
                     android:textColor="@color/black"
-                    android:fontFamily="@font/rb_light"
-                    android:textStyle="bold"
-                    android:gravity="center"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/price_tv"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.8"
-                    android:text=" price"
+                    android:fontFamily="@font/rb_light"
                     android:gravity="center"
+                    android:text=" price"
                     android:textColor="@color/colorPrimary"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/rb_light"/>
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="2"
+                android:layout_marginTop="6dp"
                 android:orientation="horizontal"
-                android:layout_marginTop="6dp">
+                android:weightSum="2">
 
                 <TextView
                     android:id="@+id/color_tv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.2"
-                    android:text="color"
+                    android:fontFamily="@font/rb_light"
                     android:gravity="center"
+                    android:text="color"
                     android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/rb_light"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/size_tv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.8"
-                    android:text="size"
+                    android:fontFamily="@font/rb_light"
                     android:gravity="center"
+                    android:text="size"
                     android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/rb_light"/>
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/quantity_tv"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="quantity"
-                android:layout_marginLeft="40dp"
-                android:fontFamily="@font/rb_light"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/quantity_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dp"
+                    android:fontFamily="@font/rb_light"
+                    android:gravity="center"
+                    android:text="quantity"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/rate_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="تقييم"/>
+
+            </LinearLayout>
 
 
         </LinearLayout>
@@ -106,11 +119,11 @@
         android:id="@+id/ImgV_product"
         android:layout_width="90dp"
         android:layout_height="90dp"
-        android:src="@drawable/laptop"
-        android:elevation="12sp"
         android:background="@drawable/bg11"
-        app:layout_constraintTop_toTopOf="parent"
+        android:elevation="12sp"
+        android:src="@drawable/laptop"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

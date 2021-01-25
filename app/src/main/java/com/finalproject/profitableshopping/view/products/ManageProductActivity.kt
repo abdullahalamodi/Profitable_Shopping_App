@@ -63,4 +63,8 @@ class ManageProductActivity : AppCompatActivity(),
 
     }
 
+    override fun onDetailsOpen(show:Boolean) {
+        TODO("Not yet implemented")
+    }
+
 }

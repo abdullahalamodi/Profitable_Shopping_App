@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.finalproject.profitableshopping.data.Complain
+import com.finalproject.profitableshopping.data.models.Complain
 import com.finalproject.profitableshopping.data.models.Report
 import com.finalproject.profitableshopping.data.repositories.ReportRepositry
 import retrofit2.Call

@@ -61,10 +61,12 @@ class AddCategoryFragment : BottomSheetDialogFragment(), UploadRequestBody.Uploa
                         Observer {
                             showProgress(false)
                             categoryViewModel.refresh()
+                            dismiss()
                         }
                     )
                 }
             )
+
         }
 
         loadBtn.setOnClickListener {

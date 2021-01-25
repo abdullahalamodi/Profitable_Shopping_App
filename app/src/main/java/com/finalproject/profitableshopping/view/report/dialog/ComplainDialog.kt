@@ -1,6 +1,5 @@
 package com.finalproject.profitableshopping.view.report.dialog
 
-import android.app.Activity
 import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
@@ -17,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.AppSharedPreference
-import com.finalproject.profitableshopping.data.Complain
+import com.finalproject.profitableshopping.data.models.Complain
 import com.finalproject.profitableshopping.data.models.Report
 import com.finalproject.profitableshopping.viewmodel.ComplainViewModel
 import com.finalproject.profitableshopping.viewmodel.ReportViewModel
@@ -26,7 +25,7 @@ class ComplainDialog :DialogFragment(){
   lateinit var complainRv:RecyclerView
     lateinit var complainViewModel:ComplainViewModel
     lateinit var reportViewModel: ReportViewModel
-   lateinit var adapter:ComplainAdapter
+
     var complainId:Int=0
     var productId:String=""
     var userId:String=""
@@ -41,14 +40,14 @@ class ComplainDialog :DialogFragment(){
         val view = activity?.layoutInflater?.inflate(R.layout.complain_dialog,null)
         complainRv= view!!.findViewById(R.id.complain_recycler_view)
         complainRv.layoutManager=LinearLayoutManager(requireContext())
-        complainRv.adapter=ComplainAdapter(complainViewModel.comp)
+
         complainViewModel.complainListLiveData.observe(
             this,
             Observer {
 
-               // adapter=ComplainAdapter(it)
+                complainRv.adapter=ComplainAdapter(it)
                // adapter=ComplainAdapter(complainViewModel.comp)
-                Log.d("coplain list", complainViewModel.comp.size.toString())
+                Log.d("coplain list", it.size.toString())
             }
         )
 
@@ -59,11 +58,11 @@ class ComplainDialog :DialogFragment(){
             .setPositiveButton("ارسال"){dialog,_ ->
              val report=Report(
                  id=null,
-                 complainId = complainId,
+                 complain_id = complainId,
                  from_id = AppSharedPreference.getUserId(requireContext())!!,
                  to_id =userId,
-                 productId = productId,
-                 date = "22-1-2021"
+                 product_id = productId.toInt()
+
 
              )
                 reportViewModel.addReport(report).observe(
@@ -94,6 +93,7 @@ class ComplainDialog :DialogFragment(){
         }
 
         override fun getItemCount(): Int {
+            Log.d("adapter",complainList.size.toString())
            return complainList.size
         }
     }
@@ -102,13 +102,13 @@ class ComplainDialog :DialogFragment(){
 
         val complainCB=view.findViewById<CheckBox>(R.id.complain_check_box)
         var complainTitleTv=view.findViewById<TextView>(R.id.complain_title_tv)
-        var complain=Complain(null)
+        var complain= Complain(null)
         init {
             view.setOnClickListener(this)
         }
-        fun bind(complain:Complain){
+        fun bind(complain: Complain){
             this.complain=complain
-            complainTitleTv.text=complain.title
+            complainTitleTv.text=this.complain.title
 
 
         }

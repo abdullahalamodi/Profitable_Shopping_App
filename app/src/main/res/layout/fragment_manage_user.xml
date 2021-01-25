@@ -107,6 +107,8 @@
                         android:text="Location"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2" />
 
+
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -141,16 +143,21 @@
                     android:gravity="center"
                     android:minWidth="100dp"
                     android:orientation="vertical">
+
+
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
                         android:clickable="true"
                         android:tint="@color/grey_80"
                         app:backgroundTint="@android:color/white"
                         app:elevation="1dp"
                         app:fabSize="normal"
                         app:rippleColor="@color/deep_orange_400"
-                        app:srcCompat="@drawable/ic_baseline_insert_emoticon_24" />
+                        app:srcCompat="@drawable/ic_baseline_insert_emoticon_24">
+
+
+                    </com.google.android.material.floatingactionbutton.FloatingActionButton>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -176,6 +183,19 @@
                     android:gravity="center"
                     android:minWidth="100dp"
                     android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/badge_counter"
+                        android:layout_width="@dimen/badge_size"
+                        android:layout_height="@dimen/badge_size"
+                        android:background="@drawable/badge"
+                        android:text="14"
+                        android:textSize="10sp"
+                        android:textColor="@android:color/white"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginBottom="5dp"/>
 
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:layout_width="wrap_content"
@@ -203,10 +223,24 @@
                     android:gravity="center"
                     android:minWidth="100dp"
                     android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/badge_counter1"
+                        android:layout_width="@dimen/badge_size"
+                        android:layout_height="@dimen/badge_size"
+                        android:background="@drawable/badge"
+                        android:text="20"
+                        android:textSize="10sp"
+                        android:textColor="@android:color/white"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginBottom="5dp"/>
 
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:id="@+id/notification"
                         android:clickable="true"
                         android:tint="@color/grey_80"
                         app:backgroundTint="@android:color/white"
@@ -230,6 +264,18 @@
                     android:gravity="center"
                     android:minWidth="100dp"
                     android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/badge_counter2"
+                        android:layout_width="@dimen/badge_size"
+                        android:layout_height="@dimen/badge_size"
+                        android:text=""
+                        android:textSize="10sp"
+                        android:textColor="@android:color/white"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginBottom="10dp"/>
 
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:layout_width="wrap_content"

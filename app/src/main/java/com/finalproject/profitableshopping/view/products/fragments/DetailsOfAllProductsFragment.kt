@@ -1,8 +1,8 @@
 package com.finalproject.profitableshopping.view.products.fragments
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,19 +10,22 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.RecyclerView
 import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.AppSharedPreference
-import com.finalproject.profitableshopping.data.firebase.Firebase
 import com.finalproject.profitableshopping.data.models.Comment
 import com.finalproject.profitableshopping.data.models.Product
 import com.finalproject.profitableshopping.data.models.Report
+import com.finalproject.profitableshopping.view.MainActivity
 import com.finalproject.profitableshopping.view.cart.dialogs.OrderItemOptions
+import com.finalproject.profitableshopping.view.report.dialog.AddComplainDialog
 import com.finalproject.profitableshopping.view.report.dialog.ComplainDialog
 import com.finalproject.profitableshopping.viewmodel.CommentViewModel
 import com.finalproject.profitableshopping.viewmodel.ProductViewModel
 import com.finalproject.profitableshopping.viewmodel.ReportViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.squareup.picasso.Picasso
+
 
 private const val ARG_PRODUCT_ID = "product_id"
 
@@ -44,14 +47,28 @@ class DetailsOfAllProductsFragment : Fragment() {
     lateinit var ratingBtn: FloatingActionButton
     lateinit var cartBtn: FloatingActionButton
     lateinit var reportBtn: Button
+    lateinit var showCommentBtn: Button
     lateinit var ratingBar: RatingBar
-    lateinit var callbacks: Callbacks
+    var callbacks: Callbacks?=null
     lateinit var product: Product
+    lateinit var commentsRecyclerView: RecyclerView
+    lateinit var showComments: Button
+    private var adapter: CommentsAdapter = CommentsAdapter(emptyList())
     var countOfReports: Int = 0
     var productReports: List<Report> = emptyList()
     lateinit var comment: Comment
 
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callbacks = context as Callbacks
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        callbacks?.onDetailsOpen(true)
+        callbacks=null
+    }
     override fun onStart() {
         super.onStart()
 //        callbacks = (context as Callbacks)
@@ -63,6 +80,8 @@ class DetailsOfAllProductsFragment : Fragment() {
         commentViewModel = ViewModelProviders.of(this).get(CommentViewModel::class.java)
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
         reportViewModel = ViewModelProviders.of(this).get(ReportViewModel::class.java)
+       // mainActivity?.anim(false)
+        callbacks?.onDetailsOpen(false)
         arguments?.let {
             productId = it.getString(ARG_PRODUCT_ID)
             productViewModel.loadProduct(productId!!)
@@ -84,8 +103,9 @@ class DetailsOfAllProductsFragment : Fragment() {
         //  progressBar = view.findViewById(R.id.progress_circular)
         productImageIv = view.findViewById(R.id.img_product_details) as ImageView
         productNameTv = view.findViewById(R.id.tv_product_name_details) as TextView
+        showCommentBtn = view.findViewById(R.id.btnShowComment) as Button
         //  productReviewsTv = view.findViewById(R.id.reviews_tv) as TextView
-        // productQuantityTv = view.findViewById(R.id.quantity_tv) as TextView
+        productQuantityTv = view.findViewById(R.id.tv_product_quantity_details) as TextView
         productRialPriceTv = view.findViewById(R.id.tv_product_price_rial_details) as TextView
         productDollarPriceTv = view.findViewById(R.id.tv_product_price_details) as TextView
         productDescriptionTv = view.findViewById(R.id.tv_product_desc_details) as TextView
@@ -96,82 +116,55 @@ class DetailsOfAllProductsFragment : Fragment() {
         reportBtn = view.findViewById(R.id.btnShowreport)
         productReviewsTv = view.findViewById(R.id.tv_product_reports) as TextView
         ratingBar = view.findViewById(R.id.ratingBar) as RatingBar
+        commentsRecyclerView = view.findViewById(R.id.comments_recycler_view)
+        showComments = view.findViewById(R.id.btnShowComment)
 
 
-        ratingBtn.setOnClickListener {
-            showDialogRating()
-        }
+
         reportBtn.setOnClickListener {
-            ComplainDialog.newInstance(productId!!, product.userId.toString()).apply {
+            ComplainDialog.newInstance(productId!!, product.userId).apply {
                 show(this@DetailsOfAllProductsFragment.parentFragmentManager, "report")
             }
         }
-
-        cartBtn.setOnClickListener {
-            OrderItemOptions.newInstance(product.id.toString(),product.quantity,product.rialPrice).apply {
-                show(this@DetailsOfAllProductsFragment.parentFragmentManager, "cart")
+        showCommentBtn.setOnClickListener {
+            AddComplainDialog.newInstance().apply {
+                show(this@DetailsOfAllProductsFragment.parentFragmentManager, "report")
             }
+        }
+        cartBtn.setOnClickListener {
+            OrderItemOptions.newInstance(product.id.toString(), product.quantity, product.rialPrice)
+                .apply {
+                    show(this@DetailsOfAllProductsFragment.parentFragmentManager, "cart")
+                }
+        }
+
+        showComments.setOnClickListener {
+            if (commentsRecyclerView.visibility == View.VISIBLE)
+                commentsRecyclerView.visibility = View.GONE
+            else
+                commentsRecyclerView.visibility = View.VISIBLE
+
         }
 
         return view
     }
 
     private fun averageOfRating(comments: List<Comment>) {
-        var totul: Int = 0
-        if (comments.size > 0) {
-            for (i in comments)
-                totul += i.rate
-            var average = totul / comments.size
-            ratingBar.rating = average.toFloat()
-            Toast.makeText(context, "your rating $average", Toast.LENGTH_SHORT).show()
-
-        } else {
-            Log.d("no data", "no data")
-            Toast.makeText(context, "no data", Toast.LENGTH_SHORT).show()
-        }
-
-    }
-
-    private fun showDialogRating() {
-        var builder = AlertDialog.Builder(context!!)
-        builder.setTitle("Rating product")
-        builder.setMessage("Please fill information")
-        val itemView = LayoutInflater.from(context).inflate(R.layout.layout_rating_comment, null)
-        val ratingBar = itemView.findViewById<RatingBar>(R.id.rating_bar_product)
-        val edt_comment = itemView.findViewById<EditText>(R.id.et_comment)
-
-        builder.setView(itemView)
-        builder.setNegativeButton("Cancel") { dialogInterface, i -> dialogInterface.dismiss() }
-        builder.setPositiveButton("Ok") { dialogInterface, i ->
-            if (ratingBar != null) {
-                val ratingBarValue = ratingBar.rating.toString()
-                Toast.makeText(
-                    this@DetailsOfAllProductsFragment.context,
-                    "Rating is: " + ratingBarValue, Toast.LENGTH_SHORT
-                ).show()
-
-                var comment = Comment(
-                    rate = ratingBar.rating.toInt(),
-                    title = edt_comment.text.toString(),
-                    productId = product.id,
-                    userId = AppSharedPreference.getUserId(context!!)!!
-                )
-                val response = commentViewModel.addComment(comment)
-                response.observe(
-                    viewLifecycleOwner,
-                    Observer { message ->
-                        Toast.makeText(context, message.toString(), Toast.LENGTH_SHORT).show()
-                    }
-                )
-            } else {
-                Toast.makeText(context, "you should ", Toast.LENGTH_SHORT).show()
-
+        var total = 0
+        if (!comments.isNullOrEmpty()) {
+            comments.forEach { comment ->
+                total += comment.rate
             }
+            val average = total / comments.size
+            ratingBar.rating = average.toFloat()
         }
-
-        val dialog = builder.create()
-        dialog.show()
     }
+
+    fun updateCommentsRecycler(comments: List<Comment>) {
+        adapter = CommentsAdapter(comments)
+        commentsRecyclerView.adapter = adapter
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -184,19 +177,25 @@ class DetailsOfAllProductsFragment : Fragment() {
                 updateUi(product)
             }
         )
+        loadComments(productId.toString())
 
-        commentViewModel.getComments().observe(
+    }
+
+    private fun loadComments(productId: String) {
+        commentViewModel.getProductComments(productId).observe(
             viewLifecycleOwner,
-            Observer { it ->
+            Observer {
                 averageOfRating(it)
+                updateCommentsRecycler(it)
             }
         )
     }
 
     private fun updateUi(product: Product) {
         productNameTv.text = product.name
-        productRialPriceTv.text = product.rialPrice.toString()
-        productDollarPriceTv.text = product.dollarPrice.toString()
+        productRialPriceTv.text = product.rialPrice.toString()+" RY"
+        productDollarPriceTv.text = product.dollarPrice.toString()+" $"
+        productQuantityTv.text = product.quantity.toString()
         productReviewsTv.text = countOfReports.toString()
         //     productQuantityTv.text = product.quantity.toString()
         productDescriptionTv.text = product.description
@@ -214,6 +213,7 @@ class DetailsOfAllProductsFragment : Fragment() {
 
     interface Callbacks {
         fun onAddToCartClicked()
+        fun onDetailsOpen(show:Boolean)
     }
 
     companion object {
@@ -224,6 +224,46 @@ class DetailsOfAllProductsFragment : Fragment() {
                     putString(ARG_PRODUCT_ID, productId)
                 }
             }
+    }
+
+
+////////comments recycler view and adapter //////////////
+
+    private inner class CommentsHolder(val view: View) : RecyclerView.ViewHolder(view) {
+        // need to change next variable inflate to be comfortable with product item xml file
+        var commentUser = view.findViewById(R.id.comment_user) as TextView
+        var commentTitle = view.findViewById(R.id.comment_title) as TextView
+        var commentDate: TextView = view.findViewById(R.id.comment_date) as TextView
+
+
+        fun bind(comment: Comment) {
+            commentUser.text = comment.userId
+            commentTitle.text = comment.title
+            commentDate.text = comment.date
+        }
+
+    }
+
+    private inner class CommentsAdapter(var comments: List<Comment>) :
+        RecyclerView.Adapter<CommentsHolder>() {
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentsHolder {
+            // need to change inflate to be product list item xml
+            val view: View = layoutInflater.inflate(
+                R.layout.comments_lis_item,
+                parent, false
+            )
+            return CommentsHolder(view)
+        }
+
+        override fun onBindViewHolder(holder: CommentsHolder, position: Int) {
+            val comment = comments[position]
+            holder.bind(comment)
+        }
+
+        override fun getItemCount(): Int {
+            return comments.size
+        }
     }
 
 

@@ -73,7 +73,7 @@ class LogInFragment : Fragment() {
 
                 login(email, password)
             } else {
-                Toast.makeText(requireContext(), "failed login", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "Failed login email or password is wrong", Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -164,7 +164,7 @@ class LogInFragment : Fragment() {
         val user: FirebaseUser? = mAuth?.currentUser
         if (user!!.isEmailVerified) {
 
-            Toast.makeText(requireContext(), "Done", Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), "You have signed in successfully", Toast.LENGTH_LONG).show()
             var intent = Intent(requireContext(), MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)

@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.finalproject.profitableshopping.data.Complain
+import com.finalproject.profitableshopping.data.models.Complain
 import com.finalproject.profitableshopping.data.repositories.ComplainRepositry
 import retrofit2.Call
 import retrofit2.Callback
@@ -24,10 +24,8 @@ class ComplainViewModel:ViewModel() {
 
     init {
 
-        comp.add(Complain(1," منتج وهمي"))
-        comp.add(Complain(2,"غير مطابق للمواصفات"))
-        comp.add(Complain(3," اغلاء من السوقي"))
-        comp.add(Complain(4," مواعيد التوصيل غير مضبوطة"))
+
+
         complainRepositry= ComplainRepositry()
         complainListLiveData=getComplains()
     }
