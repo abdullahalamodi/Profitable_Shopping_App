@@ -241,7 +241,6 @@ class CategoryFragment : Fragment(),UploadRequestBody.UploadCallback {
             )
             return CategoryHolder(view)
         }
-
         override fun onBindViewHolder(holder: CategoryHolder, position: Int) {
             val category = categoriesList[position]
             holder.bind(category)

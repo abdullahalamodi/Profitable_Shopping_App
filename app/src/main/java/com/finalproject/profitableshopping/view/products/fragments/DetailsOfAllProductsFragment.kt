@@ -1,6 +1,7 @@
 package com.finalproject.profitableshopping.view.products.fragments
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,17 +13,19 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.AppSharedPreference
-import com.finalproject.profitableshopping.data.firebase.Firebase
 import com.finalproject.profitableshopping.data.models.Comment
 import com.finalproject.profitableshopping.data.models.Product
 import com.finalproject.profitableshopping.data.models.Report
+import com.finalproject.profitableshopping.view.MainActivity
 import com.finalproject.profitableshopping.view.cart.dialogs.OrderItemOptions
+import com.finalproject.profitableshopping.view.report.dialog.AddComplainDialog
 import com.finalproject.profitableshopping.view.report.dialog.ComplainDialog
 import com.finalproject.profitableshopping.viewmodel.CommentViewModel
 import com.finalproject.profitableshopping.viewmodel.ProductViewModel
 import com.finalproject.profitableshopping.viewmodel.ReportViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.squareup.picasso.Picasso
+
 
 private const val ARG_PRODUCT_ID = "product_id"
 
@@ -44,14 +47,25 @@ class DetailsOfAllProductsFragment : Fragment() {
     lateinit var ratingBtn: FloatingActionButton
     lateinit var cartBtn: FloatingActionButton
     lateinit var reportBtn: Button
+    lateinit var showCommentBtn: Button
     lateinit var ratingBar: RatingBar
-    lateinit var callbacks: Callbacks
+    var callbacks: Callbacks?=null
     lateinit var product: Product
     var countOfReports: Int = 0
     var productReports: List<Report> = emptyList()
     lateinit var comment: Comment
 
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callbacks = context as Callbacks
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        callbacks?.onDetailsOpen(true)
+        callbacks=null
+    }
     override fun onStart() {
         super.onStart()
 //        callbacks = (context as Callbacks)
@@ -63,6 +77,8 @@ class DetailsOfAllProductsFragment : Fragment() {
         commentViewModel = ViewModelProviders.of(this).get(CommentViewModel::class.java)
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
         reportViewModel = ViewModelProviders.of(this).get(ReportViewModel::class.java)
+       // mainActivity?.anim(false)
+        callbacks?.onDetailsOpen(false)
         arguments?.let {
             productId = it.getString(ARG_PRODUCT_ID)
             productViewModel.loadProduct(productId!!)
@@ -84,7 +100,7 @@ class DetailsOfAllProductsFragment : Fragment() {
         //  progressBar = view.findViewById(R.id.progress_circular)
         productImageIv = view.findViewById(R.id.img_product_details) as ImageView
         productNameTv = view.findViewById(R.id.tv_product_name_details) as TextView
-        //  productReviewsTv = view.findViewById(R.id.reviews_tv) as TextView
+        showCommentBtn = view.findViewById(R.id.btnShowComment) as Button
         // productQuantityTv = view.findViewById(R.id.quantity_tv) as TextView
         productRialPriceTv = view.findViewById(R.id.tv_product_price_rial_details) as TextView
         productDollarPriceTv = view.findViewById(R.id.tv_product_price_details) as TextView
@@ -106,12 +122,17 @@ class DetailsOfAllProductsFragment : Fragment() {
                 show(this@DetailsOfAllProductsFragment.parentFragmentManager, "report")
             }
         }
-
+        showCommentBtn.setOnClickListener {
+            AddComplainDialog.newInstance().apply {
+                show(this@DetailsOfAllProductsFragment.parentFragmentManager, "report")
+            }
+        }
         cartBtn.setOnClickListener {
-            OrderItemOptions.newInstance(product.id.toString(),product.quantity,product.rialPrice).apply {
+            OrderItemOptions.newInstance(product.id.toString(), product.quantity, product.rialPrice).apply {
                 show(this@DetailsOfAllProductsFragment.parentFragmentManager, "cart")
             }
         }
+
 
         return view
     }
@@ -214,6 +235,7 @@ class DetailsOfAllProductsFragment : Fragment() {
 
     interface Callbacks {
         fun onAddToCartClicked()
+        fun onDetailsOpen(show:Boolean)
     }
 
     companion object {
