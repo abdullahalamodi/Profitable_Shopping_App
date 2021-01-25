@@ -50,8 +50,10 @@ class CategoryFragment : Fragment(),UploadRequestBody.UploadCallback {
                     showProgress(false)
                     Toast.makeText(context, message.toString(), Toast.LENGTH_SHORT).show()
                     categoryViewModel.refresh()
+
                 }
             )
+
         }
 
        addCatFloatingABtn.setOnClickListener{

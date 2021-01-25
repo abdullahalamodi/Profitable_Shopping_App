@@ -85,7 +85,7 @@ class DetailsOfAllProductsFragment : Fragment() {
         productImageIv = view.findViewById(R.id.img_product_details) as ImageView
         productNameTv = view.findViewById(R.id.tv_product_name_details) as TextView
         //  productReviewsTv = view.findViewById(R.id.reviews_tv) as TextView
-        // productQuantityTv = view.findViewById(R.id.quantity_tv) as TextView
+        productQuantityTv = view.findViewById(R.id.tv_product_quantity_details) as TextView
         productRialPriceTv = view.findViewById(R.id.tv_product_price_rial_details) as TextView
         productDollarPriceTv = view.findViewById(R.id.tv_product_price_details) as TextView
         productDescriptionTv = view.findViewById(R.id.tv_product_desc_details) as TextView
@@ -108,9 +108,10 @@ class DetailsOfAllProductsFragment : Fragment() {
         }
 
         cartBtn.setOnClickListener {
-            OrderItemOptions.newInstance(product.id.toString(),product.quantity,product.rialPrice).apply {
-                show(this@DetailsOfAllProductsFragment.parentFragmentManager, "cart")
-            }
+            OrderItemOptions.newInstance(product.id.toString(), product.quantity, product.rialPrice)
+                .apply {
+                    show(this@DetailsOfAllProductsFragment.parentFragmentManager, "cart")
+                }
         }
 
         return view
@@ -195,8 +196,9 @@ class DetailsOfAllProductsFragment : Fragment() {
 
     private fun updateUi(product: Product) {
         productNameTv.text = product.name
-        productRialPriceTv.text = product.rialPrice.toString()
-        productDollarPriceTv.text = product.dollarPrice.toString()
+        productRialPriceTv.text = product.rialPrice.toString()+" RY"
+        productDollarPriceTv.text = product.dollarPrice.toString()+" $"
+        productQuantityTv.text = product.quantity.toString()
         productReviewsTv.text = countOfReports.toString()
         //     productQuantityTv.text = product.quantity.toString()
         productDescriptionTv.text = product.description

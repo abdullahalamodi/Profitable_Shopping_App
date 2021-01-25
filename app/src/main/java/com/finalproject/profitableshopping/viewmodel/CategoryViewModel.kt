@@ -68,7 +68,7 @@ class CategoryViewModel : ViewModel() {
 
             override fun onFailure(call: Call<List<Category>>, t: Throwable) {
                 Log.d("categoryFailed", t.message!!)
-                responseLiveData.value = emptyList()
+//                responseLiveData.value = emptyList()
             }
         })
         return responseLiveData
