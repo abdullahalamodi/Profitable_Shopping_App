@@ -353,8 +353,6 @@
                 android:layout_margin="8dp"
                 android:text="Show Comment"
                 android:textColor="@color/white"
-                android:layout_alignParentBottom="true"
-                android:text="Show Comment"
                 app:cornerRadius="4dp"/>
 
             <androidx.recyclerview.widget.RecyclerView
