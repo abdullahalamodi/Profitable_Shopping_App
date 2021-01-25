@@ -1,7 +1,7 @@
 package com.finalproject.profitableshopping.data.api
 
 
-import com.finalproject.profitableshopping.data.Complain
+import com.finalproject.profitableshopping.data.models.Complain
 import com.finalproject.profitableshopping.data.models.*
 
 import okhttp3.MultipartBody
@@ -141,7 +141,7 @@ interface ShoppingApi {
 
     // complain method API
     @POST("complains.php")
-    fun addComplain(@Body complain:Complain):Call<String>
+    fun addComplain(@Body complain: Complain):Call<String>
     @GET("complains.php")
     fun getComplains():Call<List<Complain>>
     @GET()

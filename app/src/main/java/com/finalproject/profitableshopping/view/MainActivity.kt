@@ -243,8 +243,9 @@ ManageUserProfileFragment.Callbacks{
         setCurrentFragment(ActiveUserAccountFragment.newInstance())
     }
 
-    var isNavHide = false
-    private fun anim(hide: Boolean) {
+
+    private var isNavHide = false
+    public fun anim(hide: Boolean) {
         if (isNavHide && hide || !isNavHide && !hide) return
         isNavHide = hide
         val moveY = if (hide) 2 * bottomNav!!.height else 0
@@ -256,6 +257,10 @@ ManageUserProfileFragment.Callbacks{
 
     }
 
+    override fun onDetailsOpen(show:Boolean) {
+       showButtonNavigation(show)
+    }
+
     override fun onRestPasswordClicked() {
        setCurrentFragment(RestPasswordFragment.newInstance())
     }
@@ -265,7 +270,6 @@ ManageUserProfileFragment.Callbacks{
     }
 
     override fun onOpenProfile() {
-        setCurrentFragment(UserManageProfileFragment
-            .newInstance())
+        setCurrentFragment(UserManageProfileFragment.newInstance())
     }
 }

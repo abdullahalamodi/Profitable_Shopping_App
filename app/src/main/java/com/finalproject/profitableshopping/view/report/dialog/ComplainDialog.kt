@@ -1,6 +1,5 @@
 package com.finalproject.profitableshopping.view.report.dialog
 
-import android.app.Activity
 import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
@@ -17,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.AppSharedPreference
-import com.finalproject.profitableshopping.data.Complain
+import com.finalproject.profitableshopping.data.models.Complain
 import com.finalproject.profitableshopping.data.models.Report
 import com.finalproject.profitableshopping.viewmodel.ComplainViewModel
 import com.finalproject.profitableshopping.viewmodel.ReportViewModel
@@ -103,11 +102,11 @@ class ComplainDialog :DialogFragment(){
 
         val complainCB=view.findViewById<CheckBox>(R.id.complain_check_box)
         var complainTitleTv=view.findViewById<TextView>(R.id.complain_title_tv)
-        var complain=Complain(null)
+        var complain= Complain(null)
         init {
             view.setOnClickListener(this)
         }
-        fun bind(complain:Complain){
+        fun bind(complain: Complain){
             this.complain=complain
             complainTitleTv.text=this.complain.title
 

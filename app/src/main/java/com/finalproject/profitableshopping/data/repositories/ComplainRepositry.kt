@@ -1,6 +1,6 @@
 package com.finalproject.profitableshopping.data.repositories
 
-import com.finalproject.profitableshopping.data.Complain
+import com.finalproject.profitableshopping.data.models.Complain
 import com.finalproject.profitableshopping.data.api.ShoppingApi
 import retrofit2.Call
 import retrofit2.Retrofit
