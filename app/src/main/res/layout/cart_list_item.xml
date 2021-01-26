@@ -89,24 +89,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="2">
 
                 <TextView
                     android:id="@+id/quantity_tv"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="40dp"
+                    android:layout_marginLeft="20dp"
                     android:fontFamily="@font/rb_light"
                     android:gravity="center"
+                    android:layout_weight="1"
                     android:text="quantity"
                     android:textColor="@color/black"
                     android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/rate_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="تقييم"/>
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="50dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/ic_star" />
 
             </LinearLayout>
 
@@ -119,7 +124,6 @@
         android:id="@+id/ImgV_product"
         android:layout_width="90dp"
         android:layout_height="90dp"
-        android:background="@drawable/bg11"
         android:elevation="12sp"
         android:src="@drawable/laptop"
         app:layout_constraintBottom_toBottomOf="parent"

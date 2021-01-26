@@ -43,7 +43,7 @@ class CartFragment : Fragment() {
                     this,
                     Observer {
                         AppSharedPreference.setCartId(requireContext(), "-1")
-                        context?.showMessage("تكت عملية الشراء بنجاح :)")
+                        context?.showMessage("تمت عملية الشراء بنجاح :)")
                         carttViewModel.loadOrder(0)
                     }
                 )
@@ -53,7 +53,7 @@ class CartFragment : Fragment() {
                 this,
                 Observer {
                     AppSharedPreference.setCartId(requireContext(), "-1")
-                    context?.showMessage("تك حذف السلة بنجاح :)")
+                    context?.showMessage("تم حذف السلة بنجاح :)")
                     carttViewModel.loadOrder(0)
                 }
             )
