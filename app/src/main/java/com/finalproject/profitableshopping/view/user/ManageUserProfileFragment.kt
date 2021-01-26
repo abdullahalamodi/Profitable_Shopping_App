@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.finalproject.profitableshopping.R
@@ -19,10 +21,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class ManageUserProfileFragment : Fragment() {
     lateinit var reportViewModel: ReportViewModel
-    lateinit var manage : FloatingActionButton
-    lateinit var location: FloatingActionButton
+    lateinit var manage : ImageView
+    lateinit var location: TextView
     var userCountOfReport=0
-    lateinit var notifationM: FloatingActionButton
+    lateinit var notifationM: ImageView
     var callbacks:Callbacks?=null
 
 

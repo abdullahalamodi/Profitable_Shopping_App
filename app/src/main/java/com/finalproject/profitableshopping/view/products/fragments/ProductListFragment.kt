@@ -243,6 +243,7 @@ class ProductListFragment : Fragment() {
         var productRateTv: RatingBar = view.findViewById(R.id.rate_bar) as RatingBar
         var productDescriptionTv: TextView =
             view.findViewById(R.id.tv_description_product) as TextView
+        var ratingBarProduct:RatingBar =view.findViewById(R.id.ratingBar_product) as RatingBar
         var product = Product()
 
         init {
@@ -262,11 +263,11 @@ class ProductListFragment : Fragment() {
                     it.load(path)
                         .resize(150, 150)
                         .centerCrop()
-                        .placeholder(R.drawable.laptop)
+                        .placeholder(R.drawable.ic_phone_android)
                         .into(productImageIv)
                 }
             } else {
-                productImageIv.setImageResource(R.drawable.laptop)
+                productImageIv.setImageResource(R.drawable.ic_phone_android)
             }
 
 
