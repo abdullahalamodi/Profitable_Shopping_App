@@ -60,17 +60,13 @@ class DetailsOfAllProductsFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        callbacks = context as Callbacks
+        //callbacks = context as Callbacks
     }
 
     override fun onDetach() {
         super.onDetach()
         callbacks?.onDetailsOpen(true)
         callbacks=null
-    }
-    override fun onStart() {
-        super.onStart()
-//        callbacks = (context as Callbacks)
     }
 
 
@@ -121,6 +117,8 @@ class DetailsOfAllProductsFragment : Fragment() {
 
 
         favoriteFABtn.setOnClickListener{
+
+            createFavorite()
             if (checkFavorite()) {
                 addItemToFavorite()
             } else {
@@ -223,9 +221,9 @@ class DetailsOfAllProductsFragment : Fragment() {
     }
 
     private fun addItemToFavorite() {
-        val FavoriteDetails = FavoriteItem(
+        val FavoriteDetails = FavoriteDetails(
             product_id = productId!!,
-            favorite_id = AppSharedPreference.getFavoriteId(requireContext()),
+            favorite_id = 1/*AppSharedPreference.getFavoriteId(requireContext())?.toInt()!!*/,
             id = null
         )
         favoriteViewModel.addFavoriteItem(FavoriteDetails).observe(
@@ -251,14 +249,14 @@ class DetailsOfAllProductsFragment : Fragment() {
         ).observe(
             viewLifecycleOwner,
             Observer {
-                AppSharedPreference.setFavoriteId(requireContext(),it!!.toInt())
+                AppSharedPreference.setFavoriteId(requireContext(),it)
                 addItemToFavorite()
             }
         )
     }
 
     private fun checkFavorite(): Boolean {
-        return AppSharedPreference.getFavoriteId(requireContext())>0
+         return AppSharedPreference.getFavoriteId(requireContext()) != "-1"
     }
     companion object {
         @JvmStatic

@@ -62,7 +62,7 @@ class ManageProductsFragment : Fragment() {
     }
 
     private fun filterList(filterItem: String) {
-        var tempList: MutableList<Product> = ArrayList();
+        var tempList: MutableList<Product> = ArrayList()
         for (d in adapterManageProduct.productsList) {
             if (filterItem in d.name) {
                 tempList.add(d)
@@ -222,7 +222,7 @@ class ManageProductsFragment : Fragment() {
 
         fun updateList(list: List<Product>) {
             productsList = list
-            notifyDataSetChanged();
+            notifyDataSetChanged()
         }
     }
 
@@ -246,7 +246,7 @@ class ManageProductsFragment : Fragment() {
 
     companion object {
         fun newInstance(): ManageProductsFragment {
-            return newInstance();
+            return newInstance()
         }
     }
 

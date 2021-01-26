@@ -9,7 +9,6 @@ import com.finalproject.profitableshopping.view.products.fragments.*
 
 class ManageProductActivity : AppCompatActivity(),
     ManageProductsFragment.Callbacks,
-    DetailsOfAllProductsFragment.Callbacks,
     AddProductFragment.Callbacks,
     ProductListFragment.Callbacks{
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,12 +58,6 @@ class ManageProductActivity : AppCompatActivity(),
         setFragment(ManageProductsFragment.newInstance())
     }
 
-    override fun onAddToCartClicked() {
 
-    }
-
-    override fun onDetailsOpen(show:Boolean) {
-        TODO("Not yet implemented")
-    }
 
 }

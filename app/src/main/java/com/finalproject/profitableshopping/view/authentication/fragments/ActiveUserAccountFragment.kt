@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit
 
 class ActiveUserAccountFragment : Fragment() {
     lateinit var auth: FirebaseAuth
-    private lateinit var callback: PhoneAuthProvider.OnVerificationStateChangedCallbacks;
+    private lateinit var callback: PhoneAuthProvider.OnVerificationStateChangedCallbacks
     lateinit var storeVerificationId: String
     lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
 

@@ -46,9 +46,9 @@ class MapActivity : AppCompatActivity(),OnMapReadyCallback {
         clickButton = findViewById(R.id.button)
         clickButton.setOnClickListener {
             databaseReference.child("latitude").push()
-                .setValue(editTextLatitude?.getText().toString());
+                .setValue(editTextLatitude?.text.toString())
             databaseReference.child("longitude").push()
-                .setValue(editTextLongitude?.getText().toString());
+                .setValue(editTextLongitude?.text.toString())
         }
 
 
@@ -62,8 +62,8 @@ class MapActivity : AppCompatActivity(),OnMapReadyCallback {
             ),
             PackageManager.PERMISSION_GRANTED
         )
-        editTextLatitude = findViewById(R.id.editText);
-        editTextLongitude = findViewById(R.id.editText2);
+        editTextLatitude = findViewById(R.id.editText)
+        editTextLongitude = findViewById(R.id.editText2)
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Location")
         databaseReference.addValueEventListener(object : ValueEventListener {

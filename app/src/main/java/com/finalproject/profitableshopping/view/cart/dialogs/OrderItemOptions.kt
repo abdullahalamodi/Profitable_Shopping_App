@@ -118,8 +118,8 @@ class OrderItemOptions : DialogFragment() {
 
         plusBtn.setOnClickListener {
             if (quantity < productQuantity) {
-                quantity += 1;
-                price += productPrice;
+                quantity += 1
+                price += productPrice
                 quantityEd.text = quantity.toString()
                 totalPriceV.text = price.toString()
             }
@@ -127,8 +127,8 @@ class OrderItemOptions : DialogFragment() {
 
         menusBtn.setOnClickListener {
             if (quantity > 1) {
-                quantity -= 1;
-                price -= productPrice;
+                quantity -= 1
+                price -= productPrice
                 quantityEd.text = quantity.toString()
                 totalPriceV.text = price.toString()
             }

@@ -61,7 +61,7 @@ class ProductListFragment : Fragment() {
     }
 
     private fun filterList(filterItem: String) {
-        var tempList: MutableList<Product> = ArrayList();
+        var tempList: MutableList<Product> = ArrayList()
         for (d in adapter.productsList) {
             if (filterItem in d.name) {
                 tempList.add(d)
@@ -160,9 +160,9 @@ class ProductListFragment : Fragment() {
         var categoryImageV: ImageView = view.findViewById(R.id.category_image_view) as ImageView
         var checkIcon: ImageView = view.findViewById(R.id.check_icon) as ImageView
         var category = Category()
-        var selectedId = 0;
+        var selectedId = 0
         fun bind(cat: Category) {
-            category = cat;
+            category = cat
             categoryNameTv.text = cat.name
             if (cat.path != "" && cat.path != null) {
                 Picasso.get().also {
@@ -301,7 +301,7 @@ class ProductListFragment : Fragment() {
 
         fun updateList(list: List<Product>) {
             productsList = list
-            notifyDataSetChanged();
+            notifyDataSetChanged()
         }
     }
 
@@ -325,7 +325,7 @@ class ProductListFragment : Fragment() {
 
     companion object {
         fun newInstance(): ProductListFragment {
-            return ProductListFragment();
+            return ProductListFragment()
         }
     }
 

@@ -1,4 +1,3 @@
 package com.finalproject.profitableshopping.data.api
 
-class Api {
-}
+class Api

@@ -109,13 +109,13 @@ interface ShoppingApi {
 
     // favorite method
     @POST("favorites.php")
-    fun createFavorite(@Body favorite: Favorite): Call<Int>
+    fun createFavorite(@Body favorite: Favorite): Call<String>
 
     @POST("favoriteDetails.php")
-    fun addFavoriteItem(@Body FavoriteItem: FavoriteItem): Call<String>
+    fun addFavoriteItem(@Body FavoriteDetails: FavoriteDetails): Call<String>
 
     @GET("favoriteDetails.php?")
-    fun getFavoriteItems(@Query("favorite_id") favoriteId: Int): Call<List<FavoriteItem>>
+    fun getFavoriteItems(@Query("favorite_id") favoriteId: Int): Call<List<FavoriteDetails>>
 
     @DELETE("favoriteDetails.php")
     fun deleteFavoriteItem(@Query("id") FavoriteItemId: Int): Call<String>

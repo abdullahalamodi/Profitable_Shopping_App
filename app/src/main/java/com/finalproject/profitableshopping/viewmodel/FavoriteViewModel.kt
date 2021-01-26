@@ -5,9 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.finalproject.profitableshopping.data.models.Favorite
-import com.finalproject.profitableshopping.data.models.FavoriteItem
+import com.finalproject.profitableshopping.data.models.FavoriteDetails
 //import com.finalproject.profitableshopping.data.models.OrderItem
-import com.finalproject.profitableshopping.data.repositories.CartRepositry
 import com.finalproject.profitableshopping.data.repositories.FavoriteRepositry
 import retrofit2.Call
 import retrofit2.Callback
@@ -22,27 +21,27 @@ class FavoriteViewModel :ViewModel(){
     }
 
 
-    fun createFavorite(fav:Favorite): LiveData<Int> {
-        val favoriteId: MutableLiveData<Int> = MutableLiveData<Int>()
+    fun createFavorite(fav:Favorite): LiveData<String> {
+        val favoriteId: MutableLiveData<String> = MutableLiveData<String>()
         val call=favoriteRepositry.createFavorite(fav)
-        call.enqueue(object :retrofit2.Callback<Int>{
-            override fun onResponse(call: Call<Int>, response: Response<Int>) {
+        call.enqueue(object :retrofit2.Callback<String>{
+            override fun onResponse(call: Call<String>, response: Response<String>) {
                 favoriteId.value=response.body()
                 Log.d("success create favorite",favoriteId.value.toString())
             }
 
-            override fun onFailure(call: Call<Int>, t: Throwable) {
+            override fun onFailure(call: Call<String>, t: Throwable) {
                 Log.d("faild creat favorite",t.message!!)
-                favoriteId.value=-1
+                favoriteId.value=t.message
             }
 
         })
         return favoriteId
 
     }
-    fun addFavoriteItem(favoriteItem: FavoriteItem): LiveData<String>{
+    fun addFavoriteItem(favoriteDetails: FavoriteDetails): LiveData<String>{
         val message: MutableLiveData<String> = MutableLiveData<String>()
-        val call=favoriteRepositry.addFavoriteItem(favoriteItem)
+        val call=favoriteRepositry.addFavoriteItem(favoriteDetails)
         call.enqueue(
             object :retrofit2.Callback<String>{
                 override fun onResponse(call: Call<String>, response: Response<String>) {
@@ -78,20 +77,20 @@ class FavoriteViewModel :ViewModel(){
         return message
     }
 
-    fun getFavoriteItems(favoriteId:Int):LiveData<List<FavoriteItem>>{
-        val favoriteList= MutableLiveData<List<FavoriteItem>>()
+    fun getFavoriteItems(favoriteId:Int):LiveData<List<FavoriteDetails>>{
+        val favoriteList= MutableLiveData<List<FavoriteDetails>>()
         val call=favoriteRepositry.getOrders(favoriteId)
         call.enqueue(
-            object : Callback<List<FavoriteItem>> {
+            object : Callback<List<FavoriteDetails>> {
                 override fun onResponse(
-                    call: Call<List<FavoriteItem>>,
-                    response: Response<List<FavoriteItem>>
+                    call: Call<List<FavoriteDetails>>,
+                    response: Response<List<FavoriteDetails>>
                 ) {
                     favoriteList.value=response.body()
                     Log.d("success get favorites","success get favorites")
                 }
 
-                override fun onFailure(call: Call<List<FavoriteItem>>, t: Throwable) {
+                override fun onFailure(call: Call<List<FavoriteDetails>>, t: Throwable) {
                     Log.d("faild get favorites",t.message!!)
                     favoriteList.value= emptyList()
                 }

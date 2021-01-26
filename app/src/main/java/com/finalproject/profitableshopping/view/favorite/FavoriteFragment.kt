@@ -9,11 +9,10 @@ import android.widget.*
 import androidx.core.widget.ContentLoadingProgressBar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.finalproject.profitableshopping.R
-import com.finalproject.profitableshopping.data.models.FavoriteItem
+import com.finalproject.profitableshopping.data.models.FavoriteDetails
 import com.finalproject.profitableshopping.data.models.Product
 import com.finalproject.profitableshopping.viewmodel.FavoriteViewModel
 import com.finalproject.profitableshopping.viewmodel.ProductViewModel
@@ -63,11 +62,11 @@ class FavoriteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         showProgress(true)
-        val items= mutableListOf<FavoriteItem>()
-        items.add(FavoriteItem(null,1,"1"))
-        items.add(FavoriteItem(null,1,"1"))
-        items.add(FavoriteItem(null,1,"1"))
-        items.add(FavoriteItem(null,1,"1"))
+        val items= mutableListOf<FavoriteDetails>()
+        items.add(FavoriteDetails(null,1,"1"))
+        items.add(FavoriteDetails(null,1,"1"))
+        items.add(FavoriteDetails(null,1,"1"))
+        items.add(FavoriteDetails(null,1,"1"))
        favoriteViewModel.getFavoriteItems(1).observe(
             viewLifecycleOwner,
             Observer { favoriteList ->
@@ -84,7 +83,7 @@ class FavoriteFragment : Fragment() {
         else
             progressBar.visibility = View.GONE
     }
-    private fun updateUI(productsList: List<FavoriteItem>) {
+    private fun updateUI(productsList: List<FavoriteDetails>) {
         adapter = FavoriteAdapter(productsList)
         favoriteProductsRv.adapter = adapter
     }
@@ -94,7 +93,7 @@ class FavoriteFragment : Fragment() {
         var productNameTv: TextView = view.findViewById(R.id.tv_name_product_fav) as TextView
         var productRialPriceTv: TextView = view.findViewById(R.id.tv_price_product_fav) as TextView
         var deleteImageView: ImageView = view.findViewById(R.id.img_delete_fav) as ImageView
-        var favoriteItem = FavoriteItem(null)
+        var favoriteItem = FavoriteDetails(null)
         init {
             deleteImageView.setOnClickListener {
                favoriteViewModel.deleteFavoriteItem(this.favoriteItem.favorite_id).observe(
@@ -118,7 +117,7 @@ class FavoriteFragment : Fragment() {
 
 
 
-        fun bind(fav: FavoriteItem) {
+        fun bind(fav: FavoriteDetails) {
             this.favoriteItem = fav
             productViewModel.loadProduct(favoriteItem.product_id)
             productViewModel.productIDetailsLiveData.observe(
@@ -144,7 +143,7 @@ class FavoriteFragment : Fragment() {
         }
     }
 
-    private inner class FavoriteAdapter(val productsList: List<FavoriteItem>) :
+    private inner class FavoriteAdapter(val productsList: List<FavoriteDetails>) :
         RecyclerView.Adapter<FavoriteHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteHolder {
             // need to change inflate to be product list item xml
