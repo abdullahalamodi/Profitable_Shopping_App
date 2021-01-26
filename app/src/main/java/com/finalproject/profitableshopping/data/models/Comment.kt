@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 class Comment( var id: Int = 0,
                @SerializedName("title")
-               var title: String = "",
+               var title: String ="",
                @SerializedName("rate")
                var rate:Int = 0,
                @SerializedName("user_id")
