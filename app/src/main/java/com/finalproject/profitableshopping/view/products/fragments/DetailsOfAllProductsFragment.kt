@@ -20,10 +20,14 @@ import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.models.Comment
 import com.finalproject.profitableshopping.data.models.Product
 import com.finalproject.profitableshopping.data.models.Report
+import com.finalproject.profitableshopping.data.AppSharedPreference
+import com.finalproject.profitableshopping.data.models.*
+import com.finalproject.profitableshopping.showMessage
 import com.finalproject.profitableshopping.view.cart.dialogs.OrderItemOptions
 import com.finalproject.profitableshopping.view.report.dialog.AddComplainDialog
 import com.finalproject.profitableshopping.view.report.dialog.ComplainDialog
 import com.finalproject.profitableshopping.viewmodel.CommentViewModel
+import com.finalproject.profitableshopping.viewmodel.FavoriteViewModel
 import com.finalproject.profitableshopping.viewmodel.ProductViewModel
 import com.finalproject.profitableshopping.viewmodel.ReportViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -38,7 +42,8 @@ class DetailsOfAllProductsFragment : Fragment() {
     lateinit var productViewModel: ProductViewModel
     lateinit var reportViewModel: ReportViewModel
     lateinit var commentViewModel: CommentViewModel
-//    lateinit var productImageIv: ImageView
+    lateinit var favoriteViewModel: FavoriteViewModel
+    lateinit var productImageIv: ImageView
     lateinit var productNameTv: TextView
     lateinit var productQuantityTv: TextView
     lateinit var productReviewsTv: TextView
@@ -46,7 +51,7 @@ class DetailsOfAllProductsFragment : Fragment() {
     lateinit var productDollarPriceTv: TextView
     lateinit var productDescriptionTv: TextView
     lateinit var productCommentDescriptionTv: TextView
-    lateinit var ratingBtn: FloatingActionButton
+    lateinit var favoriteFABtn: FloatingActionButton
     lateinit var cartBtn: FloatingActionButton
     lateinit var reportBtn: Button
     lateinit var showCommentBtn: Button
@@ -83,6 +88,7 @@ class DetailsOfAllProductsFragment : Fragment() {
         commentViewModel = ViewModelProviders.of(this).get(CommentViewModel::class.java)
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
         reportViewModel = ViewModelProviders.of(this).get(ReportViewModel::class.java)
+        favoriteViewModel = ViewModelProviders.of(this).get(FavoriteViewModel::class.java)
        // mainActivity?.anim(false)
         callbacks?.onDetailsOpen(false)
         arguments?.let {
@@ -106,7 +112,7 @@ class DetailsOfAllProductsFragment : Fragment() {
         //  progressBar = view.findViewById(R.id.progress_circular)
 //        productImageIv = view.findViewById(R.id.img_product_details) as ImageView
         productNameTv = view.findViewById(R.id.tv_product_name_details) as TextView
-        showCommentBtn = view.findViewById(R.id.btnShowComment) as Button
+        showCommentBtn = view.findViewById(R.id.btnShowComment2) as Button
         //  productReviewsTv = view.findViewById(R.id.reviews_tv) as TextView
         productQuantityTv = view.findViewById(R.id.tv_product_quantity_details) as TextView
         productRialPriceTv = view.findViewById(R.id.tv_product_price_rial_details) as TextView
@@ -114,7 +120,7 @@ class DetailsOfAllProductsFragment : Fragment() {
         productDescriptionTv = view.findViewById(R.id.tv_product_desc_details) as TextView
         productCommentDescriptionTv =
             view.findViewById(R.id.tv_product_description_details) as TextView
-        ratingBtn = view.findViewById(R.id.btn_rating) as FloatingActionButton
+        favoriteFABtn = view.findViewById(R.id.btn_rating) as FloatingActionButton
         cartBtn = view.findViewById(R.id.btn_cart) as FloatingActionButton
         reportBtn = view.findViewById(R.id.btnShowreport)
         productReviewsTv = view.findViewById(R.id.tv_product_reports) as TextView
@@ -124,8 +130,9 @@ class DetailsOfAllProductsFragment : Fragment() {
         imageSlider = view.findViewById(R.id.img_product_details)
 
 
+
         reportBtn.setOnClickListener {
-            ComplainDialog.newInstance(productId!!, product.userId).apply {
+            ComplainDialog.newInstance(productId!!, product.userId!!).apply {
                 show(this@DetailsOfAllProductsFragment.parentFragmentManager, "report")
             }
         }
@@ -202,27 +209,14 @@ class DetailsOfAllProductsFragment : Fragment() {
         productReviewsTv.text = countOfReports.toString()
         //     productQuantityTv.text = product.quantity.toString()
         productDescriptionTv.text = product.description
-        if (product.images.isNotEmpty()){
-            val slideModels: MutableList<SlideModel> = ArrayList()
-            product.images.forEach { image ->
-                slideModels.add(
-                    SlideModel(
-                        image.getUrl(),
-                        ""
-                    )
-                )
-            }
-            imageSlider.setImageList(slideModels, ScaleTypes.CENTER_CROP)
-        }
-//            Picasso.get().also {
-//                val path = product.images[0].getUrl()
-//                it.load(path)
-//                    .resize(350, 350)
-//                    .centerCrop()
-//                    .placeholder(R.drawable.shoe)
-//                    .into(productImageIv)
-//
-//            }
+        if (product.images.isNotEmpty())
+            Picasso.get().also {
+                val path = product.images[0].getUrl()
+                it.load(path)
+                    .resize(350, 350)
+                    .centerCrop()
+                    .placeholder(R.drawable.shoe)
+                    .into(productImageIv)
 
     }
 
@@ -231,6 +225,44 @@ class DetailsOfAllProductsFragment : Fragment() {
         fun onDetailsOpen(show:Boolean)
     }
 
+    private fun addItemToFavorite() {
+        val FavoriteDetails = FavoriteItem(
+            product_id = productId!!,
+            favorite_id = AppSharedPreference.getFavoriteId(requireContext()),
+            id = null
+        )
+        favoriteViewModel.addFavoriteItem(FavoriteDetails).observe(
+            requireActivity(),
+            Observer {
+                if (it != null) {
+
+                    requireActivity().showMessage(it)
+                } else {
+                    requireActivity().showMessage("null response")
+                }
+            }
+        )
+    }
+
+    private fun createFavorite() {
+        val favorite = Favorite(
+            user_id = AppSharedPreference.getUserId(requireContext())!!,
+            id = null
+        )
+        favoriteViewModel.createFavorite(
+            favorite
+        ).observe(
+            viewLifecycleOwner,
+            Observer {
+                AppSharedPreference.setFavoriteId(requireContext(),it!!.toInt())
+                addItemToFavorite()
+            }
+        )
+    }
+
+    private fun checkFavorite(): Boolean {
+        return AppSharedPreference.getFavoriteId(requireContext())>0
+    }
     companion object {
         @JvmStatic
         fun newInstance(productId: String) =

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Profitable_Shopping</string>
+    <string name="app_name">Profitable Shopping</string>
     ///////////////////GoogleApi/////////////////////////////
     <string name="maps_api_key" templateMergeStrategy="preserve" translatable="false">AIzaSyDF6_-KV-EbxSGgq-0lZpKRGyct8BVFFGM</string>
 
