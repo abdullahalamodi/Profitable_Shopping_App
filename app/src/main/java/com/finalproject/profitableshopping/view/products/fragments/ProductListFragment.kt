@@ -8,10 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
 import androidx.core.widget.ContentLoadingProgressBar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -243,8 +240,10 @@ class ProductListFragment : Fragment() {
         var productImageIv = view.findViewById(R.id.ImgV_product) as ImageView
         var productNameTv: TextView = view.findViewById(R.id.tv_name_product) as TextView
         var productDollarPriceTv: TextView = view.findViewById(R.id.tv_price_product) as TextView
+        var productRateTv: RatingBar = view.findViewById(R.id.rate_bar) as RatingBar
         var productDescriptionTv: TextView =
             view.findViewById(R.id.tv_description_product) as TextView
+        var ratingBarProduct:RatingBar =view.findViewById(R.id.ratingBar_product) as RatingBar
         var product = Product()
 
         init {
@@ -256,6 +255,7 @@ class ProductListFragment : Fragment() {
             productNameTv.text = pro.name
             productDollarPriceTv.text = pro.dollarPrice.toString()+"$"
             productDescriptionTv.text = pro.description
+            productRateTv.rating = pro.rating.toFloat()
 
             if (product.images.isNotEmpty()) {
                 Picasso.get().also {
@@ -263,11 +263,11 @@ class ProductListFragment : Fragment() {
                     it.load(path)
                         .resize(150, 150)
                         .centerCrop()
-                        .placeholder(R.drawable.laptop)
+                        .placeholder(R.drawable.ic_phone_android)
                         .into(productImageIv)
                 }
             } else {
-                productImageIv.setImageResource(R.drawable.laptop)
+                productImageIv.setImageResource(R.drawable.ic_phone_android)
             }
 
 

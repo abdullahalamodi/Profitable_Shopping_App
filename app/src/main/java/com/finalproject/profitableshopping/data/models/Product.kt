@@ -21,7 +21,9 @@ class Product(
     @SerializedName("images")
     var images: List<ImageUrl> = emptyList(),
     @SerializedName("is_active")
-    var isActive: Int = 1
+    var isActive: Int = 1,
+    @SerializedName("rating")
+    var rating: Double = 0.0
 ){
     fun isActive():Boolean{
         return isActive == 1
