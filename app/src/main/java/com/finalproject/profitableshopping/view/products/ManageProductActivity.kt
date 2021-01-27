@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.showMessage
+import com.finalproject.profitableshopping.view.MainActivity
 import com.finalproject.profitableshopping.view.products.fragments.*
 
 class ManageProductActivity : AppCompatActivity(),
     ManageProductsFragment.Callbacks,
+    DetailsOfAllProductsFragment.Callbacks,
     AddProductFragment.Callbacks,
     ProductListFragment.Callbacks{
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,6 +60,13 @@ class ManageProductActivity : AppCompatActivity(),
         setFragment(ManageProductsFragment.newInstance())
     }
 
+    override fun onAddToCartClicked() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onDetailsOpen(show: Boolean) {
+
+    }
 
 
 }

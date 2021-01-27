@@ -17,10 +17,12 @@ import com.finalproject.profitableshopping.view.authentication.fragments.LogInFr
 import com.finalproject.profitableshopping.view.authentication.fragments.SignUpFragment
 import com.finalproject.profitableshopping.view.cart.CartFragment
 import com.finalproject.profitableshopping.view.category.CategoryActivity
+import com.finalproject.profitableshopping.view.favorite.FavoriteFragment
 import com.finalproject.profitableshopping.view.products.ManageProductActivity
 import com.finalproject.profitableshopping.view.products.fragments.*
 import com.finalproject.profitableshopping.view.user.*
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(),
@@ -34,10 +36,12 @@ UserManageProfileFragment.Callbacks,
 ManageUserProfileFragment.Callbacks{
 
     private lateinit var menu: Menu
+    private lateinit var bottomNav: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        bottomNav=findViewById(R.id.bottomNav)
 
         //hide app bar elevation
         supportActionBar?.elevation = 0.0f
@@ -86,6 +90,7 @@ ManageUserProfileFragment.Callbacks{
                 }
                 R.id.menu_notification -> {
                     setContent("Profile")
+                    setCurrentFragment(FavoriteFragment.newInstance())
                     true
                 }
                 R.id.menu_profile -> {
@@ -98,7 +103,7 @@ ManageUserProfileFragment.Callbacks{
         }
     }
 
-    private fun showButtonNavigation(show: Boolean) {
+    fun showButtonNavigation(show: Boolean) {
         if (show)
             bottomNav.visibility = View.VISIBLE
         else

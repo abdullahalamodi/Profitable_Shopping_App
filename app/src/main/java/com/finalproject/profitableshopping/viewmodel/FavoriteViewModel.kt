@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.finalproject.profitableshopping.data.models.FavoritResponse
 import com.finalproject.profitableshopping.data.models.Favorite
 import com.finalproject.profitableshopping.data.models.FavoriteDetails
 //import com.finalproject.profitableshopping.data.models.OrderItem
@@ -21,34 +22,17 @@ class FavoriteViewModel :ViewModel(){
     }
 
 
-    fun createFavorite(fav:Favorite): LiveData<String> {
-        val favoriteId: MutableLiveData<String> = MutableLiveData<String>()
-        val call=favoriteRepositry.createFavorite(fav)
-        call.enqueue(object :retrofit2.Callback<String>{
-            override fun onResponse(call: Call<String>, response: Response<String>) {
-                favoriteId.value=response.body()
-                Log.d("success create favorite",favoriteId.value.toString())
-            }
 
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                Log.d("faild creat favorite",t.message!!)
-                favoriteId.value=t.message
-            }
-
-        })
-        return favoriteId
-
-    }
-    fun addFavoriteItem(favoriteDetails: FavoriteDetails): LiveData<String>{
+    fun addFavoriteItem(favorite: Favorite): LiveData<String>{
         val message: MutableLiveData<String> = MutableLiveData<String>()
-        val call=favoriteRepositry.addFavoriteItem(favoriteDetails)
+        val call=favoriteRepositry.addFavoriteItem(favorite)
         call.enqueue(
             object :retrofit2.Callback<String>{
                 override fun onResponse(call: Call<String>, response: Response<String>) {
-                    message.value= response.body()
-                    Log.d("success add  item",response.body()!!)
-                }
+                    message.value = response.body()
+                    Log.d("success add item",response.body()!!)
 
+                }
                 override fun onFailure(call: Call<String>, t: Throwable) {
                     Log.d("failes add item",t.message!!)
                     message.value= t.message
@@ -58,9 +42,9 @@ class FavoriteViewModel :ViewModel(){
         return message
 
     }
-    fun deleteFavoriteItem(favoriteItemId:Int): LiveData<String>{
+    fun deleteFavoriteItem(favoriteId:Int): LiveData<String>{
         val message: MutableLiveData<String> = MutableLiveData<String>()
-        val call=favoriteRepositry.deleteFavoriteItem(favoriteItemId)
+        val call=favoriteRepositry.deleteFavoriteItem(favoriteId)
         call.enqueue(
             object :retrofit2.Callback<String>{
                 override fun onResponse(call: Call<String>, response: Response<String>) {
@@ -77,20 +61,20 @@ class FavoriteViewModel :ViewModel(){
         return message
     }
 
-    fun getFavoriteItems(favoriteId:Int):LiveData<List<FavoriteDetails>>{
-        val favoriteList= MutableLiveData<List<FavoriteDetails>>()
-        val call=favoriteRepositry.getOrders(favoriteId)
+    fun getUserFavorites(userId:String):LiveData<List<Favorite>>{
+        val favoriteList= MutableLiveData<List<Favorite>>()
+        val call=favoriteRepositry.getUserFavorite(userId)
         call.enqueue(
-            object : Callback<List<FavoriteDetails>> {
+            object : Callback<List<Favorite>> {
                 override fun onResponse(
-                    call: Call<List<FavoriteDetails>>,
-                    response: Response<List<FavoriteDetails>>
+                    call: Call<List<Favorite>>,
+                    response: Response<List<Favorite>>
                 ) {
                     favoriteList.value=response.body()
                     Log.d("success get favorites","success get favorites")
                 }
 
-                override fun onFailure(call: Call<List<FavoriteDetails>>, t: Throwable) {
+                override fun onFailure(call: Call<List<Favorite>>, t: Throwable) {
                     Log.d("faild get favorites",t.message!!)
                     favoriteList.value= emptyList()
                 }

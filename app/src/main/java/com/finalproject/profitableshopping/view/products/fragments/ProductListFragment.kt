@@ -243,7 +243,7 @@ class ProductListFragment : Fragment() {
         var productRateTv: RatingBar = view.findViewById(R.id.rate_bar) as RatingBar
         var productDescriptionTv: TextView =
             view.findViewById(R.id.tv_description_product) as TextView
-        var ratingBarProduct:RatingBar =view.findViewById(R.id.ratingBar_product) as RatingBar
+       // var ratingBarProduct:RatingBar =view.findViewById(R.id.ratingBar_product) as RatingBar
         var product = Product()
 
         init {

@@ -1,6 +1,7 @@
 package com.finalproject.profitableshopping.data.repositories
 
 import com.finalproject.profitableshopping.data.api.ShoppingApi
+import com.finalproject.profitableshopping.data.models.FavoritResponse
 import com.finalproject.profitableshopping.data.models.Favorite
 import com.finalproject.profitableshopping.data.models.FavoriteDetails
 import retrofit2.Call
@@ -17,17 +18,14 @@ class FavoriteRepositry {
             .build()
         shoppingApi = retrofit.create(ShoppingApi::class.java)
     }
-    fun createFavorite(favorite: Favorite): Call<String> {
-        return shoppingApi.createFavorite(favorite)
 
+    fun addFavoriteItem(favorite: Favorite): Call<String> {
+        return shoppingApi.addFavorite(favorite)
     }
-    fun addFavoriteItem(favoriteDetails: FavoriteDetails): Call<String> {
-        return shoppingApi.addFavoriteItem(favoriteDetails)
+    fun getUserFavorite( userId: String): Call<List<Favorite>> {
+        return shoppingApi.getUserFavorites(userId)
     }
-    fun getOrders( favoriteId: Int): Call<List<FavoriteDetails>> {
-        return shoppingApi.getFavoriteItems(favoriteId)
-    }
-    fun deleteFavoriteItem(favoriteItemId:Int):Call<String>{
-        return shoppingApi.deleteFavoriteItem(favoriteItemId)
+    fun deleteFavoriteItem(favoriteId:Int):Call<String>{
+        return shoppingApi.deleteFavorite(favoriteId)
     }
 }
