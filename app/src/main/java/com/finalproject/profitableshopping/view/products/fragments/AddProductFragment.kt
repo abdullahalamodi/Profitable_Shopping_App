@@ -52,13 +52,14 @@ class AddProductFragment : Fragment(),
     lateinit var categoriesName: MutableList<String>
     lateinit var categoriesList: MutableList<Category>
     lateinit var callbacks: Callbacks
-    private var selectedImageUri: MutableList<Uri>? = null
+    private var imagesUris: MutableList<Uri> = mutableListOf()
     var selectedCategoryId = 0
     private lateinit var progressBar: ProgressBar
     private lateinit var btnsLayout: LinearLayout
     private var productId: String? = null
     private var userId: String? = null
     private var isUpdate = false
+    private var pickedImagePosition: Int = 0
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -70,14 +71,17 @@ class AddProductFragment : Fragment(),
         pickImagesV.setOnClickListener {
             showProgress(true)
             pickImages()
+            pickedImagePosition = 0
         }
         pickImagesV2.setOnClickListener {
             showProgress(true)
             pickImages()
+            pickedImagePosition = 1
         }
         pickImagesV2.setOnClickListener {
             showProgress(true)
             pickImages()
+            pickedImagePosition = 2
         }
         addProductBtn.setOnClickListener {
             if (checkFields()) {
@@ -110,17 +114,24 @@ class AddProductFragment : Fragment(),
         productViewModel.addProduct(product).observe(
             this,
             Observer { productId ->
-                uploadImage(productId).observe(
-                    viewLifecycleOwner,
-                    Observer {
-                        if (!it.isNullOrEmpty()) {
-                            callbacks.onSuccessAddProduct()
-                            productViewModel.refreshUserList(userId!!)
-                            Toast.makeText(context, "تم اضافة المنتج بنجاح", Toast.LENGTH_SHORT)
-                                .show()
+                if (imagesUris.isNotEmpty()) {
+                    uploadImage(productId).observe(
+                        viewLifecycleOwner,
+                        Observer {
+                            if (!it.isNullOrEmpty()) {
+                                callbacks.onSuccessAddProduct()
+                                productViewModel.refreshUserList(userId!!)
+                                Toast.makeText(context, "تم اضافة المنتج بنجاح", Toast.LENGTH_SHORT)
+                                    .show()
+                            }
                         }
-                    }
-                )
+                    )
+                } else {
+                    callbacks.onSuccessAddProduct()
+                    productViewModel.refreshUserList(userId!!)
+                    Toast.makeText(context, "تم اضافة المنتج بنجاح", Toast.LENGTH_SHORT)
+                        .show()
+                }
             }
         )
     }
@@ -130,7 +141,7 @@ class AddProductFragment : Fragment(),
         productViewModel.updateProduct(product).observe(
             this,
             Observer { productId ->
-                if (selectedImageUri != null) {
+                if (imagesUris.isNotEmpty()) {
                     uploadImage(productId).observe(
                         viewLifecycleOwner,
                         Observer {
@@ -196,7 +207,7 @@ class AddProductFragment : Fragment(),
         pickImagesV3 = view.findViewById(R.id.load_image_btn3)
         addProductBtn = view.findViewById(R.id.btn_add_product)
         progressBar = view.findViewById(R.id.progress_circular)
-        selectedImageUri = mutableListOf()
+        imagesUris = mutableListOf()
         return view
     }
 
@@ -308,12 +319,13 @@ class AddProductFragment : Fragment(),
         if (resultCode == RESULT_OK) {
             when (requestCode) {
                 REQUEST_CODE_PICK_IMAGE -> {
-                    selectedImageUri?.add(data?.data!!)
-                    pickImagesV.setImageURI(selectedImageUri?.get(0)?:Uri.EMPTY)
-                    if (selectedImageUri?.size!! > 1)
-                    pickImagesV2.setImageURI(selectedImageUri?.get(1))
-                    if (selectedImageUri?.size!! > 2)
-                    pickImagesV3.setImageURI(selectedImageUri?.get(2))
+                    imagesUris.add(data?.data!!)
+                    if (pickedImagePosition == 0)
+                        pickImagesV.setImageURI(imagesUris[pickedImagePosition])
+                    if (pickedImagePosition == 1)
+                        pickImagesV2.setImageURI(imagesUris[pickedImagePosition])
+                    if (pickedImagePosition == 2)
+                        pickImagesV3.setImageURI(imagesUris[pickedImagePosition])
                 }
             }
         }
@@ -321,34 +333,59 @@ class AddProductFragment : Fragment(),
 
     private fun uploadImage(productId: String): MutableLiveData<String> {
         val responseLiveData = MutableLiveData<String>()
-        if (selectedImageUri == null) {
-            context?.showMessage("Select an Image First")
+        if (imagesUris.isEmpty()) {
+            context?.showMessage("Select an Images First")
             responseLiveData.value = ""
             return responseLiveData
         }
         showProgress(true)
 
-        val files:MutableList<File> = mutableListOf()
-        var index = 0;
-        selectedImageUri!!.forEach {imageUri ->
+        val files: MutableList<File> = mutableListOf()
+        var index = 0
+        imagesUris.forEach { imageUri ->
             val parcelFileDescriptor =
                 context?.contentResolver?.openFileDescriptor(imageUri, "r", null)
                     ?: return responseLiveData
             val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
             files.add(
-                File(context?.cacheDir, context?.contentResolver?.getFileName(imageUri)!!))
+                File(context?.cacheDir, context?.contentResolver?.getFileName(imageUri)!!)
+            )
             val outputStream = FileOutputStream(files[index++])
             inputStream.copyTo(outputStream)
             progressBar.progress = 0
         }
 
-        val body = UploadRequestBody(files, "image", this)
-        productViewModel.uploadImage(
-            MultipartBody.Part.createFormData(
-                "image",
-                files[0].name,
-                body
-            ),
+//        val requestBody1: RequestBody = RequestBody.create(MediaType.parse("*/*"), file)
+//        val requestBody2: RequestBody = RequestBody.create(MediaType.parse("*/*"), file1)
+//        val fileToUpload1 =
+//            MultipartBody.Part.createFormData("file1", file.getName(), requestBody1)
+//        val fileToUpload2 =
+//            MultipartBody.Part.createFormData("file2", file1.getName(), requestBody2)
+        val body: MutableList<UploadRequestBody> = mutableListOf()
+        files.forEach { file ->
+            body.add(UploadRequestBody(file, "image", this))
+        }
+
+        val imgBody1 = MultipartBody.Part.createFormData(
+            "image",
+            files[0].name,
+            body[0]
+        )
+        val imgBody2 = MultipartBody.Part.createFormData(
+            "image",
+            files[1].name,
+            body[1]
+        )
+        val imgBody3 = MultipartBody.Part.createFormData(
+            "image",
+            files[2].name,
+            body[2]
+        )
+
+        productViewModel.uploadImages(
+            imgBody1,
+            imgBody2,
+            imgBody3,
             RequestBody.create(MediaType.parse("multipart/form-data"), productId)
         ).enqueue(object : Callback<String> {
             override fun onFailure(call: Call<String>, t: Throwable) {

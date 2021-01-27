@@ -5,10 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ProgressBar
-import android.widget.RatingBar
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -31,6 +28,7 @@ import com.finalproject.profitableshopping.viewmodel.FavoriteViewModel
 import com.finalproject.profitableshopping.viewmodel.ProductViewModel
 import com.finalproject.profitableshopping.viewmodel.ReportViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.squareup.picasso.Picasso
 
 
 private const val ARG_PRODUCT_ID = "product_id"
@@ -203,8 +201,8 @@ class DetailsOfAllProductsFragment : Fragment() {
 
     private fun updateUi(product: Product) {
         productNameTv.text = product.name
-        productRialPriceTv.text = product.rialPrice.toString()+" RY"
-        productDollarPriceTv.text = product.dollarPrice.toString()+" $"
+        productRialPriceTv.text = product.rialPrice.toString() + " RY"
+        productDollarPriceTv.text = product.dollarPrice.toString() + " $"
         productQuantityTv.text = product.quantity.toString()
         productReviewsTv.text = countOfReports.toString()
         //     productQuantityTv.text = product.quantity.toString()
@@ -218,6 +216,7 @@ class DetailsOfAllProductsFragment : Fragment() {
                     .placeholder(R.drawable.shoe)
                     .into(productImageIv)
 
+            }
     }
 
     interface Callbacks {

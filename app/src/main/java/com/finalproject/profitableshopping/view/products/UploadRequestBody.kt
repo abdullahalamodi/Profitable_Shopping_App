@@ -9,7 +9,7 @@ import java.io.File
 import java.io.FileInputStream
 
 class UploadRequestBody(
-    private val files: List<File>,
+    private val file: File,
     private val contentType: String,
     private val callback: UploadCallback
 
@@ -18,10 +18,9 @@ class UploadRequestBody(
     override fun contentType() = MediaType.parse("$contentType/*")
 
 
-    override fun contentLength() = files[0].length()
+    override fun contentLength() = file.length()
 
     override fun writeTo(sink: BufferedSink) {
-        files.forEach { file ->
             val length = file.length()
             val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
             val fileInputStream = FileInputStream(file)
@@ -34,7 +33,6 @@ class UploadRequestBody(
                     uploaded += read
                     sink.write(buffer, 0, read)
                 }
-            }
         }
     }
 
