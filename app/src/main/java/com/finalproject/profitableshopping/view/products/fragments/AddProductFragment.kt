@@ -78,7 +78,7 @@ class AddProductFragment : Fragment(),
             pickImages()
             pickedImagePosition = 1
         }
-        pickImagesV2.setOnClickListener {
+        pickImagesV3.setOnClickListener {
             showProgress(true)
             pickImages()
             pickedImagePosition = 2
@@ -148,7 +148,7 @@ class AddProductFragment : Fragment(),
                             if (!it.isNullOrEmpty()) {
                                 callbacks.onSuccessAddProduct()
                                 context?.showMessage("تم نعديل المنتج بنجاح")
-                                productViewModel.refreshUserList(userId!!)
+//                                productViewModel.refreshUserList(userId!!)
                             }
                         }
                     )
@@ -339,21 +339,41 @@ class AddProductFragment : Fragment(),
             return responseLiveData
         }
         showProgress(true)
-
-        val files: MutableList<File> = mutableListOf()
-        var index = 0
-        imagesUris.forEach { imageUri ->
-            val parcelFileDescriptor =
-                context?.contentResolver?.openFileDescriptor(imageUri, "r", null)
+        val body: MutableList<RequestBody> = mutableListOf()
+        var file2 = File("")
+        var file3 = File("")
+        val parcelFileDescriptor =
+            context?.contentResolver?.openFileDescriptor(imagesUris[0], "r", null)
+                ?: return responseLiveData
+        val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
+        val file1 =
+            File(context?.cacheDir, context?.contentResolver?.getFileName(imagesUris[0])!!)
+        val outputStream = FileOutputStream(file1)
+        inputStream.copyTo(outputStream)
+        progressBar.progress = 0
+        if (imagesUris.size > 1) {
+            val parcelFileDescriptor2 =
+                context?.contentResolver?.openFileDescriptor(imagesUris[1], "r", null)
                     ?: return responseLiveData
-            val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
-            files.add(
-                File(context?.cacheDir, context?.contentResolver?.getFileName(imageUri)!!)
-            )
-            val outputStream = FileOutputStream(files[index++])
-            inputStream.copyTo(outputStream)
+            val inputStream2 = FileInputStream(parcelFileDescriptor2.fileDescriptor)
+            file2 =
+                File(context?.cacheDir, context?.contentResolver?.getFileName(imagesUris[1])!!)
+            val outputStream2 = FileOutputStream(file2)
+            inputStream2.copyTo(outputStream2)
             progressBar.progress = 0
         }
+        if (imagesUris.size > 2) {
+            val parcelFileDescriptor3 =
+                context?.contentResolver?.openFileDescriptor(imagesUris[2], "r", null)
+                    ?: return responseLiveData
+            val inputStream3 = FileInputStream(parcelFileDescriptor3.fileDescriptor)
+            file3 =
+                File(context?.cacheDir, context?.contentResolver?.getFileName(imagesUris[2])!!)
+            val outputStream3 = FileOutputStream(file3)
+            inputStream3.copyTo(outputStream3)
+            progressBar.progress = 0
+        }
+
 
 //        val requestBody1: RequestBody = RequestBody.create(MediaType.parse("*/*"), file)
 //        val requestBody2: RequestBody = RequestBody.create(MediaType.parse("*/*"), file1)
@@ -361,24 +381,23 @@ class AddProductFragment : Fragment(),
 //            MultipartBody.Part.createFormData("file1", file.getName(), requestBody1)
 //        val fileToUpload2 =
 //            MultipartBody.Part.createFormData("file2", file1.getName(), requestBody2)
-        val body: MutableList<UploadRequestBody> = mutableListOf()
-        files.forEach { file ->
-            body.add(UploadRequestBody(file, "image", this))
-        }
+        body.add(UploadRequestBody(file1, "image", this))
+        body.add(UploadRequestBody(file2, "image", this))
+        body.add(UploadRequestBody(file3, "image", this))
 
         val imgBody1 = MultipartBody.Part.createFormData(
-            "image",
-            files[0].name,
+            "image1",
+            file1.name,
             body[0]
         )
         val imgBody2 = MultipartBody.Part.createFormData(
-            "image",
-            files[1].name,
+            "image2",
+            file2.name,
             body[1]
         )
         val imgBody3 = MultipartBody.Part.createFormData(
-            "image",
-            files[2].name,
+            "image3",
+            file3.name,
             body[2]
         )
 
@@ -391,7 +410,6 @@ class AddProductFragment : Fragment(),
             override fun onFailure(call: Call<String>, t: Throwable) {
                 context?.showMessage(t.message!!)
                 progressBar.progress = 0
-                responseLiveData.value = t.message
             }
 
             override fun onResponse(
@@ -399,15 +417,12 @@ class AddProductFragment : Fragment(),
                 response: Response<String>
             ) {
                 response.body()?.let {
-                    context?.showMessage(it)
                     progressBar.progress = 100
-                    showProgress(false)
-                    responseLiveData.value = it
                 }
             }
 
         })
-        responseLiveData.value = ""
+        responseLiveData.value = "ok"
         return responseLiveData
     }
 

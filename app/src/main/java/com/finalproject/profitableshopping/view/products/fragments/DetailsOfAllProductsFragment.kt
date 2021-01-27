@@ -213,16 +213,28 @@ class DetailsOfAllProductsFragment : Fragment() {
         productReviewsTv.text = countOfReports.toString()
         //     productQuantityTv.text = product.quantity.toString()
         productDescriptionTv.text = product.description
-        if (product.images.isNotEmpty())
-            Picasso.get().also {
-                val path = product.images[0].getUrl()
-                it.load(path)
-                    .resize(350, 350)
-                    .centerCrop()
-                    .placeholder(R.drawable.shoe)
-                    .into(productImageIv)
-
+        if (product.images.isNotEmpty()){
+            val slideModels: MutableList<SlideModel> = ArrayList()
+            product.images.forEach { image ->
+                slideModels.add(
+                    SlideModel(
+                        image.getUrl(),
+                        ""
+                    )
+                )
             }
+            imageSlider.setImageList(slideModels, ScaleTypes.CENTER_CROP)
+        }
+//        if (product.images.isNotEmpty())
+//            Picasso.get().also {
+//                val path = product.images[0].getUrl()
+//                it.load(path)
+//                    .resize(350, 350)
+//                    .centerCrop()
+//                    .placeholder(R.drawable.shoe)
+//                    .into(productImageIv)
+//
+//            }
     }
 
     interface Callbacks {

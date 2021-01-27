@@ -17,7 +17,7 @@
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/collapsing"
             android:layout_width="match_parent"
-            android:layout_height="350dp"
+            android:layout_height="380dp"
             android:fitsSystemWindows="true"
             app:contentScrim="@color/lightGray2"
             app:expandedTitleTextAppearance="@android:color/transparent"
@@ -27,6 +27,7 @@
                 android:layout_width="match_parent"
                 android:id="@+id/img_product_details"
                 app:layout_collapseMode="parallax"
+                app:iss_placeholder="@drawable/ic_phone_android"
                 android:layout_height="match_parent">
             </com.denzcoskun.imageslider.ImageSlider>
 

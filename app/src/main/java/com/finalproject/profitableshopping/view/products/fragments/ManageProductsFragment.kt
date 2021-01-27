@@ -246,7 +246,7 @@ class ManageProductsFragment : Fragment() {
 
     companion object {
         fun newInstance(): ManageProductsFragment {
-            return newInstance();
+            return newInstance()
         }
     }
 
