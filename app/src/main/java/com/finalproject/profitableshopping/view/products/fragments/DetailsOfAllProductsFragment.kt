@@ -121,23 +121,33 @@ class DetailsOfAllProductsFragment : Fragment() {
 
 
         favoriteFABtn.setOnClickListener{
-
-
-
+              if(AppSharedPreference.getUserToken(requireContext()).isNullOrBlank()||AppSharedPreference.getUserToken(requireContext())!!.isEmpty())
+                Toast.makeText(requireContext(),"عذرا لم تقم بتسيل الدخول ",Toast.LENGTH_LONG).show()
+                else
                 addItemToFavorite()
             }
 
         reportBtn.setOnClickListener {
-            ComplainDialog.newInstance(productId!!, product.userId!!).apply {
-                show(this@DetailsOfAllProductsFragment.parentFragmentManager, "report")
+            if(AppSharedPreference.getUserToken(requireContext()).isNullOrBlank()||AppSharedPreference.getUserToken(requireContext())!!.isEmpty())
+                Toast.makeText(requireContext(),"عذرا لم تقم بتسيل الدخول ",Toast.LENGTH_LONG).show()
+            else {
+                ComplainDialog.newInstance(productId!!, product.userId!!).apply {
+                    show(this@DetailsOfAllProductsFragment.parentFragmentManager, "report")
+                }
             }
         }
         showCommentBtn.setOnClickListener {
+            if(AppSharedPreference.getUserToken(requireContext()).isNullOrBlank()&&AppSharedPreference.getUserToken(requireContext())!!.isEmpty())
+                Toast.makeText(requireContext(),"عذرا لم تقم بتسيل الدخول ",Toast.LENGTH_LONG).show()
+            else
             AddComplainDialog.newInstance().apply {
                 show(this@DetailsOfAllProductsFragment.parentFragmentManager, "report")
             }
         }
         cartBtn.setOnClickListener {
+            if(AppSharedPreference.getUserToken(requireContext()).isNullOrBlank()&&AppSharedPreference.getUserToken(requireContext())!!.isEmpty())
+                Toast.makeText(requireContext(),"عذرا لم تقم بتسيل الدخول ",Toast.LENGTH_LONG).show()
+            else
             OrderItemOptions.newInstance(product.id.toString(), product.quantity, product.rialPrice)
                 .apply {
                     show(this@DetailsOfAllProductsFragment.parentFragmentManager, "cart")
@@ -181,20 +191,27 @@ class DetailsOfAllProductsFragment : Fragment() {
             Observer { product ->
                 this.product = product
                 //   showProgress(false)
-                if(AppSharedPreference.getUserToken(requireContext())=="admin"){
-                    cartBtn.isEnabled=false
-                    favoriteFABtn.isEnabled=false
-                    reportBtn.visibility=View.GONE
-                    chat_btn.isEnabled=false
-//"bvtegHZc0CY0wWqUynt9kdMirat2"
-                }else if(AppSharedPreference.getUserId(requireContext())==product.userId){
-                    cartBtn.hide()
-                    cartBtn.isEnabled=false
-                    favoriteFABtn.isEnabled=false
-                    reportBtn.isEnabled=false
-                    chat_btn.isEnabled=false
-                    call_btn.isEnabled=false
+                if(AppSharedPreference.getUserToken(requireContext())!= null){
+                    if(AppSharedPreference.getUserToken(requireContext())=="admin"){
+                        cartBtn.isEnabled=false
+                        favoriteFABtn.isEnabled=false
+                        reportBtn.visibility=View.GONE
+                        chat_btn.isEnabled=false
+
+                    }else if(AppSharedPreference.getUserId(requireContext())==product.userId){
+                        cartBtn.hide()
+                        cartBtn.isEnabled=false
+                        favoriteFABtn.isEnabled=false
+                        reportBtn.isEnabled=false
+                        chat_btn.isEnabled=false
+                        call_btn.isEnabled=false
+                    }
+                     else{
+                        chat_btn.isEnabled=false
+                    }
                 }
+
+
                 updateUi(product)
             }
         )
