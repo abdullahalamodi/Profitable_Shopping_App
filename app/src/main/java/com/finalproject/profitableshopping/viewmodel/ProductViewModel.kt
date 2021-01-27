@@ -262,4 +262,13 @@ class ProductViewModel : ViewModel() {
         return productRepositry.uploadImage(image, productId)
     }
 
+    fun uploadImages(
+        image1: MultipartBody.Part,
+        image2: MultipartBody.Part,
+        image3: MultipartBody.Part,
+        productId: RequestBody
+    ): Call<String> {
+        return productRepositry.uploadImages(image1,image2,image3, productId)
+    }
+
 }

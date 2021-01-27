@@ -25,6 +25,19 @@ class ProductRepositry {
 
     }
 
+    fun uploadImages(
+        image1:MultipartBody.Part,
+        image2:MultipartBody.Part,
+        image3:MultipartBody.Part,
+                    productId:RequestBody) :Call<String>{
+        return shoppingApi.uploadImages(
+            image1,
+            image2,
+            image3,
+            productId)
+
+    }
+
     fun addProduct(product: Product): Call<String>{
         return shoppingApi.addProduct(product)
     }

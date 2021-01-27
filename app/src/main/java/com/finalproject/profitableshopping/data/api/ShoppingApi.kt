@@ -83,6 +83,15 @@ interface ShoppingApi {
         @Part("product_id") desc: RequestBody
     ): Call<String>
 
+    @Multipart
+    @POST("images.php")
+    fun uploadImages(
+        @Part image1: MultipartBody.Part,
+        @Part image2: MultipartBody.Part,
+        @Part image3: MultipartBody.Part,
+        @Part("product_id") desc: RequestBody
+    ): Call<String>
+
 
 
     //cart API  method
