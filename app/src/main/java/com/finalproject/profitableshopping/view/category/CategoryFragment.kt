@@ -1,21 +1,19 @@
 package com.finalproject.profitableshopping.view.category
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.models.Category
-import com.finalproject.profitableshopping.showMessage
 import com.finalproject.profitableshopping.view.products.UploadRequestBody
-
 import com.finalproject.profitableshopping.viewmodel.CategoryViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.squareup.picasso.Picasso
@@ -24,7 +22,7 @@ import kotlinx.android.synthetic.main.update_category.view.*
 
 const val USER_ID_ARG = "userId";
 
-class CategoryFragment : Fragment(),UploadRequestBody.UploadCallback {
+class CategoryFragment : Fragment(), UploadRequestBody.UploadCallback {
 
     private lateinit var categoryNameEt: EditText
     private lateinit var addBtn: Button
@@ -38,28 +36,10 @@ class CategoryFragment : Fragment(),UploadRequestBody.UploadCallback {
 
     override fun onStart() {
         super.onStart()
-        addBtn.setOnClickListener {
-            showProgress(true)
-            val catMap = Category();
-            catMap.name = categoryNameEt.text.toString()
-            val response = categoryViewModel.addCategory(catMap)
-            //will display message after get response
-            response.observe(
-                viewLifecycleOwner,
-                Observer { message ->
-                    showProgress(false)
-                    Toast.makeText(context, message.toString(), Toast.LENGTH_SHORT).show()
-                    categoryViewModel.refresh()
-
-                }
-            )
-
+        addCatFloatingABtn.setOnClickListener {
+            var bottomSheetAddCat = AddCategoryFragment();
+            bottomSheetAddCat.show(childFragmentManager, "Tag")
         }
-
-       addCatFloatingABtn.setOnClickListener{
-           var bottomSheetAddCat =AddCategoryFragment();
-           bottomSheetAddCat.show(childFragmentManager,"Tag")
-       }
     }
 
 
@@ -110,9 +90,9 @@ class CategoryFragment : Fragment(),UploadRequestBody.UploadCallback {
     }
 
 
-
     companion object {
         const val REQUEST_CODE_PICK_IMAGE = 101
+
         @JvmStatic
         fun newInstance() = CategoryFragment()
 
@@ -127,7 +107,8 @@ class CategoryFragment : Fragment(),UploadRequestBody.UploadCallback {
         var categoryUpdateTv: TextView = view.findViewById(R.id.tv_update_category) as TextView
         var categoryDeleteTv: TextView = view.findViewById(R.id.tv_delete_category) as TextView
         var categoryMoreOPtionIV: ImageView = view.findViewById(R.id.img_more_options) as ImageView
-        var categoryUpdeteDeleteLy: LinearLayout = view.findViewById(R.id.ly_update_delete_category) as LinearLayout
+        var categoryUpdeteDeleteLy: LinearLayout =
+            view.findViewById(R.id.ly_update_delete_category) as LinearLayout
 
 
         ////////////////////this function to update the category
@@ -219,7 +200,10 @@ class CategoryFragment : Fragment(),UploadRequestBody.UploadCallback {
             }
 
             categoryUpdateTv.setOnClickListener {
-                categoryDialogUpdate(cat)
+//                categoryDialogUpdate(cat)
+                AddCategoryFragment.newInstance(cat.id.toString()).show(
+                    childFragmentManager, "Tag"
+                )
             }
 
             categoryDeleteTv.setOnClickListener {
@@ -244,6 +228,7 @@ class CategoryFragment : Fragment(),UploadRequestBody.UploadCallback {
             )
             return CategoryHolder(view)
         }
+
         override fun onBindViewHolder(holder: CategoryHolder, position: Int) {
             val category = categoriesList[position]
             holder.bind(category)

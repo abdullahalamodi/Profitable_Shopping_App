@@ -137,6 +137,7 @@
                         android:layout_height="70dp"
                         android:layout_gravity="center|start"
                         android:background="#ddd"
+                        android:scaleType="centerCrop"
                         android:layout_marginStart="10dp"
                         android:src="@drawable/ic_camera" />
 
@@ -146,6 +147,7 @@
                         android:layout_height="70dp"
                         android:layout_gravity="center|start"
                         android:background="#ddd"
+                        android:scaleType="centerCrop"
                         android:layout_marginStart="10dp"
                         android:src="@drawable/ic_camera" />
 
@@ -165,7 +167,7 @@
                         android:layout_gravity="center"
                         android:fontFamily="@font/rb_light"
                         android:gravity="start"
-                        android:layout_marginStart="22dp"
+                        android:layout_marginStart="25dp"
                         android:text="@string/txt_add_photo_product"
                         android:textColor="@color/black"
                         android:textStyle="bold" />

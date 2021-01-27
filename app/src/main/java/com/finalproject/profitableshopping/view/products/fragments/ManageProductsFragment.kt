@@ -186,16 +186,16 @@ class ManageProductsFragment : Fragment() {
                     it.load(path)
                         .resize(45, 45)
                         .centerCrop()
-                        .placeholder(R.drawable.shoe)
+                        .placeholder(R.drawable.ic_phone_android)
                         .into(manageProductImageIv)
                 }
             } else {
-                manageProductImageIv.setImageResource(R.drawable.shoe)
+                manageProductImageIv.setImageResource(R.drawable.ic_phone_android)
             }
         }
 
         override fun onClick(p0: View?) {
-            callbacks?.onItemSelected(this.product.id)
+//            callbacks?.onProductClicked(product.id)
         }
     }
 
@@ -227,7 +227,7 @@ class ManageProductsFragment : Fragment() {
     }
 
     interface Callbacks {
-        fun onItemSelected(itemId: Int)
+        fun onProductClicked(itemId: Int)
         fun onUpdateProductClicked(productId: String?)
         fun onDeleteProductClicked()
         fun onAddProductClicked()
@@ -245,9 +245,6 @@ class ManageProductsFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(): ManageProductsFragment {
-            return newInstance()
-        }
+        fun newInstance() = ManageProductsFragment()
     }
-
 }

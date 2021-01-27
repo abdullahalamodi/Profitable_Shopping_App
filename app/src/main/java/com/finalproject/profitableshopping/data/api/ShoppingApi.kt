@@ -18,7 +18,7 @@ interface ShoppingApi {
     fun getCategories(): Call<List<Category>>
 
     @GET("categories.php")
-    fun getCategoryById(@Query("id") query: Int): Call<Category>
+    fun getCategoryById(@Query("id") query: String): Call<Category>
 
     @GET("categories.php")
     fun getCategoryByName(@Query("name") name: String): Call<Category>

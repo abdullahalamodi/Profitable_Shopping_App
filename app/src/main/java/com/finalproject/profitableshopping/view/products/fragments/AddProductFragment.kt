@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -119,10 +120,11 @@ class AddProductFragment : Fragment(),
                         viewLifecycleOwner,
                         Observer {
                             if (!it.isNullOrEmpty()) {
-                                callbacks.onSuccessAddProduct()
+                                Log.d("images", it)
                                 productViewModel.refreshUserList(userId!!)
                                 Toast.makeText(context, "تم اضافة المنتج بنجاح", Toast.LENGTH_SHORT)
                                     .show()
+                                callbacks.onSuccessAddProduct()
                             }
                         }
                     )
@@ -148,7 +150,7 @@ class AddProductFragment : Fragment(),
                             if (!it.isNullOrEmpty()) {
                                 callbacks.onSuccessAddProduct()
                                 context?.showMessage("تم نعديل المنتج بنجاح")
-//                                productViewModel.refreshUserList(userId!!)
+                                productViewModel.refreshUserList(userId!!)
                             }
                         }
                     )
@@ -281,16 +283,32 @@ class AddProductFragment : Fragment(),
         productQuantityET.setText(product.quantity.toString())
         productdescriptionET.setText(product.description)
         selectedCategoryId = product.categoryId
-        userId = product.userId.toString()
+        userId = product.userId
         if (product.images.isNotEmpty())
             Picasso.get().also {
                 val path = product.images[0].getUrl()
                 it.load(path)
-                    .resize(350, 350)
+                    .resize(45, 45)
                     .centerCrop()
                     .placeholder(R.drawable.shoe)
                     .into(pickImagesV)
             }
+        Picasso.get().also {
+            val path = product.images[1].getUrl()
+            it.load(path)
+                .resize(45, 45)
+                .centerCrop()
+                .placeholder(R.drawable.shoe)
+                .into(pickImagesV2)
+        }
+        Picasso.get().also {
+            val path = product.images[2].getUrl()
+            it.load(path)
+                .resize(45, 45)
+                .centerCrop()
+                .placeholder(R.drawable.shoe)
+                .into(pickImagesV3)
+        }
 
 
     }
@@ -408,10 +426,8 @@ class AddProductFragment : Fragment(),
             RequestBody.create(MediaType.parse("multipart/form-data"), productId)
         ).enqueue(object : Callback<String> {
             override fun onFailure(call: Call<String>, t: Throwable) {
-                context?.showMessage(t.message!!)
                 progressBar.progress = 0
             }
-
             override fun onResponse(
                 call: Call<String>,
                 response: Response<String>

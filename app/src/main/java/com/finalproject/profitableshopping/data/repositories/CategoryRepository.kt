@@ -28,7 +28,7 @@ class CategoryRepository {
     }
 
     fun getCategory(id:Int):Call<Category>{
-        return  shoppingApi.getCategoryById(id)
+        return  shoppingApi.getCategoryById(id.toString())
     }
 
     fun getCategoryByName(name:String):Call<Category>{
