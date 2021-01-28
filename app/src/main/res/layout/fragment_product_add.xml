@@ -67,7 +67,7 @@
                     android:background="@drawable/et_bg"
                     android:fontFamily="@font/rb_light"
                     android:hint="@string/name_product"
-                    android:inputType="textPersonName"
+                    android:inputType="text"
                     android:paddingLeft="12dp"
                     android:paddingRight="12dp"
                     android:textDirection="rtl" />
@@ -87,7 +87,7 @@
                         android:background="@drawable/et_bg"
                         android:fontFamily="@font/rb_light"
                         android:hint="@string/rail_price_product"
-                        android:inputType="textPersonName"
+                        android:inputType="numberSigned"
                         android:paddingLeft="12dp"
                         android:paddingRight="12dp"
                         android:textDirection="rtl" />
@@ -101,7 +101,7 @@
                         android:background="@drawable/et_bg"
                         android:fontFamily="@font/rb_light"
                         android:hint="@string/dollar_price_product"
-                        android:inputType="textPersonName"
+                        android:inputType="numberSigned"
                         android:paddingLeft="12dp"
                         android:paddingRight="12dp"
                         android:textDirection="rtl" />
@@ -117,7 +117,8 @@
                     android:background="@drawable/et_bg"
                     android:fontFamily="@font/rb_light"
                     android:hint="@string/quntity_product"
-                    android:inputType="textPersonName"
+                    android:inputType="numberSigned"
+                    android:maxLength="4"
                     android:paddingLeft="12dp"
                     android:paddingRight="12dp"
                     android:textDirection="rtl" />
@@ -162,7 +163,7 @@
                     android:background="@drawable/et_bg"
                     android:fontFamily="@font/rb_light"
                     android:hint="@string/description_product"
-                    android:inputType="textPersonName"
+                    android:inputType="textMultiLine"
                     android:paddingLeft="12dp"
                     android:paddingRight="12dp"
                     android:textDirection="rtl" />

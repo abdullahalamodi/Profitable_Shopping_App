@@ -19,6 +19,8 @@ import com.finalproject.profitableshopping.data.AppSharedPreference
 import com.finalproject.profitableshopping.data.models.Favorite
 import com.finalproject.profitableshopping.viewmodel.FavoriteViewModel
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 class SignUpFragment : Fragment() {
 
@@ -28,6 +30,8 @@ class SignUpFragment : Fragment() {
     lateinit var confrimPassEt: EditText
     lateinit var registerBtn: Button
     lateinit var auth: FirebaseAuth
+    lateinit var database: FirebaseDatabase
+    lateinit var reference: DatabaseReference
     var signUpCallbacks: SignUpCallbacks? = null
     private lateinit var favoriteViewModel: FavoriteViewModel
 
@@ -106,6 +110,12 @@ class SignUpFragment : Fragment() {
 
     private fun register(userName: String, email: String, password: String) {
         auth = FirebaseAuth.getInstance()
+        database = FirebaseDatabase.getInstance()
+        reference = database.getReference("users")
+        reference.child("username").setValue(userName)
+        reference.child("email").setValue(email)
+        reference.child("password").setValue(password)
+
         var p = ProgressDialog(requireContext())
         p.setMessage("please wait")
         p.setCanceledOnTouchOutside(false)

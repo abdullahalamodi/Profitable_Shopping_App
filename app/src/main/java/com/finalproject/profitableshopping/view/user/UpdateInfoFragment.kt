@@ -47,7 +47,7 @@ class UpdateInfoFragment : Fragment() {
 
         val view= inflater.inflate(R.layout.fragment_update_info, container, false)
 
-        FullName = view.findViewById(R.id.full_name_profile)
+        FullName = view.findViewById(R.id.fullname_field)
         Email = view.findViewById(R.id.full_email_profile)
         PassWord = view.findViewById(R.id.full_pass_profile)
         Phone = view.findViewById(R.id.full_phone_profile)

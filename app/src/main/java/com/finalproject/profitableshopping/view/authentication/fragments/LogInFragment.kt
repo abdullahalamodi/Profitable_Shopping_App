@@ -73,6 +73,8 @@ class LogInFragment : Fragment() {
 
                 login(email, password)
             } else {
+                email_login.error="هذا الحقل مطلوب"
+                email_login.requestFocus()
                 Toast.makeText(requireContext(), "Failed login email or password is wrong", Toast.LENGTH_LONG).show()
             }
         }

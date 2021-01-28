@@ -18,6 +18,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity android:name=".data.firebase.NotifationActivity">
+
         </activity>
         <activity android:name=".view.user.MapActivity"></activity>
 
