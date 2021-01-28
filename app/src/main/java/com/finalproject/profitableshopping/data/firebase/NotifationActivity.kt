@@ -32,7 +32,8 @@ class NotifationActivity : AppCompatActivity() {
             val title = etTitle.text.toString()
             val message = etMessage.text.toString()
             val recipientToken = etToken.text.toString()
-            if(title.isNotEmpty() && message.isNotEmpty() && recipientToken.isNotEmpty()) {
+
+            if(title.isNotEmpty() && message.isNotEmpty()&& recipientToken.isNotEmpty() ) {
                 PushNotification(
                     NotificationData(title, message),
                     recipientToken
