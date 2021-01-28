@@ -33,6 +33,18 @@
             android:configChanges="orientation|screenSize|keyboardHidden"/>
         <activity android:name=".view.SplashScreenActivity" />
         <activity
+            android:name=".view.CheckNetworkActivity"
+            android:theme="@style/ConnectActivityTheme" />
+
+        <activity
+            android:name=".view.SplashScreenActivity"
+            android:theme="@style/SplashScreenTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".view.products.ManageProductActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
@@ -41,11 +53,7 @@
             android:name=".view.MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <service

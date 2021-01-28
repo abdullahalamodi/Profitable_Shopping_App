@@ -15,6 +15,7 @@ import com.finalproject.profitableshopping.view.authentication.fragments.ActiveU
 import com.finalproject.profitableshopping.view.authentication.fragments.LogInFragment
 import com.finalproject.profitableshopping.view.authentication.fragments.SignUpFragment
 import com.finalproject.profitableshopping.view.cart.CartFragment
+import com.finalproject.profitableshopping.view.category.AddCategoryFragment
 import com.finalproject.profitableshopping.view.category.CategoryActivity
 import com.finalproject.profitableshopping.view.favorite.FavoriteFragment
 import com.finalproject.profitableshopping.view.products.ManageProductActivity
@@ -40,7 +41,8 @@ class MainActivity : AppCompatActivity(),
     ShowAllProductsFragment.Callbacks,
     DetailsOfAllProductsFragment.Callbacks,
     UserManageProfileFragment.Callbacks,
-    ManageUserProfileFragment.Callbacks {
+    ManageUserProfileFragment.Callbacks,
+    AboutAppFragment.Callbacks {
 
     private lateinit var menu: Menu
     private lateinit var bottomNav: BottomNavigationView
@@ -207,6 +209,13 @@ class MainActivity : AppCompatActivity(),
                 showButtonNavigation(false)
                 true
             }
+
+            R.id.menu_about -> {
+                logOut()
+                addFragment(AboutAppFragment())
+                showButtonNavigation(false)
+                true
+            }
             else -> return super.onOptionsItemSelected(item)
         }
     }
@@ -283,4 +292,15 @@ class MainActivity : AppCompatActivity(),
     override fun onOpenProfile() {
         setCurrentFragment(UserManageProfileFragment.newInstance())
     }
+
+    override fun onAboutAppOpen(show: Boolean) {
+        //setCurrentFragment(AboutAppFragment())
+        showButtonNavigation(show)
+    }
+
+    /*override fun onBackPressed() {
+    //    super.onBackPressed()
+        var bottomSheetAddCat = ExitAppFragment();
+        bottomSheetAddCat.show(supportFragmentManager,"Tag")
+    }*/
 }

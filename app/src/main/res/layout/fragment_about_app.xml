@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ddd"
+    tools:context=".view.AboutAppFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main_constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:background="@drawable/view_background"
+            app:layout_constraintBottom_toTopOf="@+id/viewCenterOfNext"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/icon_outer_background"
+            app:layout_constraintBottom_toBottomOf="@+id/imgNext"
+            app:layout_constraintEnd_toEndOf="@+id/imgNext"
+            app:layout_constraintStart_toStartOf="@+id/imgNext"
+            app:layout_constraintTop_toTopOf="@+id/imgNext"
+            android:translationY="-20dp" />
+
+
+        <View
+            android:id="@+id/viewCenterOfNext"
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imgNext"
+            app:layout_constraintEnd_toEndOf="@+id/imgNext"
+            app:layout_constraintTop_toTopOf="@+id/imgNext" />
+
+        <ImageView
+            android:id="@+id/imgNext"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/icon3"
+            android:contentDescription="@string/name_product"
+            android:translationY="-20dp"
+            app:layout_constraintBottom_toTopOf="@+id/btnGetStarted"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:tint="@color/white" />
+
+        <TextView
+            android:id="@+id/btnGetStarted"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="96dp"
+            android:gravity="center"
+            android:fontFamily="@font/rb_light"
+            android:text="تطبيق التسوق المربح يساعدك للحصول على اهم المنتجات التي يتم انزالها في السوق حيث يتم معرفة كل المنتجات مع اسعارها والتعامل مع البائعين مباشرة وشكرا لي  "
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            app:backgroundTint="@color/color12"
+            app:cornerRadius="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

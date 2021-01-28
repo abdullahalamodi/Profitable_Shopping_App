@@ -43,10 +43,11 @@ class SplashScreenActivity : AppCompatActivity() {
             val i = Intent(this@SplashScreenActivity, MainActivity::class.java)
             startActivity(i)
             finish()
-            Toast.makeText(this, "Network connection is available", Toast.LENGTH_SHORT).show()
+          //  Toast.makeText(this, "Network connection is available", Toast.LENGTH_SHORT).show()
         }else{
             val i = Intent(this@SplashScreenActivity, CheckNetworkActivity::class.java)
             startActivity(i)
+            finish()
             Toast.makeText(this, "Network connection is not available", Toast.LENGTH_SHORT).show()
         }
     }
