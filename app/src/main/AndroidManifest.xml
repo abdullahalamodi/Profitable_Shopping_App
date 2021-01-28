@@ -31,11 +31,6 @@
             android:configChanges="orientation|screenSize|keyboardHidden"/>
         <activity android:name=".view.CheckNetworkActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"/>
-        <activity android:name=".view.SplashScreenActivity" />
-        <activity
-            android:name=".view.CheckNetworkActivity"
-            android:theme="@style/ConnectActivityTheme" />
-
         <activity
             android:name=".view.SplashScreenActivity"
             android:theme="@style/SplashScreenTheme">
