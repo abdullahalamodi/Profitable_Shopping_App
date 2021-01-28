@@ -102,21 +102,21 @@ object AppSharedPreference {
         editor.commit()
     }
 
-    fun getFavoriteId(context: Context): Int {
+    fun getFavoriteId(context: Context): String? {
         val sharedPreferences: SharedPreferences = context.getSharedPreferences(
             sharedPrefFile,
             Context.MODE_PRIVATE
         )
-        return sharedPreferences.getInt(myFavorite, -1)
+        return sharedPreferences.getString(myFavorite,"-1")
     }
 
-    fun setFavoriteId(context: Context, favoriteId: Int?) {
+    fun setFavoriteId(context: Context, favoriteId: String?) {
         val sharedPreferences: SharedPreferences = context.getSharedPreferences(
             sharedPrefFile,
             Context.MODE_PRIVATE
         )
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
-        editor.putInt(myFavorite, favoriteId!!)
+        editor.putString(myFavorite, favoriteId)
 
         editor.apply()
         editor.commit()
@@ -157,17 +157,17 @@ object AppSharedPreference {
     }
 
 
-    const val sharedPrefFile = "user_pref";
-    const val tokenKey = "token_key";
-    const val idKey = "id_key";
-    const val emailKey = "email_key";
-    const val phoneKey = "phone_key";
-    const val passwordKey = "password_key";
-    const val isActiveKey = "isActive_key";
-    const val hasCart = "hasCart";
-    const val myCartId = "myCartId";
-    const val myFavorite = "myFavorite";
-    const val isBought = "isBought";
+    const val sharedPrefFile = "user_pref"
+    const val tokenKey = "token_key"
+    const val idKey = "id_key"
+    const val emailKey = "email_key"
+    const val phoneKey = "phone_key"
+    const val passwordKey = "password_key"
+    const val isActiveKey = "isActive_key"
+    const val hasCart = "hasCart"
+    const val myCartId = "myCartId"
+    const val myFavorite = "myFavorite"
+    const val isBought = "isBought"
 
 
 }

@@ -116,7 +116,7 @@ class SignUpFragment : Fragment() {
                 if (it.isSuccessful) {
                     sendEmailVerification()
                     // create favorite for user
-                    favoriteViewModel.createFavorite(
+/*                    favoriteViewModel.createFavorite(
                         Favorite(
                             null,
                             AppSharedPreference.getUserId(requireContext())!!
@@ -124,9 +124,9 @@ class SignUpFragment : Fragment() {
                     ).observe(
                         this,
                         Observer {
-                            AppSharedPreference.setFavoriteId(requireContext(), it.toInt())
+                            AppSharedPreference.setFavoriteId(requireContext(), it)
                         }
-                    )
+                    )*/
                 } else {
                     Toast.makeText(
                         requireContext(),

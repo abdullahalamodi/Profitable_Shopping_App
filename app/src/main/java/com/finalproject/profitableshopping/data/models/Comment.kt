@@ -12,4 +12,4 @@ class Comment( var id: Int = 0,
                @SerializedName("product_id")
                var productId: Int = 0,
                @SerializedName("date")
-               var date: String="21-1-2021") {}
+               var date: String="21-1-2021")

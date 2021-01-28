@@ -33,7 +33,7 @@ class ComplainDialog :DialogFragment(){
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         arguments.let {
             productId= it?.getString("PROID")!!
-            userId=it?.getString("UID")!!
+            userId= it.getString("UID")!!
         }
         complainViewModel= ViewModelProviders.of(this).get(ComplainViewModel::class.java)
         reportViewModel= ViewModelProviders.of(this).get(ReportViewModel::class.java)

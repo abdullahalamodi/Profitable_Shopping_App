@@ -63,7 +63,7 @@ class ShowAllProductsFragment : Fragment() {
         allProductsRecyclerView.adapter = adapterProducts
 
 //        progressBar = view.findViewById(R.id.progress_circular)
-        return view;
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -122,9 +122,9 @@ class ShowAllProductsFragment : Fragment() {
         var categoryImageV: ImageView = view.findViewById(R.id.category_image_view) as ImageView
         var checkIcon: ImageView = view.findViewById(R.id.check_icon) as ImageView
         var category = Category()
-        var selectedId = 0;
+        var selectedId = 0
         fun bind(cat: Category) {
-            category = cat;
+            category = cat
             categoryNameTv.text = cat.name
             if (cat.path != "" && cat.path != null) {
                 Picasso.get().also {

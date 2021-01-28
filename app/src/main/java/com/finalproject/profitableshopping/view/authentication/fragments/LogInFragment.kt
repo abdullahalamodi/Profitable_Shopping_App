@@ -240,11 +240,11 @@ class LogInFragment : Fragment() {
     }
 
     companion object {
-        const val sharedPrefFile = "user_pref";
-        const val tokenKey = "token_key";
-        private const val emailKey = "email_key";
-        private const val passwordKey = "password_key";
-        var isAccountActive = false;
+        const val sharedPrefFile = "user_pref"
+        const val tokenKey = "token_key"
+        private const val emailKey = "email_key"
+        private const val passwordKey = "password_key"
+        var isAccountActive = false
 
         @JvmStatic
         fun newInstance() =

@@ -17,10 +17,12 @@ import com.finalproject.profitableshopping.view.authentication.fragments.LogInFr
 import com.finalproject.profitableshopping.view.authentication.fragments.SignUpFragment
 import com.finalproject.profitableshopping.view.cart.CartFragment
 import com.finalproject.profitableshopping.view.category.CategoryActivity
+import com.finalproject.profitableshopping.view.favorite.FavoriteFragment
 import com.finalproject.profitableshopping.view.products.ManageProductActivity
 import com.finalproject.profitableshopping.view.products.fragments.*
 import com.finalproject.profitableshopping.view.user.*
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(),
@@ -34,10 +36,12 @@ UserManageProfileFragment.Callbacks,
 ManageUserProfileFragment.Callbacks{
 
     private lateinit var menu: Menu
+    private lateinit var bottomNav: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        bottomNav=findViewById(R.id.bottomNav)
 
         //hide app bar elevation
         supportActionBar?.elevation = 0.0f
@@ -86,6 +90,7 @@ ManageUserProfileFragment.Callbacks{
                 }
                 R.id.menu_notification -> {
                     setContent("Profile")
+                    setCurrentFragment(FavoriteFragment.newInstance())
                     true
                 }
                 R.id.menu_profile -> {
@@ -98,7 +103,7 @@ ManageUserProfileFragment.Callbacks{
         }
     }
 
-    private fun showButtonNavigation(show: Boolean) {
+    fun showButtonNavigation(show: Boolean) {
         if (show)
             bottomNav.visibility = View.VISIBLE
         else
@@ -113,7 +118,7 @@ ManageUserProfileFragment.Callbacks{
         }
 
     private fun setContent(content: String) {
-        supportActionBar?.title = content;
+        supportActionBar?.title = content
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -127,23 +132,23 @@ ManageUserProfileFragment.Callbacks{
 
     private fun filterMenuItems(menu: Menu){
         if (getUserToken() == "admin") {
-            menu.findItem(R.id.menu_login).setVisible(false)
-            menu.findItem(R.id.menu_categories).setVisible(true)
-            menu.findItem(R.id.menu_product_manage).setVisible(true)
-            menu.findItem(R.id.menu_my_products).setVisible(false)
-            menu.findItem(R.id.sign_out).setVisible(true)
+            menu.findItem(R.id.menu_login).isVisible = false
+            menu.findItem(R.id.menu_categories).isVisible = true
+            menu.findItem(R.id.menu_product_manage).isVisible = true
+            menu.findItem(R.id.menu_my_products).isVisible = false
+            menu.findItem(R.id.sign_out).isVisible = true
         } else if (getUserToken() == "user") {
-            menu.findItem(R.id.menu_login).setVisible(false)
-            menu.findItem(R.id.menu_categories).setVisible(false)
-            menu.findItem(R.id.menu_product_manage).setVisible(false)
-            menu.findItem(R.id.menu_my_products).setVisible(true)
-            menu.findItem(R.id.sign_out).setVisible(true)
+            menu.findItem(R.id.menu_login).isVisible = false
+            menu.findItem(R.id.menu_categories).isVisible = false
+            menu.findItem(R.id.menu_product_manage).isVisible = false
+            menu.findItem(R.id.menu_my_products).isVisible = true
+            menu.findItem(R.id.sign_out).isVisible = true
         } else {
-            menu.findItem(R.id.menu_login).setVisible(true)
-            menu.findItem(R.id.menu_categories).setVisible(false)
-            menu.findItem(R.id.menu_product_manage).setVisible(false)
-            menu.findItem(R.id.menu_my_products).setVisible(false)
-            menu.findItem(R.id.sign_out).setVisible(false)
+            menu.findItem(R.id.menu_login).isVisible = true
+            menu.findItem(R.id.menu_categories).isVisible = false
+            menu.findItem(R.id.menu_product_manage).isVisible = false
+            menu.findItem(R.id.menu_my_products).isVisible = false
+            menu.findItem(R.id.sign_out).isVisible = false
         }
     }
 
@@ -244,7 +249,7 @@ ManageUserProfileFragment.Callbacks{
 
 
     private var isNavHide = false
-    public fun anim(hide: Boolean) {
+    fun anim(hide: Boolean) {
         if (isNavHide && hide || !isNavHide && !hide) return
         isNavHide = hide
         val moveY = if (hide) 2 * bottomNav!!.height else 0

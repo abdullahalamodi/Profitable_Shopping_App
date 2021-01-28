@@ -1,4 +1,3 @@
 package com.finalproject.profitableshopping.viewmodel
 
-class MainViewModel {
-}
+class MainViewModel

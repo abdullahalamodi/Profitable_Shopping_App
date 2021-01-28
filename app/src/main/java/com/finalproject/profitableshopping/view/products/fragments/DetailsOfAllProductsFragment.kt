@@ -2,10 +2,12 @@ package com.finalproject.profitableshopping.view.products.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -23,6 +25,7 @@ import com.finalproject.profitableshopping.viewmodel.ProductViewModel
 import com.finalproject.profitableshopping.viewmodel.ReportViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_details_of_all_products.*
 
 
 private const val ARG_PRODUCT_ID = "product_id"
@@ -68,10 +71,6 @@ class DetailsOfAllProductsFragment : Fragment() {
         callbacks?.onDetailsOpen(true)
         callbacks=null
     }
-    override fun onStart() {
-        super.onStart()
-//        callbacks = (context as Callbacks)
-    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,6 +79,7 @@ class DetailsOfAllProductsFragment : Fragment() {
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
         reportViewModel = ViewModelProviders.of(this).get(ReportViewModel::class.java)
         favoriteViewModel = ViewModelProviders.of(this).get(FavoriteViewModel::class.java)
+        product= Product()
        // mainActivity?.anim(false)
         callbacks?.onDetailsOpen(false)
         arguments?.let {
@@ -121,23 +121,33 @@ class DetailsOfAllProductsFragment : Fragment() {
 
 
         favoriteFABtn.setOnClickListener{
-            if (checkFavorite()) {
+              if(AppSharedPreference.getUserToken(requireContext()).isNullOrBlank()||AppSharedPreference.getUserToken(requireContext())!!.isEmpty())
+                Toast.makeText(requireContext(),"عذرا لم تقم بتسيل الدخول ",Toast.LENGTH_LONG).show()
+                else
                 addItemToFavorite()
-            } else {
-                createFavorite()
             }
-        }
+
         reportBtn.setOnClickListener {
-            ComplainDialog.newInstance(productId!!, product.userId!!).apply {
-                show(this@DetailsOfAllProductsFragment.parentFragmentManager, "report")
+            if(AppSharedPreference.getUserToken(requireContext()).isNullOrBlank()||AppSharedPreference.getUserToken(requireContext())!!.isEmpty())
+                Toast.makeText(requireContext(),"عذرا لم تقم بتسيل الدخول ",Toast.LENGTH_LONG).show()
+            else {
+                ComplainDialog.newInstance(productId!!, product.userId!!).apply {
+                    show(this@DetailsOfAllProductsFragment.parentFragmentManager, "report")
+                }
             }
         }
         showCommentBtn.setOnClickListener {
+            if(AppSharedPreference.getUserToken(requireContext()).isNullOrBlank()&&AppSharedPreference.getUserToken(requireContext())!!.isEmpty())
+                Toast.makeText(requireContext(),"عذرا لم تقم بتسيل الدخول ",Toast.LENGTH_LONG).show()
+            else
             AddComplainDialog.newInstance().apply {
                 show(this@DetailsOfAllProductsFragment.parentFragmentManager, "report")
             }
         }
         cartBtn.setOnClickListener {
+            if(AppSharedPreference.getUserToken(requireContext()).isNullOrBlank()&&AppSharedPreference.getUserToken(requireContext())!!.isEmpty())
+                Toast.makeText(requireContext(),"عذرا لم تقم بتسيل الدخول ",Toast.LENGTH_LONG).show()
+            else
             OrderItemOptions.newInstance(product.id.toString(), product.quantity, product.rialPrice)
                 .apply {
                     show(this@DetailsOfAllProductsFragment.parentFragmentManager, "cart")
@@ -174,15 +184,38 @@ class DetailsOfAllProductsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 //          showProgress(true)
         productViewModel.productIDetailsLiveData.observe(
             viewLifecycleOwner,
             Observer { product ->
                 this.product = product
                 //   showProgress(false)
+                if(AppSharedPreference.getUserToken(requireContext())!= null){
+                    if(AppSharedPreference.getUserToken(requireContext())=="admin"){
+                        cartBtn.isEnabled=false
+                        favoriteFABtn.isEnabled=false
+                        reportBtn.visibility=View.GONE
+                        chat_btn.isEnabled=false
+
+                    }else if(AppSharedPreference.getUserId(requireContext())==product.userId){
+                        cartBtn.hide()
+                        cartBtn.isEnabled=false
+                        favoriteFABtn.isEnabled=false
+                        reportBtn.isEnabled=false
+                        chat_btn.isEnabled=false
+                        call_btn.isEnabled=false
+                    }
+                     else{
+                        chat_btn.isEnabled=false
+                    }
+                }
+
+
                 updateUi(product)
             }
         )
+
         loadComments(productId.toString())
 
     }
@@ -223,25 +256,26 @@ class DetailsOfAllProductsFragment : Fragment() {
     }
 
     private fun addItemToFavorite() {
-        val FavoriteDetails = FavoriteItem(
-            product_id = productId!!,
-            favorite_id = AppSharedPreference.getFavoriteId(requireContext()),
-            id = null
-        )
-        favoriteViewModel.addFavoriteItem(FavoriteDetails).observe(
-            requireActivity(),
-            Observer {
-                if (it != null) {
+        val favorite = Favorite(
+            id = null,
+            user_id = AppSharedPreference.getUserId(requireContext())!!,
+            product_id = productId!!.toInt()
 
-                    requireActivity().showMessage(it)
-                } else {
-                    requireActivity().showMessage("null response")
+        )
+        Log.d("userId",favorite.user_id!!)
+        Log.d("productId",favorite.product_id.toString())
+        favoriteViewModel.addFavoriteItem(favorite).observe(
+            viewLifecycleOwner,
+            Observer {
+
+                  // requireActivity().showMessage(it!!)
+                Log.d("observer",it!!.length.toString())
                 }
-            }
+
         )
     }
 
-    private fun createFavorite() {
+   /* private fun createFavorite() {
         val favorite = Favorite(
             user_id = AppSharedPreference.getUserId(requireContext())!!,
             id = null
@@ -251,15 +285,15 @@ class DetailsOfAllProductsFragment : Fragment() {
         ).observe(
             viewLifecycleOwner,
             Observer {
-                AppSharedPreference.setFavoriteId(requireContext(),it!!.toInt())
+                AppSharedPreference.setFavoriteId(requireContext(),it)
                 addItemToFavorite()
             }
         )
-    }
+    }*/
 
-    private fun checkFavorite(): Boolean {
-        return AppSharedPreference.getFavoriteId(requireContext())>0
-    }
+  /*  private fun checkFavorite(): Boolean {
+         return AppSharedPreference.getFavoriteId(requireContext()) != "-1"
+    }*/
     companion object {
         @JvmStatic
         fun newInstance(productId: String) =

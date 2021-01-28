@@ -22,7 +22,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.delete_category.view.*
 import kotlinx.android.synthetic.main.update_category.view.*
 
-const val USER_ID_ARG = "userId";
+const val USER_ID_ARG = "userId"
 
 class CategoryFragment : Fragment(),UploadRequestBody.UploadCallback {
 
@@ -40,7 +40,7 @@ class CategoryFragment : Fragment(),UploadRequestBody.UploadCallback {
         super.onStart()
         addBtn.setOnClickListener {
             showProgress(true)
-            val catMap = Category();
+            val catMap = Category()
             catMap.name = categoryNameEt.text.toString()
             val response = categoryViewModel.addCategory(catMap)
             //will display message after get response
@@ -57,7 +57,7 @@ class CategoryFragment : Fragment(),UploadRequestBody.UploadCallback {
         }
 
        addCatFloatingABtn.setOnClickListener{
-           var bottomSheetAddCat =AddCategoryFragment();
+           var bottomSheetAddCat =AddCategoryFragment()
            bottomSheetAddCat.show(childFragmentManager,"Tag")
        }
     }

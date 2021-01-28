@@ -48,7 +48,7 @@ class AddCategoryFragment : BottomSheetDialogFragment(), UploadRequestBody.Uploa
 
         addBtn.setOnClickListener {
             showProgress(true)
-            val catMap = Category();
+            val catMap = Category()
             catMap.name = categoryNameEt.text.toString()
             val response = categoryViewModel.addCategory(catMap)
             //will display message after get response
@@ -90,7 +90,7 @@ class AddCategoryFragment : BottomSheetDialogFragment(), UploadRequestBody.Uploa
         addBtn = view.findViewById(R.id.add_category_btn)
         loadBtn = view.findViewById(R.id.load_image_btn)
         progressBar = view.findViewById(R.id.progress_circular)
-        return view;
+        return view
     }
 
 
