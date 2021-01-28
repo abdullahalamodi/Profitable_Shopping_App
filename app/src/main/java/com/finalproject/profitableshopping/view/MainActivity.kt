@@ -16,6 +16,7 @@ import com.finalproject.profitableshopping.view.authentication.fragments.ActiveU
 import com.finalproject.profitableshopping.view.authentication.fragments.LogInFragment
 import com.finalproject.profitableshopping.view.authentication.fragments.SignUpFragment
 import com.finalproject.profitableshopping.view.cart.CartFragment
+import com.finalproject.profitableshopping.view.category.AddCategoryFragment
 import com.finalproject.profitableshopping.view.category.CategoryActivity
 import com.finalproject.profitableshopping.view.products.ManageProductActivity
 import com.finalproject.profitableshopping.view.products.fragments.*
@@ -30,8 +31,9 @@ class MainActivity : AppCompatActivity(),
     ActiveFragment.ActiveAccountCallbacks,
     ShowAllProductsFragment.Callbacks,
     DetailsOfAllProductsFragment.Callbacks,
-UserManageProfileFragment.Callbacks,
-ManageUserProfileFragment.Callbacks{
+    UserManageProfileFragment.Callbacks,
+    ManageUserProfileFragment.Callbacks,
+    AboutAppFragment.Callbacks {
 
     private lateinit var menu: Menu
 
@@ -125,7 +127,7 @@ ManageUserProfileFragment.Callbacks{
         return super.onCreateOptionsMenu(menu)
     }
 
-    private fun filterMenuItems(menu: Menu){
+    private fun filterMenuItems(menu: Menu) {
         if (getUserToken() == "admin") {
             menu.findItem(R.id.menu_login).setVisible(false)
             menu.findItem(R.id.menu_categories).setVisible(true)
@@ -191,7 +193,14 @@ ManageUserProfileFragment.Callbacks{
 
             R.id.sign_out -> {
                 logOut()
-              setCurrentFragment(LogInFragment.newInstance())
+                setCurrentFragment(LogInFragment.newInstance())
+                showButtonNavigation(false)
+                true
+            }
+
+            R.id.menu_about -> {
+                logOut()
+                addFragment(AboutAppFragment())
                 showButtonNavigation(false)
                 true
             }
@@ -256,12 +265,12 @@ ManageUserProfileFragment.Callbacks{
 
     }
 
-    override fun onDetailsOpen(show:Boolean) {
-       showButtonNavigation(show)
+    override fun onDetailsOpen(show: Boolean) {
+        showButtonNavigation(show)
     }
 
     override fun onRestPasswordClicked() {
-       setCurrentFragment(RestPasswordFragment.newInstance())
+        setCurrentFragment(RestPasswordFragment.newInstance())
     }
 
     override fun onUpdateClicked() {
@@ -271,4 +280,15 @@ ManageUserProfileFragment.Callbacks{
     override fun onOpenProfile() {
         setCurrentFragment(UserManageProfileFragment.newInstance())
     }
+
+    override fun onAboutAppOpen(show: Boolean) {
+        //setCurrentFragment(AboutAppFragment())
+        showButtonNavigation(show)
+    }
+
+    /*override fun onBackPressed() {
+    //    super.onBackPressed()
+        var bottomSheetAddCat = ExitAppFragment();
+        bottomSheetAddCat.show(supportFragmentManager,"Tag")
+    }*/
 }

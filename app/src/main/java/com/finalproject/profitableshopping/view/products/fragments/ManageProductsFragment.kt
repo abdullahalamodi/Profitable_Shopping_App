@@ -50,7 +50,7 @@ class ManageProductsFragment : Fragment() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                productViewModel.productsListLiveData.observe(
+                productViewModel.userProductsLiveData.observe(
                     viewLifecycleOwner,
                     Observer { prodcts ->
                         showProgress(false)
