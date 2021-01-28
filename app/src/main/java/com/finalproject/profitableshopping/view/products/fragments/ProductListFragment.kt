@@ -28,7 +28,7 @@ class ProductListFragment : Fragment() {
     private lateinit var categoryViewModel: CategoryViewModel
     private lateinit var hCategoryRecyclerView: RecyclerView
     private lateinit var productsRv: RecyclerView
-    private lateinit var categoriesList: MutableList<Category>
+    private lateinit var categoriesList: List<Category>
     private lateinit var searchEt: EditText
     private var adapter: ProductAdapter = ProductAdapter(emptyList())
     private var adapterCategories: ProductListFragment.CategoryAdapter? =
@@ -137,7 +137,7 @@ class ProductListFragment : Fragment() {
     }
 
     private fun updateUICategory(categoriesList: List<Category>) {
-        this.categoriesList = categoriesList as MutableList<Category>
+        this.categoriesList = categoriesList
         adapterCategories = CategoryAdapter(categoriesList)
         hCategoryRecyclerView.adapter = adapterCategories
     }
@@ -243,7 +243,6 @@ class ProductListFragment : Fragment() {
         var productRateTv: RatingBar = view.findViewById(R.id.rate_bar) as RatingBar
         var productDescriptionTv: TextView =
             view.findViewById(R.id.tv_description_product) as TextView
-       // var ratingBarProduct:RatingBar =view.findViewById(R.id.ratingBar_product) as RatingBar
         var product = Product()
 
         init {

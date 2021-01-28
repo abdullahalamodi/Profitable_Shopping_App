@@ -38,6 +38,10 @@ class CategoryViewModel : ViewModel() {
         loadTrigger.value = Unit
     }
 
+    fun loadCategory(id: Int){
+        categoryIdLiveData.value = id
+    }
+
 
     fun addCategory(category: Category): MutableLiveData<String> {
         val responseLiveData = MutableLiveData<String>()

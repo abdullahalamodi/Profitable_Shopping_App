@@ -18,7 +18,7 @@ interface ShoppingApi {
     fun getCategories(): Call<List<Category>>
 
     @GET("categories.php")
-    fun getCategoryById(@Query("id") query: Int): Call<Category>
+    fun getCategoryById(@Query("id") query: String): Call<Category>
 
     @GET("categories.php")
     fun getCategoryByName(@Query("name") name: String): Call<Category>
@@ -80,6 +80,15 @@ interface ShoppingApi {
     @POST("images.php")
     fun uploadImage(
         @Part image: MultipartBody.Part,
+        @Part("product_id") desc: RequestBody
+    ): Call<String>
+
+    @Multipart
+    @POST("images.php")
+    fun uploadImages(
+        @Part image1: MultipartBody.Part,
+        @Part image2: MultipartBody.Part,
+        @Part image3: MultipartBody.Part,
         @Part("product_id") desc: RequestBody
     ): Call<String>
 

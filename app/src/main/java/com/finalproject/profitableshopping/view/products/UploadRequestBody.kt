@@ -15,23 +15,25 @@ class UploadRequestBody(
 
 ) : RequestBody() {
 
+
     override fun contentType() = MediaType.parse("$contentType/*")
+
 
     override fun contentLength() = file.length()
 
     override fun writeTo(sink: BufferedSink) {
-        val length = file.length()
-        val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
-        val fileInputStream = FileInputStream(file)
-        var uploaded = 0L
-        fileInputStream.use { inputStream ->
-            var read: Int
-            val handler = Handler(Looper.getMainLooper())
-            while (inputStream.read(buffer).also { read = it } != -1) {
-                handler.post(ProgressUpdater(uploaded, length))
-                uploaded += read
-                sink.write(buffer, 0, read)
-            }
+            val length = file.length()
+            val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
+            val fileInputStream = FileInputStream(file)
+            var uploaded = 0L
+            fileInputStream.use { inputStream ->
+                var read: Int
+                val handler = Handler(Looper.getMainLooper())
+                while (inputStream.read(buffer).also { read = it } != -1) {
+                    handler.post(ProgressUpdater(uploaded, length))
+                    uploaded += read
+                    sink.write(buffer, 0, read)
+                }
         }
     }
 

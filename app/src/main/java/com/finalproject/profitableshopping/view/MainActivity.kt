@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -19,6 +18,14 @@ import com.finalproject.profitableshopping.view.cart.CartFragment
 import com.finalproject.profitableshopping.view.category.CategoryActivity
 import com.finalproject.profitableshopping.view.favorite.FavoriteFragment
 import com.finalproject.profitableshopping.view.products.ManageProductActivity
+import com.finalproject.profitableshopping.view.products.fragments.AdminProductManagmentFragment
+import com.finalproject.profitableshopping.view.products.fragments.DetailsOfAllProductsFragment
+import com.finalproject.profitableshopping.view.products.fragments.ProductListFragment
+import com.finalproject.profitableshopping.view.products.fragments.ShowAllProductsFragment
+import com.finalproject.profitableshopping.view.user.ManageUserProfileFragment
+import com.finalproject.profitableshopping.view.user.RestPasswordFragment
+import com.finalproject.profitableshopping.view.user.UpdateInfoFragment
+import com.finalproject.profitableshopping.view.user.UserManageProfileFragment
 import com.finalproject.profitableshopping.view.products.fragments.*
 import com.finalproject.profitableshopping.view.user.*
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
@@ -32,8 +39,8 @@ class MainActivity : AppCompatActivity(),
     ActiveFragment.ActiveAccountCallbacks,
     ShowAllProductsFragment.Callbacks,
     DetailsOfAllProductsFragment.Callbacks,
-UserManageProfileFragment.Callbacks,
-ManageUserProfileFragment.Callbacks{
+    UserManageProfileFragment.Callbacks,
+    ManageUserProfileFragment.Callbacks {
 
     private lateinit var menu: Menu
     private lateinit var bottomNav: BottomNavigationView
@@ -130,7 +137,7 @@ ManageUserProfileFragment.Callbacks{
         return super.onCreateOptionsMenu(menu)
     }
 
-    private fun filterMenuItems(menu: Menu){
+    private fun filterMenuItems(menu: Menu) {
         if (getUserToken() == "admin") {
             menu.findItem(R.id.menu_login).isVisible = false
             menu.findItem(R.id.menu_categories).isVisible = true
@@ -196,7 +203,7 @@ ManageUserProfileFragment.Callbacks{
 
             R.id.sign_out -> {
                 logOut()
-              setCurrentFragment(LogInFragment.newInstance())
+                setCurrentFragment(LogInFragment.newInstance())
                 showButtonNavigation(false)
                 true
             }
@@ -261,12 +268,12 @@ ManageUserProfileFragment.Callbacks{
 
     }
 
-    override fun onDetailsOpen(show:Boolean) {
-       showButtonNavigation(show)
+    override fun onDetailsOpen(show: Boolean) {
+        showButtonNavigation(show)
     }
 
     override fun onRestPasswordClicked() {
-       setCurrentFragment(RestPasswordFragment.newInstance())
+        setCurrentFragment(RestPasswordFragment.newInstance())
     }
 
     override fun onUpdateClicked() {

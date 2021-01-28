@@ -26,11 +26,11 @@ class ManageProductActivity : AppCompatActivity(),
         }
     }
 
-    private fun addFragment(fragment: Fragment) =
-        supportFragmentManager.beginTransaction().apply {
-            add(R.id.container_manage_product, fragment)
-            addToBackStack(null)
-            commit()
+    private fun addFragment(fragment: Fragment){
+        supportFragmentManager.beginTransaction()
+            .add(R.id.container_manage_product, fragment)
+            .addToBackStack(null)
+            .commit()
         }
 
     override fun onItemSelected(itemId: Int) {
@@ -42,6 +42,10 @@ class ManageProductActivity : AppCompatActivity(),
             .replace(R.id.container_manage_product, fragment)
             .addToBackStack(null)
             .commit()
+    }
+
+    override fun onProductClicked(itemId: Int) {
+        setFragment(DetailsOfAllProductsFragment.newInstance(itemId.toString()))
     }
 
     override fun onUpdateProductClicked(productId: String?) {

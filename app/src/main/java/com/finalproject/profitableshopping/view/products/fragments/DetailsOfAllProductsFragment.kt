@@ -12,7 +12,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
+import com.denzcoskun.imageslider.ImageSlider
+import com.denzcoskun.imageslider.constants.ScaleTypes
+import com.denzcoskun.imageslider.models.SlideModel
 import com.finalproject.profitableshopping.R
+import com.finalproject.profitableshopping.data.models.Comment
+import com.finalproject.profitableshopping.data.models.Product
+import com.finalproject.profitableshopping.data.models.Report
 import com.finalproject.profitableshopping.data.AppSharedPreference
 import com.finalproject.profitableshopping.data.models.*
 import com.finalproject.profitableshopping.showMessage
@@ -59,6 +65,7 @@ class DetailsOfAllProductsFragment : Fragment() {
     var countOfReports: Int = 0
     var productReports: List<Report> = emptyList()
     lateinit var comment: Comment
+    lateinit var imageSlider: ImageSlider
 
 
     override fun onAttach(context: Context) {
@@ -101,7 +108,7 @@ class DetailsOfAllProductsFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_details_of_all_products, container, false)
         //  progressBar = view.findViewById(R.id.progress_circular)
-        productImageIv = view.findViewById(R.id.img_product_details) as ImageView
+//        productImageIv = view.findViewById(R.id.img_product_details) as ImageView
         productNameTv = view.findViewById(R.id.tv_product_name_details) as TextView
         showCommentBtn = view.findViewById(R.id.btnShowComment2) as Button
         //  productReviewsTv = view.findViewById(R.id.reviews_tv) as TextView
@@ -118,6 +125,7 @@ class DetailsOfAllProductsFragment : Fragment() {
         ratingBar = view.findViewById(R.id.ratingBar) as RatingBar
         commentsRecyclerView = view.findViewById(R.id.comments_recycler_view)
         showComments = view.findViewById(R.id.btnShowComment)
+        imageSlider = view.findViewById(R.id.img_product_details)
 
 
         favoriteFABtn.setOnClickListener{
@@ -232,22 +240,34 @@ class DetailsOfAllProductsFragment : Fragment() {
 
     private fun updateUi(product: Product) {
         productNameTv.text = product.name
-        productRialPriceTv.text = product.rialPrice.toString()+" RY"
-        productDollarPriceTv.text = product.dollarPrice.toString()+" $"
+        productRialPriceTv.text = product.rialPrice.toString() + " RY"
+        productDollarPriceTv.text = product.dollarPrice.toString() + " $"
         productQuantityTv.text = product.quantity.toString()
         productReviewsTv.text = countOfReports.toString()
         //     productQuantityTv.text = product.quantity.toString()
         productDescriptionTv.text = product.description
-        if (product.images.isNotEmpty())
-            Picasso.get().also {
-                val path = product.images[0].getUrl()
-                it.load(path)
-                    .resize(350, 350)
-                    .centerCrop()
-                    .placeholder(R.drawable.ic_phone_android)
-                    .into(productImageIv)
-
+        if (product.images.isNotEmpty()){
+            val slideModels: MutableList<SlideModel> = ArrayList()
+            product.images.forEach { image ->
+                slideModels.add(
+                    SlideModel(
+                        image.getUrl(),
+                        ""
+                    )
+                )
             }
+            imageSlider.setImageList(slideModels, ScaleTypes.CENTER_CROP)
+        }
+//        if (product.images.isNotEmpty())
+//            Picasso.get().also {
+//                val path = product.images[0].getUrl()
+//                it.load(path)
+//                    .resize(350, 350)
+//                    .centerCrop()
+//                    .placeholder(R.drawable.shoe)
+//                    .into(productImageIv)
+//
+//            }
     }
 
     interface Callbacks {
