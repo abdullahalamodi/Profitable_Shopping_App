@@ -93,11 +93,11 @@ class MainActivity : AppCompatActivity(),
                     setCurrentFragment(CartFragment.newInstance())
                     true
                 }
-                R.id.menu_search -> {
+               /* R.id.menu_search -> {
 //                    setContent("Search")
                     setCurrentFragment(ShowAllProductsFragment.newInstance())
                     true
-                }
+                }*/
                 R.id.menu_notification -> {
                     setContent("Profile")
                     setCurrentFragment(FavoriteFragment.newInstance())

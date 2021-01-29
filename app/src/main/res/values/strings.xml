@@ -100,6 +100,8 @@
     <string name="notifications">ارسال الاشعارات</string>
     <string name="valuation_product">تقيـيـم المـنـتـج</string>
     <string name="write_comment">اكـتـب تـعليقـاً</string>
+    <string name="favorite">المفضلة</string>
+    <string name="Settings">الاعدادات</string>
 
 
 </resources>
