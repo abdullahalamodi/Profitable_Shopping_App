@@ -26,11 +26,7 @@ import com.finalproject.profitableshopping.view.user.ManageUserProfileFragment
 import com.finalproject.profitableshopping.view.user.RestPasswordFragment
 import com.finalproject.profitableshopping.view.user.UpdateInfoFragment
 import com.finalproject.profitableshopping.view.user.UserManageProfileFragment
-import com.finalproject.profitableshopping.view.products.fragments.*
-import com.finalproject.profitableshopping.view.user.*
-import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(),
     ProductListFragment.Callbacks,
@@ -40,7 +36,8 @@ class MainActivity : AppCompatActivity(),
     ShowAllProductsFragment.Callbacks,
     DetailsOfAllProductsFragment.Callbacks,
     UserManageProfileFragment.Callbacks,
-    ManageUserProfileFragment.Callbacks {
+    ManageUserProfileFragment.Callbacks,
+    AboutAppFragment.Callbacks {
 
     private lateinit var menu: Menu
     private lateinit var bottomNav: BottomNavigationView
@@ -197,13 +194,20 @@ class MainActivity : AppCompatActivity(),
                 true
             }
             R.id.menu_product_manage -> {
-                setCurrentFragment(AdminProductManagmentFragment.newInstance())
+                //setCurrentFragment(AdminProductManagmentFragment.newInstance(1))
                 true
             }
 
             R.id.sign_out -> {
                 logOut()
                 setCurrentFragment(LogInFragment.newInstance())
+                showButtonNavigation(false)
+                true
+            }
+
+            R.id.menu_about -> {
+                logOut()
+                addFragment(AboutAppFragment())
                 showButtonNavigation(false)
                 true
             }
@@ -283,4 +287,15 @@ class MainActivity : AppCompatActivity(),
     override fun onOpenProfile() {
         setCurrentFragment(UserManageProfileFragment.newInstance())
     }
+
+    override fun onAboutAppOpen(show: Boolean) {
+        //setCurrentFragment(AboutAppFragment())
+        showButtonNavigation(show)
+    }
+
+    /*override fun onBackPressed() {
+    //    super.onBackPressed()
+        var bottomSheetAddCat = ExitAppFragment();
+        bottomSheetAddCat.show(supportFragmentManager,"Tag")
+    }*/
 }

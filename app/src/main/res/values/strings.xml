@@ -86,6 +86,9 @@
     //////////////////////////////////////
     <string name="Category">الأصناف</string>
     <string name="Products">المنتجات</string>
+    <string name="size_of_product">اختر حجم المنتج</string>
+    <string name="color_of_product">اختر لون المنتج</string>
+    <string name="total_of_price">السعر الاجمالي</string>
 
 
 </resources>

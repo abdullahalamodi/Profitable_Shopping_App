@@ -22,13 +22,13 @@ class AdminProductManagmentFragment : Fragment() {
     private lateinit var productViewModel: ProductViewModel
     lateinit var adminProductRV: RecyclerView
     private var adapter: AdminMangeAdapter = AdminMangeAdapter(emptyList())
-
+     var catgoryId:Int?=0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
-        productViewModel.refreshMangeList()
+        productViewModel.refreshCategoryList(catgoryId.toString())
         arguments?.let {
-
+            catgoryId=it.getInt("CATID")
         }
     }
 
@@ -45,7 +45,7 @@ class AdminProductManagmentFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        productViewModel.manageProductsLiveData.observe(
+        productViewModel.categoryProductsLiveData.observe(
             viewLifecycleOwner,
             Observer {
                 updateUI(it)
@@ -125,9 +125,11 @@ inner class AdminMangeAdapter(private val productList: List<Product>) :
 
 companion object {
 
-    fun newInstance() =
+    fun newInstance(catgoryId: Int) =
         AdminProductManagmentFragment().apply {
             arguments = Bundle().apply {
+
+                putInt("CATID",catgoryId)
 
             }
         }

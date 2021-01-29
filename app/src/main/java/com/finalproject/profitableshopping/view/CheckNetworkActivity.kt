@@ -25,13 +25,15 @@ class CheckNetworkActivity : AppCompatActivity() {
         val activeNetwork: NetworkInfo?=connectionManger.activeNetworkInfo
         val isConnected:Boolean=activeNetwork?.isConnectedOrConnecting==true
         if (isConnected){
-            val i = Intent(this@CheckNetworkActivity, SplashScreenActivity::class.java)
+            val i = Intent(this@CheckNetworkActivity, MainActivity::class.java)
             startActivity(i)
-            Toast.makeText(this, "Network connection is available", Toast.LENGTH_SHORT).show()
+            finish()
+            Toast.makeText(this, "You connected Successful", Toast.LENGTH_LONG).show()
         }else{
-            val i = Intent(this@CheckNetworkActivity, CheckNetworkActivity::class.java)
+            /*val i = Intent(this@CheckNetworkActivity, CheckNetworkActivity::class.java)
             startActivity(i)
-            Toast.makeText(this, "Network connection is not available", Toast.LENGTH_SHORT).show()
+            finish()*/
+            Toast.makeText(this, "There is no network", Toast.LENGTH_LONG).show()
         }
     }
 }
