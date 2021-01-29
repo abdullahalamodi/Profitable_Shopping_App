@@ -8,9 +8,9 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         app:cardBackgroundColor="@color/colorPrimary">
 
         <LinearLayout
@@ -99,6 +99,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:textDirection="ltr"
                         android:entries="@array/category"
                         android:padding="12dp" />
 
@@ -119,8 +120,8 @@
 
                     <Spinner
                         android:id="@+id/spinner_product_size"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="196dp"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:entries="@array/category"
                         android:padding="12dp" />
