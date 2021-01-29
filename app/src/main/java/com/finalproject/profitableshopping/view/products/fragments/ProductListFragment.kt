@@ -17,8 +17,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.finalproject.profitableshopping.R
+import com.finalproject.profitableshopping.data.AppSharedPreference
 import com.finalproject.profitableshopping.data.models.Category
 import com.finalproject.profitableshopping.data.models.Product
+import com.finalproject.profitableshopping.viewmodel.CartViewModel
 import com.finalproject.profitableshopping.viewmodel.CategoryViewModel
 import com.finalproject.profitableshopping.viewmodel.ProductViewModel
 import com.squareup.picasso.Picasso
@@ -26,6 +28,7 @@ import com.squareup.picasso.Picasso
 class ProductListFragment : Fragment() {
     private lateinit var productViewModel: ProductViewModel
     private lateinit var categoryViewModel: CategoryViewModel
+    lateinit var carttViewModel: CartViewModel
     private lateinit var hCategoryRecyclerView: RecyclerView
     private lateinit var productsRv: RecyclerView
     private lateinit var categoriesList: List<Category>
@@ -70,11 +73,26 @@ class ProductListFragment : Fragment() {
         adapter.updateList(tempList)
     }
 
+    private fun listenCartBudge(){
+        carttViewModel.orderDetailsListLiveData.observe(
+            viewLifecycleOwner,
+            Observer {
+                callbacks?.onCartBudgeRefresh(it.size)
+            }
+        )
+    }
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         categoryViewModel = ViewModelProviders.of(this).get(CategoryViewModel::class.java)
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
+        carttViewModel = ViewModelProviders.of(this).get(CartViewModel::class.java)
+        carttViewModel.loadOrder(
+            AppSharedPreference.getCartId(requireContext())?.toInt()!!,
+            AppSharedPreference.getUserId(requireContext())!!
+        )
     }
 
     override fun onResume() {
@@ -107,6 +125,7 @@ class ProductListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        listenCartBudge()
         showProgress(true)
 
         showProgress(true)
@@ -310,6 +329,7 @@ class ProductListFragment : Fragment() {
 
     interface Callbacks {
         fun onItemSelected(itemId: Int)
+        fun onCartBudgeRefresh(count:Int)
         // fun onFloatButtonClicked()
     }
 

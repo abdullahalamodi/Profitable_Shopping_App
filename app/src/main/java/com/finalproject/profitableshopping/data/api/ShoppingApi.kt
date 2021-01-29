@@ -33,6 +33,13 @@ interface ShoppingApi {
     @DELETE("categories.php?")
     fun deleteCategory(@Query("id") id: String): Call<String>
 
+    @POST("categories.php")
+    fun updateCategoryCase(
+        @Query("id") id: String,
+        @Query("is_active") isActive: Int
+    ): Call<String>
+
+
     @Multipart
     @POST("image.php")
     fun uploadCategoryImage(
@@ -106,7 +113,8 @@ interface ShoppingApi {
 
     @GET("order_details.php?")
     fun getUserCartItems(
-        @Query("order_id") order_id: String
+        @Query("order_id") order_id: String,
+        @Query("user_id") user_id: String
     ): Call<List<OrderDetails>>
 
     @DELETE("orders.php")

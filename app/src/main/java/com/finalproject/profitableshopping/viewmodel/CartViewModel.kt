@@ -16,9 +16,10 @@ class CartViewModel : ViewModel() {
     private val cartIdLiveData = MutableLiveData<Int>()
 //    val pro = mutableListOf<OrderDetails>()
     val cartRepositry: CartRepositry
+    private var userId = ""
 
     var orderDetailsListLiveData = Transformations.switchMap(cartIdLiveData){ carId ->
-        getCartItemList(carId)
+        getCartItemList(carId,userId)
     }
 
     init {
@@ -26,8 +27,9 @@ class CartViewModel : ViewModel() {
     }
 
 
-    fun loadOrder(orderId: Int) {
+    fun loadOrder(orderId: Int, userId:String) {
         cartIdLiveData.value = orderId
+        this.userId = userId
     }
 
 
@@ -86,9 +88,9 @@ class CartViewModel : ViewModel() {
         )
         return message
     }
-    private fun getCartItemList(cartId:Int):LiveData<List<OrderDetails>> {
+    private fun getCartItemList(cartId:Int,userId: String):LiveData<List<OrderDetails>> {
         val orderList= MutableLiveData<List<OrderDetails>>()
-        val call=cartRepositry.getOrders(cartId)
+        val call=cartRepositry.getOrders(cartId,userId)
         call.enqueue(
             object :Callback<List<OrderDetails>>{
                 override fun onResponse(

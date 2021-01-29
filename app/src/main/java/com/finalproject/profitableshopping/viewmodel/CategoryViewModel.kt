@@ -127,6 +127,22 @@ class CategoryViewModel : ViewModel() {
 
     }
 
+    fun updateCategoryCase(catId: Int?, isActive: Int): MutableLiveData<String> {
+        val responseLiveData: MutableLiveData<String> = MutableLiveData()
+        val call = repository.updateCategoryCase(catId!!, isActive)
+        call.enqueue(object : Callback<String> {
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                responseLiveData.value = response.body()!!
+            }
+
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                responseLiveData.value = t.message!!
+            }
+        })
+        return responseLiveData
+
+    }
+
     fun deleteCategory(catId: Int): MutableLiveData<String> {
         val responseLiveData: MutableLiveData<String> = MutableLiveData()
         val call = repository.deleteCategory(catId)

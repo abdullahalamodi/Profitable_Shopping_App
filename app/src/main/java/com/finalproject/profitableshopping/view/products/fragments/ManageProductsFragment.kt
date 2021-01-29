@@ -1,6 +1,7 @@
 package com.finalproject.profitableshopping.view.products.fragments
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -151,6 +152,18 @@ class ManageProductsFragment : Fragment() {
         fun bind(pro: Product) {
             product = pro
             manageProductNameTv.text = pro.name
+
+            if (this.product.isActive()) {
+                manageProductDeleteOptionTV.text = "إخفاء"
+                manageProductNameTv.setTextColor(Color.BLACK)
+
+            } else{
+                manageProductDeleteOptionTV.text = "إظهار"
+                manageProductNameTv.setTextColor(Color.RED)
+
+            }
+
+
             manageProductRialPriceTv.text = "RY:" + pro.rialPrice.toString()
 
             manageProductMoreOptionIV.setOnClickListener {
@@ -167,13 +180,14 @@ class ManageProductsFragment : Fragment() {
                 }
 
                 manageProductDeleteOptionTV.setOnClickListener {
+                    product.isActive = product.changeIsActive()
                     productViewModel.refresh()
                     showProgress(true)
-                    productViewModel.deleteProduct(pro.id.toString()).observe(
+                    productViewModel.deleteProduct(pro.id.toString(),product.isActive).observe(
                         viewLifecycleOwner,
                         Observer {
                             showProgress(false)
-                            context?.showMessage("product deleted successfully")
+                            context?.showMessage("product updated successfully")
                             onProductDeleted()
                         }
                     )

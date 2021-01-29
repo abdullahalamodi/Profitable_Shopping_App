@@ -44,7 +44,7 @@ class CartFragment : Fragment() {
                     Observer {
                         AppSharedPreference.setCartId(requireContext(), "-1")
                         context?.showMessage("تمت عملية الشراء بنجاح :)")
-                        carttViewModel.loadOrder(0)
+                        carttViewModel.loadOrder(0,"")
                     }
                 )
         }
@@ -54,7 +54,7 @@ class CartFragment : Fragment() {
                 Observer {
                     AppSharedPreference.setCartId(requireContext(), "-1")
                     context?.showMessage("تم حذف السلة بنجاح :)")
-                    carttViewModel.loadOrder(0)
+                    carttViewModel.loadOrder(0,"")
                 }
             )
         }
@@ -65,7 +65,10 @@ class CartFragment : Fragment() {
         carttViewModel = ViewModelProviders.of(this).get(CartViewModel::class.java)
         commentViewModel = ViewModelProviders.of(this).get(CommentViewModel::class.java)
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
-        carttViewModel.loadOrder(AppSharedPreference.getCartId(requireContext())?.toInt()!!)
+        carttViewModel.loadOrder(
+            AppSharedPreference.getCartId(requireContext())?.toInt()!!,
+            AppSharedPreference.getUserId(requireContext())!!
+        )
     }
 
     override fun onCreateView(

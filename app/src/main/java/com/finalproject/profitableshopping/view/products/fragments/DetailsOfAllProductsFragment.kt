@@ -55,7 +55,6 @@ class DetailsOfAllProductsFragment : Fragment() {
     lateinit var favoriteFABtn: FloatingActionButton
     lateinit var cartBtn: FloatingActionButton
     lateinit var reportBtn: Button
-    lateinit var showCommentBtn: Button
     lateinit var ratingBar: RatingBar
     var callbacks: Callbacks?=null
     lateinit var product: Product
@@ -94,7 +93,7 @@ class DetailsOfAllProductsFragment : Fragment() {
             productViewModel.loadProduct(productId!!)
             reportViewModel.getProductReports(productId!!).observe(
                 this,
-                Observer {
+                Observer { it ->
                     countOfReports = it.size
                 }
             )
@@ -110,7 +109,6 @@ class DetailsOfAllProductsFragment : Fragment() {
         //  progressBar = view.findViewById(R.id.progress_circular)
 //        productImageIv = view.findViewById(R.id.img_product_details) as ImageView
         productNameTv = view.findViewById(R.id.tv_product_name_details) as TextView
-        showCommentBtn = view.findViewById(R.id.btnShowComment2) as Button
         //  productReviewsTv = view.findViewById(R.id.reviews_tv) as TextView
         productQuantityTv = view.findViewById(R.id.tv_product_quantity_details) as TextView
         productRialPriceTv = view.findViewById(R.id.tv_product_price_rial_details) as TextView
@@ -142,14 +140,6 @@ class DetailsOfAllProductsFragment : Fragment() {
                 ComplainDialog.newInstance(productId!!, product.userId!!).apply {
                     show(this@DetailsOfAllProductsFragment.parentFragmentManager, "report")
                 }
-            }
-        }
-        showCommentBtn.setOnClickListener {
-            if(AppSharedPreference.getUserToken(requireContext()).isNullOrBlank()&&AppSharedPreference.getUserToken(requireContext())!!.isEmpty())
-                Toast.makeText(requireContext(),"عذرا لم تقم بتسيل الدخول ",Toast.LENGTH_LONG).show()
-            else
-            AddComplainDialog.newInstance().apply {
-                show(this@DetailsOfAllProductsFragment.parentFragmentManager, "report")
             }
         }
         cartBtn.setOnClickListener {
@@ -216,6 +206,12 @@ class DetailsOfAllProductsFragment : Fragment() {
                     }
                      else{
                         chat_btn.isEnabled=false
+                        cartBtn.show()
+                        cartBtn.isEnabled=true
+                        favoriteFABtn.isEnabled=true
+                        reportBtn.isEnabled=true
+                        chat_btn.isEnabled=true
+                        call_btn.isEnabled=true
                     }
                 }
 

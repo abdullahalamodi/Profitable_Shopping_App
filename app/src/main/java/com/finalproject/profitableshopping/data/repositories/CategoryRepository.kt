@@ -49,6 +49,10 @@ class CategoryRepository {
         return shoppingApi.deleteCategory(catId.toString())
     }
 
+    fun updateCategoryCase(catId:Int,isActive:Int):Call<String>{
+        return shoppingApi.updateCategoryCase(catId.toString(),isActive)
+    }
+
     fun uploadImage(image: MultipartBody.Part,
                     catId: RequestBody
     ) :Call<String>{
@@ -59,8 +63,8 @@ class CategoryRepository {
     companion object{
        /// internal const val BASE_URL = "http://192.168.1.33:80/profitable_shopping_api/api/"
        // internal const val BASE_URL = "https://profitableshopping.000webhostapp.com/profitable_shopping_api/api/"
-     internal const val BASE_URL = "http://192.168.191.1:8080/profitable_shopping_api/api/"
-       // internal const val BASE_URL = "http://10.0.2.2:80/profitable_shopping_api/api/"
+//     internal const val BASE_URL = "http://192.168.191.1:8080/profitable_shopping_api/api/"
+        internal const val BASE_URL = "http://10.0.2.2:80/profitable_shopping_api/api/"
     }
 
 }

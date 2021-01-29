@@ -37,6 +37,10 @@ class ManageProductActivity : AppCompatActivity(),
         addFragment(DetailsOfAllProductsFragment.newInstance(itemId.toString()))
     }
 
+    override fun onCartBudgeRefresh(count: Int) {
+
+    }
+
     private fun setFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.container_manage_product, fragment)

@@ -356,16 +356,6 @@
                 android:textColor="@color/black"
                 app:cornerRadius="4dp"/>
 
-            <Button
-                android:id="@+id/btnShowComment2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_margin="8dp"
-                android:text="Show Comment"
-                android:background="@drawable/bg4"
-                android:textColor="@color/black"
-                app:cornerRadius="4dp"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/comments_recycler_view"

@@ -234,9 +234,9 @@ class ProductViewModel : ViewModel() {
     }
 
 
-    fun deleteProduct(proId: String): MutableLiveData<String> {
+    fun deleteProduct(proId: String,isActive:Int): MutableLiveData<String> {
         val responseLiveData: MutableLiveData<String> = MutableLiveData()
-        val call = productRepositry.deleteProduct(proId)
+        val call = productRepositry.deleteProduct(proId,isActive)
         call.enqueue(object : Callback<String> {
             override fun onResponse(
                 call: Call<String>,

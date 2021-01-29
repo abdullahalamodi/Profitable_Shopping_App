@@ -81,18 +81,18 @@ class ProductDetailsFragment : Fragment(),AdapterView.OnItemSelectedListener {
 
 
 
-        deleteBtn.setOnClickListener {
-            productViewModel.refresh()
-            showProgress(true)
-            productViewModel.deleteProduct(productId.toString()).observe(
-                viewLifecycleOwner,
-                Observer {
-                    showProgress(false)
-                    context?.showMessage("product deleted successfully")
-                    onProductDeleted()
-                }
-            )
-        }
+//        deleteBtn.setOnClickListener {
+//            productViewModel.refresh()
+//            showProgress(true)
+//            productViewModel.deleteProduct(productId.toString()).observe(
+//                viewLifecycleOwner,
+//                Observer {
+//                    showProgress(false)
+//                    context?.showMessage("product deleted successfully")
+//                    onProductDeleted()
+//                }
+//            )
+//        }
 
         updateBtn.setOnClickListener {
             callbacks.onUpdateProductClicked(productId)
