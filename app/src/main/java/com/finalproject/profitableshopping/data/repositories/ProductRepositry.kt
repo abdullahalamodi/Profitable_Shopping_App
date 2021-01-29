@@ -1,6 +1,7 @@
 package com.finalproject.profitableshopping.data.repositories
 
 import com.finalproject.profitableshopping.data.api.ShoppingApi
+import com.finalproject.profitableshopping.data.models.MySales
 import com.finalproject.profitableshopping.data.models.Product
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -53,6 +54,9 @@ class ProductRepositry {
 
     fun getProducts():Call<List<Product>>{
         return shoppingApi.getProducts()
+    }
+    fun getUserSales(userId: String):Call<List<MySales>>{
+        return shoppingApi.getUserSales(userId)
     }
 
     fun getProductsFroManage():Call<List<Product>>{
