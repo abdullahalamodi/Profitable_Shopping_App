@@ -11,18 +11,18 @@
         android:icon="@drawable/ic_shopping_cart"
         android:title="@string/cart"/>
 
-    <item
+   <!-- <item
         android:id="@+id/menu_search"
         android:icon="@drawable/ic_search"
         android:title="@string/search"/>
-
+-->
     <item
         android:id="@+id/menu_notification"
-        android:icon="@drawable/ic_notifications_none"
-        android:title="@string/Notification"/>
+        android:icon="@drawable/ic_favorite"
+        android:title="@string/favorite"/>
 
     <item
         android:id="@+id/menu_profile"
-        android:icon="@drawable/ic_person"
-        android:title="@string/Profile"/>
+        android:icon="@drawable/ic_settings"
+        android:title="@string/Settings"/>
 </menu>

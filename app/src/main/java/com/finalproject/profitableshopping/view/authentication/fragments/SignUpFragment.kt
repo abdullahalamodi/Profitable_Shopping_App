@@ -2,6 +2,7 @@ package com.finalproject.profitableshopping.view.authentication.fragments
 
 import android.app.ProgressDialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Patterns
@@ -17,6 +18,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.AppSharedPreference
 import com.finalproject.profitableshopping.data.models.Favorite
+import com.finalproject.profitableshopping.view.MainActivity
 import com.finalproject.profitableshopping.viewmodel.FavoriteViewModel
 import com.google.firebase.auth.FirebaseAuth
 
@@ -141,12 +143,11 @@ class SignUpFragment : Fragment() {
     private fun sendEmailVerification() {
         val user = auth.currentUser
         user?.sendEmailVerification()?.addOnCompleteListener {
-
             if (it.isSuccessful) {
                 Toast.makeText(requireContext(), "You registered successful", Toast.LENGTH_LONG)
                     .show()
-                /* var intent = Intent(requireContext(), SignIn::class.java)
-                 startActivity(intent)*/
+                 var intent = Intent(requireContext(), MainActivity::class.java)
+                 startActivity(intent)
                 signUpCallbacks?.onCreateAccountSuccess()
             }
         }

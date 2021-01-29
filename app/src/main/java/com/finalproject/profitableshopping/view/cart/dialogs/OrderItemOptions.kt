@@ -22,8 +22,8 @@ private const val ARG_PRODUCT_P = "product_p"
 
 class OrderItemOptions : DialogFragment() {
     lateinit var quantityEd: TextView
-    lateinit var plusBtn: Button
-    lateinit var menusBtn: Button
+    lateinit var plusBtn: ImageView
+    lateinit var menusBtn: ImageView
     lateinit var colorSV: Spinner
     lateinit var sizeSV: Spinner
     lateinit var totalPriceV: TextView
@@ -130,10 +130,10 @@ class OrderItemOptions : DialogFragment() {
                 quantity -= 1
                 price -= productPrice
                 quantityEd.text = quantity.toString()
-                totalPriceV.text = price.toString()
+                totalPriceV.text = price.toString()+"$"
             }
         }
-        return AlertDialog.Builder(requireContext(), R.style.ThemeOverlay_MaterialComponents)
+        return AlertDialog.Builder(requireContext(), R.style.Theme_AppCompat_DayNight_Dialog_Alert)
             .setView(view)
             .create()
 
