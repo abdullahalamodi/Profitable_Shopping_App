@@ -120,8 +120,8 @@
 
                     <Spinner
                         android:id="@+id/spinner_product_size"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="196dp"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:entries="@array/category"
                         android:padding="12dp" />
