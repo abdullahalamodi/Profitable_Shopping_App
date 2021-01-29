@@ -88,6 +88,7 @@ class MainActivity : AppCompatActivity(),
                     setCurrentFragment(CartFragment.newInstance())
                     true
                 }
+
                /* R.id.menu_search -> {
 //                    setContent("Search")
                     setCurrentFragment(ShowAllProductsFragment.newInstance())
