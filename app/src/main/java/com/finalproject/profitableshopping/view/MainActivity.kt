@@ -15,7 +15,6 @@ import com.finalproject.profitableshopping.view.authentication.fragments.ActiveU
 import com.finalproject.profitableshopping.view.authentication.fragments.LogInFragment
 import com.finalproject.profitableshopping.view.authentication.fragments.SignUpFragment
 import com.finalproject.profitableshopping.view.cart.CartFragment
-import com.finalproject.profitableshopping.view.category.AddCategoryFragment
 import com.finalproject.profitableshopping.view.category.CategoryActivity
 import com.finalproject.profitableshopping.view.favorite.FavoriteFragment
 import com.finalproject.profitableshopping.view.products.ManageProductActivity
@@ -27,11 +26,7 @@ import com.finalproject.profitableshopping.view.user.ManageUserProfileFragment
 import com.finalproject.profitableshopping.view.user.RestPasswordFragment
 import com.finalproject.profitableshopping.view.user.UpdateInfoFragment
 import com.finalproject.profitableshopping.view.user.UserManageProfileFragment
-import com.finalproject.profitableshopping.view.products.fragments.*
-import com.finalproject.profitableshopping.view.user.*
-import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(),
     ProductListFragment.Callbacks,
@@ -199,7 +194,7 @@ class MainActivity : AppCompatActivity(),
                 true
             }
             R.id.menu_product_manage -> {
-                setCurrentFragment(AdminProductManagmentFragment.newInstance())
+                //setCurrentFragment(AdminProductManagmentFragment.newInstance(1))
                 true
             }
 

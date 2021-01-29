@@ -3,10 +3,11 @@ package com.finalproject.profitableshopping.view.category
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import com.finalproject.profitableshopping.R
+import com.finalproject.profitableshopping.view.products.fragments.AdminProductManagmentFragment
 
-class CategoryActivity : AppCompatActivity(), AddCategoryFragment.CallBacks {
+class CategoryActivity : AppCompatActivity(), AddCategoryFragment.CallBacks,
+CategoryFragment.CategoryCallbacks{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_category)
@@ -27,5 +28,9 @@ class CategoryActivity : AppCompatActivity(), AddCategoryFragment.CallBacks {
 
     override fun onSuccess(fragment: AddCategoryFragment) {
         setFragment(CategoryFragment.newInstance())
+    }
+
+    override fun onOpenProductManager(catgoryId: Int) {
+        setFragment(AdminProductManagmentFragment.newInstance(catgoryId))
     }
 }

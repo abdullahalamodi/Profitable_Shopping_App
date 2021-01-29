@@ -1,6 +1,8 @@
 package com.finalproject.profitableshopping.view.category
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +25,9 @@ import kotlinx.android.synthetic.main.update_category.view.*
 const val USER_ID_ARG = "userId"
 
 class CategoryFragment : Fragment(), UploadRequestBody.UploadCallback {
-
+    interface CategoryCallbacks{
+        fun onOpenProductManager(catgoryId:Int)
+    }
     private lateinit var categoryNameEt: EditText
     private lateinit var addBtn: Button
     private lateinit var categoryViewModel: CategoryViewModel
@@ -33,7 +37,17 @@ class CategoryFragment : Fragment(), UploadRequestBody.UploadCallback {
     private lateinit var addCatFloatingABtn: FloatingActionButton
     private var adapter: CategoryAdapter? = CategoryAdapter(emptyList())
     private var openMoreOptions = true
+    var callbacks:CategoryCallbacks?=null
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callbacks=context as CategoryCallbacks
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        callbacks=null
+    }
     override fun onStart() {
         super.onStart()
         addCatFloatingABtn.setOnClickListener {
@@ -109,7 +123,10 @@ class CategoryFragment : Fragment(), UploadRequestBody.UploadCallback {
         var categoryMoreOPtionIV: ImageView = view.findViewById(R.id.img_more_options) as ImageView
         var categoryUpdeteDeleteLy: LinearLayout =
             view.findViewById(R.id.ly_update_delete_category) as LinearLayout
-
+        var category=Category()
+        init {
+            view.setOnClickListener(this)
+        }
 
         ////////////////////this function to update the category
 
@@ -176,6 +193,8 @@ class CategoryFragment : Fragment(), UploadRequestBody.UploadCallback {
         }
 
         fun bind(cat: Category) {
+
+            this.category=cat
             categoryNameTv.text = cat.name
             if (cat.path != "" && cat.path != null) {
                 Picasso.get().also {
@@ -214,6 +233,9 @@ class CategoryFragment : Fragment(), UploadRequestBody.UploadCallback {
 
         override fun onClick(p0: View?) {
 //            showPopUpMenu(p0!!)
+            Log.d("catId",this.category.id!!.toString())
+            //callbacks?.onOpenProductManager(this.category.id!!)
+
         }
     }
 
