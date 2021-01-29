@@ -13,22 +13,10 @@
         android:layout_alignParentEnd="true"
         app:cardBackgroundColor="@color/colorPrimary">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:inputType="textMultiLine"
-        android:hint="إكتب عنوان البلاغ">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/report_name_et"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
-            android:fontFamily="@font/rb_light" />
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/txt_edit_category"
