@@ -124,7 +124,7 @@ class ProductViewModel : ViewModel() {
             }
 
             override fun onFailure(call: Call<List<Product>>, t: Throwable) {
-                Log.d("Faild ", t.message!!)
+                Log.d("Failed ", t.message!!)
                 responseLiveData.value = emptyList()
             }
         })
@@ -143,7 +143,7 @@ class ProductViewModel : ViewModel() {
             }
 
             override fun onFailure(call: Call<List<Product>>, t: Throwable) {
-                Log.d("Faild ", t.message!!)
+                Log.d("Failed ", t.message!!)
                 responseLiveData.value = emptyList()
             }
         })
@@ -162,7 +162,7 @@ class ProductViewModel : ViewModel() {
 
             override fun onFailure(call: Call<Product>, t: Throwable) {
                 responseLiveData.value = Product()
-                Log.d("Faild ", t.message!!)
+                Log.d("Failed ", t.message!!)
 
             }
 

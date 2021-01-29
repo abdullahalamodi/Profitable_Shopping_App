@@ -1,5 +1,6 @@
 package com.finalproject.profitableshopping.view
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,6 +10,23 @@ import com.finalproject.profitableshopping.R
 
 
 class ContactUsFragment : Fragment() {
+
+    var callbacks: Callbacks? = null
+
+    interface Callbacks {
+        fun onContactUsOpen(show: Boolean)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callbacks = context as ContactUsFragment.Callbacks
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        callbacks?.onContactUsOpen(true)
+        callbacks=null
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -42,7 +42,8 @@ class MainActivity : AppCompatActivity(),
     DetailsOfAllProductsFragment.Callbacks,
     UserManageProfileFragment.Callbacks,
     ManageUserProfileFragment.Callbacks,
-    AboutAppFragment.Callbacks {
+    AboutAppFragment.Callbacks,
+    ContactUsFragment.Callbacks{
 
     private lateinit var menu: Menu
     private lateinit var bottomNav: BottomNavigationView
@@ -211,11 +212,17 @@ class MainActivity : AppCompatActivity(),
             }
 
             R.id.menu_about -> {
-                logOut()
                 addFragment(AboutAppFragment())
                 showButtonNavigation(false)
                 true
             }
+            R.id.contact_us -> {
+                addFragment(ContactUsFragment())
+                showButtonNavigation(false)
+                true
+            }
+
+
             else -> return super.onOptionsItemSelected(item)
         }
     }
@@ -294,6 +301,11 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun onAboutAppOpen(show: Boolean) {
+        //setCurrentFragment(AboutAppFragment())
+        showButtonNavigation(show)
+    }
+
+    override fun onContactUsOpen(show: Boolean) {
         //setCurrentFragment(AboutAppFragment())
         showButtonNavigation(show)
     }
