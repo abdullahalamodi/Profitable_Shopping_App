@@ -33,4 +33,7 @@ class CartRepositry {
     fun buy(cartId: String):Call<String>{
         return shoppingApi.buy(cartId)
     }
+    fun getUserOrders(userId:String):Call<List<Order>>{
+        return shoppingApi.getUserOrders(userId)
+    }
 }
