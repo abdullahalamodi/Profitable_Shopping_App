@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.view.isNotEmpty
 import androidx.core.widget.ContentLoadingProgressBar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -24,17 +25,18 @@ class FavoriteFragment : Fragment() {
     private lateinit var favoriteViewModel: FavoriteViewModel
     private lateinit var productViewModel: ProductViewModel
     private lateinit var favoriteProductsRv: RecyclerView
+    private lateinit var emptyFavoriteTV: TextView
 
     private lateinit var progressBar: ProgressBar
-    var favorites:List<Favorite> = emptyList()
-    private var adapter:FavoriteAdapter = FavoriteAdapter(favorites)
+    var favorites: List<Favorite> = emptyList()
+    private var adapter: FavoriteAdapter = FavoriteAdapter(favorites)
 
     // private lateinit var addFbtn: FloatingActionButton
     private lateinit var loadingProgressBar: ContentLoadingProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        favoriteViewModel= ViewModelProviders.of(this).get(FavoriteViewModel::class.java)
+        favoriteViewModel = ViewModelProviders.of(this).get(FavoriteViewModel::class.java)
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -51,8 +53,9 @@ class FavoriteFragment : Fragment() {
             //next line still need some config
             R.layout.fragment_favorite_product_list, container, false
         )
-        favoriteProductsRv = view.findViewById(R.id.rv_favorite_product_list)
         progressBar = view.findViewById(R.id.progress_circular)
+        emptyFavoriteTV = view.findViewById(R.id.tv_empty_favorite)
+        favoriteProductsRv = view.findViewById(R.id.rv_favorite_product_list)
         favoriteProductsRv.layoutManager = LinearLayoutManager(context)
         //  addFbtn =view.findViewById()
         //    loadingProgressBar=view.findViewById()
@@ -64,50 +67,59 @@ class FavoriteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         showProgress(true)
-        val items= mutableListOf<FavoriteDetails>()
-        items.add(FavoriteDetails(null,1,"1"))
-        items.add(FavoriteDetails(null,1,"1"))
-        items.add(FavoriteDetails(null,1,"1"))
-        items.add(FavoriteDetails(null,1,"1"))
-       favoriteViewModel.getUserFavorites(AppSharedPreference.getUserId(requireContext())!!).observe(
-            viewLifecycleOwner,
-            Observer { favoriteList ->
-                favorites=favoriteList
-                showProgress(false)
-               updateUI(favorites)
-            }
-        )
+        val items = mutableListOf<FavoriteDetails>()
+        items.add(FavoriteDetails(null, 1, "1"))
+        items.add(FavoriteDetails(null, 1, "1"))
+        items.add(FavoriteDetails(null, 1, "1"))
+        items.add(FavoriteDetails(null, 1, "1"))
+        favoriteViewModel.getUserFavorites(AppSharedPreference.getUserId(requireContext())!!)
+            .observe(
+                viewLifecycleOwner,
+                Observer { favoriteList ->
+                    favorites = favoriteList
+                    showProgress(false)
+                    updateUI(favorites)
+                }
+            )
     }
+
     private fun showProgress(show: Boolean) {
         if (show)
             progressBar.visibility = View.VISIBLE
         else
             progressBar.visibility = View.GONE
     }
+
     private fun updateUI(favoriteItem: List<Favorite>) {
-        adapter = FavoriteAdapter(favoriteItem)
-        favoriteProductsRv.adapter = adapter
+        if (favoriteItem.isNotEmpty()) {
+            adapter = FavoriteAdapter(favoriteItem)
+            favoriteProductsRv.adapter = adapter
+            emptyFavoriteTV.visibility = View.GONE
+        } else {
+            emptyFavoriteTV.visibility = View.VISIBLE
+        }
     }
-    private inner class FavoriteHolder(view: View) : RecyclerView.ViewHolder(view){
+
+    private inner class FavoriteHolder(view: View) : RecyclerView.ViewHolder(view) {
         // need to change next variable inflate to be comfortable with product item xml file
         var productImageIv = view.findViewById(R.id.ImgV_product_fav) as ImageView
         var productNameTv: TextView = view.findViewById(R.id.tv_name_product_fav) as TextView
         var productRialPriceTv: TextView = view.findViewById(R.id.tv_price_product_fav) as TextView
         var deleteImageView: ImageView = view.findViewById(R.id.img_delete_fav) as ImageView
         var favoriteItem = Favorite(null)
+
         init {
             deleteImageView.setOnClickListener {
-               favoriteViewModel.deleteFavoriteItem(this.favoriteItem.id!!).observe(
-                   this@FavoriteFragment,
-                   Observer {
+                favoriteViewModel.deleteFavoriteItem(this.favoriteItem.id!!).observe(
+                    this@FavoriteFragment,
+                    Observer {
 
-                      // updateUI(favorites)
+                        // updateUI(favorites)
 
-                             Toast.makeText(requireContext(),it,Toast.LENGTH_LONG).show()
+                        Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
 
 
-
-                     /*  *//*favoriteViewModel.getFavoriteItems(1).observe(
+                        /*  *//*favoriteViewModel.getFavoriteItems(1).observe(
                            viewLifecycleOwner,
                            Observer { favoriteList ->
                                showProgress(false)
@@ -115,29 +127,28 @@ class FavoriteFragment : Fragment() {
 
                            }
                        )*/
-                   }
-               )
+                    }
+                )
 
             }
         }
-
 
 
         fun bind(fav: Favorite) {
             this.favoriteItem = fav
 
             productNameTv.text = this.favoriteItem.product!!.name
-            productRialPriceTv.text =this.favoriteItem.product?.rialPrice.toString()
-            if (this.favoriteItem.product?.images!!.isNotEmpty()){
+            productRialPriceTv.text = this.favoriteItem.product?.rialPrice.toString()
+            if (this.favoriteItem.product?.images!!.isNotEmpty()) {
                 Picasso.get().also {
-                    val path =this.favoriteItem.product!!.images[0].getUrl()
+                    val path = this.favoriteItem.product!!.images[0].getUrl()
                     it.load(path)
-                        .resize(150,150)
+                        .resize(150, 150)
                         .centerCrop()
                         .placeholder(R.drawable.ic_phone_android)
                         .into(productImageIv)
                 }
-            }else{
+            } else {
                 productImageIv.setImageResource(R.drawable.ic_phone_android)
             }
 /*            productViewModel.loadProduct(favoriteItem.product_id)
