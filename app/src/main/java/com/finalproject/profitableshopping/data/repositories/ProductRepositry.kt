@@ -79,8 +79,8 @@ class ProductRepositry {
         return  shoppingApi.updateProductCase(product.id.toString(),product.isActive)
     }
 
-    fun deleteProduct(proId:String):Call<String>{
-        return shoppingApi.deleteProduct(proId)
+    fun deleteProduct(proId:String,isActive:Int):Call<String>{
+        return shoppingApi.updateProductCase(proId,isActive)
     }
 
 }

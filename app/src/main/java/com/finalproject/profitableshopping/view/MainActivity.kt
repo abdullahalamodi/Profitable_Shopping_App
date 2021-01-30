@@ -8,18 +8,19 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.AppSharedPreference
-import com.finalproject.profitableshopping.view.authentication.fragments.ActiveFragment
-import com.finalproject.profitableshopping.view.authentication.fragments.ActiveUserAccountFragment
-import com.finalproject.profitableshopping.view.authentication.fragments.LogInFragment
-import com.finalproject.profitableshopping.view.authentication.fragments.SignUpFragment
+import com.finalproject.profitableshopping.view.authentication.fragments.*
 import com.finalproject.profitableshopping.view.cart.CartFragment
 import com.finalproject.profitableshopping.view.category.CategoryActivity
 import com.finalproject.profitableshopping.view.favorite.FavoriteFragment
 import com.finalproject.profitableshopping.view.products.ManageProductActivity
+
 import com.finalproject.profitableshopping.view.products.OrderDetailsFragment
 import com.finalproject.profitableshopping.view.products.fragments.AdminProductManagmentFragment
+
 import com.finalproject.profitableshopping.view.products.fragments.DetailsOfAllProductsFragment
 import com.finalproject.profitableshopping.view.products.fragments.ProductListFragment
 import com.finalproject.profitableshopping.view.products.fragments.ShowAllProductsFragment
@@ -28,6 +29,7 @@ import com.finalproject.profitableshopping.view.user.ManageUserProfileFragment
 import com.finalproject.profitableshopping.view.user.RestPasswordFragment
 import com.finalproject.profitableshopping.view.user.UpdateInfoFragment
 import com.finalproject.profitableshopping.view.user.UserManageProfileFragment
+import com.finalproject.profitableshopping.viewmodel.CartViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity(),
@@ -41,7 +43,8 @@ class MainActivity : AppCompatActivity(),
     UserManageProfileFragment.Callbacks,
     ManageUserProfileFragment.Callbacks,
     AboutAppFragment.Callbacks,
-    ContactUsFragment.Callbacks{
+    ContactUsFragment.Callbacks,
+    SettingsFragment.Callbacks{
 
     private lateinit var menu: Menu
     private lateinit var bottomNav: BottomNavigationView
@@ -49,7 +52,8 @@ class MainActivity : AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        bottomNav=findViewById(R.id.bottomNav)
+        bottomNav = findViewById(R.id.bottomNav)
+
 
         //hide app bar elevation
         supportActionBar?.elevation = 0.0f
@@ -92,19 +96,19 @@ class MainActivity : AppCompatActivity(),
                     true
                 }
 
-               /* R.id.menu_search -> {
-//                    setContent("Search")
-                    setCurrentFragment(ShowAllProductsFragment.newInstance())
-                    true
-                }*/
+                /* R.id.menu_search -> {
+ //                    setContent("Search")
+                     setCurrentFragment(ShowAllProductsFragment.newInstance())
+                     true
+                 }*/
                 R.id.menu_notification -> {
-                    setContent("Profile")
+                    setContent("Favorites")
                     setCurrentFragment(FavoriteFragment.newInstance())
                     true
                 }
-                R.id.menu_profile -> {
-                    setContent("Profile")
-                    setCurrentFragment(ManageUserProfileFragment.newInstance())
+                R.id.menu_settings -> {
+                    setContent("Settings")
+                    addFragment(SettingsFragment())
                     true
                 }
                 else -> false
@@ -112,11 +116,21 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
-    fun showButtonNavigation(show: Boolean) {
+    private fun showButtonNavigation(show: Boolean) {
         if (show)
             bottomNav.visibility = View.VISIBLE
         else
             bottomNav.visibility = View.GONE
+    }
+
+    private fun addCartBudge(count: Int) {
+        if (count > 0) {
+            val budge = bottomNav.getOrCreateBadge(R.id.menu_shopping_cart)
+            budge.number = count
+            budge.isVisible = true
+        } else {
+            bottomNav.removeBadge(R.id.menu_shopping_cart)
+        }
     }
 
     private fun setCurrentFragment(fragment: Fragment) =
@@ -248,6 +262,7 @@ class MainActivity : AppCompatActivity(),
         filterMenuItems(menu)
     }
 
+
     private fun addFragment(fragment: Fragment) =
         supportFragmentManager.beginTransaction().apply {
             add(R.id.container, fragment)
@@ -257,6 +272,10 @@ class MainActivity : AppCompatActivity(),
 
     override fun onItemSelected(itemId: Int) {
         addFragment(DetailsOfAllProductsFragment.newInstance(itemId.toString()))
+    }
+
+    override fun onCartBudgeRefresh(count: Int) {
+        addCartBudge(count)
     }
 
     override fun onSignUpClicked() {
@@ -269,6 +288,7 @@ class MainActivity : AppCompatActivity(),
         filterMenuItems(menu)
     }
 
+
     override fun onCreateAccountSuccess() {
         setCurrentFragment(SignUpFragment.newInstance())
     }
@@ -276,6 +296,8 @@ class MainActivity : AppCompatActivity(),
     override fun onActiveAccount() {
         setCurrentFragment(ActiveUserAccountFragment.newInstance())
     }
+
+
 
 
     private var isNavHide = false
@@ -299,6 +321,8 @@ class MainActivity : AppCompatActivity(),
         setCurrentFragment(RestPasswordFragment.newInstance())
     }
 
+
+
     override fun onUpdateClicked() {
         setCurrentFragment(UpdateInfoFragment.newInstance())
     }
@@ -317,8 +341,10 @@ class MainActivity : AppCompatActivity(),
         showButtonNavigation(show)
     }
 
+
     override fun onOpenOrderDatails(orderId: Int) {
         setCurrentFragment(OrderDetailsFragment.newInstance(orderId))
+
     }
 
     /*override fun onBackPressed() {

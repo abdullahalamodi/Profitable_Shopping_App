@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,19 +15,22 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.finalproject.profitableshopping.R
+import com.google.android.gms.tasks.Continuation
+import com.google.android.gms.tasks.Task
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
 import kotlinx.android.synthetic.main.fragment_user_profile.*
 import java.io.IOException
 import java.util.*
-
+private const val PICK_IMAGE_REQUEST = 0
 class UserManageProfileFragment : Fragment() {
 /*
     lateinit var emailTv:TextView
     lateinit var phoneTv:TextView
     lateinit var isActiveTv:TextView*/
-private val PICK_IMAGE_REQUEST = 0
-    private var filePath: Uri? = null
+
+   lateinit var filePath: Uri
     lateinit var image: ImageView
     lateinit var map : Button
     lateinit var reset: Button
@@ -67,7 +71,7 @@ private val PICK_IMAGE_REQUEST = 0
         image=view.findViewById(R.id.image_preview)
         reset = view.findViewById(R.id.resetPassword)
         changeInfo =view.findViewById(R.id.changeInfo)
-        updateUi()
+       // updateUi()
 
         return view
     }
@@ -92,10 +96,14 @@ private val PICK_IMAGE_REQUEST = 0
         btn_upload_image.setOnClickListener { uploadImage() }
     }
     private fun launchGallery() {
-        val intent = Intent()
-        intent.type = "image/*"
-        intent.action = Intent.ACTION_GET_CONTENT
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST)
+        var intent = Intent(Intent.ACTION_GET_CONTENT).apply {
+            setType("image/*")
+        }
+        startActivityForResult(intent,PICK_IMAGE_REQUEST)
+      //  val intent = Intent()
+      //  intent.type = "image/*"
+     //   intent.action = Intent.ACTION_GET_CONTENT
+      //  startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -105,10 +113,10 @@ private val PICK_IMAGE_REQUEST = 0
                 return
             }
 
-            filePath = data.data
+            filePath = data.data!!
             try {
-               // val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, filePath)
-                val bitmap=BitmapFactory.decodeFile(filePath!!.path)
+                val bitmap = MediaStore.Images.Media.getBitmap(getActivity()?.getContentResolver(), filePath)
+               // val bitmap=BitmapFactory.decodeFile(filePath!!.path)
                 image.setImageBitmap(bitmap)
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -119,21 +127,60 @@ private val PICK_IMAGE_REQUEST = 0
 
 
     private fun uploadImage() {
-        if (filePath != null) {
-            val ref = storageReference?.child("uploads/" + UUID.randomUUID().toString())
-            val uploadTask = ref?.putFile(filePath!!)
-            Toast.makeText(requireContext(), "SuccessFul", Toast.LENGTH_LONG).show()
+        val storageRef = FirebaseStorage.getInstance().getReference().child("Images/image.jpg")
 
+        storageRef.putFile(filePath).addOnCompleteListener {
+            if(it.isSuccessful){
+                Toast.makeText(requireContext(), " SuccessFul ", Toast.LENGTH_LONG).show()
+            }
+            else{
+                Toast.makeText(requireContext(), " Faild ", Toast.LENGTH_LONG).show()
+            }
         }
     }
 
-    private fun updateUi(){
-        /*val user = AppSharedPreference.getUserData(context!!)
-        emailTv.text = "email : "+user?.email
-        phoneTv.text = "phone :"+user?.phone
-        isActiveTv.text = "i sActive :"+user?.isActive.toString()
-        isActiveTv.text = "user id  :"+user?.id.toString()*/
-    }
+//    private fun uploadImage(){
+//        if(filePath != null){
+//            val ref = storageReference?.child("upload/" + UUID.randomUUID().toString())
+//            val uploadTask = ref?.putFile(filePath!!)
+//
+//            val urlTask = uploadTask?.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
+//                if (!task.isSuccessful) {
+//                    task.exception?.let {
+//                        throw it
+//                    }
+//                }
+//                return@Continuation ref.downloadUrl
+//            })?.addOnCompleteListener { task ->
+//                if (task.isSuccessful) {
+//                    val downloadUri = task.result
+//                 //   addUploadRecordToDb(downloadUri.toString())
+//                } else {
+//                    // Handle failures
+//                }
+//            }?.addOnFailureListener{
+//
+//            }
+//        }else{
+//            Toast.makeText(requireContext(), "Please Upload an Image", Toast.LENGTH_SHORT).show()
+//        }
+//    }
+//    private fun uploadImage() {
+//        if (filePath != null) {
+//            val ref = storageReference?.child("uploads/" + UUID.randomUUID().toString())
+//            val uploadTask = ref?.putFile(filePath!!)
+//            Toast.makeText(requireContext(), "SuccessFul", Toast.LENGTH_LONG).show()
+//
+//        }
+//    }
+//
+//    private fun updateUi(){
+//        /*val user = AppSharedPreference.getUserData(context!!)
+//        emailTv.text = "email : "+user?.email
+//        phoneTv.text = "phone :"+user?.phone
+//        isActiveTv.text = "i sActive :"+user?.isActive.toString()
+//        isActiveTv.text = "user id  :"+user?.id.toString()*/
+//    }
     interface Callbacks{
         fun onRestPasswordClicked()
         fun onUpdateClicked()

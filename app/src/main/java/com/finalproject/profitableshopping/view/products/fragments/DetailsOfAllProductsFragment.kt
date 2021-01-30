@@ -23,6 +23,8 @@ import com.finalproject.profitableshopping.data.AppSharedPreference
 import com.finalproject.profitableshopping.data.models.*
 import com.finalproject.profitableshopping.showMessage
 import com.finalproject.profitableshopping.view.cart.dialogs.OrderItemOptions
+import com.finalproject.profitableshopping.view.category.AddCategoryFragment
+import com.finalproject.profitableshopping.view.comments.CommentsFragment
 import com.finalproject.profitableshopping.view.report.dialog.AddComplainDialog
 import com.finalproject.profitableshopping.view.report.dialog.ComplainDialog
 import com.finalproject.profitableshopping.viewmodel.CommentViewModel
@@ -55,9 +57,8 @@ class DetailsOfAllProductsFragment : Fragment() {
     lateinit var favoriteFABtn: FloatingActionButton
     lateinit var cartBtn: FloatingActionButton
     lateinit var reportBtn: Button
-    lateinit var showCommentBtn: Button
     lateinit var ratingBar: RatingBar
-    var callbacks: Callbacks?=null
+    var callbacks: Callbacks? = null
     lateinit var product: Product
     lateinit var commentsRecyclerView: RecyclerView
     lateinit var showComments: Button
@@ -76,7 +77,7 @@ class DetailsOfAllProductsFragment : Fragment() {
     override fun onDetach() {
         super.onDetach()
         callbacks?.onDetailsOpen(true)
-        callbacks=null
+        callbacks = null
     }
 
 
@@ -86,15 +87,15 @@ class DetailsOfAllProductsFragment : Fragment() {
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
         reportViewModel = ViewModelProviders.of(this).get(ReportViewModel::class.java)
         favoriteViewModel = ViewModelProviders.of(this).get(FavoriteViewModel::class.java)
-        product= Product()
-       // mainActivity?.anim(false)
+        product = Product()
+        // mainActivity?.anim(false)
         callbacks?.onDetailsOpen(false)
         arguments?.let {
             productId = it.getString(ARG_PRODUCT_ID)
             productViewModel.loadProduct(productId!!)
             reportViewModel.getProductReports(productId!!).observe(
                 this,
-                Observer {
+                Observer { it ->
                     countOfReports = it.size
                 }
             )
@@ -110,7 +111,6 @@ class DetailsOfAllProductsFragment : Fragment() {
         //  progressBar = view.findViewById(R.id.progress_circular)
 //        productImageIv = view.findViewById(R.id.img_product_details) as ImageView
         productNameTv = view.findViewById(R.id.tv_product_name_details) as TextView
-        showCommentBtn = view.findViewById(R.id.btnShowComment2) as Button
         //  productReviewsTv = view.findViewById(R.id.reviews_tv) as TextView
         productQuantityTv = view.findViewById(R.id.tv_product_quantity_details) as TextView
         productRialPriceTv = view.findViewById(R.id.tv_product_price_rial_details) as TextView
@@ -128,46 +128,55 @@ class DetailsOfAllProductsFragment : Fragment() {
         imageSlider = view.findViewById(R.id.img_product_details)
 
 
-        favoriteFABtn.setOnClickListener{
-              if(AppSharedPreference.getUserToken(requireContext()).isNullOrBlank()||AppSharedPreference.getUserToken(requireContext())!!.isEmpty())
-                Toast.makeText(requireContext(),"عذرا لم تقم بتسيل الدخول ",Toast.LENGTH_LONG).show()
-                else
+        favoriteFABtn.setOnClickListener {
+            if (AppSharedPreference.getUserToken(requireContext())
+                    .isNullOrBlank() || AppSharedPreference.getUserToken(requireContext())!!
+                    .isEmpty()
+            )
+                Toast.makeText(requireContext(), "عذرا لم تقم بتسيل الدخول ", Toast.LENGTH_LONG)
+                    .show()
+            else
                 addItemToFavorite()
-            }
+        }
 
         reportBtn.setOnClickListener {
-            if(AppSharedPreference.getUserToken(requireContext()).isNullOrBlank()||AppSharedPreference.getUserToken(requireContext())!!.isEmpty())
-                Toast.makeText(requireContext(),"عذرا لم تقم بتسيل الدخول ",Toast.LENGTH_LONG).show()
+            if (AppSharedPreference.getUserToken(requireContext())
+                    .isNullOrBlank() || AppSharedPreference.getUserToken(requireContext())!!
+                    .isEmpty()
+            )
+                Toast.makeText(requireContext(), "عذرا لم تقم بتسيل الدخول ", Toast.LENGTH_LONG)
+                    .show()
             else {
                 ComplainDialog.newInstance(productId!!, product.userId!!).apply {
                     show(this@DetailsOfAllProductsFragment.parentFragmentManager, "report")
                 }
             }
         }
-        showCommentBtn.setOnClickListener {
-            if(AppSharedPreference.getUserToken(requireContext()).isNullOrBlank()&&AppSharedPreference.getUserToken(requireContext())!!.isEmpty())
-                Toast.makeText(requireContext(),"عذرا لم تقم بتسيل الدخول ",Toast.LENGTH_LONG).show()
-            else
-            AddComplainDialog.newInstance().apply {
-                show(this@DetailsOfAllProductsFragment.parentFragmentManager, "report")
-            }
-        }
         cartBtn.setOnClickListener {
-            if(AppSharedPreference.getUserToken(requireContext()).isNullOrBlank()&&AppSharedPreference.getUserToken(requireContext())!!.isEmpty())
-                Toast.makeText(requireContext(),"عذرا لم تقم بتسيل الدخول ",Toast.LENGTH_LONG).show()
+            if (AppSharedPreference.getUserToken(requireContext())
+                    .isNullOrBlank() && AppSharedPreference.getUserToken(requireContext())!!
+                    .isEmpty()
+            )
+                Toast.makeText(requireContext(), "عذرا لم تقم بتسيل الدخول ", Toast.LENGTH_LONG)
+                    .show()
             else
-            OrderItemOptions.newInstance(product.id.toString(), product.quantity, product.rialPrice)
-                .apply {
-                    show(this@DetailsOfAllProductsFragment.parentFragmentManager, "cart")
-                }
+                OrderItemOptions.newInstance(
+                    product.id.toString(),
+                    product.quantity,
+                    product.rialPrice
+                )
+                    .apply {
+                        show(this@DetailsOfAllProductsFragment.parentFragmentManager, "cart")
+                    }
         }
 
         showComments.setOnClickListener {
-            if (commentsRecyclerView.visibility == View.VISIBLE)
+         /*   if (commentsRecyclerView.visibility == View.VISIBLE)
                 commentsRecyclerView.visibility = View.GONE
             else
                 commentsRecyclerView.visibility = View.VISIBLE
-
+*/              var bottomSheetAddCat = CommentsFragment();
+            bottomSheetAddCat.show(childFragmentManager, "Tag")
         }
 
         return view
@@ -199,23 +208,29 @@ class DetailsOfAllProductsFragment : Fragment() {
             Observer { product ->
                 this.product = product
                 //   showProgress(false)
-                if(AppSharedPreference.getUserToken(requireContext())!= null){
-                    if(AppSharedPreference.getUserToken(requireContext())=="admin"){
-                        cartBtn.isEnabled=false
-                        favoriteFABtn.isEnabled=false
-                        reportBtn.visibility=View.GONE
-                        chat_btn.isEnabled=false
+                if (AppSharedPreference.getUserToken(requireContext()) != null) {
+                    if (AppSharedPreference.getUserToken(requireContext()) == "admin") {
+                        cartBtn.isEnabled = false
+                        favoriteFABtn.isEnabled = false
+                        reportBtn.visibility = View.GONE
+                        chat_btn.isEnabled = false
 
-                    }else if(AppSharedPreference.getUserId(requireContext())==product.userId){
+                    } else if (AppSharedPreference.getUserId(requireContext()) == product.userId) {
                         cartBtn.hide()
-                        cartBtn.isEnabled=false
-                        favoriteFABtn.isEnabled=false
-                        reportBtn.isEnabled=false
-                        chat_btn.isEnabled=false
-                        call_btn.isEnabled=false
+                        cartBtn.isEnabled = false
+                        favoriteFABtn.isEnabled = false
+                        reportBtn.isEnabled = false
+                        chat_btn.isEnabled = false
+                        call_btn.isEnabled = false
                     }
                      else{
                         chat_btn.isEnabled=false
+                        cartBtn.show()
+                        cartBtn.isEnabled=true
+                        favoriteFABtn.isEnabled=true
+                        reportBtn.isEnabled=true
+                        chat_btn.isEnabled=true
+                        call_btn.isEnabled=true
                     }
                 }
 
@@ -246,7 +261,7 @@ class DetailsOfAllProductsFragment : Fragment() {
         productReviewsTv.text = countOfReports.toString()
         //     productQuantityTv.text = product.quantity.toString()
         productDescriptionTv.text = product.description
-        if (product.images.isNotEmpty()){
+        if (product.images.isNotEmpty()) {
             val slideModels: MutableList<SlideModel> = ArrayList()
             product.images.forEach { image ->
                 slideModels.add(
@@ -272,7 +287,7 @@ class DetailsOfAllProductsFragment : Fragment() {
 
     interface Callbacks {
         fun onAddToCartClicked()
-        fun onDetailsOpen(show:Boolean)
+        fun onDetailsOpen(show: Boolean)
     }
 
     private fun addItemToFavorite() {
@@ -282,38 +297,39 @@ class DetailsOfAllProductsFragment : Fragment() {
             product_id = productId!!.toInt()
 
         )
-        Log.d("userId",favorite.user_id!!)
-        Log.d("productId",favorite.product_id.toString())
+        Log.d("userId", favorite.user_id!!)
+        Log.d("productId", favorite.product_id.toString())
         favoriteViewModel.addFavoriteItem(favorite).observe(
             viewLifecycleOwner,
             Observer {
-
-                  // requireActivity().showMessage(it!!)
-                Log.d("observer",it!!.length.toString())
-                }
+                Toast.makeText(context, "product added to your Favorite list ^_9", Toast.LENGTH_LONG).show()
+                favoriteFABtn.setImageResource(R.drawable.ic_baseline_favorite_24)
+                // requireActivity().showMessage(it!!)
+                Log.d("observer", it!!.length.toString())
+            }
 
         )
     }
 
-   /* private fun createFavorite() {
-        val favorite = Favorite(
-            user_id = AppSharedPreference.getUserId(requireContext())!!,
-            id = null
-        )
-        favoriteViewModel.createFavorite(
-            favorite
-        ).observe(
-            viewLifecycleOwner,
-            Observer {
-                AppSharedPreference.setFavoriteId(requireContext(),it)
-                addItemToFavorite()
-            }
-        )
-    }*/
+    /* private fun createFavorite() {
+         val favorite = Favorite(
+             user_id = AppSharedPreference.getUserId(requireContext())!!,
+             id = null
+         )
+         favoriteViewModel.createFavorite(
+             favorite
+         ).observe(
+             viewLifecycleOwner,
+             Observer {
+                 AppSharedPreference.setFavoriteId(requireContext(),it)
+                 addItemToFavorite()
+             }
+         )
+     }*/
 
-  /*  private fun checkFavorite(): Boolean {
-         return AppSharedPreference.getFavoriteId(requireContext()) != "-1"
-    }*/
+    /*  private fun checkFavorite(): Boolean {
+           return AppSharedPreference.getFavoriteId(requireContext()) != "-1"
+      }*/
     companion object {
         @JvmStatic
         fun newInstance(productId: String) =
@@ -335,7 +351,7 @@ class DetailsOfAllProductsFragment : Fragment() {
 
 
         fun bind(comment: Comment) {
-            commentUser.text = comment.userId
+           // commentUser.text = comment.userId
             commentTitle.text = comment.title
             commentDate.text = comment.date
         }

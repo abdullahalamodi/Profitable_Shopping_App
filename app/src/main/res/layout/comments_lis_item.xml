@@ -3,16 +3,28 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="5dp"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:padding="10dp"
+    android:orientation="horizontal"
+    android:padding="12dp"
     android:background="@drawable/bg4"
     android:layout_margin="4dp">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/ic_person"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/comment_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Maimoona Mohammed"
+            android:textColor="#000"
+            android:layout_margin="4dp"/>
 
         <TextView
             android:id="@+id/comment_date"
@@ -21,30 +33,34 @@
             android:text="2020/5/5"
             android:layout_margin="4dp"/>
 
-
-        <TextView
-            android:id="@+id/comment_user"
+        <RatingBar
+            android:id="@+id/rate_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="554222"
-            android:textColor="#000"
-            android:layout_margin="4dp"/>
+            android:layout_gravity="center_vertical"
+            android:background="#FFFFFF"
+            android:longClickable="false"
+            android:numStars="5"
+            android:stepSize="0.5"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:isIndicator="true"
+            android:progressTint="@android:color/holo_orange_light"
+            android:rating="0"
+            style="?android:attr/ratingBarStyleSmall"
+            android:theme="@style/Widget.AppCompat.RatingBar.Small"/>
 
         <TextView
+            android:id="@+id/comment_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" ايدي المستخدم    : "
-            android:textColor="#000" />
+            android:padding="5dp"
+            android:text="some comments"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/comment_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:text="some comments"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="16dp"
-        android:textStyle="bold" />
 
 </LinearLayout>

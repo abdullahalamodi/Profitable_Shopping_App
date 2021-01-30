@@ -18,18 +18,29 @@ import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.AppSharedPreference
 import com.finalproject.profitableshopping.data.models.User
 import com.finalproject.profitableshopping.view.MainActivity
+import com.finalproject.profitableshopping.view.products.fragments.ManageProductsFragment
+import com.finalproject.profitableshopping.view.user.RestPasswordFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.fragment_log_in.*
 
 
 class LogInFragment : Fragment() {
     var mAuth: FirebaseAuth? = null
+   // lateinit var user: FirebaseUser
     lateinit var email_login: EditText
     lateinit var passWord_login: EditText
-    lateinit var signUpBtn: Button
+  //  lateinit var signUpBtn: Button
+    lateinit var signUpText:TextView
+    lateinit var resetPassword :TextView
     lateinit var questView: TextView
+  // lateinit var reference: DatabaseReference
+  // var database = FirebaseDatabase.getInstance().reference
+
     var loginCallbacks: LoginCallbacks? = null
+//    var resetcallbacks: ResetCallbacks? = null
 
 
     override fun onAttach(context: Context) {
@@ -42,13 +53,19 @@ class LogInFragment : Fragment() {
         super.onStart()
 
         setHasOptionsMenu(false)
-        signUpBtn.setOnClickListener {
+        signUpText.setOnClickListener {
             /* val intent = Intent(requireContext(), SignUp::class.java)
              startActivity(intent)
              Toast.makeText(requireContext(), " sign up", Toast.LENGTH_LONG)
                  .show()*/
             loginCallbacks?.onSignUpClicked()
         }
+
+       resetPassword.setOnClickListener {
+
+
+          loginCallbacks?.onRestPasswordClicked()
+       }
         btn_login.setOnClickListener {
             var email = email_login.text.toString()
             var password = passWord_login.text.toString()
@@ -70,13 +87,18 @@ class LogInFragment : Fragment() {
                         .show()
                     return@setOnClickListener
                 }
+                  login(email, password)
 
-                login(email, password)
+            //   database.child("users").setValue(SaveUserInfo(email,password))
+
+
             } else {
                 email_login.error="هذا الحقل مطلوب"
                 email_login.requestFocus()
                 Toast.makeText(requireContext(), "Failed login email or password is wrong", Toast.LENGTH_LONG).show()
             }
+
+
         }
     }
 
@@ -95,7 +117,9 @@ class LogInFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_log_in, container, false)
         email_login = view.findViewById(R.id.email_login)
         passWord_login = view.findViewById(R.id.passWord_login)
-        signUpBtn = view.findViewById(R.id.sign_up)
+      //  signUpBtn = view.findViewById(R.id.sign_up)
+        signUpText = view.findViewById(R.id.newAccount)
+        resetPassword = view.findViewById(R.id.resetPassword)
         questView = view.findViewById(R.id.quest_v)
 
         questView.setOnClickListener {
@@ -123,6 +147,7 @@ class LogInFragment : Fragment() {
 
     private fun login(email: String, password: String) {
         if (checkAdmin(email, password)) {
+
             loginCallbacks?.onLoginSuccess()
             //finish()
             //just  for test
@@ -142,11 +167,7 @@ class LogInFragment : Fragment() {
                         verifyEmailAddress()
                         //  it.result?.user?.getIdToken(true)?.result?.token?.let { it1 -> saveUserToken(it1) }
                         saveUserToken("user")
-                        saveUserData(
-                            it.result?.user?.uid.toString(),
-                            email,
-                            password
-                        )
+                        saveUserData(it.result?.user?.uid.toString(), email, password)
                         //finish()
                     } else {
                         Toast.makeText(
@@ -239,7 +260,10 @@ class LogInFragment : Fragment() {
     interface LoginCallbacks {
         fun onSignUpClicked()
         fun onLoginSuccess()
+       fun onRestPasswordClicked()
     }
+
+
 
     companion object {
         const val sharedPrefFile = "user_pref"
@@ -249,11 +273,12 @@ class LogInFragment : Fragment() {
         var isAccountActive = false
 
         @JvmStatic
-        fun newInstance() =
-            LogInFragment().apply {
-                arguments = Bundle().apply {
+        fun newInstance() = LogInFragment().apply {
+            arguments = Bundle().apply {
 
                 }
             }
     }
+
+
 }
