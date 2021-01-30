@@ -256,8 +256,8 @@ class CategoryFragment : Fragment(), UploadRequestBody.UploadCallback {
 
         override fun onClick(p0: View?) {
 //            showPopUpMenu(p0!!)
-            Log.d("catId", this.category.id!!.toString())
-            //callbacks?.onOpenProductManager(this.category.id!!)
+            Log.d("catId",this.category.id!!.toString())
+            callbacks?.onOpenProductManager(this.category.id!!)
 
         }
     }

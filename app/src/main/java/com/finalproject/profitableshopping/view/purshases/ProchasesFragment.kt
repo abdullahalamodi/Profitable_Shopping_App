@@ -3,6 +3,7 @@ package com.finalproject.profitableshopping.view.purshases
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -48,7 +49,7 @@ class ProchasesFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
        val view= inflater.inflate(R.layout.fragment_prochases, container, false)
-      ordersRV=view.findViewById(R.id.sales_recyclerview)
+      ordersRV=view.findViewById(R.id.purchases_recyclerview)
         ordersRV.layoutManager = LinearLayoutManager(requireContext())
 
         return view
@@ -56,9 +57,10 @@ class ProchasesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        PurchaseViewModel.getUserOrders(AppSharedPreference.getUserId(requireContext())!!).observe(
+        PurchaseViewModel.getUserOrders(AppSharedPreference.getUserId(requireContext())!! ).observe(
             viewLifecycleOwner,
             Observer {
+                Log.d("size",it.size.toString()!!)
                 updateUI(it)
             }
         )
@@ -94,7 +96,7 @@ init {
             this.order=order
             orderDateTv.text = order.date
             priceTv.text = "$ : " + order.total_price.toString()
-            quantityTv.text = "Q : " + order.total_quantity.toString()
+            quantityTv.text = "Q : " + "345"
 
 
         }
