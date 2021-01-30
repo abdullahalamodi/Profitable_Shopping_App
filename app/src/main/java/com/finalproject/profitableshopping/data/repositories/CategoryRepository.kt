@@ -63,8 +63,8 @@ class CategoryRepository {
     companion object{
 //        internal const val BASE_URL = "http://192.168.1.34:80/profitable_shopping_api/api/"
        // internal const val BASE_URL = "https://profitableshopping.000webhostapp.com/profitable_shopping_api/api/"
-//     internal const val BASE_URL = "http://192.168.191.1:8080/profitable_shopping_api/api/"
-        internal const val BASE_URL = "http://10.0.2.2:80/profitable_shopping_api/api/"
+    internal const val BASE_URL = "http://192.168.191.1:8080/profitable_shopping_api/api/"
+        //internal const val BASE_URL = "http://10.0.2.2:80/profitable_shopping_api/api/"
     }
 
 }

@@ -13,7 +13,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class CartViewModel : ViewModel() {
-    private val cartIdLiveData = MutableLiveData<Int>()
+    private val cartIdLiveData = MutableLiveData<Int?>()
     private val cartIdLiveData1 = MutableLiveData<Int>()
 //    val pro = mutableListOf<OrderDetails>()
     val cartRepositry: CartRepositry
@@ -32,7 +32,7 @@ class CartViewModel : ViewModel() {
     }
 
 
-    fun loadUserOrder(orderId: Int, userId:String) {
+    fun loadUserOrder(orderId: Int?, userId:String) {
         cartIdLiveData.value = orderId
         this.userId = userId
     }
@@ -97,7 +97,7 @@ class CartViewModel : ViewModel() {
         )
         return message
     }
-    private fun getCartItemList(cartId:Int,userId: String):LiveData<List<OrderDetails>> {
+    private fun getCartItemList(cartId: Int?, userId: String):LiveData<List<OrderDetails>> {
         val orderList= MutableLiveData<List<OrderDetails>>()
         val call=cartRepositry.getOrders(cartId,userId)
         call.enqueue(
