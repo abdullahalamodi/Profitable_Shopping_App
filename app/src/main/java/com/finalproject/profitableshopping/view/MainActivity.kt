@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity(),
                     true
                 }*/
                 R.id.menu_notification -> {
-                    setContent("Profile")
+                    setContent("Favorites")
                     setCurrentFragment(FavoriteFragment.newInstance())
                     true
                 }

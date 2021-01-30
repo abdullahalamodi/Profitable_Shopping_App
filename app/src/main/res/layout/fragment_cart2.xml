@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:layout_marginBottom="70dp"
+    android:orientation="vertical"
     tools:context=".view.cart.CartFragment">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -25,23 +25,23 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="#000"
-            android:padding="15dp"
-            android:gravity="center"
             android:fontFamily="@font/rb_light"
+            android:gravity="center"
+            android:padding="15dp"
             android:text="الغاء"
-            />
+            android:textColor="#000" />
+
         <TextView
             android:id="@+id/buy_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:padding="15dp"
-            android:gravity="center"
             android:background="@color/colorPrimary"
+            android:fontFamily="@font/rb_light"
+            android:gravity="center"
+            android:padding="15dp"
             android:text="شراء"
-            android:textColor="#000"
-            android:fontFamily="@font/rb_light" />
+            android:textColor="@color/white" />
 
 
         <TextView
@@ -49,12 +49,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="#F44336"
-            android:textStyle="bold"
-            android:padding="15dp"
             android:gravity="center"
+            android:padding="15dp"
             android:text="$0"
-            />
+            android:textColor="#F44336"
+            android:textStyle="bold" />
     </LinearLayout>
 
 

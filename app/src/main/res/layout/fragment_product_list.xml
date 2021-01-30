@@ -29,7 +29,8 @@
             android:padding="12dp"
             android:singleLine="true"
             android:inputType="text"
-            android:textSize="14sp"/>
+            android:textSize="14sp"
+            android:visibility="gone"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
@@ -37,7 +38,8 @@
             android:orientation="horizontal"
             android:id="@+id/rv_all_categories"
             tools:listitem="@layout/list_item_main_categories"
-            android:layout_margin="4dp"/>
+            android:layout_margin="4dp"
+            android:visibility="gone"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_product"
@@ -47,7 +49,7 @@
             android:paddingLeft="4dp"
             android:layout_marginTop="8dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/list_item_product" />
+            tools:listitem="@layout/favorite_item_list" />
     </LinearLayout>
 
     <ProgressBar
