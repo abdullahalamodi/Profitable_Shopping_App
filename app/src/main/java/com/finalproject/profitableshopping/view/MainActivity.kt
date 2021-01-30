@@ -12,10 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.AppSharedPreference
-import com.finalproject.profitableshopping.view.authentication.fragments.ActiveFragment
-import com.finalproject.profitableshopping.view.authentication.fragments.ActiveUserAccountFragment
-import com.finalproject.profitableshopping.view.authentication.fragments.LogInFragment
-import com.finalproject.profitableshopping.view.authentication.fragments.SignUpFragment
+import com.finalproject.profitableshopping.view.authentication.fragments.*
 import com.finalproject.profitableshopping.view.cart.CartFragment
 import com.finalproject.profitableshopping.view.category.CategoryActivity
 import com.finalproject.profitableshopping.view.favorite.FavoriteFragment
@@ -251,6 +248,7 @@ class MainActivity : AppCompatActivity(),
         filterMenuItems(menu)
     }
 
+
     private fun addFragment(fragment: Fragment) =
         supportFragmentManager.beginTransaction().apply {
             add(R.id.container, fragment)
@@ -276,6 +274,7 @@ class MainActivity : AppCompatActivity(),
         filterMenuItems(menu)
     }
 
+
     override fun onCreateAccountSuccess() {
         setCurrentFragment(SignUpFragment.newInstance())
     }
@@ -283,6 +282,8 @@ class MainActivity : AppCompatActivity(),
     override fun onActiveAccount() {
         setCurrentFragment(ActiveUserAccountFragment.newInstance())
     }
+
+
 
 
     private var isNavHide = false
@@ -305,6 +306,8 @@ class MainActivity : AppCompatActivity(),
     override fun onRestPasswordClicked() {
         setCurrentFragment(RestPasswordFragment.newInstance())
     }
+
+
 
     override fun onUpdateClicked() {
         setCurrentFragment(UpdateInfoFragment.newInstance())
