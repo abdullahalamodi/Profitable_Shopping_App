@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginBottom="70dp"
+    tools:context=".view.cart.CartFragment">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/sales_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="13"
+        android:background="#E6E5E5"
+        tools:listitem="@layout/cart_list_item" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/clear_cart_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="#000"
+            android:padding="15dp"
+            android:gravity="center"
+            android:fontFamily="@font/rb_light"
+            android:text="الغاء"
+            />
+        <TextView
+            android:id="@+id/buy_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="15dp"
+            android:gravity="center"
+            android:background="@color/colorPrimary"
+            android:text="شراء"
+            android:textColor="#000"
+            android:fontFamily="@font/rb_light" />
+
+
+        <TextView
+            android:id="@+id/total_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="#F44336"
+            android:textStyle="bold"
+            android:padding="15dp"
+            android:gravity="center"
+            android:text="$0"
+            />
+    </LinearLayout>
+
+
+</LinearLayout>

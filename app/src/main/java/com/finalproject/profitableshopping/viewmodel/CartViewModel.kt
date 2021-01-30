@@ -132,5 +132,28 @@ class CartViewModel : ViewModel() {
         val message= MutableLiveData<String>()
         return message
     }
+    fun getUserOrders(userId:String):LiveData<List<Order>>{
+        val orderList= MutableLiveData<List<Order>>()
+        val call=cartRepositry.getUserOrders(userId)
+        call.enqueue(
+            object :Callback<List<Order>>{
+                override fun onResponse(
+                    call: Call<List<Order>>,
+                    response: Response<List<Order>>
+                ) {
+                    orderList.value = response.body()?: emptyList()
+                    Log.d("success get order","success get orders")
+                }
+
+                override fun onFailure(call: Call<List<Order>>, t: Throwable) {
+                    Log.d("faild get order",t.message!!)
+                    orderList.value= emptyList()
+                }
+            }
+        )
+
+
+        return orderList
+    }
 
 }

@@ -116,7 +116,8 @@ interface ShoppingApi {
         @Query("order_id") order_id: String,
         @Query("user_id") user_id: String
     ): Call<List<OrderDetails>>
-
+    @GET("ordersphp?")
+    fun getUserOrders(@Query("user_id")userId: String): Call<List<Order>>
     @DELETE("orders.php")
     fun deleteOrder(@Query("id") orderId: String): Call<String>
 
@@ -168,4 +169,8 @@ interface ShoppingApi {
     fun getUserReports(@Query("to_id") userId:String):Call<List<Report>>
     @GET("reports.php")
     fun getProductReports(@Query("product_id") productId:String):Call<List<Report>>
+    @GET("products.php/my_salaes?")
+    fun getUserSales(@Query("user_id") userId: String):Call<List<MySales>>
+
+
 }
