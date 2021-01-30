@@ -23,6 +23,8 @@ import com.finalproject.profitableshopping.data.AppSharedPreference
 import com.finalproject.profitableshopping.data.models.*
 import com.finalproject.profitableshopping.showMessage
 import com.finalproject.profitableshopping.view.cart.dialogs.OrderItemOptions
+import com.finalproject.profitableshopping.view.category.AddCategoryFragment
+import com.finalproject.profitableshopping.view.comments.CommentsFragment
 import com.finalproject.profitableshopping.view.report.dialog.AddComplainDialog
 import com.finalproject.profitableshopping.view.report.dialog.ComplainDialog
 import com.finalproject.profitableshopping.viewmodel.CommentViewModel
@@ -169,11 +171,12 @@ class DetailsOfAllProductsFragment : Fragment() {
         }
 
         showComments.setOnClickListener {
-            if (commentsRecyclerView.visibility == View.VISIBLE)
+         /*   if (commentsRecyclerView.visibility == View.VISIBLE)
                 commentsRecyclerView.visibility = View.GONE
             else
                 commentsRecyclerView.visibility = View.VISIBLE
-
+*/              var bottomSheetAddCat = CommentsFragment();
+            bottomSheetAddCat.show(childFragmentManager, "Tag")
         }
 
         return view
