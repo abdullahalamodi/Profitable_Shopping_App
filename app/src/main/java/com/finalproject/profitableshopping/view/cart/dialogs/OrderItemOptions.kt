@@ -3,6 +3,7 @@ package com.finalproject.profitableshopping.view.cart.dialogs
 
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -171,6 +172,7 @@ class OrderItemOptions : DialogFragment() {
         ).observe(
             this,
             Observer {
+                Log.d("cartId",it)
                 AppSharedPreference.setCartId(requireContext(), it)
                 addItem()
             }

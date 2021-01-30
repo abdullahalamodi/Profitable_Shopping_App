@@ -18,10 +18,12 @@ import com.finalproject.profitableshopping.view.cart.CartFragment
 import com.finalproject.profitableshopping.view.category.CategoryActivity
 import com.finalproject.profitableshopping.view.favorite.FavoriteFragment
 import com.finalproject.profitableshopping.view.products.ManageProductActivity
+import com.finalproject.profitableshopping.view.products.OrderDetailsFragment
 import com.finalproject.profitableshopping.view.products.fragments.AdminProductManagmentFragment
 import com.finalproject.profitableshopping.view.products.fragments.DetailsOfAllProductsFragment
 import com.finalproject.profitableshopping.view.products.fragments.ProductListFragment
 import com.finalproject.profitableshopping.view.products.fragments.ShowAllProductsFragment
+import com.finalproject.profitableshopping.view.purshases.ProchasesFragment
 import com.finalproject.profitableshopping.view.user.ManageUserProfileFragment
 import com.finalproject.profitableshopping.view.user.RestPasswordFragment
 import com.finalproject.profitableshopping.view.user.UpdateInfoFragment
@@ -32,6 +34,7 @@ class MainActivity : AppCompatActivity(),
     ProductListFragment.Callbacks,
     LogInFragment.LoginCallbacks,
     SignUpFragment.SignUpCallbacks,
+    ProchasesFragment.Callbacks,
     ActiveFragment.ActiveAccountCallbacks,
     ShowAllProductsFragment.Callbacks,
     DetailsOfAllProductsFragment.Callbacks,
@@ -179,6 +182,7 @@ class MainActivity : AppCompatActivity(),
             }
             R.id.menu_my_products -> {
                 startActivity(Intent(this, ManageProductActivity::class.java))
+                startActivity(Intent(this, ManageProductActivity::class.java))
                 true
             }
             R.id.menu_categories -> {
@@ -200,6 +204,12 @@ class MainActivity : AppCompatActivity(),
                 true
             }
 
+            R.id.menu_purchase -> {
+                setCurrentFragment(ProchasesFragment.newInstance())
+                showButtonNavigation(false)
+                true
+            }
+
             R.id.sign_out -> {
                 logOut()
                 setCurrentFragment(LogInFragment.newInstance())
@@ -208,6 +218,7 @@ class MainActivity : AppCompatActivity(),
             }
 
             R.id.menu_about -> {
+
                 addFragment(AboutAppFragment())
                 showButtonNavigation(false)
                 true
@@ -304,6 +315,10 @@ class MainActivity : AppCompatActivity(),
     override fun onContactUsOpen(show: Boolean) {
         //setCurrentFragment(AboutAppFragment())
         showButtonNavigation(show)
+    }
+
+    override fun onOpenOrderDatails(orderId: Int) {
+        setCurrentFragment(OrderDetailsFragment.newInstance(orderId))
     }
 
     /*override fun onBackPressed() {
