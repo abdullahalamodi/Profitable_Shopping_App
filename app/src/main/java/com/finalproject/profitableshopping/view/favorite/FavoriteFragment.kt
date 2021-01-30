@@ -137,11 +137,11 @@ class FavoriteFragment : Fragment() {
                     it.load(path)
                         .resize(150,150)
                         .centerCrop()
-                        .placeholder(R.drawable.shoe)
+                        .placeholder(R.drawable.ic_phone_android)
                         .into(productImageIv)
                 }
             }else{
-                productImageIv.setImageResource(R.drawable.shoe)
+                productImageIv.setImageResource(R.drawable.ic_phone_android)
             }
 /*            productViewModel.loadProduct(favoriteItem.product_id)
             productViewModel.productIDetailsLiveData.observe(
