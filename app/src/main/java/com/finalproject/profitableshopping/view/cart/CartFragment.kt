@@ -106,8 +106,8 @@ class CartFragment : Fragment() {
 
     private fun showDialogRating(product:Product) {
         var builder = AlertDialog.Builder(context!!)
-        builder.setTitle("Rating product")
-        builder.setMessage("Please fill information")
+       // builder.setTitle("Rating product")
+        //builder.setMessage("Please fill information")
         val itemView = LayoutInflater.from(context).inflate(R.layout.layout_rating_comment, null)
         val ratingBar = itemView.findViewById<RatingBar>(R.id.rating_bar_product)
         val edt_comment = itemView.findViewById<EditText>(R.id.et_comment)
@@ -207,7 +207,6 @@ class CartFragment : Fragment() {
 
         }
     }
-
 }
 
 

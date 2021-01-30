@@ -34,7 +34,6 @@ class FavoriteFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-
         favoriteViewModel= ViewModelProviders.of(this).get(FavoriteViewModel::class.java)
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
         super.onCreate(savedInstanceState)
@@ -50,9 +49,9 @@ class FavoriteFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(
             //next line still need some config
-            R.layout.fragment_product_list, container, false
+            R.layout.fragment_favorite_product_list, container, false
         )
-        favoriteProductsRv = view.findViewById(R.id.rv_product)
+        favoriteProductsRv = view.findViewById(R.id.rv_favorite_product_list)
         progressBar = view.findViewById(R.id.progress_circular)
         favoriteProductsRv.layoutManager = LinearLayoutManager(context)
         //  addFbtn =view.findViewById()
@@ -76,8 +75,6 @@ class FavoriteFragment : Fragment() {
                 favorites=favoriteList
                 showProgress(false)
                updateUI(favorites)
-
-
             }
         )
     }
