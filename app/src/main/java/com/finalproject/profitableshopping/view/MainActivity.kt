@@ -40,7 +40,8 @@ class MainActivity : AppCompatActivity(),
     UserManageProfileFragment.Callbacks,
     ManageUserProfileFragment.Callbacks,
     AboutAppFragment.Callbacks,
-    ContactUsFragment.Callbacks {
+    ContactUsFragment.Callbacks,
+    SettingsFragment.Callbacks{
 
     private lateinit var menu: Menu
     private lateinit var bottomNav: BottomNavigationView
@@ -98,13 +99,13 @@ class MainActivity : AppCompatActivity(),
                      true
                  }*/
                 R.id.menu_notification -> {
-                    setContent("Profile")
+                    setContent("Favorites")
                     setCurrentFragment(FavoriteFragment.newInstance())
                     true
                 }
-                R.id.menu_profile -> {
-                    setContent("Profile")
-                    setCurrentFragment(ManageUserProfileFragment.newInstance())
+                R.id.menu_settings -> {
+                    setContent("Settings")
+                    addFragment(SettingsFragment())
                     true
                 }
                 else -> false
@@ -320,6 +321,10 @@ class MainActivity : AppCompatActivity(),
 
     override fun onContactUsOpen(show: Boolean) {
         //setCurrentFragment(AboutAppFragment())
+        showButtonNavigation(show)
+    }
+
+    override fun onSettingsOpen(show: Boolean) {
         showButtonNavigation(show)
     }
 

@@ -3,9 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="5dp"
-    android:gravity="center"
     android:orientation="vertical"
-    android:padding="10dp"
+    android:padding="12dp"
     android:background="@drawable/bg4"
     android:layout_margin="4dp">
 
@@ -21,20 +20,21 @@
             android:text="2020/5/5"
             android:layout_margin="4dp"/>
 
-
         <TextView
             android:id="@+id/comment_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="554222"
             android:textColor="#000"
-            android:layout_margin="4dp"/>
+            android:layout_margin="4dp"
+            android:visibility="gone"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=" ايدي المستخدم    : "
-            android:textColor="#000" />
+            android:textColor="#000"
+            android:visibility="gone"/>
     </LinearLayout>
 
     <TextView

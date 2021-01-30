@@ -103,5 +103,27 @@
     <string name="favorite">المفضلة</string>
     <string name="Settings">الاعدادات</string>
 
+    /////////////////////////////////////////
+
+    <string-array name="admin_list">
+        <item>الاصناف</item>
+        <item>ارسال الاشعارات</item>
+        <item>تغيير كلمة المرور</item>
+        <item>بلاغات</item>
+        <item>حسابات المستخدمين</item>
+        <item>تواصل معنا</item>
+        <item>حول التطبيق</item>
+        <item>تسجيل الخروج</item>
+    </string-array>
+
+    <string-array name="user_list">
+        <item>حسابي</item>
+        <item>منتجاتي</item>
+        <item>طلباتي السابقة</item>
+        <item>تواصل معنا</item>
+        <item>حول التطبيق</item>
+        <item>الاعدادات</item>
+        <item>تسجيل الخروج</item>
+    </string-array>
 
 </resources>

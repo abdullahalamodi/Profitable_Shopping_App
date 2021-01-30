@@ -24,12 +24,11 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <com.denzcoskun.imageslider.ImageSlider
-                android:layout_width="match_parent"
                 android:id="@+id/img_product_details"
-                app:layout_collapseMode="parallax"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 app:iss_placeholder="@drawable/ic_phone_android"
-                android:layout_height="match_parent">
-            </com.denzcoskun.imageslider.ImageSlider>
+                app:layout_collapseMode="parallax"></com.denzcoskun.imageslider.ImageSlider>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -86,27 +85,27 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
                         android:orientation="horizontal"
-                        android:weightSum="2"
-                        android:layout_marginLeft="12dp">
+                        android:weightSum="2">
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_margin="2dp"
                             android:src="@drawable/ic_person"
                             app:backgroundTint="@android:color/white"
                             app:elevation="6dp"
-                            android:layout_margin="2dp"
                             app:layout_anchorGravity="bottom|right|start" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_margin="6dp"
-                            android:text="Maimoona Mohammed"
-                            android:textStyle="bold"
                             android:layout_gravity="center_vertical"
-                            android:fontFamily="@font/rb_light"/>
+                            android:layout_margin="6dp"
+                            android:fontFamily="@font/rb_light"
+                            android:text="Maimoona Mohammed"
+                            android:textStyle="bold" />
 
                     </LinearLayout>
 
@@ -120,26 +119,25 @@
                         <Button
                             android:id="@+id/call_btn"
                             android:layout_width="0dp"
-                            android:layout_weight="1"
                             android:layout_height="wrap_content"
-                            android:text="اتصال"
-                            android:drawableRight="@drawable/ic_call"
-                            android:textStyle="bold"
-                            android:fontFamily="@font/rb_light"
+                            android:layout_margin="6dp"
+                            android:layout_weight="1"
                             android:background="@drawable/bg4"
-                           android:layout_margin="6dp" />
+                            android:drawableRight="@drawable/ic_call"
+                            android:fontFamily="@font/rb_light"
+                            android:text="اتصال"
+                            android:textStyle="bold" />
 
                         <Button
                             android:id="@+id/chat_btn"
                             android:layout_width="0dp"
-                            android:layout_weight="1"
                             android:layout_height="wrap_content"
                             android:layout_margin="6dp"
-                            android:text="دردش"
-                            android:textStyle="bold"
-                            android:fontFamily="@font/rb_light"
+                            android:layout_weight="1"
                             android:background="@drawable/bg4"
-                            />
+                            android:fontFamily="@font/rb_light"
+                            android:text="دردش"
+                            android:textStyle="bold" />
 
                     </LinearLayout>
 
@@ -184,15 +182,15 @@
                             android:text="RY"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:visibility="gone"/>
+                            android:visibility="gone" />
 
                         <TextView
                             android:id="@+id/tv_product_price_rial_details"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
                             android:layout_weight="9"
                             android:fontFamily="@font/rb_light"
-                            android:layout_marginLeft="10dp"
                             android:text="60,000"
                             android:textColor="@color/colorPrimary"
                             android:textSize="18sp"
@@ -212,18 +210,18 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:src="@drawable/ic_attach_money"
-                            android:visibility="gone"/>
+                            android:visibility="gone" />
 
                         <TextView
                             android:id="@+id/tv_product_price_details"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
                             android:layout_weight="9"
                             android:fontFamily="@font/rb_light"
                             android:text="100$"
                             android:textColor="@color/colorPrimary"
                             android:textSize="18sp"
-                            android:layout_marginLeft="10dp"
                             android:textStyle="bold" />
 
                     </LinearLayout>
@@ -237,7 +235,6 @@
                         android:textDirection="rtl">
 
 
-
                         <TextView
                             android:id="@+id/tv_product_quantity_details"
                             android:layout_width="0dp"
@@ -248,13 +245,14 @@
                             android:textColor="@color/colorPrimary"
                             android:textSize="18sp"
                             android:textStyle="bold" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="الكمية :"
-                            android:textSize="19sp"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="10dp"
+                            android:text="الكمية :"
+                            android:textSize="19sp"
                             android:textStyle="bold" />
 
                     </LinearLayout>
@@ -345,16 +343,11 @@
 
             </androidx.cardview.widget.CardView>
 
-            <Button
-                android:id="@+id/btnShowComment"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_margin="8dp"
-                android:text="عرض التعليقات"
-                android:background="@drawable/bg4"
-                android:textColor="@color/black"
-                app:cornerRadius="4dp"/>
+                android:orientation="horizontal"
+                android:weightSum="2">
 
 
             <androidx.recyclerview.widget.RecyclerView
@@ -362,24 +355,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                />
-            <Button
-                android:id="@+id/btnShowreport"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_margin="8dp"
-                android:background="@color/colorPrimary"
-                android:enabled="true"
-                android:fontFamily="@font/rb_light"
-                android:text="بلغ عن المنتج "
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:cornerRadius="4dp"
-                android:layout_marginBottom="20dp"/>
-
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         </LinearLayout>
 
