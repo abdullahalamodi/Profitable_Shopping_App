@@ -222,8 +222,6 @@ class DetailsOfAllProductsFragment : Fragment() {
                         reportBtn.isEnabled = false
                         chat_btn.isEnabled = false
                         call_btn.isEnabled = false
-                    } else {
-                        chat_btn.isEnabled = false
                     }
                      else{
                         chat_btn.isEnabled=false

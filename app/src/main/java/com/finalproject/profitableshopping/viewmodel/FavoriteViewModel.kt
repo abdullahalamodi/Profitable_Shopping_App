@@ -70,7 +70,7 @@ class FavoriteViewModel :ViewModel(){
                     call: Call<List<Favorite>>,
                     response: Response<List<Favorite>>
                 ) {
-                    favoriteList.value=response.body()
+                    favoriteList.value=response.body()?: emptyList()
                     Log.d("success get favorites","success get favorites")
                 }
 
