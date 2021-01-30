@@ -1,60 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="70dp"
-    android:orientation="vertical"
     tools:context=".view.cart.CartFragment">
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/cart_resuclerview"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="13"
-        android:background="#E6E5E5"
-        tools:listitem="@layout/cart_list_item" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="70dp"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/clear_cart_btn"
-            android:layout_width="0dp"
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/cart_resuclerview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="13"
+            android:background="#E6E5E5"
+            tools:listitem="@layout/cart_list_item" />
+
+
+
+        <LinearLayout
+            android:id="@+id/ly_buy_cancel"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/rb_light"
-            android:gravity="center"
-            android:padding="15dp"
-            android:text="الغاء"
-            android:textColor="#000" />
+            android:orientation="horizontal"
+            android:visibility="gone">
 
-        <TextView
-            android:id="@+id/buy_btn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/colorPrimary"
-            android:fontFamily="@font/rb_light"
-            android:gravity="center"
-            android:padding="15dp"
-            android:text="شراء"
-            android:textColor="@color/white" />
+            <TextView
+                android:id="@+id/clear_cart_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/rb_light"
+                android:gravity="center"
+                android:padding="15dp"
+                android:text="الغاء"
+                android:textColor="#000" />
+
+            <TextView
+                android:id="@+id/buy_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:fontFamily="@font/rb_light"
+                android:gravity="center"
+                android:padding="15dp"
+                android:text="شراء"
+                android:textColor="@color/white" />
 
 
-        <TextView
-            android:id="@+id/total_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:padding="15dp"
-            android:text="$0"
-            android:textColor="#F44336"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/total_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="15dp"
+                android:text="$0"
+                android:textColor="#F44336"
+                android:textStyle="bold" />
+        </LinearLayout>
+
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tv_empty_cart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="12dp"
+        android:fontFamily="@font/rb_light"
+        android:gravity="center"
+        android:text="لا توجد منتجات في المفضلة"
+        android:textSize="20sp"
+        android:visibility="gone" />
 
-</LinearLayout>
+
+</FrameLayout>
