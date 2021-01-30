@@ -259,6 +259,7 @@ class CategoryFragment : Fragment(), UploadRequestBody.UploadCallback {
             Log.d("catId",this.category.id!!.toString())
             callbacks?.onOpenProductManager(this.category.id!!)
 
+
         }
     }
 
