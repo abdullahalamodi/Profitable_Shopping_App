@@ -14,6 +14,7 @@ import retrofit2.Response
 
 class CartViewModel : ViewModel() {
     private val cartIdLiveData = MutableLiveData<Int>()
+    private val cartIdLiveData1 = MutableLiveData<Int>()
 //    val pro = mutableListOf<OrderDetails>()
     val cartRepositry: CartRepositry
     private var userId = ""
@@ -22,14 +23,22 @@ class CartViewModel : ViewModel() {
         getCartItemList(carId,userId)
     }
 
+    var orderDetailsListLiveData1 = Transformations.switchMap(cartIdLiveData1){ carId ->
+        getCartItemList1(carId)
+    }
+
     init {
         cartRepositry= CartRepositry()
     }
 
 
-    fun loadOrder(orderId: Int, userId:String) {
+    fun loadUserOrder(orderId: Int, userId:String) {
         cartIdLiveData.value = orderId
         this.userId = userId
+    }
+
+    fun loadOrder(orderId: Int) {
+        cartIdLiveData1.value = orderId
     }
 
 
@@ -91,6 +100,30 @@ class CartViewModel : ViewModel() {
     private fun getCartItemList(cartId:Int,userId: String):LiveData<List<OrderDetails>> {
         val orderList= MutableLiveData<List<OrderDetails>>()
         val call=cartRepositry.getOrders(cartId,userId)
+        call.enqueue(
+            object :Callback<List<OrderDetails>>{
+                override fun onResponse(
+                    call: Call<List<OrderDetails>>,
+                    response: Response<List<OrderDetails>>
+                ) {
+                    orderList.value = response.body()?: emptyList()
+                    Log.d("success get order","success get orders")
+                }
+
+                override fun onFailure(call: Call<List<OrderDetails>>, t: Throwable) {
+                    Log.d("faild get order",t.message!!)
+                    orderList.value= emptyList()
+                }
+            }
+        )
+
+
+        return orderList
+    }
+
+    private fun getCartItemList1(cartId:Int):LiveData<List<OrderDetails>> {
+        val orderList= MutableLiveData<List<OrderDetails>>()
+        val call=cartRepositry.getOrders1(cartId)
         call.enqueue(
             object :Callback<List<OrderDetails>>{
                 override fun onResponse(

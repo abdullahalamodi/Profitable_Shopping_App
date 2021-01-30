@@ -30,6 +30,10 @@ class CartRepositry {
     fun getOrders(cartId: Int,userId:String):Call<List<OrderDetails>>{
         return shoppingApi.getUserCartItems(cartId.toString(),userId)
     }
+
+    fun getOrders1(cartId: Int):Call<List<OrderDetails>>{
+        return shoppingApi.getCartItems(cartId.toString())
+    }
     fun buy(cartId: String):Call<String>{
         return shoppingApi.buy(cartId)
     }

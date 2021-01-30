@@ -116,6 +116,12 @@ interface ShoppingApi {
         @Query("order_id") order_id: String,
         @Query("user_id") user_id: String
     ): Call<List<OrderDetails>>
+
+
+    @GET("order_details.php?")
+    fun getCartItems(
+        @Query("id") user_id: String
+    ): Call<List<OrderDetails>>
     @GET("orders.php?")
     fun getUserOrders(@Query("user_id")userId: String): Call<List<Order>>
     @DELETE("orders.php")

@@ -89,7 +89,7 @@ class ProductListFragment : Fragment() {
         categoryViewModel = ViewModelProviders.of(this).get(CategoryViewModel::class.java)
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
         carttViewModel = ViewModelProviders.of(this).get(CartViewModel::class.java)
-        carttViewModel.loadOrder(
+        carttViewModel.loadUserOrder(
             AppSharedPreference.getCartId(requireContext())?.toInt()!!,
             AppSharedPreference.getUserId(requireContext())!!
         )
