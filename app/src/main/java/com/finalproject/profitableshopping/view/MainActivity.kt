@@ -11,10 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.AppSharedPreference
-import com.finalproject.profitableshopping.view.authentication.fragments.ActiveFragment
-import com.finalproject.profitableshopping.view.authentication.fragments.ActiveUserAccountFragment
-import com.finalproject.profitableshopping.view.authentication.fragments.LogInFragment
-import com.finalproject.profitableshopping.view.authentication.fragments.SignUpFragment
+import com.finalproject.profitableshopping.view.authentication.fragments.*
 import com.finalproject.profitableshopping.view.cart.CartFragment
 import com.finalproject.profitableshopping.view.category.CategoryActivity
 import com.finalproject.profitableshopping.view.products.ManageProductActivity
@@ -86,11 +83,12 @@ ManageUserProfileFragment.Callbacks{
                 }
                 R.id.menu_notification -> {
                     setContent("Profile")
+                    setCurrentFragment(ShowProfileFragment.newInstance())
                     true
                 }
                 R.id.menu_profile -> {
                     setContent("Profile")
-                    setCurrentFragment(ManageUserProfileFragment.newInstance())
+                    setCurrentFragment(ShowProfileFragment.newInstance())
                     true
                 }
                 else -> false
@@ -213,6 +211,7 @@ ManageUserProfileFragment.Callbacks{
         filterMenuItems(menu)
     }
 
+
     private fun addFragment(fragment: Fragment) =
         supportFragmentManager.beginTransaction().apply {
             add(R.id.container, fragment)
@@ -234,6 +233,7 @@ ManageUserProfileFragment.Callbacks{
         filterMenuItems(menu)
     }
 
+
     override fun onCreateAccountSuccess() {
         setCurrentFragment(SignUpFragment.newInstance())
     }
@@ -241,6 +241,8 @@ ManageUserProfileFragment.Callbacks{
     override fun onActiveAccount() {
         setCurrentFragment(ActiveUserAccountFragment.newInstance())
     }
+
+
 
 
     private var isNavHide = false
@@ -263,6 +265,8 @@ ManageUserProfileFragment.Callbacks{
     override fun onRestPasswordClicked() {
        setCurrentFragment(RestPasswordFragment.newInstance())
     }
+
+
 
     override fun onUpdateClicked() {
         setCurrentFragment(UpdateInfoFragment.newInstance())

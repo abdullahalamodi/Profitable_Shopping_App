@@ -7,6 +7,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:name=".data.ApplicationClass"
@@ -17,10 +19,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".data.firebase.NotifationActivity">
+        <activity android:name=".view.authentication.fragments.ShowProfileActivity">
+
 
         </activity>
-        <activity android:name=".view.user.MapActivity"></activity>
+        <activity android:name=".data.firebase.NotifationActivity"></activity>
+        <activity android:name=".view.user.MapActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -40,6 +44,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
         <service
