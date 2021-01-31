@@ -30,8 +30,6 @@
     <string name="txt_add_photo">قم بأختيار صورة الصنف</string>
     <string name="txt_add_photo_product">اختر صور المتج</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
     ////////////////////// product////////////////////////////
@@ -111,8 +109,9 @@
 
     <string-array name="admin_list">
         <item>الاصناف</item>
+        <item>إضافة بلاغ</item>
         <item>ارسال الاشعارات</item>
-        <item>تغيير كلمة المرور</item>
+        <!--<item>تغيير كلمة المرور</item>-->
         <item>تواصل معنا</item>
         <item>حول التطبيق</item>
         <item>تسجيل الخروج</item>

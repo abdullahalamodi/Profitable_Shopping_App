@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -22,6 +21,7 @@ import com.finalproject.profitableshopping.data.models.Report
 import com.finalproject.profitableshopping.data.AppSharedPreference
 import com.finalproject.profitableshopping.data.models.*
 import com.finalproject.profitableshopping.showMessage
+import com.finalproject.profitableshopping.view.authentication.fragments.SaveUserInfo
 import com.finalproject.profitableshopping.view.cart.dialogs.OrderItemOptions
 import com.finalproject.profitableshopping.view.category.AddCategoryFragment
 import com.finalproject.profitableshopping.view.comments.CommentsFragment
@@ -32,6 +32,7 @@ import com.finalproject.profitableshopping.viewmodel.FavoriteViewModel
 import com.finalproject.profitableshopping.viewmodel.ProductViewModel
 import com.finalproject.profitableshopping.viewmodel.ReportViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.database.*
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_details_of_all_products.*
 
@@ -48,6 +49,7 @@ class DetailsOfAllProductsFragment : Fragment() {
     lateinit var favoriteViewModel: FavoriteViewModel
     lateinit var productImageIv: ImageView
     lateinit var productNameTv: TextView
+    lateinit var salerNameTv: TextView
     lateinit var productQuantityTv: TextView
     lateinit var productReviewsTv: TextView
     lateinit var productRialPriceTv: TextView
@@ -67,67 +69,17 @@ class DetailsOfAllProductsFragment : Fragment() {
     var productReports: List<Report> = emptyList()
     lateinit var comment: Comment
     lateinit var imageSlider: ImageSlider
+    var databaseReference:DatabaseReference?=null
 
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         callbacks = context as Callbacks
+
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        callbacks?.onDetailsOpen(true)
-        callbacks = null
-    }
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        commentViewModel = ViewModelProviders.of(this).get(CommentViewModel::class.java)
-        productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
-        reportViewModel = ViewModelProviders.of(this).get(ReportViewModel::class.java)
-        favoriteViewModel = ViewModelProviders.of(this).get(FavoriteViewModel::class.java)
-        product = Product()
-        // mainActivity?.anim(false)
-        callbacks?.onDetailsOpen(false)
-        arguments?.let {
-            productId = it.getString(ARG_PRODUCT_ID)
-            productViewModel.loadProduct(productId!!)
-            reportViewModel.getProductReports(productId!!).observe(
-                this,
-                Observer { it ->
-                    countOfReports = it.size
-                }
-            )
-        }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-
-        val view = inflater.inflate(R.layout.fragment_details_of_all_products, container, false)
-        //  progressBar = view.findViewById(R.id.progress_circular)
-//        productImageIv = view.findViewById(R.id.img_product_details) as ImageView
-        productNameTv = view.findViewById(R.id.tv_product_name_details) as TextView
-        //  productReviewsTv = view.findViewById(R.id.reviews_tv) as TextView
-        productQuantityTv = view.findViewById(R.id.tv_product_quantity_details) as TextView
-        productRialPriceTv = view.findViewById(R.id.tv_product_price_rial_details) as TextView
-        productDollarPriceTv = view.findViewById(R.id.tv_product_price_details) as TextView
-        productDescriptionTv = view.findViewById(R.id.tv_product_desc_details) as TextView
-        productCommentDescriptionTv =
-            view.findViewById(R.id.tv_product_description_details) as TextView
-        favoriteFABtn = view.findViewById(R.id.btn_rating) as FloatingActionButton
-        cartBtn = view.findViewById(R.id.btn_cart) as FloatingActionButton
-        reportBtn = view.findViewById(R.id.btnShowreport)
-        productReviewsTv = view.findViewById(R.id.tv_product_reports) as TextView
-        ratingBar = view.findViewById(R.id.ratingBar) as RatingBar
-        commentsRecyclerView = view.findViewById(R.id.comments_recycler_view)
-        showComments = view.findViewById(R.id.btnShowComment)
-        imageSlider = view.findViewById(R.id.img_product_details)
-
-
+    override fun onStart() {
+        super.onStart()
         favoriteFABtn.setOnClickListener {
             if (AppSharedPreference.getUserToken(requireContext())
                     .isNullOrBlank() || AppSharedPreference.getUserToken(requireContext())!!
@@ -178,30 +130,89 @@ class DetailsOfAllProductsFragment : Fragment() {
 //             var bottomSheetAddCat = CommentsFragment();
 //            bottomSheetAddCat.show(childFragmentManager, "Tag1")
         }
+      salerNameTv.setOnClickListener {
+           callbacks?.onOpenSalerProfile(product.userId)
+      }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        callbacks?.onDetailsOpen(true)
+        callbacks = null
+    }
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        commentViewModel = ViewModelProviders.of(this).get(CommentViewModel::class.java)
+        productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
+        reportViewModel = ViewModelProviders.of(this).get(ReportViewModel::class.java)
+        favoriteViewModel = ViewModelProviders.of(this).get(FavoriteViewModel::class.java)
+        product = Product()
+        databaseReference=FirebaseDatabase.getInstance().getReference("users").child(product.userId!!)
+        // mainActivity?.anim(false)
+        callbacks?.onDetailsOpen(false)
+        arguments?.let {
+            productId = it.getString(ARG_PRODUCT_ID)
+            productViewModel.loadProduct(productId!!)
+            reportViewModel.getProductReports(productId!!).observe(
+                this,
+                Observer { it ->
+                    countOfReports = it.size
+                }
+            )
+        }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+
+        val view = inflater.inflate(R.layout.fragment_details_of_all_products, container, false)
+        //  progressBar = view.findViewById(R.id.progress_circular)
+//        productImageIv = view.findViewById(R.id.img_product_details) as ImageView
+        productNameTv = view.findViewById(R.id.tv_product_name_details) as TextView
+        //  productReviewsTv = view.findViewById(R.id.reviews_tv) as TextView
+        productQuantityTv = view.findViewById(R.id.tv_product_quantity_details) as TextView
+        salerNameTv = view.findViewById(R.id.saler_name_tv) as TextView
+        productRialPriceTv = view.findViewById(R.id.tv_product_price_rial_details) as TextView
+        productDollarPriceTv = view.findViewById(R.id.tv_product_price_details) as TextView
+        productDescriptionTv = view.findViewById(R.id.tv_product_desc_details) as TextView
+        productCommentDescriptionTv =
+            view.findViewById(R.id.tv_product_count_of_report) as TextView
+        favoriteFABtn = view.findViewById(R.id.btn_rating) as FloatingActionButton
+        cartBtn = view.findViewById(R.id.btn_cart) as FloatingActionButton
+        reportBtn = view.findViewById(R.id.btnShowreport)
+        productReviewsTv = view.findViewById(R.id.tv_product_reports) as TextView
+        ratingBar = view.findViewById(R.id.ratingBar) as RatingBar
+        commentsRecyclerView = view.findViewById(R.id.comments_recycler_view)
+        showComments = view.findViewById(R.id.btnShowComment)
+        imageSlider = view.findViewById(R.id.img_product_details)
+
+
 
         return view
     }
 
-    private fun averageOfRating(comments: List<Comment>) {
-        var total = 0
-        if (!comments.isNullOrEmpty()) {
-            comments.forEach { comment ->
-                total += comment.rate
-            }
-            val average = total / comments.size
-            ratingBar.rating = average.toFloat()
-        }
-    }
-
-    private fun updateCommentsRecycler(comments: List<Comment>) {
-        adapter = CommentsAdapter(comments)
-        commentsRecyclerView.adapter = adapter
-    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        salerNameTv.text="haytham"
+            databaseReference?.addValueEventListener(object :ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    var userInfo=snapshot.getValue(SaveUserInfo::class.java)
+                     var salerNmae=userInfo?.Uname
+                    salerNameTv.text="haytham"
 
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+
+                }
+
+            })
 //          showProgress(true)
         productViewModel.productIDetailsLiveData.observe(
             viewLifecycleOwner,
@@ -229,29 +240,7 @@ class DetailsOfAllProductsFragment : Fragment() {
                     }
 
 
-//
-//                        cartBtn.hide()
-//                        cartBtn.isEnabled = false
-//                        favoriteFABtn.isEnabled = false
-//                        reportBtn.isEnabled = false
-//                        chat_btn.isEnabled = false
-//                        call_btn.isEnabled = false
-//                    }else if(AppSharedPreference.getUserToken(requireContext()) ==""||AppSharedPreference.getUserId(requireContext()) == null){
-//                      cartBtn.isEnabled = false
-//                        favoriteFABtn.isEnabled = false
-//                        reportBtn.isEnabled = false
-//                        chat_btn.isEnabled = false
-//                        call_btn.isEnabled = false
-//                    }
-//                     else{
-//                        chat_btn.isEnabled=false
-//                        cartBtn.show()
-//                        cartBtn.isEnabled=true
-//                        favoriteFABtn.isEnabled=true
-//                        reportBtn.isEnabled=true
-//                        chat_btn.isEnabled=true
-//                        call_btn.isEnabled=true
-//                    }
+
                 }
 
 
@@ -263,6 +252,21 @@ class DetailsOfAllProductsFragment : Fragment() {
 
     }
 
+    private fun averageOfRating(comments: List<Comment>) {
+        var total = 0
+        if (!comments.isNullOrEmpty()) {
+            comments.forEach { comment ->
+                total += comment.rate
+            }
+            val average = total / comments.size
+            ratingBar.rating = average.toFloat()
+        }
+    }
+
+    private fun updateCommentsRecycler(comments: List<Comment>) {
+        adapter = CommentsAdapter(comments)
+        commentsRecyclerView.adapter = adapter
+    }
     private fun loadComments(productId: String) {
         commentViewModel.getProductComments(productId).observe(
             viewLifecycleOwner,
@@ -293,21 +297,13 @@ class DetailsOfAllProductsFragment : Fragment() {
             }
             imageSlider.setImageList(slideModels, ScaleTypes.CENTER_CROP)
         }
-//        if (product.images.isNotEmpty())
-//            Picasso.get().also {
-//                val path = product.images[0].getUrl()
-//                it.load(path)
-//                    .resize(350, 350)
-//                    .centerCrop()
-//                    .placeholder(R.drawable.shoe)
-//                    .into(productImageIv)
-//
-//            }
+
     }
 
     interface Callbacks {
         fun onAddToCartClicked()
         fun onDetailsOpen(show: Boolean)
+        fun onOpenSalerProfile(userId:String?)
     }
 
     private fun addItemToFavorite() {
@@ -331,25 +327,9 @@ class DetailsOfAllProductsFragment : Fragment() {
         )
     }
 
-    /* private fun createFavorite() {
-         val favorite = Favorite(
-             user_id = AppSharedPreference.getUserId(requireContext())!!,
-             id = null
-         )
-         favoriteViewModel.createFavorite(
-             favorite
-         ).observe(
-             viewLifecycleOwner,
-             Observer {
-                 AppSharedPreference.setFavoriteId(requireContext(),it)
-                 addItemToFavorite()
-             }
-         )
-     }*/
 
-    /*  private fun checkFavorite(): Boolean {
-           return AppSharedPreference.getFavoriteId(requireContext()) != "-1"
-      }*/
+
+
     companion object {
         @JvmStatic
         fun newInstance(productId: String) =

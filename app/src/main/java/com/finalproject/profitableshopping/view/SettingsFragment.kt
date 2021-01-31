@@ -14,6 +14,8 @@ import com.finalproject.profitableshopping.data.firebase.NotifationActivity
 import com.finalproject.profitableshopping.view.authentication.fragments.LogInFragment
 import com.finalproject.profitableshopping.view.category.CategoryActivity
 import com.finalproject.profitableshopping.view.products.ManageProductActivity
+import com.finalproject.profitableshopping.view.report.dialog.AddComplainDialog
+import com.finalproject.profitableshopping.view.report.dialog.ComplainDialog
 import com.finalproject.profitableshopping.view.user.ManageUserProfileFragment
 import com.finalproject.profitableshopping.view.user.UserManageProfileFragment
 
@@ -110,9 +112,10 @@ class SettingsFragment : Fragment(),
                 }
 
             } else if (position == 1) {
-                startActivity(Intent(context, NotifationActivity::class.java))
+                AddComplainDialog.newInstance().apply {
+                    show(this@SettingsFragment.parentFragmentManager, "report")}
             } else if (position == 2) {
-
+                startActivity(Intent(context, NotifationActivity::class.java))
             } else if (position == 3) {
                 addFragment(ContactUsFragment())
             } else if (position == 4) {
