@@ -95,7 +95,8 @@
                     android:text="@string/sign_btn"
                     android:textAllCaps="false"
                     android:textColor="@android:color/white"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:layout_marginTop="12dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -173,11 +174,14 @@
 
     </LinearLayout>
 
-    <ImageView
+    <com.mikhaellopez.circularimageview.CircularImageView
         android:id="@+id/image_preview"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/ic_person"
+        android:src="@drawable/icon2"
+        app:civ_border="true"
+        app:civ_border_color="@color/colorPrimary"
+        app:civ_border_width="2dp"
         android:translationY="40dp"
         app:layout_constraintBottom_toTopOf="@id/ly"
         app:layout_constraintEnd_toEndOf="@id/ly"
