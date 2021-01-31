@@ -10,11 +10,7 @@ import android.view.ViewGroup
 import android.widget.*
 import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.AppSharedPreference
-<<<<<<< HEAD
-=======
 import com.finalproject.profitableshopping.data.firebase.NotifationActivity
-import com.finalproject.profitableshopping.view.authentication.fragments.ActiveFragment
->>>>>>> main
 import com.finalproject.profitableshopping.view.authentication.fragments.LogInFragment
 import com.finalproject.profitableshopping.view.category.CategoryActivity
 import com.finalproject.profitableshopping.view.products.ManageProductActivity
@@ -118,19 +114,10 @@ class SettingsFragment : Fragment(),
             } else if (position == 2) {
 
             } else if (position == 3) {
-<<<<<<< HEAD
-
-            } else if (position == 4) {
-                callbacks?.onContactUsSelected()
-            } else if (position ==5) {
-                callbacks?.onAboutAppSelected()
-            } else if (position == 6) {
-=======
                 addFragment(ContactUsFragment())
             } else if (position == 4) {
                 addFragment(AboutAppFragment())
             } else if (position == 5) {
->>>>>>> main
                 logOut()
                 setCurrentFragment(LogInFragment.newInstance())
             }

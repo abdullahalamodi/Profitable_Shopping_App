@@ -60,7 +60,7 @@
             android:layout_marginBottom="96dp"
             android:gravity="center"
             android:fontFamily="@font/rb_light"
-            android:text="تطبيق التسوق المربح يساعدك للحصول على اهم المنتجات التي يتم انزالها في السوق حيث يتم معرفة كل المنتجات مع اسعارها والتعامل مع البائعين مباشرة وشكرا لي  "
+            android:text="تطبيق التسوق المربح يساعدك للحصول على اهم المنتجات التي يتم انزالها في السوق حيث يتم معرفة كل المنتجات مع اسعارها والتعامل مع البائعين مباشرة "
             android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="@color/black"

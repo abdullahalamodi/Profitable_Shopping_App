@@ -352,19 +352,6 @@
                 <Button
                     android:id="@+id/btnShowComment"
                     android:layout_width="0dp"
-<<<<<<< HEAD
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_margin="8dp"
-                    android:text="عرض التعليقات"
-                    android:background="@color/colorPrimary"
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/rb_light"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:cornerRadius="4dp"/>
-=======
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/show_comments"
@@ -374,21 +361,16 @@
                     android:padding="12dp"
                     android:textStyle="bold"
                     android:textSize="18sp"/>
->>>>>>> main
 
                 <Button
                     android:id="@+id/btnShowreport"
                     android:layout_width="0dp"
-<<<<<<< HEAD
                     android:layout_weight="1"
-=======
->>>>>>> main
                     android:layout_height="wrap_content"
                     android:padding="12dp"
-                    android:layout_weight="1"
                     android:background="@color/colorPrimary"
                     android:fontFamily="@font/rb_light"
-                    android:text="بلغ عن المنتج "
+                    android:text="@string/report_on_product"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     android:textStyle="bold"/>
@@ -402,10 +384,6 @@
                 android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-<<<<<<< HEAD
-
-=======
->>>>>>> main
         </LinearLayout>
 
 

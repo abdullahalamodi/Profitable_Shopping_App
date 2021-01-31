@@ -32,7 +32,6 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="spiner_nothing_selected_message">you have to choose category</string>
 
 
     ////////////////////// product////////////////////////////
@@ -114,11 +113,6 @@
         <item>الاصناف</item>
         <item>ارسال الاشعارات</item>
         <item>تغيير كلمة المرور</item>
-        <item>بلاغات</item>
-<<<<<<< HEAD
-        <!--<item>حسابات المستخدمين</item>-->
-=======
->>>>>>> main
         <item>تواصل معنا</item>
         <item>حول التطبيق</item>
         <item>تسجيل الخروج</item>
@@ -131,10 +125,6 @@
         <item>مبيعاتي</item>
         <item>تواصل معنا</item>
         <item>حول التطبيق</item>
-<<<<<<< HEAD
-        <!--<item>الاعدادات</item>-->
-=======
->>>>>>> main
         <item>تسجيل الخروج</item>
     </string-array>
 
@@ -142,5 +132,7 @@
     <string name="email">الايميل</string>
     <string name="user_name">اسم المستخدم</string>
     <string name="confirm_password">تاكيد كلمة المرور</string>
+    <string name="report_on_product">بلغ عن المنتج</string>
+    <string name="spiner_nothing_selected_message">عليك اختيار صنف</string>
 
 </resources>

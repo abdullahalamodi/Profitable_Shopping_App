@@ -71,24 +71,14 @@ class FavoriteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-<<<<<<< HEAD
-        showProgress(true)
+       // showProgress(true)
+        dialog?.show()
 //        val items = mutableListOf<FavoriteDetails>()
 //        items.add(FavoriteDetails(null, 1, "1"))
 //        items.add(FavoriteDetails(null, 1, "1"))
 //        items.add(FavoriteDetails(null, 1, "1"))
 //        items.add(FavoriteDetails(null, 1, "1"))
-        favoriteViewModel.favoriteListLiveData
-=======
-       // showProgress(true)
-        dialog?.show()
-        val items = mutableListOf<FavoriteDetails>()
-        items.add(FavoriteDetails(null, 1, "1"))
-        items.add(FavoriteDetails(null, 1, "1"))
-        items.add(FavoriteDetails(null, 1, "1"))
-        items.add(FavoriteDetails(null, 1, "1"))
         favoriteViewModel.getUserFavorites(AppSharedPreference.getUserId(requireContext())!!)
->>>>>>> main
             .observe(
                 viewLifecycleOwner,
                 Observer { favoriteList ->

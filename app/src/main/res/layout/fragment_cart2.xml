@@ -75,11 +75,7 @@
         android:layout_margin="12dp"
         android:fontFamily="@font/rb_light"
         android:gravity="center"
-<<<<<<< HEAD
-        android:text="لا توجد منتجات في السلة"
-=======
         android:text= "@string/cart_empty"
->>>>>>> main
         android:textSize="20sp"
         android:visibility="gone" />
 
