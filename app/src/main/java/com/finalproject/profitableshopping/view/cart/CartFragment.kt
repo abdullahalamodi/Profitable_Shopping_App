@@ -80,7 +80,10 @@ class CartFragment : Fragment() {
         carttViewModel = ViewModelProviders.of(this).get(CartViewModel::class.java)
         commentViewModel = ViewModelProviders.of(this).get(CommentViewModel::class.java)
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
-
+        carttViewModel.loadUserOrder(
+            AppSharedPreference.getCartId(requireContext())?.toInt()!!,
+            AppSharedPreference.getUserId(requireContext())!!
+        )
     }
 
     override fun onCreateView(

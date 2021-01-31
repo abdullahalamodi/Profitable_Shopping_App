@@ -1,5 +1,6 @@
 package com.finalproject.profitableshopping.view.favorite
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +21,7 @@ import com.finalproject.profitableshopping.data.models.Favorite
 import com.finalproject.profitableshopping.viewmodel.FavoriteViewModel
 import com.finalproject.profitableshopping.viewmodel.ProductViewModel
 import com.squareup.picasso.Picasso
+import dmax.dialog.SpotsDialog
 
 
 class FavoriteFragment : Fragment() {
@@ -27,7 +29,7 @@ class FavoriteFragment : Fragment() {
     private lateinit var productViewModel: ProductViewModel
     private lateinit var favoriteProductsRv: RecyclerView
     private lateinit var emptyFavoriteTV: TextView
-
+    private var dialog: AlertDialog? = null
     private lateinit var progressBar: ProgressBar
     var favorites: List<Favorite> = emptyList()
     private var adapter: FavoriteAdapter = FavoriteAdapter(favorites)
@@ -56,6 +58,7 @@ class FavoriteFragment : Fragment() {
             R.layout.fragment_favorite_product_list, container, false
         )
         progressBar = view.findViewById(R.id.progress_circular)
+        dialog=SpotsDialog.Builder().setContext(context!!).setCancelable(false).build()
         emptyFavoriteTV = view.findViewById(R.id.tv_empty_favorite)
         favoriteProductsRv = view.findViewById(R.id.rv_favorite_product_list)
         favoriteProductsRv.layoutManager = LinearLayoutManager(context)
@@ -68,6 +71,7 @@ class FavoriteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+<<<<<<< HEAD
         showProgress(true)
 //        val items = mutableListOf<FavoriteDetails>()
 //        items.add(FavoriteDetails(null, 1, "1"))
@@ -75,11 +79,22 @@ class FavoriteFragment : Fragment() {
 //        items.add(FavoriteDetails(null, 1, "1"))
 //        items.add(FavoriteDetails(null, 1, "1"))
         favoriteViewModel.favoriteListLiveData
+=======
+       // showProgress(true)
+        dialog?.show()
+        val items = mutableListOf<FavoriteDetails>()
+        items.add(FavoriteDetails(null, 1, "1"))
+        items.add(FavoriteDetails(null, 1, "1"))
+        items.add(FavoriteDetails(null, 1, "1"))
+        items.add(FavoriteDetails(null, 1, "1"))
+        favoriteViewModel.getUserFavorites(AppSharedPreference.getUserId(requireContext())!!)
+>>>>>>> main
             .observe(
                 viewLifecycleOwner,
                 Observer { favoriteList ->
                     favorites = favoriteList
                     showProgress(false)
+                    dialog?.dismiss()
                     updateUI(favorites)
                 }
             )
