@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity(),
             }
         }*/
 
-        // supportActionBar?.hide()
+         supportActionBar?.hide()
 
 
         val isFragmentContainerEmpty = savedInstanceState == null

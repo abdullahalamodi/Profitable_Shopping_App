@@ -60,14 +60,14 @@
     <string name="my_products">منتجاتي</string>
     <string name="categories">الاصناف</string>
     <string name="about_us">حول التطبيق</string>
-    <string name="contact_us">تواصل معنى</string>
+    <string name="contact_us">تواصل معنا</string>
     <string name="settings">الاعدادات</string>
     <string name="category_hint">ما نوع المنتج الذي تريد اضافته:</string>
     <string name="sign_in_tv">تسجيل دخول</string>
     <string name="email_tv">"الايميل "</string>
     <string name="sign_btn">تسجيل دخول</string>
     <string name="new_user">مستخدم جديد?</string>
-    <string name="sign_up">تسجيل</string>
+    <string name="sign_up">انشاء حساب</string>
     <string name="password">كلمة المرور</string>
     <string name="sign_up_tv">انشاء حساب</string>
     <string name="username_tv">اسم المستخدم</string>
@@ -102,6 +102,11 @@
     <string name="write_comment">اكـتـب تـعليقـاً</string>
     <string name="favorite">المفضلة</string>
     <string name="Settings">الاعدادات</string>
+    <string name="cart_empty">السلة فارغة</string>
+    <string name="show_comments">عرض التعليقات</string>
+    <string name="quantity">الكمية :</string>
+    <string name="register">تسجيل</string>
+    <string name="as_user">المتابعة كزائر</string>
 
     /////////////////////////////////////////
 
@@ -110,7 +115,6 @@
         <item>ارسال الاشعارات</item>
         <item>تغيير كلمة المرور</item>
         <item>بلاغات</item>
-        <item>حسابات المستخدمين</item>
         <item>تواصل معنا</item>
         <item>حول التطبيق</item>
         <item>تسجيل الخروج</item>
@@ -122,8 +126,12 @@
         <item>طلباتي السابقة</item>
         <item>تواصل معنا</item>
         <item>حول التطبيق</item>
-        <item>الاعدادات</item>
         <item>تسجيل الخروج</item>
     </string-array>
+
+    <string name="phone">رقم الهاتف</string>
+    <string name="email">الايميل</string>
+    <string name="user_name">اسم المستخدم</string>
+    <string name="confirm_password">تاكيد كلمة المرور</string>
 
 </resources>

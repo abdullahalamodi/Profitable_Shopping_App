@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Profitable Shopping</string>
+    <string name="home">Home</string>
+    <string name="cart">Cart</string>
+    <string name="Profile">My Account</string>
+    <string name="logout">Logout</string>
+    <string name="Settings">Settings</string>
+    <string name="write_comment">Write Comment</string>
+    <string name="favorite">Favorite</string>
+    <string name="valuation_product">Valuation of products</string>
+    <string name="notifications">Send Notifications</string>
+    <string name="enter_message">Write your notification</string>
+    <string name="enter_title">Write the title</string>
+    <string name="send">Send</string>
+    <string name="hide_product">Hide</string>
+    <string name="total_of_price">Total price</string>
+    <string name="add_item_to_cart">Add to cart</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="about_us">About App</string>
+    <string name="categories">Categories</string>
+    <string name="my_products">My products</string>
+    <string name="add_product_label">Add products</string>
+    <string name="try_again">Try again</string>
+    <string name="name_product">Product\'s Name</string>
+    <string name="category_save">Save</string>
+    <string name="category_add">Add</string>
+    <string name="add_new_category">Add new category</string>
+    <string name="backed">Backed</string>
+    <string name="cancel">Cancel</string>
+    <string name="category_delete">Delete</string>
+    <string name="search">Search</string>
+
+
+    <string-array name="admin_list">
+        <item>Categories</item>
+        <item>Send Notification</item>
+        <item>Reset Password</item>
+        <item>c</item>
+        <item>Contact us</item>
+        <item>About App</item>
+        <item>Logout</item>
+    </string-array>
+
+    <string-array name="user_list">
+        <item>My Account</item>
+        <item>My Products</item>
+        <item>طلباتي السابقة</item>
+        <item>Contact Us</item>
+        <item>About App</item>
+        <item>Logout</item>
+    </string-array>
+
+    <string name="Products">Products</string>
+    <string name="Category">Categories</string>
+    <string name="sign_up_tv">Sgin Up</string>
+    <string name="password">Password</string>
+    <string name="new_user">New Account?</string>
+    <string name="sign_btn">Sign In</string>
+    <string name="email_sign_up_tv">Email</string>
+    <string name="confirmpassword">Confirm Password</string>
+    <string name="sign_up_btn">Sign Up</string>
+    <string name="username_tv">User Name</string>
+    <string name="register">Sign Up</string>
+    <string name="phone">Phone Number</string>
+    <string name="email">Email</string>
+    <string name="user_name">UserName</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="quantity">Quantity</string>
+    <string name="show_comments">Show Comments</string>
+    <string name="cart_empty">Cart is empty</string>
+</resources>

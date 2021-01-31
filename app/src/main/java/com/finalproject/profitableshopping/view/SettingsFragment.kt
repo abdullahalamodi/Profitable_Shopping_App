@@ -12,6 +12,7 @@ import android.widget.*
 import androidx.cardview.widget.CardView
 import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.AppSharedPreference
+import com.finalproject.profitableshopping.data.firebase.NotifationActivity
 import com.finalproject.profitableshopping.view.authentication.fragments.ActiveFragment
 import com.finalproject.profitableshopping.view.authentication.fragments.LogInFragment
 import com.finalproject.profitableshopping.view.authentication.fragments.SignUpFragment
@@ -29,7 +30,7 @@ class SettingsFragment : Fragment(),
     ManageUserProfileFragment.Callbacks,
     AboutAppFragment.Callbacks,
     ContactUsFragment.Callbacks,
-    LogInFragment.LoginCallbacks{
+    LogInFragment.LoginCallbacks {
 
     private lateinit var aList: ListView
     private lateinit var uList: ListView
@@ -69,6 +70,12 @@ class SettingsFragment : Fragment(),
         aList = view.findViewById<ListView>(R.id.list_of_admin)
         uList = view.findViewById<ListView>(R.id.list_of_user)
 
+        val imageId = arrayOf<Int>(
+            R.drawable.ic_category, R.drawable.ic_notifications, R.drawable.ic_reset,
+            R.drawable.ic_reset, R.drawable.ic_contacts, R.drawable.ic_contacts,
+            R.drawable.logout
+        )
+
         var adminAdapter =
             ArrayAdapter<String>(requireContext(), android.R.layout.simple_list_item_1, adminList)
         var userdapter =
@@ -76,6 +83,9 @@ class SettingsFragment : Fragment(),
 
         aList.adapter = adminAdapter
         uList.adapter = userdapter
+
+        /*var adpter=MyListAdapter(this,adminList,imageId)
+        aList.adapter = adpter*/
 
         if (getUserToken() == "admin") {
             aList.visibility = View.VISIBLE
@@ -102,19 +112,14 @@ class SettingsFragment : Fragment(),
                 }
 
             } else if (position == 1) {
-
-
+                startActivity(Intent(context, NotifationActivity::class.java))
             } else if (position == 2) {
 
             } else if (position == 3) {
-
-            } else if (position == 4) {
-
-            } else if (position == 5) {
                 addFragment(ContactUsFragment())
-            } else if (position == 6) {
+            } else if (position == 4) {
                 addFragment(AboutAppFragment())
-            } else if (position == 7) {
+            } else if (position == 5) {
                 logOut()
                 setCurrentFragment(LogInFragment.newInstance())
             }
@@ -193,5 +198,27 @@ class SettingsFragment : Fragment(),
     }
 
     override fun onLoginSuccess() {
+    }
+
+
+    inner class MyListAdapter(
+        private val context: SettingsFragment,
+        private val title: Array<String>,
+        private val imgid: Array<Int>
+    ) : ArrayAdapter<String>(requireContext(), R.layout.list_item_settings, title) {
+
+        override fun getView(position: Int, view: View?, parent: ViewGroup): View {
+
+            val inflater = context.layoutInflater
+            val rowView = inflater.inflate(R.layout.list_item_settings, null, true)
+
+            val titleText = rowView.findViewById(R.id.tv_title_settings) as TextView
+            val imageView = rowView.findViewById(R.id.img_settings) as ImageView
+
+            titleText.text = title[position]
+            imageView.setImageResource(imgid[position])
+
+            return rowView
+        }
     }
 }
