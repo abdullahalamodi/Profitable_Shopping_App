@@ -89,6 +89,7 @@ class ProductListFragment : Fragment() {
         categoryViewModel = ViewModelProviders.of(this).get(CategoryViewModel::class.java)
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
         carttViewModel = ViewModelProviders.of(this).get(CartViewModel::class.java)
+        if(AppSharedPreference.getUserToken(requireContext())=="user")
         carttViewModel.loadUserOrder(
             AppSharedPreference.getCartId(requireContext())?.toInt()!!,
             AppSharedPreference.getUserId(requireContext())!!
@@ -133,7 +134,13 @@ class ProductListFragment : Fragment() {
             viewLifecycleOwner,
             Observer { categoriesList ->
                 //showProgress(false)
-                updateUICategory(categoriesList)
+                var cat= mutableListOf<Category>()
+                for(i in categoriesList){
+                    if(i.isActive==1)
+                        cat.add(i)
+                }
+                updateUICategory(cat)
+               // updateUICategory(categoriesList)
             }
         )
 

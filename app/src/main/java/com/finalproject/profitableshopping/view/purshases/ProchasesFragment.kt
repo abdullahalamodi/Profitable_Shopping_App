@@ -26,12 +26,14 @@ import com.squareup.picasso.Picasso
 class ProchasesFragment : Fragment() {
     lateinit var PurchaseViewModel: CartViewModel
     lateinit var ordersRV: RecyclerView
+    private lateinit var emptyPurchaseTV: TextView
     private var adapter: OrderAdapter = OrderAdapter(emptyList())
     var callbacks:Callbacks?=null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         callbacks=context as Callbacks
+        callbacks?.onOpen(false)
     }
 
     override fun onDetach() {
@@ -51,7 +53,7 @@ class ProchasesFragment : Fragment() {
        val view= inflater.inflate(R.layout.fragment_prochases, container, false)
       ordersRV=view.findViewById(R.id.purchases_recyclerview)
         ordersRV.layoutManager = LinearLayoutManager(requireContext())
-
+           emptyPurchaseTV = view.findViewById(R.id.tv_empty_purchase)
         return view
     }
 
@@ -66,6 +68,10 @@ class ProchasesFragment : Fragment() {
         )
     }
     private fun updateUI(orders: List<Order>) {
+        if(orders.isEmpty()){
+            emptyPurchaseTV.visibility=View.VISIBLE
+        }else
+            emptyPurchaseTV.visibility=View.GONE
         adapter = OrderAdapter(orders)
         ordersRV.adapter = adapter
 
@@ -95,7 +101,8 @@ init {
         fun bind(order: Order) {
             this.order=order
             orderDateTv.text = order.date
-            priceTv.text = "$ : " + order.total_price.toString()
+            priceTv.text = "$ : " + "432.577" +
+                    ""//order.total_price.toString()
             quantityTv.text = "Q : " + "345"
 
 
@@ -133,6 +140,7 @@ init {
 
     interface Callbacks{
       fun  onOpenOrderDatails( OrderId:Int)
+        fun onOpen(show:Boolean)
 
     }
 }

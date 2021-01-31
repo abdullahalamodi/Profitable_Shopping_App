@@ -67,10 +67,7 @@ class CartFragment : Fragment() {
         carttViewModel = ViewModelProviders.of(this).get(CartViewModel::class.java)
         commentViewModel = ViewModelProviders.of(this).get(CommentViewModel::class.java)
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
-        carttViewModel.loadUserOrder(
-            AppSharedPreference.getCartId(requireContext())?.toInt()!!,
-            AppSharedPreference.getUserId(requireContext())!!
-        )
+
     }
 
     override fun onCreateView(
@@ -90,6 +87,11 @@ class CartFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if(AppSharedPreference.getUserToken(requireContext())=="user" && AppSharedPreference.getCartId(requireContext()) !=null)
+            carttViewModel.loadUserOrder(
+                AppSharedPreference.getCartId(requireContext())?.toInt()!!,
+                AppSharedPreference.getUserId(requireContext())!!
+            )
         carttViewModel.orderDetailsListLiveData.observe(
             viewLifecycleOwner,
             Observer {

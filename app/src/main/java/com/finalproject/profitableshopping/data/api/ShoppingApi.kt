@@ -175,8 +175,8 @@ interface ShoppingApi {
     fun getUserReports(@Query("to_id") userId:String):Call<List<Report>>
     @GET("reports.php")
     fun getProductReports(@Query("product_id") productId:String):Call<List<Report>>
-    @GET("products.php/my_salaes?")
-    fun getUserSales(@Query("user_id") userId: String):Call<List<MySales>>
+    @GET("products.php/my_sales?")
+    fun getUserSales(@Query("my_sales") userId: String):Call<List<MySales>>
 
 
 }

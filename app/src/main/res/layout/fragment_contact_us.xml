@@ -89,7 +89,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/rb_light"
                         android:padding="4dp"
-                        android:text="Hytham"
+                        android:text="Hytham alsharany"
                         android:textColor="@color/black"
                         android:textSize="18dp"
                         android:textStyle="bold" />
@@ -98,14 +98,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/rb_light"
-                        android:text="ffffffff5@gmail.com" />
+                        android:text="talsharany@gmail.com" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:fontFamily="@font/rb_light"
-                        android:text="+976 7777777" />
+                        android:text="+976 772967092" />
 
                     <TextView
                         android:id="@+id/member_details1"
@@ -114,7 +114,7 @@
                         android:layout_marginTop="10dp"
                         android:fontFamily="@font/rb_light"
                         android:gravity="center"
-                        android:text="ةةةةةةةةةةةةةةةةةةةةةةةةةة تينسبمتشس مسنيتبمسي كمسنيب شمشنسي بشسم سمنببسمشت"
+                        android:text=" "
                         android:visibility="gone" />
 
                 </LinearLayout>

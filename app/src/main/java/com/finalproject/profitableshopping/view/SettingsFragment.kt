@@ -5,21 +5,14 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.cardview.widget.CardView
 import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.AppSharedPreference
-import com.finalproject.profitableshopping.view.authentication.fragments.ActiveFragment
 import com.finalproject.profitableshopping.view.authentication.fragments.LogInFragment
-import com.finalproject.profitableshopping.view.authentication.fragments.SignUpFragment
 import com.finalproject.profitableshopping.view.category.CategoryActivity
 import com.finalproject.profitableshopping.view.products.ManageProductActivity
-import com.finalproject.profitableshopping.view.products.fragments.DetailsOfAllProductsFragment
-import com.finalproject.profitableshopping.view.products.fragments.ProductListFragment
-import com.finalproject.profitableshopping.view.products.fragments.ShowAllProductsFragment
 import com.finalproject.profitableshopping.view.user.ManageUserProfileFragment
 import com.finalproject.profitableshopping.view.user.UserManageProfileFragment
 
@@ -38,11 +31,16 @@ class SettingsFragment : Fragment(),
 
     interface Callbacks {
         fun onSettingsOpen(show: Boolean)
+        fun onContactUsSelected()
+        fun onAboutAppSelected()
+        fun onMyPurchaseSelected()
+        fun onMySalesSelected()
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         callbacks = context as Callbacks
+        callbacks?.onSettingsOpen(false)
     }
 
     override fun onDetach() {
@@ -109,12 +107,10 @@ class SettingsFragment : Fragment(),
             } else if (position == 3) {
 
             } else if (position == 4) {
-
-            } else if (position == 5) {
-                addFragment(ContactUsFragment())
+                callbacks?.onContactUsSelected()
+            } else if (position ==5) {
+                callbacks?.onAboutAppSelected()
             } else if (position == 6) {
-                addFragment(AboutAppFragment())
-            } else if (position == 7) {
                 logOut()
                 setCurrentFragment(LogInFragment.newInstance())
             }
@@ -131,13 +127,16 @@ class SettingsFragment : Fragment(),
 
             } else if (position == 2) {
 
-            } else if (position == 3) {
-                addFragment(ContactUsFragment())
+                callbacks?.onMyPurchaseSelected()
+            }
+            else if (position == 3){
+                callbacks?.onMySalesSelected()
 
-            } else if (position == 4) {
-                addFragment(AboutAppFragment())
+            }else if (position == 4 ){
+                callbacks?.onContactUsSelected()
 
             } else if (position == 5) {
+                callbacks?.onAboutAppSelected()
 
             } else if (position == 6) {
                 logOut()
@@ -160,7 +159,8 @@ class SettingsFragment : Fragment(),
     private fun setCurrentFragment(fragment: Fragment) =
         activity?.supportFragmentManager?.beginTransaction()?.apply {
             replace(R.id.container, fragment)
-            commit()
+                .addToBackStack(null)
+                . commit()
         }
 
 
@@ -168,7 +168,7 @@ class SettingsFragment : Fragment(),
         return AppSharedPreference.getUserToken(requireContext())
     }
 
-    private fun logOut(token: String = "") {
+    private fun logOut(token: String? = null) {
         AppSharedPreference.saveUserToken(requireContext(), token)
     }
 

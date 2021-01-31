@@ -6,7 +6,7 @@ import com.finalproject.profitableshopping.data.models.User
 
 object AppSharedPreference {
 
-    fun saveUserToken(context: Context, token: String) {
+    fun saveUserToken(context: Context, token: String?) {
         val sharedPreferences: SharedPreferences = context.getSharedPreferences(
             sharedPrefFile,
             Context.MODE_PRIVATE
