@@ -75,7 +75,7 @@
         android:layout_margin="12dp"
         android:fontFamily="@font/rb_light"
         android:gravity="center"
-        android:text="لا توجد منتجات في المفضلة"
+        android:text="لا توجد منتجات في السلة"
         android:textSize="20sp"
         android:visibility="gone" />
 

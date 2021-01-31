@@ -186,7 +186,7 @@ class AddProductFragment : Fragment(),
         categoryViewModel = ViewModelProviders.of(this).get(CategoryViewModel::class.java)
         categoriesList = emptyList<Category>().toMutableList()
         categoriesName = emptyList<String>().toMutableList()
-        userId=AppSharedPreference.getUserId(requireContext())
+        userId = AppSharedPreference.getUserId(requireContext())
         arguments?.let {
             productId = it.getString(ARG_PRODUCT_ID)
             if (productId != null)
@@ -297,7 +297,7 @@ class AddProductFragment : Fragment(),
                     .placeholder(R.drawable.shoe)
                     .into(pickImagesV)
             }
-        if(product.images.size>1)
+        if (product.images.size > 1)
         Picasso.get().also {
             val path = product.images[1].getUrl()
             it.load(path)
@@ -306,7 +306,7 @@ class AddProductFragment : Fragment(),
                 .placeholder(R.drawable.shoe)
                 .into(pickImagesV2)
         }
-        if(product.images.size>2)
+        if (product.images.size > 2)
         Picasso.get().also {
             val path = product.images[2].getUrl()
             it.load(path)

@@ -352,25 +352,23 @@
 
                 <Button
                     android:id="@+id/btnShowComment"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_margin="8dp"
                     android:text="عرض التعليقات"
-                    android:background="@drawable/bg4"
+                    android:background="@color/colorPrimary"
                     android:textColor="@color/black"
+                    android:fontFamily="@font/rb_light"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
                     app:cornerRadius="4dp"/>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/comments_recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
                 <Button
                     android:id="@+id/btnShowreport"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_margin="8dp"
@@ -384,6 +382,14 @@
                     app:cornerRadius="4dp"
                     android:layout_marginBottom="20dp"/>
             </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/comments_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
 
         </LinearLayout>
 

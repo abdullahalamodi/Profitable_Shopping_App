@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity(),
     LogInFragment.LoginCallbacks,
     SignUpFragment.SignUpCallbacks,
     ProchasesFragment.Callbacks,
+    CartFragment.Callbacks,
     ActiveFragment.ActiveAccountCallbacks,
     ShowAllProductsFragment.Callbacks,
     DetailsOfAllProductsFragment.Callbacks,
@@ -378,6 +379,10 @@ class MainActivity : AppCompatActivity(),
 
     override fun onOpen(show: Boolean) {
        showButtonNavigation(show)
+    }
+
+    override fun clearBudge() {
+        bottomNav.removeBadge(R.id.menu_shopping_cart)
     }
 
     /*override fun onBackPressed() {

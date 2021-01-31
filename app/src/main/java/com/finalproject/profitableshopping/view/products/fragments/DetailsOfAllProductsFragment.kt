@@ -171,12 +171,12 @@ class DetailsOfAllProductsFragment : Fragment() {
         }
 
         showComments.setOnClickListener {
-         /*   if (commentsRecyclerView.visibility == View.VISIBLE)
+            if (commentsRecyclerView.visibility == View.VISIBLE)
                 commentsRecyclerView.visibility = View.GONE
             else
                 commentsRecyclerView.visibility = View.VISIBLE
-*/              var bottomSheetAddCat = CommentsFragment();
-            bottomSheetAddCat.show(childFragmentManager, "Tag")
+//             var bottomSheetAddCat = CommentsFragment();
+//            bottomSheetAddCat.show(childFragmentManager, "Tag1")
         }
 
         return view
@@ -193,7 +193,7 @@ class DetailsOfAllProductsFragment : Fragment() {
         }
     }
 
-    fun updateCommentsRecycler(comments: List<Comment>) {
+    private fun updateCommentsRecycler(comments: List<Comment>) {
         adapter = CommentsAdapter(comments)
         commentsRecyclerView.adapter = adapter
     }
@@ -368,12 +368,14 @@ class DetailsOfAllProductsFragment : Fragment() {
         var commentUser = view.findViewById(R.id.comment_user) as TextView
         var commentTitle = view.findViewById(R.id.comment_title) as TextView
         var commentDate: TextView = view.findViewById(R.id.comment_date) as TextView
+        var commentRate: RatingBar = view.findViewById(R.id.rate_bar) as RatingBar
 
 
         fun bind(comment: Comment) {
-           // commentUser.text = comment.userId
+            commentUser.text = "ID : "+comment.userId
             commentTitle.text = comment.title
             commentDate.text = comment.date
+            commentRate.rating = comment.rate.toFloat()
         }
 
     }

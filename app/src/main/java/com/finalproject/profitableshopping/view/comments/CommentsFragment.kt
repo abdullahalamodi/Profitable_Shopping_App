@@ -47,7 +47,7 @@ class CommentsFragment : BottomSheetDialogFragment() {
 
     }
 
-        fun updateCommentsRecycler(comments: List<Comment>) {
+        private fun updateCommentsRecycler(comments: List<Comment>) {
         adapter = CommentsAdapter(comments)
         commentsRecyclerView.adapter = adapter
     }
