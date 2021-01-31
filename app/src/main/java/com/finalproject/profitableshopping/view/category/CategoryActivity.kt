@@ -23,6 +23,7 @@ CategoryFragment.CategoryCallbacks{
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.container_category, fragment)
+            .addToBackStack(null)
             .commit()
     }
 

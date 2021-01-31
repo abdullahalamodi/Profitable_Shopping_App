@@ -8,19 +8,20 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.AppSharedPreference
+<<<<<<< HEAD
 import com.finalproject.profitableshopping.data.firebase.NotifactionFragment
 import com.finalproject.profitableshopping.data.firebase.NotifationActivity
+=======
+import com.finalproject.profitableshopping.view.MySales.MySalesFragment
+>>>>>>> upstream/main
 import com.finalproject.profitableshopping.view.authentication.fragments.*
 import com.finalproject.profitableshopping.view.cart.CartFragment
 import com.finalproject.profitableshopping.view.category.CategoryActivity
 import com.finalproject.profitableshopping.view.favorite.FavoriteFragment
 import com.finalproject.profitableshopping.view.products.ManageProductActivity
 import com.finalproject.profitableshopping.view.products.OrderDetailsFragment
-import com.finalproject.profitableshopping.view.products.fragments.AdminProductManagmentFragment
 import com.finalproject.profitableshopping.view.products.fragments.DetailsOfAllProductsFragment
 import com.finalproject.profitableshopping.view.products.fragments.ProductListFragment
 import com.finalproject.profitableshopping.view.products.fragments.ShowAllProductsFragment
@@ -29,7 +30,6 @@ import com.finalproject.profitableshopping.view.user.ManageUserProfileFragment
 import com.finalproject.profitableshopping.view.user.RestPasswordFragment
 import com.finalproject.profitableshopping.view.user.UpdateInfoFragment
 import com.finalproject.profitableshopping.view.user.UserManageProfileFragment
-import com.finalproject.profitableshopping.viewmodel.CartViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity(),
@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity(),
     LogInFragment.LoginCallbacks,
     SignUpFragment.SignUpCallbacks,
     ProchasesFragment.Callbacks,
+    CartFragment.Callbacks,
     ActiveFragment.ActiveAccountCallbacks,
     ShowAllProductsFragment.Callbacks,
     DetailsOfAllProductsFragment.Callbacks,
@@ -44,9 +45,10 @@ class MainActivity : AppCompatActivity(),
     ManageUserProfileFragment.Callbacks,
     AboutAppFragment.Callbacks,
     ContactUsFragment.Callbacks,
-    SettingsFragment.Callbacks{
+    SettingsFragment.Callbacks,
+   MySalesFragment.Callbacks{
 
-    private lateinit var menu: Menu
+  //  private lateinit var menu: Menu
     private lateinit var bottomNav: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,7 +59,7 @@ class MainActivity : AppCompatActivity(),
 
         //hide app bar elevation
         supportActionBar?.elevation = 0.0f
-
+          
         //  val nested_content =findViewById<View>(R.id.container) as NestedScrollView
 /*        buttonNav = findViewById<View>(R.id.bottomNav) as BottomNavigationView
         val n =findViewById<View>(R.id.container)
@@ -70,7 +72,7 @@ class MainActivity : AppCompatActivity(),
             }
         }*/
 
-        // supportActionBar?.hide()
+         supportActionBar?.hide()
 
 
         val isFragmentContainerEmpty = savedInstanceState == null
@@ -78,6 +80,7 @@ class MainActivity : AppCompatActivity(),
             val fragmentManager = supportFragmentManager
             val fragmentTransaction = fragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.container, ProductListFragment.newInstance())
+                .addToBackStack(null)
                 .commit()
         }
 
@@ -92,7 +95,13 @@ class MainActivity : AppCompatActivity(),
                 }
                 R.id.menu_shopping_cart -> {
 //                    setContent("Cart")
-                    setCurrentFragment(CartFragment.newInstance())
+                    //if(getUserToken() != "admin" && getUserToken() !=null))
+                    if(getUserToken()=="user") {
+                        setCurrentFragment(CartFragment.newInstance())
+                    }else{
+                        setCurrentFragment(LogInFragment.newInstance())
+                    }
+
                     true
                 }
 
@@ -102,6 +111,7 @@ class MainActivity : AppCompatActivity(),
                      true
                  }*/
                 R.id.menu_notification -> {
+<<<<<<< HEAD
 
                    // val i = Intent(this@MainActivity, NotifationActivity::class.java)
                   // startActivity(i)
@@ -110,6 +120,16 @@ class MainActivity : AppCompatActivity(),
 
                     setContent("Favorites")
                     setCurrentFragment(FavoriteFragment.newInstance())
+=======
+                    //if(getUserToken() != "admin" && getUserToken() != null)){
+                    if(getUserToken()=="user") {
+                        setContent("Favorites")
+                        setCurrentFragment(FavoriteFragment.newInstance())
+                    }else{
+                        setCurrentFragment(LogInFragment.newInstance())
+                    }
+                    //0}
+>>>>>>> upstream/main
                     true
                 }
                 R.id.menu_settings -> {
@@ -142,7 +162,8 @@ class MainActivity : AppCompatActivity(),
     private fun setCurrentFragment(fragment: Fragment) =
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.container, fragment)
-            commit()
+                addToBackStack(null)
+                commit()
 
         }
 
@@ -150,14 +171,14 @@ class MainActivity : AppCompatActivity(),
         supportActionBar?.title = content
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+   /* override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu to use in the action bar
         val inflater = menuInflater
         inflater.inflate(R.menu.main_menu, menu)
         this.menu = menu
         filterMenuItems(menu)
         return super.onCreateOptionsMenu(menu)
-    }
+    }*/
 
     private fun filterMenuItems(menu: Menu) {
         if (getUserToken() == "admin") {
@@ -181,7 +202,7 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+  /*  override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
 //            R.id.menu_add_product -> {
 //                if (getUserToken() != null) {
@@ -238,21 +259,22 @@ class MainActivity : AppCompatActivity(),
             }
 
             R.id.menu_about -> {
-
-                addFragment(AboutAppFragment())
                 showButtonNavigation(false)
+                addFragment(AboutAppFragment())
+
                 true
             }
             R.id.contact_us -> {
-                addFragment(ContactUsFragment())
                 showButtonNavigation(false)
+                addFragment(ContactUsFragment())
+
                 true
             }
 
 
             else -> return super.onOptionsItemSelected(item)
         }
-    }
+    }*/
 
 
     private fun getUserToken(): String? {
@@ -265,14 +287,14 @@ class MainActivity : AppCompatActivity(),
 
     private fun logOut(token: String = "") {
         AppSharedPreference.saveUserToken(this, token)
-        filterMenuItems(menu)
+       // filterMenuItems(menu)
     }
 
 
     private fun addFragment(fragment: Fragment) =
         supportFragmentManager.beginTransaction().apply {
             add(R.id.container, fragment)
-            addToBackStack(null)
+                addToBackStack(null)
             commit()
         }
 
@@ -291,7 +313,7 @@ class MainActivity : AppCompatActivity(),
     override fun onLoginSuccess() {
         setCurrentFragment(ProductListFragment.newInstance())
         showButtonNavigation(true)
-        filterMenuItems(menu)
+       // filterMenuItems(menu)
     }
 
 
@@ -351,8 +373,32 @@ class MainActivity : AppCompatActivity(),
         showButtonNavigation(show)
     }
 
+    override fun onContactUsSelected() {
+       setCurrentFragment(ContactUsFragment.newInstance())
+    }
+
+    override fun onAboutAppSelected() {
+        setCurrentFragment(AboutAppFragment.newInstance())
+    }
+
+    override fun onMyPurchaseSelected() {
+        setCurrentFragment(ProchasesFragment.newInstance())
+    }
+
+    override fun onMySalesSelected() {
+        setCurrentFragment(MySalesFragment.newInstance())
+    }
+
     override fun onOpenOrderDatails(orderId: Int) {
         setCurrentFragment(OrderDetailsFragment.newInstance(orderId))
+    }
+
+    override fun onOpen(show: Boolean) {
+       showButtonNavigation(show)
+    }
+
+    override fun clearBudge() {
+        bottomNav.removeBadge(R.id.menu_shopping_cart)
     }
 
     /*override fun onBackPressed() {

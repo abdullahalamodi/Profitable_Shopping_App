@@ -154,7 +154,7 @@ class DetailsOfAllProductsFragment : Fragment() {
         }
         cartBtn.setOnClickListener {
             if (AppSharedPreference.getUserToken(requireContext())
-                    .isNullOrBlank() && AppSharedPreference.getUserToken(requireContext())!!
+                    .isNullOrBlank() || AppSharedPreference.getUserToken(requireContext())!!
                     .isEmpty()
             )
                 Toast.makeText(requireContext(), "عذرا لم تقم بتسيل الدخول ", Toast.LENGTH_LONG)
@@ -171,12 +171,12 @@ class DetailsOfAllProductsFragment : Fragment() {
         }
 
         showComments.setOnClickListener {
-         /*   if (commentsRecyclerView.visibility == View.VISIBLE)
+            if (commentsRecyclerView.visibility == View.VISIBLE)
                 commentsRecyclerView.visibility = View.GONE
             else
                 commentsRecyclerView.visibility = View.VISIBLE
-*/              var bottomSheetAddCat = CommentsFragment();
-            bottomSheetAddCat.show(childFragmentManager, "Tag")
+//             var bottomSheetAddCat = CommentsFragment();
+//            bottomSheetAddCat.show(childFragmentManager, "Tag1")
         }
 
         return view
@@ -193,7 +193,7 @@ class DetailsOfAllProductsFragment : Fragment() {
         }
     }
 
-    fun updateCommentsRecycler(comments: List<Comment>) {
+    private fun updateCommentsRecycler(comments: List<Comment>) {
         adapter = CommentsAdapter(comments)
         commentsRecyclerView.adapter = adapter
     }
@@ -209,21 +209,8 @@ class DetailsOfAllProductsFragment : Fragment() {
                 this.product = product
                 //   showProgress(false)
                 if (AppSharedPreference.getUserToken(requireContext()) != null) {
-                    if (AppSharedPreference.getUserToken(requireContext()) == "admin") {
-                        cartBtn.isEnabled = false
-                        favoriteFABtn.isEnabled = false
-                        reportBtn.visibility = View.GONE
-                        chat_btn.isEnabled = false
-
-                    } else if (AppSharedPreference.getUserId(requireContext()) == product.userId) {
-                        cartBtn.hide()
-                        cartBtn.isEnabled = false
-                        favoriteFABtn.isEnabled = false
-                        reportBtn.isEnabled = false
-                        chat_btn.isEnabled = false
-                        call_btn.isEnabled = false
-                    }
-                     else{
+                    if(AppSharedPreference.getUserId(requireContext())
+                        != product.userId &&AppSharedPreference.getUserToken(requireContext()) == "user"){
                         chat_btn.isEnabled=false
                         cartBtn.show()
                         cartBtn.isEnabled=true
@@ -231,7 +218,40 @@ class DetailsOfAllProductsFragment : Fragment() {
                         reportBtn.isEnabled=true
                         chat_btn.isEnabled=true
                         call_btn.isEnabled=true
+
+                    }else{
+
+                        cartBtn.isEnabled = false
+                        favoriteFABtn.isEnabled = false
+                        reportBtn.visibility = View.GONE
+                        chat_btn.isEnabled = false
+                        call_btn.isEnabled = false
                     }
+
+
+//
+//                        cartBtn.hide()
+//                        cartBtn.isEnabled = false
+//                        favoriteFABtn.isEnabled = false
+//                        reportBtn.isEnabled = false
+//                        chat_btn.isEnabled = false
+//                        call_btn.isEnabled = false
+//                    }else if(AppSharedPreference.getUserToken(requireContext()) ==""||AppSharedPreference.getUserId(requireContext()) == null){
+//                      cartBtn.isEnabled = false
+//                        favoriteFABtn.isEnabled = false
+//                        reportBtn.isEnabled = false
+//                        chat_btn.isEnabled = false
+//                        call_btn.isEnabled = false
+//                    }
+//                     else{
+//                        chat_btn.isEnabled=false
+//                        cartBtn.show()
+//                        cartBtn.isEnabled=true
+//                        favoriteFABtn.isEnabled=true
+//                        reportBtn.isEnabled=true
+//                        chat_btn.isEnabled=true
+//                        call_btn.isEnabled=true
+//                    }
                 }
 
 
@@ -348,12 +368,14 @@ class DetailsOfAllProductsFragment : Fragment() {
         var commentUser = view.findViewById(R.id.comment_user) as TextView
         var commentTitle = view.findViewById(R.id.comment_title) as TextView
         var commentDate: TextView = view.findViewById(R.id.comment_date) as TextView
+        var commentRate: RatingBar = view.findViewById(R.id.rate_bar) as RatingBar
 
 
         fun bind(comment: Comment) {
-           // commentUser.text = comment.userId
+            commentUser.text = "ID : "+comment.userId
             commentTitle.text = comment.title
             commentDate.text = comment.date
+            commentRate.rating = comment.rate.toFloat()
         }
 
     }

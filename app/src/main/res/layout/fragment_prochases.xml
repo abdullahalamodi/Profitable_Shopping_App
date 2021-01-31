@@ -14,6 +14,17 @@
         android:layout_weight="13"
         android:background="#E6E5E5"
         tools:listitem="@layout/list_item_cart_previous_orders" />
+    <TextView
+        android:id="@+id/tv_empty_purchase"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="12dp"
+        android:fontFamily="@font/rb_light"
+        android:gravity="center"
+        android:text="لم تقم بشراء اي متج حتى الان"
+        android:textSize="20sp"
+        android:visibility="gone" />
 
 
 

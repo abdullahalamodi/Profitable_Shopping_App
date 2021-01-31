@@ -81,8 +81,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingTop="28dp"
-                    android:visibility="gone">
+                    android:paddingTop="28dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -144,6 +143,7 @@
                     </LinearLayout>
 
                 </LinearLayout>
+
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
@@ -253,7 +253,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="10dp"
-                            android:text="الكمية :"
+                            android:text="@string/quantity"
                             android:textSize="19sp"
                             android:textStyle="bold" />
 
@@ -337,7 +337,6 @@
                             android:textSize="14sp"
                             android:textStyle="bold" />
 
-
                     </LinearLayout>
 
                 </LinearLayout>
@@ -352,38 +351,38 @@
 
                 <Button
                     android:id="@+id/btnShowComment"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_margin="8dp"
-                    android:text="عرض التعليقات"
-                    android:background="@drawable/bg4"
-                    android:textColor="@color/black"
-                    app:cornerRadius="4dp"/>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/comments_recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                    android:layout_weight="1"
+                    android:text="@string/show_comments"
+                    android:textColor="@color/white"
+                    android:background="@color/colorPrimary"
+                    android:fontFamily="@font/rb_light"
+                    android:padding="12dp"
+                    android:textStyle="bold"
+                    android:textSize="18sp"/>
 
                 <Button
                     android:id="@+id/btnShowreport"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_margin="8dp"
+                    android:padding="12dp"
                     android:background="@color/colorPrimary"
-                    android:enabled="true"
                     android:fontFamily="@font/rb_light"
-                    android:text="بلغ عن المنتج "
-                    android:textColor="@color/black"
+                    android:text="@string/report_on_product"
+                    android:textColor="@color/white"
                     android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:cornerRadius="4dp"
-                    android:layout_marginBottom="20dp"/>
+                    android:textStyle="bold"/>
+
             </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/comments_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         </LinearLayout>
 

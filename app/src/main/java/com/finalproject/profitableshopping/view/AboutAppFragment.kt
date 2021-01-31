@@ -34,13 +34,18 @@ class AboutAppFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         callbacks = context as AboutAppFragment.Callbacks
+
     }
 
     override fun onDetach() {
         super.onDetach()
-        callbacks?.onAboutAppOpen(true)
+       // callbacks?.onAboutAppOpen(true)
         callbacks=null
     }
 
-
+    companion object {
+        fun newInstance(): AboutAppFragment {
+            return AboutAppFragment()
+        }
+    }
 }

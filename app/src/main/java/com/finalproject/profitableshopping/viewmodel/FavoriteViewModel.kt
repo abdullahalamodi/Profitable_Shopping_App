@@ -3,6 +3,7 @@ package com.finalproject.profitableshopping.viewmodel
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.finalproject.profitableshopping.data.models.FavoritResponse
 import com.finalproject.profitableshopping.data.models.Favorite
@@ -15,12 +16,20 @@ import retrofit2.Response
 
 class FavoriteViewModel :ViewModel(){
     val favoriteRepositry:FavoriteRepositry
+    private val favoriteLiveData = MutableLiveData<String>()
 
 
     init {
         favoriteRepositry= FavoriteRepositry()
     }
 
+    var favoriteListLiveData = Transformations.switchMap(favoriteLiveData){ userId ->
+        getUserFavorites(userId)
+    }
+
+    fun laodUserFavorite(userId:String){
+        favoriteLiveData.value = userId
+    }
 
 
     fun addFavoriteItem(favorite: Favorite): LiveData<String>{

@@ -73,7 +73,13 @@ class ShowAllProductsFragment : Fragment() {
             viewLifecycleOwner,
             Observer { categoriesList ->
                 //showProgress(false)
-                updateUICategory(categoriesList)
+                var cat= mutableListOf<Category>()
+
+                for(i in categoriesList){
+                    if(i.isActive==1)
+                        cat.add(i)
+                }
+                updateUICategory(cat)
             }
         )
 

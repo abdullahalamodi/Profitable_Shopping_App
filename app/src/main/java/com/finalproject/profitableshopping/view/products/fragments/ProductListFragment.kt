@@ -1,5 +1,6 @@
 package com.finalproject.profitableshopping.view.products.fragments
 
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
@@ -24,6 +25,7 @@ import com.finalproject.profitableshopping.viewmodel.CartViewModel
 import com.finalproject.profitableshopping.viewmodel.CategoryViewModel
 import com.finalproject.profitableshopping.viewmodel.ProductViewModel
 import com.squareup.picasso.Picasso
+import dmax.dialog.SpotsDialog
 
 class ProductListFragment : Fragment() {
     private lateinit var productViewModel: ProductViewModel
@@ -37,6 +39,7 @@ class ProductListFragment : Fragment() {
     private var adapterCategories: ProductListFragment.CategoryAdapter? =
         CategoryAdapter(emptyList())
     private lateinit var progressBar: ProgressBar
+    private var dialog: AlertDialog? = null
     private lateinit var loadingProgressBar: ContentLoadingProgressBar
     var callbacks: Callbacks? = null
 
@@ -89,6 +92,7 @@ class ProductListFragment : Fragment() {
         categoryViewModel = ViewModelProviders.of(this).get(CategoryViewModel::class.java)
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
         carttViewModel = ViewModelProviders.of(this).get(CartViewModel::class.java)
+        if(AppSharedPreference.getUserToken(requireContext())=="user")
         carttViewModel.loadUserOrder(
             AppSharedPreference.getCartId(requireContext())?.toInt()!!,
             AppSharedPreference.getUserId(requireContext())!!
@@ -115,6 +119,7 @@ class ProductListFragment : Fragment() {
         productsRv = view.findViewById(R.id.rv_product)
         searchEt = view.findViewById(R.id.et_search_product)
         progressBar = view.findViewById(R.id.progress_circular)
+        dialog= SpotsDialog.Builder().setContext(context!!).setCancelable(false).build()
         hCategoryRecyclerView.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         productsRv.layoutManager = GridLayoutManager(context, 2)
@@ -126,14 +131,18 @@ class ProductListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         listenCartBudge()
-        showProgress(true)
-
-        showProgress(true)
+        //showProgress(true)
         categoryViewModel.categoriesLiveData.observe(
             viewLifecycleOwner,
             Observer { categoriesList ->
                 //showProgress(false)
-                updateUICategory(categoriesList)
+                var cat= mutableListOf<Category>()
+                for(i in categoriesList){
+                    if(i.isActive==1)
+                        cat.add(i)
+                }
+                updateUICategory(cat)
+               // updateUICategory(categoriesList)
             }
         )
 
@@ -144,12 +153,13 @@ class ProductListFragment : Fragment() {
                 updateUI(prodcts)
             }
         )
-
+        dialog?.show()
         productViewModel.productsListLiveData.observe(
             viewLifecycleOwner,
             Observer { prodcts ->
                 showProgress(false)
                 updateUI(prodcts)
+                dialog?.dismiss()
                 Log.d("size",prodcts.size.toString())
             }
         )

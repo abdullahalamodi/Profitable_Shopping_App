@@ -1,13 +1,16 @@
 package com.finalproject.profitableshopping.view.favorite
 
+import android.app.AlertDialog
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
-import androidx.core.view.isNotEmpty
+import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.TextView
+import android.widget.Toast
 import androidx.core.widget.ContentLoadingProgressBar
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,10 +18,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.AppSharedPreference
 import com.finalproject.profitableshopping.data.models.Favorite
-import com.finalproject.profitableshopping.data.models.FavoriteDetails
 import com.finalproject.profitableshopping.viewmodel.FavoriteViewModel
 import com.finalproject.profitableshopping.viewmodel.ProductViewModel
 import com.squareup.picasso.Picasso
+import dmax.dialog.SpotsDialog
 
 
 class FavoriteFragment : Fragment() {
@@ -26,7 +29,7 @@ class FavoriteFragment : Fragment() {
     private lateinit var productViewModel: ProductViewModel
     private lateinit var favoriteProductsRv: RecyclerView
     private lateinit var emptyFavoriteTV: TextView
-
+    private var dialog: AlertDialog? = null
     private lateinit var progressBar: ProgressBar
     var favorites: List<Favorite> = emptyList()
     private var adapter: FavoriteAdapter = FavoriteAdapter(favorites)
@@ -39,6 +42,7 @@ class FavoriteFragment : Fragment() {
         favoriteViewModel = ViewModelProviders.of(this).get(FavoriteViewModel::class.java)
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
         super.onCreate(savedInstanceState)
+        favoriteViewModel.laodUserFavorite(AppSharedPreference.getUserId(requireContext())!!)
         arguments?.let {
 
         }
@@ -54,6 +58,7 @@ class FavoriteFragment : Fragment() {
             R.layout.fragment_favorite_product_list, container, false
         )
         progressBar = view.findViewById(R.id.progress_circular)
+        dialog=SpotsDialog.Builder().setContext(context!!).setCancelable(false).build()
         emptyFavoriteTV = view.findViewById(R.id.tv_empty_favorite)
         favoriteProductsRv = view.findViewById(R.id.rv_favorite_product_list)
         favoriteProductsRv.layoutManager = LinearLayoutManager(context)
@@ -66,18 +71,20 @@ class FavoriteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        showProgress(true)
-        val items = mutableListOf<FavoriteDetails>()
-        items.add(FavoriteDetails(null, 1, "1"))
-        items.add(FavoriteDetails(null, 1, "1"))
-        items.add(FavoriteDetails(null, 1, "1"))
-        items.add(FavoriteDetails(null, 1, "1"))
+       // showProgress(true)
+        dialog?.show()
+//        val items = mutableListOf<FavoriteDetails>()
+//        items.add(FavoriteDetails(null, 1, "1"))
+//        items.add(FavoriteDetails(null, 1, "1"))
+//        items.add(FavoriteDetails(null, 1, "1"))
+//        items.add(FavoriteDetails(null, 1, "1"))
         favoriteViewModel.getUserFavorites(AppSharedPreference.getUserId(requireContext())!!)
             .observe(
                 viewLifecycleOwner,
                 Observer { favoriteList ->
                     favorites = favoriteList
                     showProgress(false)
+                    dialog?.dismiss()
                     updateUI(favorites)
                 }
             )
@@ -117,8 +124,10 @@ class FavoriteFragment : Fragment() {
                         // updateUI(favorites)
 
                         Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
-
-
+                        parentFragmentManager.beginTransaction().apply {
+                            replace(R.id.container, FavoriteFragment())
+                            commit()
+                        }
                         /*  *//*favoriteViewModel.getFavoriteItems(1).observe(
                            viewLifecycleOwner,
                            Observer { favoriteList ->

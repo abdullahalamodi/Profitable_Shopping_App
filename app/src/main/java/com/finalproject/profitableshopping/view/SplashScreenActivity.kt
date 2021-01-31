@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.view.WindowManager
+import android.view.animation.AnimationUtils
+import android.widget.ImageView
 import android.widget.Toast
 import com.finalproject.profitableshopping.R
 
@@ -18,6 +20,12 @@ class SplashScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
+
+        val top =AnimationUtils.loadAnimation(this,R.anim.top)
+        val b =AnimationUtils.loadAnimation(this,R.anim.b)
+        val icon=findViewById<ImageView>(R.id.main_icon)
+        icon.startAnimation(b)
+
 
         // This is used to hide the status bar and make
         // the splash screen as a full screen activity.

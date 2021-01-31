@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import com.finalproject.profitableshopping.R
+import com.finalproject.profitableshopping.view.products.fragments.ProductListFragment
 import kotlinx.android.synthetic.main.fragment_contact_us.*
 
 
@@ -39,11 +40,12 @@ class ContactUsFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         callbacks = context as ContactUsFragment.Callbacks
+        callbacks?.onContactUsOpen(false)
     }
 
     override fun onDetach() {
         super.onDetach()
-        callbacks?.onContactUsOpen(true)
+       // callbacks?.onContactUsOpen(true)
         callbacks = null
     }
 
@@ -170,5 +172,9 @@ class ContactUsFragment : Fragment() {
 
         return view;
     }
-
+    companion object {
+        fun newInstance(): ContactUsFragment {
+            return ContactUsFragment()
+        }
+    }
 }

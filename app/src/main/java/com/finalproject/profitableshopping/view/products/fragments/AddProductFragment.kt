@@ -121,6 +121,7 @@ class AddProductFragment : Fragment(),
                         Observer {
                             if (!it.isNullOrEmpty()) {
                                 Log.d("images", it)
+                                Log.d("user",userId!!)
                                 productViewModel.refreshUserList(userId!!)
                                 Toast.makeText(context, "تم اضافة المنتج بنجاح", Toast.LENGTH_SHORT)
                                     .show()
@@ -185,7 +186,11 @@ class AddProductFragment : Fragment(),
         categoryViewModel = ViewModelProviders.of(this).get(CategoryViewModel::class.java)
         categoriesList = emptyList<Category>().toMutableList()
         categoriesName = emptyList<String>().toMutableList()
+<<<<<<< HEAD
         userId=AppSharedPreference.getUserId(requireContext())
+=======
+        userId = AppSharedPreference.getUserId(requireContext())
+>>>>>>> upstream/main
         arguments?.let {
             productId = it.getString(ARG_PRODUCT_ID)
             if (productId != null)
@@ -235,8 +240,10 @@ class AddProductFragment : Fragment(),
             Observer {
                 showProgress(false)
                 for (item in it) {
-                    categoriesName.add(item.name)
-                    categoriesList.add(item)
+                    if(item.isActive==1) {
+                        categoriesName.add(item.name)
+                        categoriesList.add(item)
+                    }
                 }
                 //spinner adapter
                 val dataAdapter = ArrayAdapter(
@@ -294,7 +301,11 @@ class AddProductFragment : Fragment(),
                     .placeholder(R.drawable.shoe)
                     .into(pickImagesV)
             }
+<<<<<<< HEAD
         if(product.images.size >1)
+=======
+        if (product.images.size > 1)
+>>>>>>> upstream/main
         Picasso.get().also {
             val path = product.images[1].getUrl()
             it.load(path)
@@ -303,7 +314,11 @@ class AddProductFragment : Fragment(),
                 .placeholder(R.drawable.shoe)
                 .into(pickImagesV2)
         }
+<<<<<<< HEAD
         if(product.images.size >2)
+=======
+        if (product.images.size > 2)
+>>>>>>> upstream/main
         Picasso.get().also {
             val path = product.images[2].getUrl()
             it.load(path)

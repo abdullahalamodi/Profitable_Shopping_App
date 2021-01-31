@@ -18,6 +18,7 @@ import com.finalproject.profitableshopping.data.models.Comment
 import com.finalproject.profitableshopping.data.models.OrderDetails
 import com.finalproject.profitableshopping.data.models.Product
 import com.finalproject.profitableshopping.showMessage
+import com.finalproject.profitableshopping.view.favorite.FavoriteFragment
 import com.finalproject.profitableshopping.viewmodel.CartViewModel
 import com.finalproject.profitableshopping.viewmodel.CommentViewModel
 import com.finalproject.profitableshopping.viewmodel.ProductViewModel
@@ -35,10 +36,12 @@ class CartFragment : Fragment() {
     private lateinit var emptyCartTV: TextView
     private lateinit var buyOrCancel: LinearLayout
     private var adapter: CartAdapter = CartAdapter(emptyList())
+    private lateinit var callbacks:Callbacks
 
 
     override fun onStart() {
         super.onStart()
+        callbacks = (context as Callbacks)
         buyBtn.setOnClickListener {
             carttViewModel.buy(AppSharedPreference.getCartId(requireContext())!!)
                 .observe(
@@ -47,6 +50,11 @@ class CartFragment : Fragment() {
                         AppSharedPreference.setCartId(requireContext(), "-1")
                         context?.showMessage("تمت عملية الشراء بنجاح :)")
                         carttViewModel.loadUserOrder(0,"")
+                        parentFragmentManager.beginTransaction().apply {
+                            replace(R.id.container, CartFragment())
+                            commit()
+                        }
+                        callbacks.clearBudge()
                     }
                 )
         }
@@ -57,6 +65,11 @@ class CartFragment : Fragment() {
                     AppSharedPreference.setCartId(requireContext(), "-1")
                     context?.showMessage("تم حذف السلة بنجاح :)")
                     carttViewModel.loadUserOrder(0,"")
+                    parentFragmentManager.beginTransaction().apply {
+                        replace(R.id.container, CartFragment())
+                        commit()
+                    }
+                    callbacks.clearBudge()
                 }
             )
         }
@@ -90,6 +103,11 @@ class CartFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if(AppSharedPreference.getUserToken(requireContext())=="user" && AppSharedPreference.getCartId(requireContext()) !=null)
+            carttViewModel.loadUserOrder(
+                AppSharedPreference.getCartId(requireContext())?.toInt()!!,
+                AppSharedPreference.getUserId(requireContext())!!
+            )
         carttViewModel.orderDetailsListLiveData.observe(
             viewLifecycleOwner,
             Observer {
@@ -197,6 +215,11 @@ class CartFragment : Fragment() {
         }
 
 
+    }
+
+    interface Callbacks {
+        fun clearBudge()
+        // fun onFloatButtonClicked()
     }
 
     inner class CartAdapter(private val orderList: List<OrderDetails>) :

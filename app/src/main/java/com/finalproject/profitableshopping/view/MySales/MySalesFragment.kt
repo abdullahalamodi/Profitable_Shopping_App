@@ -1,6 +1,7 @@
 package com.finalproject.profitableshopping.view.MySales
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.AppSharedPreference
 import com.finalproject.profitableshopping.data.models.MySales
+import com.finalproject.profitableshopping.view.purshases.ProchasesFragment
 import com.finalproject.profitableshopping.viewmodel.ProductViewModel
 import com.squareup.picasso.Picasso
 
@@ -24,7 +26,21 @@ class MySalesFragment : Fragment() {
 
     private lateinit var productViewModel: ProductViewModel
     lateinit var salesRV: RecyclerView
+    private lateinit var emptySalesTV: TextView
     private var adapter: SalesAdapter = SalesAdapter(emptyList())
+
+    var callbacks:Callbacks?=null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callbacks=context as Callbacks
+        callbacks?.onOpen(false)
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        callbacks=null
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         productViewModel= ViewModelProviders.of(this).get(ProductViewModel::class.java)
@@ -39,6 +55,8 @@ class MySalesFragment : Fragment() {
         val view= inflater.inflate(R.layout.fragment_my_sales, container, false)
         salesRV=view.findViewById(R.id.sales_recyclerview)
         salesRV.layoutManager = LinearLayoutManager(requireContext())
+        emptySalesTV = view.findViewById(R.id.tv_empty_sales
+        )
 
         return view
     }
@@ -53,6 +71,10 @@ class MySalesFragment : Fragment() {
         )
     }
     private fun updateUI(sales: List<MySales>) {
+       if(sales.isEmpty()){
+           emptySalesTV.visibility=View.VISIBLE
+       }else
+           emptySalesTV.visibility=View.GONE
         adapter = SalesAdapter(sales)
         salesRV.adapter = adapter
 
@@ -66,6 +88,12 @@ class MySalesFragment : Fragment() {
 
                 }
             }
+    }
+
+    interface Callbacks{
+
+        fun onOpen(show:Boolean)
+
     }
     inner class SalesHolder(view: View) : RecyclerView.ViewHolder(view) {
 
