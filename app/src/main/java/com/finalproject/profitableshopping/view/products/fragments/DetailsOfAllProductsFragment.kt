@@ -154,7 +154,7 @@ class DetailsOfAllProductsFragment : Fragment() {
         }
         cartBtn.setOnClickListener {
             if (AppSharedPreference.getUserToken(requireContext())
-                    .isNullOrBlank() && AppSharedPreference.getUserToken(requireContext())!!
+                    .isNullOrBlank() || AppSharedPreference.getUserToken(requireContext())!!
                     .isEmpty()
             )
                 Toast.makeText(requireContext(), "عذرا لم تقم بتسيل الدخول ", Toast.LENGTH_LONG)
@@ -209,21 +209,8 @@ class DetailsOfAllProductsFragment : Fragment() {
                 this.product = product
                 //   showProgress(false)
                 if (AppSharedPreference.getUserToken(requireContext()) != null) {
-                    if (AppSharedPreference.getUserToken(requireContext()) == "admin") {
-                        cartBtn.isEnabled = false
-                        favoriteFABtn.isEnabled = false
-                        reportBtn.visibility = View.GONE
-                        chat_btn.isEnabled = false
-
-                    } else if (AppSharedPreference.getUserId(requireContext()) == product.userId) {
-                        cartBtn.hide()
-                        cartBtn.isEnabled = false
-                        favoriteFABtn.isEnabled = false
-                        reportBtn.isEnabled = false
-                        chat_btn.isEnabled = false
-                        call_btn.isEnabled = false
-                    }
-                     else{
+                    if(AppSharedPreference.getUserId(requireContext())
+                        != product.userId &&AppSharedPreference.getUserToken(requireContext()) == "user"){
                         chat_btn.isEnabled=false
                         cartBtn.show()
                         cartBtn.isEnabled=true
@@ -231,7 +218,40 @@ class DetailsOfAllProductsFragment : Fragment() {
                         reportBtn.isEnabled=true
                         chat_btn.isEnabled=true
                         call_btn.isEnabled=true
+
+                    }else{
+
+                        cartBtn.isEnabled = false
+                        favoriteFABtn.isEnabled = false
+                        reportBtn.visibility = View.GONE
+                        chat_btn.isEnabled = false
+                        call_btn.isEnabled = false
                     }
+
+
+//
+//                        cartBtn.hide()
+//                        cartBtn.isEnabled = false
+//                        favoriteFABtn.isEnabled = false
+//                        reportBtn.isEnabled = false
+//                        chat_btn.isEnabled = false
+//                        call_btn.isEnabled = false
+//                    }else if(AppSharedPreference.getUserToken(requireContext()) ==""||AppSharedPreference.getUserId(requireContext()) == null){
+//                      cartBtn.isEnabled = false
+//                        favoriteFABtn.isEnabled = false
+//                        reportBtn.isEnabled = false
+//                        chat_btn.isEnabled = false
+//                        call_btn.isEnabled = false
+//                    }
+//                     else{
+//                        chat_btn.isEnabled=false
+//                        cartBtn.show()
+//                        cartBtn.isEnabled=true
+//                        favoriteFABtn.isEnabled=true
+//                        reportBtn.isEnabled=true
+//                        chat_btn.isEnabled=true
+//                        call_btn.isEnabled=true
+//                    }
                 }
 
 

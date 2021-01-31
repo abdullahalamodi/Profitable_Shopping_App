@@ -110,7 +110,7 @@
         <item>ارسال الاشعارات</item>
         <item>تغيير كلمة المرور</item>
         <item>بلاغات</item>
-        <item>حسابات المستخدمين</item>
+        <!--<item>حسابات المستخدمين</item>-->
         <item>تواصل معنا</item>
         <item>حول التطبيق</item>
         <item>تسجيل الخروج</item>
@@ -119,10 +119,11 @@
     <string-array name="user_list">
         <item>حسابي</item>
         <item>منتجاتي</item>
-        <item>طلباتي السابقة</item>
+        <item>مشترياتي</item>
+        <item>مبيعاتي</item>
         <item>تواصل معنا</item>
         <item>حول التطبيق</item>
-        <item>الاعدادات</item>
+        <!--<item>الاعدادات</item>-->
         <item>تسجيل الخروج</item>
     </string-array>
 

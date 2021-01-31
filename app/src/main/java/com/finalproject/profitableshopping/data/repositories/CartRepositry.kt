@@ -27,7 +27,7 @@ class CartRepositry {
     fun deleteOrder(id:String):Call<String>{
         return shoppingApi.deleteOrder(id)
     }
-    fun getOrders(cartId: Int,userId:String):Call<List<OrderDetails>>{
+    fun getOrders(cartId: Int?, userId:String):Call<List<OrderDetails>>{
         return shoppingApi.getUserCartItems(cartId.toString(),userId)
     }
 
