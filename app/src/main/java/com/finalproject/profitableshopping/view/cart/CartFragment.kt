@@ -32,6 +32,8 @@ class CartFragment : Fragment() {
     var totalPrice: Double = 0.0
     lateinit var buyBtn: TextView
     lateinit var clearCartBtn: TextView
+    private lateinit var emptyCartTV: TextView
+    private lateinit var buyOrCancel: LinearLayout
     private var adapter: CartAdapter = CartAdapter(emptyList())
 
 
@@ -44,7 +46,7 @@ class CartFragment : Fragment() {
                     Observer {
                         AppSharedPreference.setCartId(requireContext(), "-1")
                         context?.showMessage("تمت عملية الشراء بنجاح :)")
-                        carttViewModel.loadOrder(0)
+                        carttViewModel.loadUserOrder(0,"")
                     }
                 )
         }
@@ -54,7 +56,7 @@ class CartFragment : Fragment() {
                 Observer {
                     AppSharedPreference.setCartId(requireContext(), "-1")
                     context?.showMessage("تم حذف السلة بنجاح :)")
-                    carttViewModel.loadOrder(0)
+                    carttViewModel.loadUserOrder(0,"")
                 }
             )
         }
@@ -65,7 +67,10 @@ class CartFragment : Fragment() {
         carttViewModel = ViewModelProviders.of(this).get(CartViewModel::class.java)
         commentViewModel = ViewModelProviders.of(this).get(CommentViewModel::class.java)
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
-        carttViewModel.loadOrder(AppSharedPreference.getCartId(requireContext())?.toInt()!!)
+        carttViewModel.loadUserOrder(
+            AppSharedPreference.getCartId(requireContext())?.toInt()!!,
+            AppSharedPreference.getUserId(requireContext())!!
+        )
     }
 
     override fun onCreateView(
@@ -76,6 +81,8 @@ class CartFragment : Fragment() {
         cartRV = view.findViewById(R.id.cart_resuclerview)
         totalPriceV = view.findViewById(R.id.total_tv)
         buyBtn = view.findViewById(R.id.buy_btn)
+        emptyCartTV = view.findViewById(R.id.tv_empty_cart)
+        buyOrCancel = view.findViewById(R.id.ly_buy_cancel)
         clearCartBtn = view.findViewById(R.id.clear_cart_btn)
         cartRV.layoutManager = LinearLayoutManager(requireContext())
         return view
@@ -92,9 +99,16 @@ class CartFragment : Fragment() {
     }
 
     private fun updateUI(orders: List<OrderDetails>) {
-        adapter = CartAdapter(orders)
-        cartRV.adapter = adapter
-        setTotalPrice(orders)
+        if (orders.isNotEmpty()) {
+            adapter = CartAdapter(orders)
+            cartRV.adapter = adapter
+            setTotalPrice(orders)
+            emptyCartTV.visibility = View.GONE
+            buyOrCancel.visibility=View.VISIBLE
+        } else {
+            emptyCartTV.visibility = View.VISIBLE
+            buyOrCancel.visibility = View.GONE
+        }
     }
 
     private fun setTotalPrice(orders: List<OrderDetails>) {
@@ -104,10 +118,10 @@ class CartFragment : Fragment() {
         totalPriceV.text = totalPrice.toString()
     }
 
-    private fun showDialogRating(product:Product) {
+    private fun showDialogRating(product: Product) {
         var builder = AlertDialog.Builder(context!!)
-        builder.setTitle("Rating product")
-        builder.setMessage("Please fill information")
+        // builder.setTitle("Rating product")
+        //builder.setMessage("Please fill information")
         val itemView = LayoutInflater.from(context).inflate(R.layout.layout_rating_comment, null)
         val ratingBar = itemView.findViewById<RatingBar>(R.id.rating_bar_product)
         val edt_comment = itemView.findViewById<EditText>(R.id.et_comment)
@@ -198,7 +212,7 @@ class CartFragment : Fragment() {
 
         override fun onBindViewHolder(holder: CartHolder, position: Int) {
             val orderItem = orderList[position]
-                        holder.bind(orderItem)
+            holder.bind(orderItem)
 
         }
 
@@ -207,7 +221,6 @@ class CartFragment : Fragment() {
 
         }
     }
-
 }
 
 

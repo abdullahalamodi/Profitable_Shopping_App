@@ -69,12 +69,12 @@ class UpdateInfoFragment : Fragment() {
         var user_password : String? = intent.getStringExtra("password")
 
 
-        fullNameLabel.setText(user_name)
-        UserNameLabel.setText(user_userName)
-        FullName.getEditText()?.setText(user_name)
-        Email.getEditText()?.setText(user_email)
-        Phone.getEditText()?.setText(user_phoneNo)
-        PassWord.getEditText()?.setText(user_password)
+        fullNameLabel.text = user_name
+        UserNameLabel.text = user_userName
+        FullName.editText?.setText(user_name)
+        Email.editText?.setText(user_email)
+        Phone.editText?.setText(user_phoneNo)
+        PassWord.editText?.setText(user_password)
     }
 
     companion object {

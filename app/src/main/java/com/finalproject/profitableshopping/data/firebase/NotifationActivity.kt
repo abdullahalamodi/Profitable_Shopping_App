@@ -14,6 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 const val TOPIC = "/topics/myTopic2"
+
 class NotifationActivity : AppCompatActivity() {
     val TAG = "NotifationActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,15 +26,14 @@ class NotifationActivity : AppCompatActivity() {
         FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener {
             FirebaseService.token = it.token
             etToken.setText(it.token)
-    }
+        }
         FirebaseMessaging.getInstance().subscribeToTopic(TOPIC)
 
         btnSend.setOnClickListener {
             val title = etTitle.text.toString()
             val message = etMessage.text.toString()
             val recipientToken = etToken.text.toString()
-
-            if(title.isNotEmpty() && message.isNotEmpty()&& recipientToken.isNotEmpty() ) {
+            if (title.isNotEmpty() && message.isNotEmpty() && recipientToken.isNotEmpty()) {
                 PushNotification(
                     NotificationData(title, message),
                     recipientToken
@@ -44,16 +44,17 @@ class NotifationActivity : AppCompatActivity() {
         }
     }
 
-    private fun sendNotification(notification: PushNotification) = CoroutineScope(Dispatchers.IO).launch {
-        try {
-            val response = RetrofitInstance.api.postNotification(notification)
-            if(response.isSuccessful) {
-                Log.d(TAG, "Response: ${Gson().toJson(response)}")
-            } else {
-                Log.e(TAG, response.errorBody().toString())
+    private fun sendNotification(notification: PushNotification) =
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val response = RetrofitInstance.api.postNotification(notification)
+                if (response.isSuccessful) {
+                    Log.d(TAG, "Response: ${Gson().toJson(response)}")
+                } else {
+                    Log.e(TAG, response.errorBody().toString())
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, e.toString())
             }
-        } catch(e: Exception) {
-            Log.e(TAG, e.toString())
         }
-    }
 }

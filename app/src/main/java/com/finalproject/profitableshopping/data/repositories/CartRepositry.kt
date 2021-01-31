@@ -7,7 +7,7 @@ import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class CartRepositry(){
+class CartRepositry {
     private var shoppingApi: ShoppingApi
 
     init {
@@ -27,10 +27,17 @@ class CartRepositry(){
     fun deleteOrder(id:String):Call<String>{
         return shoppingApi.deleteOrder(id)
     }
-    fun getOrders(cartId: Int):Call<List<OrderDetails>>{
-        return shoppingApi.getUserCartItems(cartId.toString())
+    fun getOrders(cartId: Int,userId:String):Call<List<OrderDetails>>{
+        return shoppingApi.getUserCartItems(cartId.toString(),userId)
+    }
+
+    fun getOrders1(cartId: Int):Call<List<OrderDetails>>{
+        return shoppingApi.getCartItems(cartId.toString())
     }
     fun buy(cartId: String):Call<String>{
         return shoppingApi.buy(cartId)
+    }
+    fun getUserOrders(userId:String):Call<List<Order>>{
+        return shoppingApi.getUserOrders(userId)
     }
 }

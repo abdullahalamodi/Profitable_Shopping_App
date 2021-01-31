@@ -1,6 +1,7 @@
 package com.finalproject.profitableshopping.data.repositories
 
 import com.finalproject.profitableshopping.data.api.ShoppingApi
+import com.finalproject.profitableshopping.data.models.MySales
 import com.finalproject.profitableshopping.data.models.Product
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -25,6 +26,19 @@ class ProductRepositry {
 
     }
 
+    fun uploadImages(
+        image1:MultipartBody.Part,
+        image2:MultipartBody.Part,
+        image3:MultipartBody.Part,
+                    productId:RequestBody) :Call<String>{
+        return shoppingApi.uploadImages(
+            image1,
+            image2,
+            image3,
+            productId)
+
+    }
+
     fun addProduct(product: Product): Call<String>{
         return shoppingApi.addProduct(product)
     }
@@ -40,6 +54,9 @@ class ProductRepositry {
 
     fun getProducts():Call<List<Product>>{
         return shoppingApi.getProducts()
+    }
+    fun getUserSales(userId: String):Call<List<MySales>>{
+        return shoppingApi.getUserSales(userId)
     }
 
     fun getProductsFroManage():Call<List<Product>>{
@@ -62,8 +79,8 @@ class ProductRepositry {
         return  shoppingApi.updateProductCase(product.id.toString(),product.isActive)
     }
 
-    fun deleteProduct(proId:String):Call<String>{
-        return shoppingApi.deleteProduct(proId)
+    fun deleteProduct(proId:String,isActive:Int):Call<String>{
+        return shoppingApi.updateProductCase(proId,isActive)
     }
 
 }

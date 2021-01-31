@@ -38,6 +38,10 @@ class CategoryViewModel : ViewModel() {
         loadTrigger.value = Unit
     }
 
+    fun loadCategory(id: Int){
+        categoryIdLiveData.value = id
+    }
+
 
     fun addCategory(category: Category): MutableLiveData<String> {
         val responseLiveData = MutableLiveData<String>()
@@ -110,6 +114,22 @@ class CategoryViewModel : ViewModel() {
     fun updateCategory(catId: Int?, category: Category): MutableLiveData<String> {
         val responseLiveData: MutableLiveData<String> = MutableLiveData()
         val call = repository.updateCategory(catId, category)
+        call.enqueue(object : Callback<String> {
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                responseLiveData.value = response.body()!!
+            }
+
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                responseLiveData.value = t.message!!
+            }
+        })
+        return responseLiveData
+
+    }
+
+    fun updateCategoryCase(catId: Int?, isActive: Int): MutableLiveData<String> {
+        val responseLiveData: MutableLiveData<String> = MutableLiveData()
+        val call = repository.updateCategoryCase(catId!!, isActive)
         call.enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 responseLiveData.value = response.body()!!

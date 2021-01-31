@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -21,7 +22,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.AppSharedPreference
+import com.finalproject.profitableshopping.data.AppSharedPreference.sharedPrefFile
 import com.finalproject.profitableshopping.data.models.Favorite
+import com.finalproject.profitableshopping.view.MainActivity
 import com.finalproject.profitableshopping.viewmodel.FavoriteViewModel
 import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.Task
@@ -32,6 +35,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.StorageTask
 import com.google.firebase.storage.UploadTask
+import kotlinx.android.synthetic.main.activity_show_profile.*
 
 private const val PICK_IMAGE_REQUEST = 0
 
@@ -47,7 +51,7 @@ class SignUpFragment : Fragment() {
     lateinit var registerBtn: Button
     lateinit var auth: FirebaseAuth
     lateinit var database: FirebaseDatabase
-    lateinit var reference: DatabaseReference
+    private lateinit var databaseReference:DatabaseReference
     private var coverChecker : String ="cover"
    var database1 = FirebaseDatabase.getInstance().reference
 
@@ -228,7 +232,7 @@ class SignUpFragment : Fragment() {
                 if (it.isSuccessful) {
                     sendEmailVerification()
                     // create favorite for user
-                    favoriteViewModel.createFavorite(
+/*                    favoriteViewModel.createFavorite(
                         Favorite(
                             null,
                             AppSharedPreference.getUserId(requireContext())!!
@@ -236,9 +240,9 @@ class SignUpFragment : Fragment() {
                     ).observe(
                         this,
                         Observer {
-                            AppSharedPreference.setFavoriteId(requireContext(), it.toInt())
+                            AppSharedPreference.setFavoriteId(requireContext(), it)
                         }
-                    )
+                    )*/
                 } else {
                     Toast.makeText(requireContext(), " You registered Failed ${it.exception.toString()}", Toast.LENGTH_LONG).show()
                 }
@@ -248,12 +252,30 @@ class SignUpFragment : Fragment() {
     private fun sendEmailVerification() {
         val user = auth.currentUser
         user?.sendEmailVerification()?.addOnCompleteListener {
-
             if (it.isSuccessful) {
-                Toast.makeText(requireContext(), "You registered successful", Toast.LENGTH_LONG)
-                    .show()
-                /* var intent = Intent(requireContext(), SignIn::class.java)
-                 startActivity(intent)*/
+                Toast.makeText(requireContext(), "You registered successful", Toast.LENGTH_LONG).show()
+//                var userId: String=user!!.uid
+//                databaseReference=FirebaseDatabase.getInstance().getReference("Users").child(userId)
+//                var hashMap:HashMap<String,String > = HashMap()
+//                hashMap.put("userId",userId)
+//                hashMap.put("userName",userNameEt.text.toString())
+//                hashMap.put("userEmail",userEmailEt.text.toString())
+//                hashMap.put("profileImage"," ")
+//
+//                val sharedPreferences = AppSharedPreference
+
+               // sharedPreferences.save("userId",userId)
+              //  sharedPreferences.save("userName",userNameEt.text.toString())
+
+//                databaseReference.setValue(hashMap).addOnCompleteListener {
+//                    if(it.isSuccessful){
+//
+//                    }
+//                }
+
+
+                 var intent = Intent(requireContext(), MainActivity::class.java)
+                 startActivity(intent)
                 signUpCallbacks?.onCreateAccountSuccess()
             }
         }
@@ -272,7 +294,7 @@ class SignUpFragment : Fragment() {
         fun onCreateAccountSuccess()
     }
 
-    companion object {
+   companion object {
 
         @JvmStatic
         fun newInstance() = SignUpFragment().apply {
@@ -280,5 +302,5 @@ class SignUpFragment : Fragment() {
 
                 }
             }
-    }
+   }
 }

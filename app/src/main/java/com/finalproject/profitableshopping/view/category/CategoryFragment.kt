@@ -1,12 +1,15 @@
 package com.finalproject.profitableshopping.view.category
 
+import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,16 +18,18 @@ import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.models.Category
 import com.finalproject.profitableshopping.showMessage
 import com.finalproject.profitableshopping.view.products.UploadRequestBody
-
 import com.finalproject.profitableshopping.viewmodel.CategoryViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.delete_category.view.*
 import kotlinx.android.synthetic.main.update_category.view.*
 
-const val USER_ID_ARG = "userId";
+const val USER_ID_ARG = "userId"
 
-class CategoryFragment : Fragment(),UploadRequestBody.UploadCallback {
+class CategoryFragment : Fragment(), UploadRequestBody.UploadCallback {
+    interface CategoryCallbacks {
+        fun onOpenProductManager(catgoryId: Int)
+    }
 
     private lateinit var categoryNameEt: EditText
     private lateinit var addBtn: Button
@@ -35,31 +40,24 @@ class CategoryFragment : Fragment(),UploadRequestBody.UploadCallback {
     private lateinit var addCatFloatingABtn: FloatingActionButton
     private var adapter: CategoryAdapter? = CategoryAdapter(emptyList())
     private var openMoreOptions = true
+    var callbacks: CategoryCallbacks? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callbacks = context as CategoryCallbacks
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        callbacks = null
+    }
 
     override fun onStart() {
         super.onStart()
-        addBtn.setOnClickListener {
-            showProgress(true)
-            val catMap = Category();
-            catMap.name = categoryNameEt.text.toString()
-            val response = categoryViewModel.addCategory(catMap)
-            //will display message after get response
-            response.observe(
-                viewLifecycleOwner,
-                Observer { message ->
-                    showProgress(false)
-                    Toast.makeText(context, message.toString(), Toast.LENGTH_SHORT).show()
-                    categoryViewModel.refresh()
-
-                }
-            )
-
+        addCatFloatingABtn.setOnClickListener {
+            var bottomSheetAddCat = AddCategoryFragment();
+            bottomSheetAddCat.show(childFragmentManager, "Tag")
         }
-
-       addCatFloatingABtn.setOnClickListener{
-           var bottomSheetAddCat =AddCategoryFragment();
-           bottomSheetAddCat.show(childFragmentManager,"Tag")
-       }
     }
 
 
@@ -110,9 +108,9 @@ class CategoryFragment : Fragment(),UploadRequestBody.UploadCallback {
     }
 
 
-
     companion object {
         const val REQUEST_CODE_PICK_IMAGE = 101
+
         @JvmStatic
         fun newInstance() = CategoryFragment()
 
@@ -127,8 +125,13 @@ class CategoryFragment : Fragment(),UploadRequestBody.UploadCallback {
         var categoryUpdateTv: TextView = view.findViewById(R.id.tv_update_category) as TextView
         var categoryDeleteTv: TextView = view.findViewById(R.id.tv_delete_category) as TextView
         var categoryMoreOPtionIV: ImageView = view.findViewById(R.id.img_more_options) as ImageView
-        var categoryUpdeteDeleteLy: LinearLayout = view.findViewById(R.id.ly_update_delete_category) as LinearLayout
+        var categoryUpdeteDeleteLy: LinearLayout =
+            view.findViewById(R.id.ly_update_delete_category) as LinearLayout
+        var category = Category()
 
+        init {
+            view.setOnClickListener(this)
+        }
 
         ////////////////////this function to update the category
 
@@ -176,7 +179,7 @@ class CategoryFragment : Fragment(),UploadRequestBody.UploadCallback {
             view.ed_category_name.setText(cat.name)
             view.btn_delete.setOnClickListener {
                 showProgress(true)
-                val response = categoryViewModel.deleteCategory(cat.id!!)
+                val response = categoryViewModel.updateCategoryCase(cat.id!!, cat.isActive)
                 response.observe(
                     viewLifecycleOwner,
                     Observer { message ->
@@ -195,7 +198,18 @@ class CategoryFragment : Fragment(),UploadRequestBody.UploadCallback {
         }
 
         fun bind(cat: Category) {
+
+            this.category = cat
             categoryNameTv.text = cat.name
+
+            if (this.category.isActive()) {
+                categoryDeleteTv.text = "إخفاء"
+                categoryNameTv.setTextColor(Color.BLACK)
+            } else {
+                categoryDeleteTv.text = "إظهار"
+                categoryNameTv.setTextColor(Color.RED)
+            }
+
             if (cat.path != "" && cat.path != null) {
                 Picasso.get().also {
                     val path = cat.getUrl()
@@ -219,17 +233,33 @@ class CategoryFragment : Fragment(),UploadRequestBody.UploadCallback {
             }
 
             categoryUpdateTv.setOnClickListener {
-                categoryDialogUpdate(cat)
+//                categoryDialogUpdate(cat)
+                AddCategoryFragment.newInstance(cat.id.toString()).show(
+                    childFragmentManager, "Tag"
+                )
             }
 
             categoryDeleteTv.setOnClickListener {
                 //disable delete in category
 //                categoryDialogDelete(cat)
+
+                cat.isActive = cat.changeIsActive()
+                categoryViewModel.updateCategoryCase(cat.id, cat.isActive).observe(
+                    viewLifecycleOwner,
+                    Observer {
+                        context?.showMessage(it)
+                        categoryViewModel.refresh()
+                    }
+                )
             }
         }
 
         override fun onClick(p0: View?) {
 //            showPopUpMenu(p0!!)
+            Log.d("catId",this.category.id!!.toString())
+            callbacks?.onOpenProductManager(this.category.id!!)
+
+
         }
     }
 
@@ -244,6 +274,7 @@ class CategoryFragment : Fragment(),UploadRequestBody.UploadCallback {
             )
             return CategoryHolder(view)
         }
+
         override fun onBindViewHolder(holder: CategoryHolder, position: Int) {
             val category = categoriesList[position]
             holder.bind(category)

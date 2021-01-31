@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.showMessage
+import com.finalproject.profitableshopping.view.MainActivity
 import com.finalproject.profitableshopping.view.products.fragments.*
 
 class ManageProductActivity : AppCompatActivity(),
@@ -25,15 +26,19 @@ class ManageProductActivity : AppCompatActivity(),
         }
     }
 
-    private fun addFragment(fragment: Fragment) =
-        supportFragmentManager.beginTransaction().apply {
-            add(R.id.container_manage_product, fragment)
-            addToBackStack(null)
-            commit()
+    private fun addFragment(fragment: Fragment){
+        supportFragmentManager.beginTransaction()
+            .add(R.id.container_manage_product, fragment)
+            .addToBackStack(null)
+            .commit()
         }
 
     override fun onItemSelected(itemId: Int) {
         addFragment(DetailsOfAllProductsFragment.newInstance(itemId.toString()))
+    }
+
+    override fun onCartBudgeRefresh(count: Int) {
+
     }
 
     private fun setFragment(fragment: Fragment) {
@@ -41,6 +46,10 @@ class ManageProductActivity : AppCompatActivity(),
             .replace(R.id.container_manage_product, fragment)
             .addToBackStack(null)
             .commit()
+    }
+
+    override fun onProductClicked(itemId: Int) {
+        setFragment(DetailsOfAllProductsFragment.newInstance(itemId.toString()))
     }
 
     override fun onUpdateProductClicked(productId: String?) {
@@ -60,11 +69,12 @@ class ManageProductActivity : AppCompatActivity(),
     }
 
     override fun onAddToCartClicked() {
-
-    }
-
-    override fun onDetailsOpen(show:Boolean) {
         TODO("Not yet implemented")
     }
+
+    override fun onDetailsOpen(show: Boolean) {
+
+    }
+
 
 }

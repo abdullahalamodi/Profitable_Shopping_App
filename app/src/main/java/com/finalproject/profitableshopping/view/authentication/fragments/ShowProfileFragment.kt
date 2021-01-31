@@ -1,5 +1,6 @@
 package com.finalproject.profitableshopping.view.authentication.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,13 +10,14 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.firebase.Firebase
+import com.finalproject.profitableshopping.view.AboutAppFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.fragment_manage_user.*
 
 class ShowProfileFragment : Fragment() {
-
+    var callbacks: Callbacks? = null
 
     var database1 = FirebaseDatabase.getInstance().reference
     lateinit var UserText1 : TextView
@@ -80,6 +82,21 @@ class ShowProfileFragment : Fragment() {
 //        }
 //        // [END check_current_user]
 //    }
+
+    interface Callbacks {
+        fun onShowProfile(show: Boolean)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callbacks = context as ShowProfileFragment.Callbacks
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        callbacks?.onShowProfile(true)
+        callbacks=null
+    }
 
     companion object {
 

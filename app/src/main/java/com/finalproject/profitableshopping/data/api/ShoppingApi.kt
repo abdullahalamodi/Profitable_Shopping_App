@@ -18,7 +18,7 @@ interface ShoppingApi {
     fun getCategories(): Call<List<Category>>
 
     @GET("categories.php")
-    fun getCategoryById(@Query("id") query: Int): Call<Category>
+    fun getCategoryById(@Query("id") query: String): Call<Category>
 
     @GET("categories.php")
     fun getCategoryByName(@Query("name") name: String): Call<Category>
@@ -32,6 +32,13 @@ interface ShoppingApi {
 
     @DELETE("categories.php?")
     fun deleteCategory(@Query("id") id: String): Call<String>
+
+    @POST("categories.php")
+    fun updateCategoryCase(
+        @Query("id") id: String,
+        @Query("is_active") isActive: Int
+    ): Call<String>
+
 
     @Multipart
     @POST("image.php")
@@ -83,6 +90,15 @@ interface ShoppingApi {
         @Part("product_id") desc: RequestBody
     ): Call<String>
 
+    @Multipart
+    @POST("images.php")
+    fun uploadImages(
+        @Part image1: MultipartBody.Part,
+        @Part image2: MultipartBody.Part,
+        @Part image3: MultipartBody.Part,
+        @Part("product_id") desc: RequestBody
+    ): Call<String>
+
 
 
     //cart API  method
@@ -97,9 +113,17 @@ interface ShoppingApi {
 
     @GET("order_details.php?")
     fun getUserCartItems(
-        @Query("order_id") order_id: String
+        @Query("order_id") order_id: String,
+        @Query("user_id") user_id: String
     ): Call<List<OrderDetails>>
 
+
+    @GET("order_details.php?")
+    fun getCartItems(
+        @Query("id") user_id: String
+    ): Call<List<OrderDetails>>
+    @GET("orders.php?")
+    fun getUserOrders(@Query("user_id")userId: String): Call<List<Order>>
     @DELETE("orders.php")
     fun deleteOrder(@Query("id") orderId: String): Call<String>
 
@@ -108,17 +132,14 @@ interface ShoppingApi {
 
 
     // favorite method
-    @POST("favorites.php")
-    fun createFavorite(@Body favorite: Favorite): Call<Int>
+    @POST("favorite.php")
+    fun addFavorite(@Body favorite: Favorite): Call<String>
 
-    @POST("favoriteDetails.php")
-    fun addFavoriteItem(@Body FavoriteItem: FavoriteItem): Call<String>
+    @GET("favorite.php?")
+    fun getUserFavorites(@Query("user_id") userId:String): Call<List<Favorite>>
 
-    @GET("favoriteDetails.php?")
-    fun getFavoriteItems(@Query("favorite_id") favoriteId: Int): Call<List<FavoriteItem>>
-
-    @DELETE("favoriteDetails.php")
-    fun deleteFavoriteItem(@Query("id") FavoriteItemId: Int): Call<String>
+    @DELETE("favorite.php")
+    fun deleteFavorite(@Query("id") favoriteId: Int): Call<String>
 
     // comment method
     @GET("comments.php")
@@ -154,4 +175,8 @@ interface ShoppingApi {
     fun getUserReports(@Query("to_id") userId:String):Call<List<Report>>
     @GET("reports.php")
     fun getProductReports(@Query("product_id") productId:String):Call<List<Report>>
+    @GET("products.php/my_salaes?")
+    fun getUserSales(@Query("user_id") userId: String):Call<List<MySales>>
+
+
 }

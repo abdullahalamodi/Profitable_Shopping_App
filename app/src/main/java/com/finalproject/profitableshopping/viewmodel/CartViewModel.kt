@@ -14,11 +14,17 @@ import retrofit2.Response
 
 class CartViewModel : ViewModel() {
     private val cartIdLiveData = MutableLiveData<Int>()
+    private val cartIdLiveData1 = MutableLiveData<Int>()
 //    val pro = mutableListOf<OrderDetails>()
     val cartRepositry: CartRepositry
+    private var userId = ""
 
     var orderDetailsListLiveData = Transformations.switchMap(cartIdLiveData){ carId ->
-        getCartItemList(carId)
+        getCartItemList(carId,userId)
+    }
+
+    var orderDetailsListLiveData1 = Transformations.switchMap(cartIdLiveData1){ carId ->
+        getCartItemList1(carId)
     }
 
     init {
@@ -26,8 +32,13 @@ class CartViewModel : ViewModel() {
     }
 
 
-    fun loadOrder(orderId: Int) {
+    fun loadUserOrder(orderId: Int, userId:String) {
         cartIdLiveData.value = orderId
+        this.userId = userId
+    }
+
+    fun loadOrder(orderId: Int) {
+        cartIdLiveData1.value = orderId
     }
 
 
@@ -86,9 +97,33 @@ class CartViewModel : ViewModel() {
         )
         return message
     }
-    private fun getCartItemList(cartId:Int):LiveData<List<OrderDetails>> {
+    private fun getCartItemList(cartId:Int,userId: String):LiveData<List<OrderDetails>> {
         val orderList= MutableLiveData<List<OrderDetails>>()
-        val call=cartRepositry.getOrders(cartId)
+        val call=cartRepositry.getOrders(cartId,userId)
+        call.enqueue(
+            object :Callback<List<OrderDetails>>{
+                override fun onResponse(
+                    call: Call<List<OrderDetails>>,
+                    response: Response<List<OrderDetails>>
+                ) {
+                    orderList.value = response.body()?: emptyList()
+                    Log.d("success get order","success get orders")
+                }
+
+                override fun onFailure(call: Call<List<OrderDetails>>, t: Throwable) {
+                    Log.d("faild get order",t.message!!)
+                    orderList.value= emptyList()
+                }
+            }
+        )
+
+
+        return orderList
+    }
+
+    private fun getCartItemList1(cartId:Int):LiveData<List<OrderDetails>> {
+        val orderList= MutableLiveData<List<OrderDetails>>()
+        val call=cartRepositry.getOrders1(cartId)
         call.enqueue(
             object :Callback<List<OrderDetails>>{
                 override fun onResponse(
@@ -129,6 +164,29 @@ class CartViewModel : ViewModel() {
     fun changeOrderState(order_id: Int,is_paid: Boolean):LiveData<String>{
         val message= MutableLiveData<String>()
         return message
+    }
+    fun getUserOrders(userId:String):LiveData<List<Order>>{
+        val orderList= MutableLiveData<List<Order>>()
+        val call=cartRepositry.getUserOrders(userId)
+        call.enqueue(
+            object :Callback<List<Order>>{
+                override fun onResponse(
+                    call: Call<List<Order>>,
+                    response: Response<List<Order>>
+                ) {
+                    orderList.value = response.body()?: emptyList()
+                    Log.d("success get order","success get orders")
+                }
+
+                override fun onFailure(call: Call<List<Order>>, t: Throwable) {
+                    Log.d("faild get order",t.message!!)
+                    orderList.value= emptyList()
+                }
+            }
+        )
+
+
+        return orderList
     }
 
 }

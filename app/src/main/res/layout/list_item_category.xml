@@ -8,7 +8,7 @@
     android:layout_marginRight="6dp"
     android:layout_marginTop="10dp"
     android:orientation="vertical"
-    app:cardBackgroundColor="@color/lightGray1"
+    app:cardBackgroundColor="@color/colorbg"
     app:cardCornerRadius="16dp"
     app:cardElevation="4dp">
 
@@ -96,7 +96,7 @@
                 android:drawableRight="@drawable/ic_delete"
                 android:gravity="center"
                 android:paddingRight="20dp"
-                android:text="@string/category_delete" />
+                android:text="اخفاء" />
 
         </LinearLayout>
 

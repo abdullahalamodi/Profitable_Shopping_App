@@ -1,6 +1,7 @@
 package com.finalproject.profitableshopping.view.products.fragments
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -50,7 +51,7 @@ class ManageProductsFragment : Fragment() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                productViewModel.productsListLiveData.observe(
+                productViewModel.userProductsLiveData.observe(
                     viewLifecycleOwner,
                     Observer { prodcts ->
                         showProgress(false)
@@ -62,7 +63,7 @@ class ManageProductsFragment : Fragment() {
     }
 
     private fun filterList(filterItem: String) {
-        var tempList: MutableList<Product> = ArrayList();
+        var tempList: MutableList<Product> = ArrayList()
         for (d in adapterManageProduct.productsList) {
             if (filterItem in d.name) {
                 tempList.add(d)
@@ -151,6 +152,18 @@ class ManageProductsFragment : Fragment() {
         fun bind(pro: Product) {
             product = pro
             manageProductNameTv.text = pro.name
+
+            if (this.product.isActive()) {
+                manageProductDeleteOptionTV.text = "إخفاء"
+                manageProductNameTv.setTextColor(Color.BLACK)
+
+            } else{
+                manageProductDeleteOptionTV.text = "إظهار"
+                manageProductNameTv.setTextColor(Color.RED)
+
+            }
+
+
             manageProductRialPriceTv.text = "RY:" + pro.rialPrice.toString()
 
             manageProductMoreOptionIV.setOnClickListener {
@@ -167,13 +180,14 @@ class ManageProductsFragment : Fragment() {
                 }
 
                 manageProductDeleteOptionTV.setOnClickListener {
+                    product.isActive = product.changeIsActive()
                     productViewModel.refresh()
                     showProgress(true)
-                    productViewModel.deleteProduct(pro.id.toString()).observe(
+                    productViewModel.deleteProduct(pro.id.toString(),product.isActive).observe(
                         viewLifecycleOwner,
                         Observer {
                             showProgress(false)
-                            context?.showMessage("product deleted successfully")
+                            context?.showMessage("product updated successfully")
                             onProductDeleted()
                         }
                     )
@@ -186,16 +200,16 @@ class ManageProductsFragment : Fragment() {
                     it.load(path)
                         .resize(45, 45)
                         .centerCrop()
-                        .placeholder(R.drawable.shoe)
+                        .placeholder(R.drawable.ic_phone_android)
                         .into(manageProductImageIv)
                 }
             } else {
-                manageProductImageIv.setImageResource(R.drawable.shoe)
+                manageProductImageIv.setImageResource(R.drawable.ic_phone_android)
             }
         }
 
         override fun onClick(p0: View?) {
-            callbacks?.onItemSelected(this.product.id)
+//            callbacks?.onProductClicked(product.id)
         }
     }
 
@@ -222,12 +236,12 @@ class ManageProductsFragment : Fragment() {
 
         fun updateList(list: List<Product>) {
             productsList = list
-            notifyDataSetChanged();
+            notifyDataSetChanged()
         }
     }
 
     interface Callbacks {
-        fun onItemSelected(itemId: Int)
+        fun onProductClicked(itemId: Int)
         fun onUpdateProductClicked(productId: String?)
         fun onDeleteProductClicked()
         fun onAddProductClicked()
@@ -245,9 +259,6 @@ class ManageProductsFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(): ManageProductsFragment {
-            return newInstance();
-        }
+        fun newInstance() = ManageProductsFragment()
     }
-
 }

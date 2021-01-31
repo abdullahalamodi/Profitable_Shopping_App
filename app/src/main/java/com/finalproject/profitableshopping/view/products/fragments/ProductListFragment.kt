@@ -17,8 +17,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.finalproject.profitableshopping.R
+import com.finalproject.profitableshopping.data.AppSharedPreference
 import com.finalproject.profitableshopping.data.models.Category
 import com.finalproject.profitableshopping.data.models.Product
+import com.finalproject.profitableshopping.viewmodel.CartViewModel
 import com.finalproject.profitableshopping.viewmodel.CategoryViewModel
 import com.finalproject.profitableshopping.viewmodel.ProductViewModel
 import com.squareup.picasso.Picasso
@@ -26,9 +28,10 @@ import com.squareup.picasso.Picasso
 class ProductListFragment : Fragment() {
     private lateinit var productViewModel: ProductViewModel
     private lateinit var categoryViewModel: CategoryViewModel
+    lateinit var carttViewModel: CartViewModel
     private lateinit var hCategoryRecyclerView: RecyclerView
     private lateinit var productsRv: RecyclerView
-    private lateinit var categoriesList: MutableList<Category>
+    private lateinit var categoriesList: List<Category>
     private lateinit var searchEt: EditText
     private var adapter: ProductAdapter = ProductAdapter(emptyList())
     private var adapterCategories: ProductListFragment.CategoryAdapter? =
@@ -61,7 +64,7 @@ class ProductListFragment : Fragment() {
     }
 
     private fun filterList(filterItem: String) {
-        var tempList: MutableList<Product> = ArrayList();
+        var tempList: MutableList<Product> = ArrayList()
         for (d in adapter.productsList) {
             if (filterItem in d.name) {
                 tempList.add(d)
@@ -70,11 +73,26 @@ class ProductListFragment : Fragment() {
         adapter.updateList(tempList)
     }
 
+    private fun listenCartBudge(){
+        carttViewModel.orderDetailsListLiveData.observe(
+            viewLifecycleOwner,
+            Observer {
+                callbacks?.onCartBudgeRefresh(it.size)
+            }
+        )
+    }
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         categoryViewModel = ViewModelProviders.of(this).get(CategoryViewModel::class.java)
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
+        carttViewModel = ViewModelProviders.of(this).get(CartViewModel::class.java)
+        carttViewModel.loadUserOrder(
+            AppSharedPreference.getCartId(requireContext())?.toInt()!!,
+            AppSharedPreference.getUserId(requireContext())!!
+        )
     }
 
     override fun onResume() {
@@ -107,6 +125,7 @@ class ProductListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        listenCartBudge()
         showProgress(true)
 
         showProgress(true)
@@ -137,7 +156,7 @@ class ProductListFragment : Fragment() {
     }
 
     private fun updateUICategory(categoriesList: List<Category>) {
-        this.categoriesList = categoriesList as MutableList<Category>
+        this.categoriesList = categoriesList
         adapterCategories = CategoryAdapter(categoriesList)
         hCategoryRecyclerView.adapter = adapterCategories
     }
@@ -160,9 +179,9 @@ class ProductListFragment : Fragment() {
         var categoryImageV: ImageView = view.findViewById(R.id.category_image_view) as ImageView
         var checkIcon: ImageView = view.findViewById(R.id.check_icon) as ImageView
         var category = Category()
-        var selectedId = 0;
+        var selectedId = 0
         fun bind(cat: Category) {
-            category = cat;
+            category = cat
             categoryNameTv.text = cat.name
             if (cat.path != "" && cat.path != null) {
                 Picasso.get().also {
@@ -243,7 +262,6 @@ class ProductListFragment : Fragment() {
         var productRateTv: RatingBar = view.findViewById(R.id.rate_bar) as RatingBar
         var productDescriptionTv: TextView =
             view.findViewById(R.id.tv_description_product) as TextView
-       // var ratingBarProduct:RatingBar =view.findViewById(R.id.ratingBar_product) as RatingBar
         var product = Product()
 
         init {
@@ -302,7 +320,7 @@ class ProductListFragment : Fragment() {
 
         fun updateList(list: List<Product>) {
             productsList = list
-            notifyDataSetChanged();
+            notifyDataSetChanged()
         }
     }
 
@@ -311,6 +329,7 @@ class ProductListFragment : Fragment() {
 
     interface Callbacks {
         fun onItemSelected(itemId: Int)
+        fun onCartBudgeRefresh(count:Int)
         // fun onFloatButtonClicked()
     }
 
@@ -326,7 +345,7 @@ class ProductListFragment : Fragment() {
 
     companion object {
         fun newInstance(): ProductListFragment {
-            return ProductListFragment();
+            return ProductListFragment()
         }
     }
 

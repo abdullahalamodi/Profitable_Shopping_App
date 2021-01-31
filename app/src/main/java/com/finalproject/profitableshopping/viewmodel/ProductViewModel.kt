@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import com.finalproject.profitableshopping.data.models.MySales
 import com.finalproject.profitableshopping.data.models.Product
 import com.finalproject.profitableshopping.data.repositories.ProductRepositry
 import okhttp3.MultipartBody
@@ -124,7 +125,7 @@ class ProductViewModel : ViewModel() {
             }
 
             override fun onFailure(call: Call<List<Product>>, t: Throwable) {
-                Log.d("Faild ", t.message!!)
+                Log.d("Failed ", t.message!!)
                 responseLiveData.value = emptyList()
             }
         })
@@ -143,7 +144,7 @@ class ProductViewModel : ViewModel() {
             }
 
             override fun onFailure(call: Call<List<Product>>, t: Throwable) {
-                Log.d("Faild ", t.message!!)
+                Log.d("Failed ", t.message!!)
                 responseLiveData.value = emptyList()
             }
         })
@@ -162,7 +163,7 @@ class ProductViewModel : ViewModel() {
 
             override fun onFailure(call: Call<Product>, t: Throwable) {
                 responseLiveData.value = Product()
-                Log.d("Faild ", t.message!!)
+                Log.d("Failed ", t.message!!)
 
             }
 
@@ -234,9 +235,9 @@ class ProductViewModel : ViewModel() {
     }
 
 
-    fun deleteProduct(proId: String): MutableLiveData<String> {
+    fun deleteProduct(proId: String,isActive:Int): MutableLiveData<String> {
         val responseLiveData: MutableLiveData<String> = MutableLiveData()
-        val call = productRepositry.deleteProduct(proId)
+        val call = productRepositry.deleteProduct(proId,isActive)
         call.enqueue(object : Callback<String> {
             override fun onResponse(
                 call: Call<String>,
@@ -260,6 +261,37 @@ class ProductViewModel : ViewModel() {
         productId: RequestBody
     ): Call<String> {
         return productRepositry.uploadImage(image, productId)
+    }
+
+    fun uploadImages(
+        image1: MultipartBody.Part,
+        image2: MultipartBody.Part,
+        image3: MultipartBody.Part,
+        productId: RequestBody
+    ): Call<String> {
+        return productRepositry.uploadImages(image1,image2,image3, productId)
+    }
+    fun getMySales(userId: String):MutableLiveData<List<MySales>>{
+        val responseLiveData: MutableLiveData<List<MySales>> = MutableLiveData()
+        val call = productRepositry.getUserSales(userId)
+        call.enqueue(object : Callback<List<MySales>> {
+            override fun onResponse(
+                call: Call<List<MySales>>,
+                response: Response<List<MySales>>
+            ) {
+                responseLiveData.value = response.body() ?: emptyList()
+                Log.d("Succees  ", responseLiveData.value!!.size.toString()!!)
+            }
+
+            override fun onFailure(call: Call<List<MySales>>, t: Throwable) {
+                Log.d("Failed ", t.message!!)
+                responseLiveData.value = emptyList()
+            }
+        })
+        return responseLiveData
+
+
+
     }
 
 }
