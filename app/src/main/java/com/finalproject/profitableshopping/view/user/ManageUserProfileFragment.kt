@@ -1,8 +1,14 @@
 package com.finalproject.profitableshopping.view.user
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.icu.number.NumberRangeFormatter.with
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -19,20 +25,43 @@ import com.finalproject.profitableshopping.view.MainActivity
 import com.finalproject.profitableshopping.data.AppSharedPreference
 import com.finalproject.profitableshopping.data.models.Product
 import com.finalproject.profitableshopping.showMessage
+import com.finalproject.profitableshopping.view.authentication.fragments.SaveUserInfo
 import com.finalproject.profitableshopping.view.products.fragments.ManageProductsFragment
 import com.finalproject.profitableshopping.viewmodel.ProductViewModel
 import com.finalproject.profitableshopping.viewmodel.ReportViewModel
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.android.gms.tasks.Task
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.database.*
+import com.google.firebase.storage.*
 import com.squareup.picasso.Picasso
+import java.io.File
+import java.lang.Exception
 
+private const val PICK_IMAGE_REQUEST = 0
 class ManageUserProfileFragment : Fragment() {
+
+    lateinit var filePath: Uri
+    lateinit var firebaseStore: FirebaseStorage
+    lateinit var storageReference: StorageReference
+    private var coverChecker : String ="cover"
+    lateinit var image :ImageView
+
     lateinit var reportViewModel: ReportViewModel
     lateinit var manage: ImageView
     lateinit var location: TextView
     var userCountOfReport = 0
     lateinit var notifationM: ImageView
+//save data in firebase
+    var database1 : DatabaseReference?=null
 
-    private  var userId: String?=null
+    lateinit var UserText1 : TextView
+    lateinit var UserText2 : TextView
+    lateinit var UserText3 : TextView
+
+    //////////////////////////////////
+    private lateinit var userId: String
     private lateinit var productViewModel: ProductViewModel
     private lateinit var manageProductsRv: RecyclerView
     private lateinit var productSearchEt: EditText
@@ -58,6 +87,12 @@ class ManageUserProfileFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
+        //For LaunchGallery
+        image.setOnClickListener {
+            coverChecker = "cover"
+            launchGallery()
+
+        }
         reportViewModel.getUserReports(AppSharedPreference.getUserId(requireContext())!!).observe(
             this,
             Observer {
@@ -78,14 +113,89 @@ class ManageUserProfileFragment : Fragment() {
 
         }
     }
+    private fun launchGallery() {
+        var intent = Intent(Intent.ACTION_GET_CONTENT).apply {
+            setType("image/*")
+        }
+        startActivityForResult(intent, PICK_IMAGE_REQUEST)
+    }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
+            filePath = data?.data!!
+            val bitmap = MediaStore.Images.Media.getBitmap(getActivity()?.getContentResolver(), filePath)
+            image.setImageBitmap(bitmap)
+            //  Toast.makeText(requireContext(), " Uploading ..... ", Toast.LENGTH_LONG).show()
+            uploadImage()
+
+        }
+    }
+    private fun  uploadImage() {
+        if (filePath != null) {
+            val fileRef = storageReference!!.child(System.currentTimeMillis().toString() +".jpg")
+            var uploadTask : StorageTask<*>
+            uploadTask =fileRef.putFile(filePath!!)
+            uploadTask.continueWithTask(com.google.android.gms.tasks.Continuation<UploadTask.TaskSnapshot, Task<Uri>> {
+                    task -> if(!task.isSuccessful)
+            {
+                task.exception?.let {
+                    throw  it
+                }
+            }
+                return@Continuation fileRef.downloadUrl
+            }).addOnCompleteListener {
+                    task ->  if(task.isSuccessful){
+                val downloadUrl = task.result
+                val url = downloadUrl.toString()
+                if(coverChecker == "cover"){
+                    val mapCoverImg = HashMap<String , Any>()
+                    mapCoverImg["cover"] = url
+                    database1!!.updateChildren(mapCoverImg)
+                    coverChecker = "cover "
+
+                }
+                //  progressBar.dismiss()
+            }
+            }
+
+            //  Toast.makeText(requireContext(), " SuccessFul ", Toast.LENGTH_LONG).show()
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //Show Profile :
+        database1 = FirebaseDatabase.getInstance().getReference()
+            .child("Users").child(AppSharedPreference.getUserId(requireContext())!!)
+        storageReference = FirebaseStorage.getInstance().getReference().child("Image/")
+        try {
+            var localfile: File = File.createTempFile("", "jpg")
+            storageReference.getFile(localfile)
+                .addOnSuccessListener(
+                    object : OnSuccessListener<FileDownloadTask.TaskSnapshot> {
+                        override fun onSuccess(taskSnapshot: FileDownloadTask.TaskSnapshot?) {
+                            Toast.makeText(requireContext(), " Picture Retrived ..... ", Toast.LENGTH_LONG).show()
+                            var bitmap : Bitmap = BitmapFactory.decodeFile(localfile.absolutePath)
+                            image.setImageBitmap(bitmap)
+                        }
+                    }).addOnFailureListener(object : OnFailureListener {
+                    override fun onFailure(p0: Exception) {
+                        Toast.makeText(requireContext(), " Faild  ..... ", Toast.LENGTH_LONG).show()
+                    }
+
+                })
+
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
         //userId = AppSharedPreference.getUserId(context!!)!!
 
         //////////////////////////////
         reportViewModel = ViewModelProviders.of(this).get(ReportViewModel::class.java)
+        //save data in firebase
+        database1= FirebaseDatabase.getInstance().getReference()
+            .child("Users").child(AppSharedPreference.getUserId(requireContext())!!)
         arguments?.let {
         userId=it.getString("USERID")!!
         }
@@ -102,9 +212,16 @@ class ManageUserProfileFragment : Fragment() {
         location = view.findViewById(R.id.location)
         notifationM = view.findViewById(R.id.notification)
 
+        //save Profile
+
+        UserText1 = view.findViewById(R.id.UserT1)
+        UserText2 = view.findViewById(R.id.UserT2)
+        UserText3 = view.findViewById(R.id.UserT3)
+        image=view.findViewById(R.id.image)
+
         ///////////////////////////
         manageProductsRv = view.findViewById(R.id.rv_my_product)
-//        progressBar = view.findViewById(R.id.progress_circular_manage_product)
+      //  progressBar = view.findViewById(R.id.progress_circular_manage_product)
         manageProductsRv.layoutManager = LinearLayoutManager(context)
         manageProductsRv.adapter = adapterManageProduct
         return view
@@ -119,7 +236,25 @@ class ManageUserProfileFragment : Fragment() {
              //   showProgress(false)
                 updateUI(prodcts)
             })
+
+        database1?.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val saveUserInfo=snapshot.getValue(SaveUserInfo::class.java)
+                UserText1.text=saveUserInfo?.userName
+                UserText2.text=saveUserInfo?.userEmail
+                UserText3.text=saveUserInfo?.userPhone
+               // Picasso.with(context).load(image).into(image)
+
+            }
+
+        })
     }
+
+
 
     private fun updateUI(productsList: List<Product>) {
         adapterManageProduct = ManageProductAdapter(productsList)
@@ -205,11 +340,9 @@ class ManageUserProfileFragment : Fragment() {
 
     companion object {
 
-        fun newInstance(userId:String?) =
-            ManageUserProfileFragment().apply {
+        fun newInstance(userId:String?) = ManageUserProfileFragment().apply {
                 arguments = Bundle().apply {
-                    putString("USERID",userId)
-
+                  putString("USERID",userId)
                 }
             }
     }

@@ -17,14 +17,10 @@ object AppSharedPreference {
         editor.commit()
     }
 
-    fun saveUserData(
-        context: Context,
-        user: User
-    ) {
+    fun saveUserData(context: Context, user: User) {
         val sharedPreferences: SharedPreferences = context.getSharedPreferences(
             sharedPrefFile,
-            Context.MODE_PRIVATE
-        )
+            Context.MODE_PRIVATE)
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
         editor.putString(idKey, user.id)
         editor.putString(emailKey, user.email)
@@ -155,6 +151,7 @@ object AppSharedPreference {
         return sharedPreferences.getBoolean(isBought, false)
 
     }
+
 
 
     const val sharedPrefFile = "user_pref"

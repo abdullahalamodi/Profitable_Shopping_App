@@ -65,8 +65,10 @@
     <string name="sign_btn">تسجيل دخول</string>
     <string name="new_user">مستخدم جديد?</string>
     <string name="sign_up">انشاء حساب</string>
+    <string name="phone_num">رقم الهاتف </string>
     <string name="password">كلمة المرور</string>
     <string name="sign_up_tv">انشاء حساب</string>
+    <string name="person_info">البيانات الشخصية </string>
     <string name="username_tv">اسم المستخدم</string>
     <string name="email_sign_up_tv">الايميل</string>
     <string name="confirmpassword">تاكيد كلمة المرور</string>
@@ -118,7 +120,9 @@
     </string-array>
 
     <string-array name="user_list">
+<!--
         <item>حسابي</item>
+-->
         <item>منتجاتي</item>
         <item>مشترياتي</item>
         <item>مبيعاتي</item>
@@ -133,5 +137,6 @@
     <string name="confirm_password">تاكيد كلمة المرور</string>
     <string name="report_on_product">بلغ عن المنتج</string>
     <string name="spiner_nothing_selected_message">عليك اختيار صنف</string>
+    <string name="forget_password">هل نسيت كلمة السر</string>
 
 </resources>

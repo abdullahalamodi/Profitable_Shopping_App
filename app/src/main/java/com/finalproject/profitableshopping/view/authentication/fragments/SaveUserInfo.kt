@@ -1,15 +1,12 @@
 package com.finalproject.profitableshopping.view.authentication.fragments
 
-class SaveUserInfo {
-    var Uname = " "
-    var Uemail = " "
-    var Upass =" "
-    var Uimage =" "
+data class SaveUserInfo (
+    var profileImage: String = " ",
+    var userName: String = " ",
+    var userEmail: String = " ",
+    var userId: String =" ",
+    var userPhone :String = " "
+  //  var Uimage =" "
 
-    constructor(Uname: String, Uemail: String, Upass: String ,Uimage : String){
-        this.Uname = Uname
-        this.Uemail = Uemail
-        this.Upass = Upass
-       this.Uimage = Uimage
-    }
-}
+
+)

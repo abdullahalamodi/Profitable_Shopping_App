@@ -10,6 +10,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.AppSharedPreference
+
+import com.finalproject.profitableshopping.data.firebase.NotifactionFragment
+import com.finalproject.profitableshopping.data.firebase.NotifationActivity
+
 import com.finalproject.profitableshopping.view.MySales.MySalesFragment
 import com.finalproject.profitableshopping.view.authentication.fragments.*
 import com.finalproject.profitableshopping.view.cart.CartFragment
@@ -106,6 +110,14 @@ class MainActivity : AppCompatActivity(),
                      true
                  }*/
                 R.id.menu_notification -> {
+
+                   // val i = Intent(this@MainActivity, NotifationActivity::class.java)
+                  // startActivity(i)
+                   // setContent("Profile")
+                   // setCurrentFragment(NotifactionFragment.newInstance())
+
+                    setContent("Favorites")
+                    setCurrentFragment(FavoriteFragment.newInstance())
                     //if(getUserToken() != "admin" && getUserToken() != null)){
                     if(getUserToken()=="user") {
                         setContent("Favorites")
@@ -366,7 +378,7 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun onAboutAppSelected() {
-        setCurrentFragment(AboutAppFragment.newInstance())
+      //  setCurrentFragment(ManageUserProfileFragment.newInstance())
     }
 
     override fun onMyPurchaseSelected() {
