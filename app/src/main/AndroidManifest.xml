@@ -22,7 +22,8 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".view.authentication.fragments.ShowProfileActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"/>
-        <activity android:name=".data.firebase.NotifationActivity"/>
+        <activity android:name=".data.firebase.NotifationActivity"
+            android:theme="@style/SplashScreenTheme"/>
         <activity android:name=".view.user.MapActivity" />
 
         <meta-data

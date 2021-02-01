@@ -80,7 +80,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="55dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginEnd="30dp"
                     android:orientation="vertical"
                     android:paddingBottom="10dp">
 
@@ -89,7 +89,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/rb_light"
                         android:padding="4dp"
-                        android:text="Hytham alsharany"
+                        android:text="Haytham alsharany"
                         android:textColor="@color/black"
                         android:textSize="18dp"
                         android:textStyle="bold" />
@@ -171,7 +171,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="55dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginEnd="30dp"
                     android:orientation="vertical"
                     android:paddingBottom="10dp">
 
@@ -261,7 +261,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="55dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginEnd="30dp"
                     android:orientation="vertical"
                     android:paddingBottom="10dp">
 
@@ -295,7 +295,7 @@
                         android:layout_marginTop="10dp"
                         android:fontFamily="@font/rb_light"
                         android:gravity="center"
-                        android:text="ةةةةةةةةةةةةةةةةةةةةةةةةةة تينسبمتشس مسنيتبمسي كمسنيب شمشنسي بشسم سمنببسمشت"
+                        android:text="@string/member_details3"
                         android:visibility="gone" />
 
                 </LinearLayout>
@@ -351,7 +351,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="55dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginEnd="30dp"
                     android:orientation="vertical"
                     android:paddingBottom="10dp">
 

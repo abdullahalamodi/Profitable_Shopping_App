@@ -54,7 +54,8 @@
                         android:layout_height="140dp"
                         android:fontFamily="@font/rb_light"
                         android:hint="@string/write_comment"
-                        android:maxLines="100" />
+                        android:maxLines="100"
+                        android:background="@color/white"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 

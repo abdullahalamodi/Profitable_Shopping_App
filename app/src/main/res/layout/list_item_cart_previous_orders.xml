@@ -43,7 +43,7 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/rb_light"
                         android:gravity="center"
-                        android:text="عدد المنتجات"
+                        android:text="@string/count_poroduct"
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -59,7 +59,7 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/rb_light"
                         android:gravity="center"
-                        android:text="تاريخ الشراء"
+                        android:text="@string/date_of_sales"
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -75,7 +75,7 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/rb_light"
                         android:gravity="center"
-                        android:text="اجمالي السعر"
+                        android:text="@string/total_price"
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold" />

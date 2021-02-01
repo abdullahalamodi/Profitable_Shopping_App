@@ -63,6 +63,8 @@
             android:fontFamily="@font/rb_light"
             android:gravity="center"
             android:text="@string/try_again"
+            android:textColor="@color/white"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/img" />
