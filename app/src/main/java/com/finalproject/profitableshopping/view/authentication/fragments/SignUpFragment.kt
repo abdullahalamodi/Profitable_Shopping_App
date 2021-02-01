@@ -5,6 +5,8 @@ import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.icu.number.NumberFormatter.with
+import android.icu.number.NumberRangeFormatter.with
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -35,6 +37,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.StorageTask
 import com.google.firebase.storage.UploadTask
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_show_profile.*
 
 private const val PICK_IMAGE_REQUEST = 0
@@ -47,6 +50,7 @@ class SignUpFragment : Fragment() {
     lateinit var userNameEt: EditText
     lateinit var userEmailEt: EditText
     lateinit var userPassEt: EditText
+    lateinit var userPhoneEt: EditText
     lateinit var confrimPassEt: EditText
     lateinit var registerBtn: Button
     lateinit var auth: FirebaseAuth
@@ -85,17 +89,18 @@ class SignUpFragment : Fragment() {
             var userName = userNameEt.text.toString()
             var email = userEmailEt.text.toString()
             var password = userPassEt.text.toString()
+            var phone :String = userPhoneEt.text.toString()
             var confirmPassword = confrimPassEt.text.toString()
              var image : String = image.toString()
 
-            if (userName.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty()) {
+            if (userName.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty() && phone.isNotEmpty()) {
                 if (password.length > 6 && password.length < 14) {
                     if (password == confirmPassword) {
                         if (!isValidEmail(email)) {
                             Toast.makeText(requireContext(), "Please enter valid email", Toast.LENGTH_SHORT).show()
                             return@setOnClickListener
                         }
-                        register(userName, email, password)
+                        register(userName, email, password , phone)
 
 
 
@@ -107,7 +112,7 @@ class SignUpFragment : Fragment() {
                 else {
                     Toast.makeText(requireContext(), "Password length must be between 6 and 14 ", Toast.LENGTH_LONG).show()
                 }
-                database1.child("Users").setValue(SaveUserInfo(userName,email,password,image))
+               // database1.child("Users").setValue(SaveUserInfo(userName,email,password,image))
             } else {
                 Toast.makeText(requireContext(), "some fields empty", Toast.LENGTH_LONG).show()
             }
@@ -174,7 +179,7 @@ class SignUpFragment : Fragment() {
                     val mapCoverImg = HashMap<String , Any>()
                     mapCoverImg["cover"] = url
                     database1!!.updateChildren(mapCoverImg)
-                    coverChecker = " "
+                    coverChecker = "cover"
 
                 }
             //  progressBar.dismiss()
@@ -202,6 +207,7 @@ class SignUpFragment : Fragment() {
         userEmailEt = view.findViewById(R.id.register_email)
         userPassEt = view.findViewById(R.id.register_password)
         confrimPassEt = view.findViewById(R.id.register_confirm_password)
+        userPhoneEt = view.findViewById(R.id.register_number)
         registerBtn = view.findViewById(R.id.btn_register)
         image=view.findViewById(R.id.image_preview)
 
@@ -213,7 +219,7 @@ class SignUpFragment : Fragment() {
         signUpCallbacks = null
     }
 
-    private fun register(userName: String, email: String, password: String) {
+    private fun register(userName: String, email: String, password: String , phone :String) {
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance()
        // reference = database.getReference("users")
@@ -254,24 +260,29 @@ class SignUpFragment : Fragment() {
         user?.sendEmailVerification()?.addOnCompleteListener {
             if (it.isSuccessful) {
                 Toast.makeText(requireContext(), "You registered successful", Toast.LENGTH_LONG).show()
-//                var userId: String=user!!.uid
-//                databaseReference=FirebaseDatabase.getInstance().getReference("Users").child(userId)
-//                var hashMap:HashMap<String,String > = HashMap()
-//                hashMap.put("userId",userId)
-//                hashMap.put("userName",userNameEt.text.toString())
-//                hashMap.put("userEmail",userEmailEt.text.toString())
-//                hashMap.put("profileImage"," ")
-//
-//                val sharedPreferences = AppSharedPreference
+                var userId: String=user!!.uid
+                databaseReference=FirebaseDatabase.getInstance().getReference("Users").child(userId)
+                var hashMap:HashMap<String,String > = HashMap()
+                hashMap.put("userId",userId)
+                hashMap.put("userName",userNameEt.text.toString())
+                hashMap.put("userEmail",userEmailEt.text.toString())
+                hashMap.put("userPhone",userPhoneEt.text.toString())
+                hashMap.put("profileImage",image.toString())
 
-               // sharedPreferences.save("userId",userId)
-              //  sharedPreferences.save("userName",userNameEt.text.toString())
 
-//                databaseReference.setValue(hashMap).addOnCompleteListener {
-//                    if(it.isSuccessful){
-//
-//                    }
-//                }
+                val sharedPreferences = AppSharedPreference
+
+              //  sharedPreferences.saveUserData("userId",userId)
+              //  sharedPreferences.saveUserData("userName",userNameEt.text.toString())
+
+
+                databaseReference.setValue(hashMap).addOnCompleteListener {
+                    if(it.isSuccessful){
+
+                    }
+
+                }
+
 
 
                  var intent = Intent(requireContext(), MainActivity::class.java)

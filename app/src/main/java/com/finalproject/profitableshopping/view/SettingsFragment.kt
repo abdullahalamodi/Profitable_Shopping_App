@@ -12,11 +12,8 @@ import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.AppSharedPreference
 import com.finalproject.profitableshopping.data.firebase.NotifationActivity
 import com.finalproject.profitableshopping.view.authentication.fragments.LogInFragment
-<<<<<<< HEAD
 import com.finalproject.profitableshopping.view.authentication.fragments.ShowProfileFragment
 import com.finalproject.profitableshopping.view.authentication.fragments.SignUpFragment
-=======
->>>>>>> upstream/main
 import com.finalproject.profitableshopping.view.category.CategoryActivity
 import com.finalproject.profitableshopping.view.products.ManageProductActivity
 import com.finalproject.profitableshopping.view.user.ManageUserProfileFragment
@@ -115,6 +112,7 @@ class SettingsFragment : Fragment(),
                     }
                 }
 
+
             } else if (position == 1) {
                 startActivity(Intent(context, NotifationActivity::class.java))
             } else if (position == 2) {
@@ -133,32 +131,31 @@ class SettingsFragment : Fragment(),
         uList.setOnItemClickListener { parent, view, position, id ->
 
             if (position == 0) {
-                addFragment(ManageUserProfileFragment())
-
-            } else if (position == 1) {
+              //  addFragment(ManageUserProfileFragment())
                 startActivity(Intent(context, ManageProductActivity::class.java))
 
-            } else if (position == 2) {
-
+            } else if (position == 1) {
                 callbacks?.onMyPurchaseSelected()
-            }
-            else if (position == 3){
+
+            } else if (position == 2) {
                 callbacks?.onMySalesSelected()
 
-            }else if (position == 4 ){
+            } else if (position == 3) {
                 callbacks?.onContactUsSelected()
 
-            } else if (position == 5) {
-<<<<<<< HEAD
-                addFragment(ShowProfileFragment())
-=======
-                callbacks?.onAboutAppSelected()
+            } else if (position == 4) {
 
->>>>>>> upstream/main
-            } else if (position == 6) {
+                addFragment(ManageUserProfileFragment())
+
+                callbacks?.onAboutAppSelected()
+            } else if (position == 5) {
                 logOut()
                 setCurrentFragment(LogInFragment.newInstance())
+
             }
+//            else if (position == 6) {
+//
+//            }
 
         }
 
@@ -177,7 +174,7 @@ class SettingsFragment : Fragment(),
         activity?.supportFragmentManager?.beginTransaction()?.apply {
             replace(R.id.container, fragment)
                 .addToBackStack(null)
-                . commit()
+                .commit()
         }
 
 
@@ -212,30 +209,27 @@ class SettingsFragment : Fragment(),
     override fun onLoginSuccess() {
     }
 
-<<<<<<< HEAD
     override fun onShowProfile(show: Boolean) {
+          class MyListAdapter(
+            private val context: SettingsFragment,
+            private val title: Array<String>,
+            private val imgid: Array<Int>
+        ) : ArrayAdapter<String>(requireContext(), R.layout.list_item_settings, title) {
 
-=======
+            override fun getView(position: Int, view: View?, parent: ViewGroup): View {
 
-    inner class MyListAdapter(
-        private val context: SettingsFragment,
-        private val title: Array<String>,
-        private val imgid: Array<Int>
-    ) : ArrayAdapter<String>(requireContext(), R.layout.list_item_settings, title) {
+                val inflater = context.layoutInflater
+                val rowView = inflater.inflate(R.layout.list_item_settings, null, true)
 
-        override fun getView(position: Int, view: View?, parent: ViewGroup): View {
+                val titleText = rowView.findViewById(R.id.tv_title_settings) as TextView
+                val imageView = rowView.findViewById(R.id.img_settings) as ImageView
 
-            val inflater = context.layoutInflater
-            val rowView = inflater.inflate(R.layout.list_item_settings, null, true)
+                titleText.text = title[position]
+                imageView.setImageResource(imgid[position])
 
-            val titleText = rowView.findViewById(R.id.tv_title_settings) as TextView
-            val imageView = rowView.findViewById(R.id.img_settings) as ImageView
+                return rowView
+            }
 
-            titleText.text = title[position]
-            imageView.setImageResource(imgid[position])
-
-            return rowView
         }
->>>>>>> upstream/main
     }
 }

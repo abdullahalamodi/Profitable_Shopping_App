@@ -61,6 +61,7 @@
                 app:layout_constraintVertical_bias="0">
 
                 <TextView
+                    android:id="@+id/UserT1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="55dp"
@@ -71,6 +72,16 @@
                     android:textSize="18sp" />
 
                 <TextView
+                    android:id="@+id/UserT2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/rb_light"
+                    android:gravity="center"
+                    android:text="memo38605@gmail.com"
+                    android:textSize="16sp" />
+                <TextView
+                    android:id="@+id/UserT3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"

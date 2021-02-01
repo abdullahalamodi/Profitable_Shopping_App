@@ -42,7 +42,9 @@
     </string-array>
 
     <string-array name="user_list">
+<!--
         <item>My Account</item>
+-->
         <item>My Products</item>
         <item>My purchases</item>
         <item>My sales</item>
@@ -54,6 +56,8 @@
     <string name="Products">Products</string>
     <string name="Category">Categories</string>
     <string name="sign_up_tv">Sgin Up</string>
+    <string name="person_info">User Profile </string>
+     <string name="phone_num">Phone Number</string>
     <string name="password">Password</string>
     <string name="new_user">New Account?</string>
     <string name="sign_btn">Sign In</string>
@@ -104,4 +108,5 @@
     <string name="card_item_options">product preferences</string>
     <string name="quantity_option">enter quantity</string>
     <string name="verify_Messsage">you need to verify your account</string>
+    <string name="forget_password">Forget Password ?</string>
 </resources>
