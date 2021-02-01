@@ -1,13 +1,9 @@
 package com.finalproject.profitableshopping.data.api
 
 
-import com.finalproject.profitableshopping.data.models.Complain
 import com.finalproject.profitableshopping.data.models.*
-
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-
-
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -100,7 +96,6 @@ interface ShoppingApi {
     ): Call<String>
 
 
-
     //cart API  method
     @POST("orders.php")
     fun createCart(@Body order: Order): Call<String>
@@ -122,8 +117,10 @@ interface ShoppingApi {
     fun getCartItems(
         @Query("id") user_id: String
     ): Call<List<OrderDetails>>
+
     @GET("orders.php?")
-    fun getUserOrders(@Query("user_id")userId: String): Call<List<Order>>
+    fun getUserOrders(@Query("user_id") userId: String): Call<List<Order>>
+
     @DELETE("orders.php")
     fun deleteOrder(@Query("id") orderId: String): Call<String>
 
@@ -136,7 +133,14 @@ interface ShoppingApi {
     fun addFavorite(@Body favorite: Favorite): Call<String>
 
     @GET("favorite.php?")
-    fun getUserFavorites(@Query("user_id") userId:String): Call<List<Favorite>>
+    fun getUserFavorites(@Query("user_id") userId: String): Call<List<Favorite>>
+
+    @GET("favorite.php?")
+    fun getFavorite(
+        @Query("product_id") productId: String,
+        @Query("user_id") userId: String
+    )
+            : Call<String>
 
     @DELETE("favorite.php")
     fun deleteFavorite(@Query("id") favoriteId: Int): Call<String>
@@ -162,21 +166,26 @@ interface ShoppingApi {
 
     // complain method API
     @POST("complains.php")
-    fun addComplain(@Body complain: Complain):Call<String>
+    fun addComplain(@Body complain: Complain): Call<String>
+
     @GET("complains.php")
-    fun getComplains():Call<List<Complain>>
+    fun getComplains(): Call<List<Complain>>
+
     @GET()
-    fun getComplain(@Query("id") complainId:Int):Call<Complain>
+    fun getComplain(@Query("id") complainId: Int): Call<Complain>
 
     // Reports method API
     @POST("reports.php")
-    fun addReport(@Body report:Report):Call<String>
+    fun addReport(@Body report: Report): Call<String>
+
     @GET("reports.php")
-    fun getUserReports(@Query("to_id") userId:String):Call<List<Report>>
+    fun getUserReports(@Query("to_id") userId: String): Call<List<Report>>
+
     @GET("reports.php")
-    fun getProductReports(@Query("product_id") productId:String):Call<List<Report>>
+    fun getProductReports(@Query("product_id") productId: String): Call<List<Report>>
+
     @GET("products.php/my_sales?")
-    fun getUserSales(@Query("my_sales") userId: String):Call<List<MySales>>
+    fun getUserSales(@Query("my_sales") userId: String): Call<List<MySales>>
 
 
 }

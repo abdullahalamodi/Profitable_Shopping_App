@@ -25,6 +25,10 @@ class FavoriteRepositry {
     fun getUserFavorite( userId: String): Call<List<Favorite>> {
         return shoppingApi.getUserFavorites(userId)
     }
+
+    fun getFavorite(productId:String, userId: String): Call<String> {
+        return shoppingApi.getFavorite(productId,userId)
+    }
     fun deleteFavoriteItem(favoriteId:Int):Call<String>{
         return shoppingApi.deleteFavorite(favoriteId)
     }

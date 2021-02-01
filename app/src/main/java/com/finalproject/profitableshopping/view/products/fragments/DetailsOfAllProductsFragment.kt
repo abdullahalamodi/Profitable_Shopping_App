@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -16,23 +15,19 @@ import com.denzcoskun.imageslider.ImageSlider
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
 import com.finalproject.profitableshopping.R
+import com.finalproject.profitableshopping.data.AppSharedPreference
 import com.finalproject.profitableshopping.data.models.Comment
+import com.finalproject.profitableshopping.data.models.Favorite
 import com.finalproject.profitableshopping.data.models.Product
 import com.finalproject.profitableshopping.data.models.Report
-import com.finalproject.profitableshopping.data.AppSharedPreference
-import com.finalproject.profitableshopping.data.models.*
 import com.finalproject.profitableshopping.showMessage
 import com.finalproject.profitableshopping.view.cart.dialogs.OrderItemOptions
-import com.finalproject.profitableshopping.view.category.AddCategoryFragment
-import com.finalproject.profitableshopping.view.comments.CommentsFragment
-import com.finalproject.profitableshopping.view.report.dialog.AddComplainDialog
 import com.finalproject.profitableshopping.view.report.dialog.ComplainDialog
 import com.finalproject.profitableshopping.viewmodel.CommentViewModel
 import com.finalproject.profitableshopping.viewmodel.FavoriteViewModel
 import com.finalproject.profitableshopping.viewmodel.ProductViewModel
 import com.finalproject.profitableshopping.viewmodel.ReportViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_details_of_all_products.*
 
 
@@ -93,6 +88,10 @@ class DetailsOfAllProductsFragment : Fragment() {
         arguments?.let {
             productId = it.getString(ARG_PRODUCT_ID)
             productViewModel.loadProduct(productId!!)
+            favoriteViewModel.laodFavorite(
+                productId.toString(),
+                AppSharedPreference.getUserId(requireContext())!!
+            )
             reportViewModel.getProductReports(productId!!).observe(
                 this,
                 Observer { it ->
@@ -209,17 +208,18 @@ class DetailsOfAllProductsFragment : Fragment() {
                 this.product = product
                 //   showProgress(false)
                 if (AppSharedPreference.getUserToken(requireContext()) != null) {
-                    if(AppSharedPreference.getUserId(requireContext())
-                        != product.userId &&AppSharedPreference.getUserToken(requireContext()) == "user"){
-                        chat_btn.isEnabled=false
+                    if (AppSharedPreference.getUserId(requireContext())
+                        != product.userId && AppSharedPreference.getUserToken(requireContext()) == "user"
+                    ) {
+                        chat_btn.isEnabled = false
                         cartBtn.show()
-                        cartBtn.isEnabled=true
-                        favoriteFABtn.isEnabled=true
-                        reportBtn.isEnabled=true
-                        chat_btn.isEnabled=true
-                        call_btn.isEnabled=true
+                        cartBtn.isEnabled = true
+                        favoriteFABtn.isEnabled = true
+                        reportBtn.isEnabled = true
+                        chat_btn.isEnabled = true
+                        call_btn.isEnabled = true
 
-                    }else{
+                    } else {
 
                         cartBtn.isEnabled = false
                         favoriteFABtn.isEnabled = false
@@ -253,9 +253,18 @@ class DetailsOfAllProductsFragment : Fragment() {
 //                        call_btn.isEnabled=true
 //                    }
                 }
-
-
                 updateUi(product)
+            }
+        )
+
+        favoriteViewModel.favoritesLiveData.observe(
+            viewLifecycleOwner,
+            Observer {
+                if (it == "1") {
+                    favoriteFABtn.setImageResource(R.drawable.ic_baseline_favorite_24)
+                } else {
+                    favoriteFABtn.setImageResource(R.drawable.ic_favorite)
+                }
             }
         )
 
@@ -322,10 +331,18 @@ class DetailsOfAllProductsFragment : Fragment() {
         favoriteViewModel.addFavoriteItem(favorite).observe(
             viewLifecycleOwner,
             Observer {
-                Toast.makeText(context, "product added to your Favorite list ^_9", Toast.LENGTH_LONG).show()
-                favoriteFABtn.setImageResource(R.drawable.ic_baseline_favorite_24)
-                // requireActivity().showMessage(it!!)
-                Log.d("observer", it!!.length.toString())
+                if (it == "1") {
+                    Toast.makeText(
+                        context,
+                        "product added to your Favorite list ^_9",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    favoriteFABtn.setImageResource(R.drawable.ic_baseline_favorite_24)
+                    // requireActivity().showMessage(it!!)
+                    Log.d("observer", it!!.length.toString())
+                } else {
+                    favoriteFABtn.setImageResource(R.drawable.ic_favorite)
+                }
             }
 
         )
@@ -372,7 +389,7 @@ class DetailsOfAllProductsFragment : Fragment() {
 
 
         fun bind(comment: Comment) {
-            commentUser.text = "ID : "+comment.userId
+            commentUser.text = "ID : " + comment.userId
             commentTitle.text = comment.title
             commentDate.text = comment.date
             commentRate.rating = comment.rate.toFloat()
