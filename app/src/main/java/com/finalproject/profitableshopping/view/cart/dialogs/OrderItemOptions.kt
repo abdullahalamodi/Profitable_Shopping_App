@@ -38,7 +38,7 @@ class OrderItemOptions : DialogFragment() {
     var quantity: Int = 1
     var price: Double = 0.0
     lateinit var carttViewModel: CartViewModel
-    val colors = listOf("اسود", "ابيض", "ازرق")
+    val colors = listOf("Black", "White", "Blue")
     val sizes = listOf("L", "Xl", "XXL")
 
     override fun onStart() {

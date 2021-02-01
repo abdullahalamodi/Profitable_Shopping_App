@@ -68,22 +68,32 @@ class SettingsFragment : Fragment(),
         aList = view.findViewById<ListView>(R.id.list_of_admin)
         uList = view.findViewById<ListView>(R.id.list_of_user)
 
-        val imageId = arrayOf<Int>(
+        val adminImage = arrayOf<Int>(
             R.drawable.ic_category, R.drawable.ic_notifications, R.drawable.ic_reset,
-            R.drawable.ic_reset, R.drawable.ic_contacts, R.drawable.ic_contacts,
+            R.drawable.ic_contact, R.drawable.ic_phone_android,
+            R.drawable.logout
+        )
+
+        val userImage = arrayOf<Int>(
+            R.drawable.ic_my_products, R.drawable.ic_orders, R.drawable.ic_sells,
+            R.drawable.ic_contact_us, R.drawable.ic_phone_android,
             R.drawable.logout
         )
 
         var adminAdapter =
             ArrayAdapter<String>(requireContext(), android.R.layout.simple_list_item_1, adminList)
-        var userdapter =
+        var userAdapter =
             ArrayAdapter<String>(requireContext(), android.R.layout.simple_list_item_1, userList)
 
-        aList.adapter = adminAdapter
-        uList.adapter = userdapter
+        //    aList.adapter = adminAdapter
+        //   uList.adapter = userAdapter
 
-        /*var adpter=MyListAdapter(this,adminList,imageId)
-        aList.adapter = adpter*/
+        var aAdapter = MyListAdapter(this, adminList, adminImage)
+        aList.adapter = aAdapter
+
+        var uAdapter = MyListAdapter(this, userList, userImage)
+        uList.adapter = uAdapter
+
 
         if (getUserToken() == "admin") {
             aList.visibility = View.VISIBLE
@@ -102,7 +112,7 @@ class SettingsFragment : Fragment(),
                     getUserToken() == "admin"
                     -> startActivity(Intent(context, CategoryActivity::class.java))
                     getUserToken() != "quest" -> {
-                        Toast.makeText(context, "yor are not admin", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "you are not admin", Toast.LENGTH_SHORT).show()
                     }
                     else -> {
                         addFragment(LogInFragment.newInstance())
@@ -127,25 +137,24 @@ class SettingsFragment : Fragment(),
         uList.setOnItemClickListener { parent, view, position, id ->
 
             if (position == 0) {
-                addFragment(AboutAppFragment())
-
-            } else if (position == 1) {
+                //addFragment(AboutAppFragment())
                 startActivity(Intent(context, ManageProductActivity::class.java))
 
-            } else if (position == 2) {
 
+            } else if (position == 1) {
                 callbacks?.onMyPurchaseSelected()
-            }
-            else if (position == 3){
+
+            } else if (position == 2) {
                 callbacks?.onMySalesSelected()
 
-            }else if (position == 4 ){
+            } else if (position == 3) {
                 callbacks?.onContactUsSelected()
 
-            } else if (position == 5) {
+            } else if (position == 4) {
                 callbacks?.onAboutAppSelected()
 
-            } else if (position == 6) {
+
+            } else if (position == 5) {
                 logOut()
                 setCurrentFragment(LogInFragment.newInstance())
             }
@@ -167,7 +176,7 @@ class SettingsFragment : Fragment(),
         activity?.supportFragmentManager?.beginTransaction()?.apply {
             replace(R.id.container, fragment)
                 .addToBackStack(null)
-                . commit()
+                .commit()
         }
 
 
@@ -204,6 +213,27 @@ class SettingsFragment : Fragment(),
 
 
     inner class MyListAdapter(
+        private val context: SettingsFragment,
+        private val title: Array<String>,
+        private val imgid: Array<Int>
+    ) : ArrayAdapter<String>(requireContext(), R.layout.list_item_settings, title) {
+
+        override fun getView(position: Int, view: View?, parent: ViewGroup): View {
+
+            val inflater = context.layoutInflater
+            val rowView = inflater.inflate(R.layout.list_item_settings, null, true)
+
+            val titleText = rowView.findViewById(R.id.tv_title_settings) as TextView
+            val imageView = rowView.findViewById(R.id.img_settings) as ImageView
+
+            titleText.text = title[position]
+            imageView.setImageResource(imgid[position])
+
+            return rowView
+        }
+    }
+
+    inner class UserListAdapter(
         private val context: SettingsFragment,
         private val title: Array<String>,
         private val imgid: Array<Int>

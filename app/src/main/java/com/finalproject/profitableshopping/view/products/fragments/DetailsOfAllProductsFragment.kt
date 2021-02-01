@@ -219,6 +219,12 @@ class DetailsOfAllProductsFragment : Fragment() {
                         chat_btn.isEnabled=true
                         call_btn.isEnabled=true
 
+                        cartBtn.visibility=View.VISIBLE
+                        favoriteFABtn.visibility=View.VISIBLE
+                        reportBtn.visibility=View.VISIBLE
+                        chat_btn.visibility=View.VISIBLE
+                        call_btn.visibility=View.VISIBLE
+
                     }else{
 
                         cartBtn.isEnabled = false
@@ -226,6 +232,12 @@ class DetailsOfAllProductsFragment : Fragment() {
                         reportBtn.visibility = View.GONE
                         chat_btn.isEnabled = false
                         call_btn.isEnabled = false
+
+                        cartBtn.visibility=View.INVISIBLE
+                        favoriteFABtn.visibility=View.INVISIBLE
+                        reportBtn.visibility=View.INVISIBLE
+                        chat_btn.visibility=View.INVISIBLE
+                        call_btn.visibility=View.INVISIBLE
                     }
 
 

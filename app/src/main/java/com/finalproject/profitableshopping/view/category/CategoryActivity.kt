@@ -14,7 +14,10 @@ CategoryFragment.CategoryCallbacks{
 
         val isFragmentContainerEmpty = savedInstanceState == null
         if (isFragmentContainerEmpty) {
-            setFragment(CategoryFragment.newInstance())
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.container_category, CategoryFragment.newInstance())
+                .commit()
         }
 
     }

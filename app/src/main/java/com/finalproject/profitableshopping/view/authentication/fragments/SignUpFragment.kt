@@ -49,10 +49,8 @@ class SignUpFragment : Fragment() {
     lateinit var auth: FirebaseAuth
     lateinit var database: FirebaseDatabase
     lateinit var reference: DatabaseReference
-    private var coverChecker : String ="cover"
-   var database1 = FirebaseDatabase.getInstance().reference
-
-
+    private var coverChecker: String = "cover"
+    var database1 = FirebaseDatabase.getInstance().reference
 
 
     var signUpCallbacks: SignUpCallbacks? = null
@@ -67,7 +65,7 @@ class SignUpFragment : Fragment() {
         super.onCreate(savedInstanceState)
         firebaseStore = FirebaseStorage.getInstance()
         storageReference = FirebaseStorage.getInstance().reference
-       // var database1 = FirebaseDatabase.getInstance().reference
+        // var database1 = FirebaseDatabase.getInstance().reference
 
 
         favoriteViewModel = ViewModelProviders.of(this).get(FavoriteViewModel::class.java)
@@ -83,30 +81,53 @@ class SignUpFragment : Fragment() {
             var email = userEmailEt.text.toString()
             var password = userPassEt.text.toString()
             var confirmPassword = confrimPassEt.text.toString()
-             var image : String = image.toString()
+            var image: String = image.toString()
 
             if (userName.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty()) {
                 if (password.length > 6 && password.length < 14) {
                     if (password == confirmPassword) {
                         if (!isValidEmail(email)) {
-                            Toast.makeText(requireContext(), "Please enter valid email", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                requireContext(),
+                                "Please enter valid email",
+                                Toast.LENGTH_SHORT
+                            ).show()
                             return@setOnClickListener
                         }
                         register(userName, email, password)
 
-
-
                     } else {
-                        Toast.makeText(requireContext(), "password not equal confirmPassword", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            requireContext(),
+                            "password not equal confirmPassword",
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "Password length must be between 6 and 14 ",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
-
-                else {
-                    Toast.makeText(requireContext(), "Password length must be between 6 and 14 ", Toast.LENGTH_LONG).show()
-                }
-                database1.child("Users").setValue(SaveUserInfo(userName,email,password,image))
+                database1.child("Users").setValue(SaveUserInfo(userName, email, password, image))
             } else {
-                Toast.makeText(requireContext(), "some fields empty", Toast.LENGTH_LONG).show()
+
+                if (email.isEmpty()) {
+                    userNameEt.error = getString(R.string.is_empty)
+                    userNameEt.requestFocus()
+                } else if (password.isEmpty()) {
+                    userEmailEt.error = getString(R.string.is_empty)
+                    userEmailEt.requestFocus()
+                } else if (password.isEmpty()) {
+                    userPassEt.error = getString(R.string.is_empty)
+                    userPassEt.requestFocus()
+                } else if (password.isEmpty()) {
+                    confrimPassEt.error = getString(R.string.is_empty)
+                    confrimPassEt.requestFocus()
+                } else {
+                    Toast.makeText(requireContext(), "some fields empty", Toast.LENGTH_LONG).show()
+                }
             }
         }
         image.setOnClickListener {
@@ -115,12 +136,13 @@ class SignUpFragment : Fragment() {
 
         }
     }
+
     private fun launchGallery() {
         var intent = Intent(Intent.ACTION_GET_CONTENT).apply {
             setType("image/*")
         }
-        startActivityForResult(intent,PICK_IMAGE_REQUEST)
-      //  val intent = Intent()
+        startActivityForResult(intent, PICK_IMAGE_REQUEST)
+        //  val intent = Intent()
 //        intent.type = "image/*"
 //        intent.action = Intent.ACTION_GET_CONTENT
 //        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST)
@@ -130,9 +152,10 @@ class SignUpFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
             filePath = data?.data!!
-                val bitmap = MediaStore.Images.Media.getBitmap(getActivity()?.getContentResolver(), filePath)
-                image.setImageBitmap(bitmap)
-          //  Toast.makeText(requireContext(), " Uploading ..... ", Toast.LENGTH_LONG).show()
+            val bitmap =
+                MediaStore.Images.Media.getBitmap(getActivity()?.getContentResolver(), filePath)
+            image.setImageBitmap(bitmap)
+            //  Toast.makeText(requireContext(), " Uploading ..... ", Toast.LENGTH_LONG).show()
             uploadImage()
 
         }
@@ -152,41 +175,39 @@ class SignUpFragment : Fragment() {
 //            }
 
         if (filePath != null) {
-            val fileRef = storageReference!!.child(System.currentTimeMillis().toString() +".jpg")
-            var uploadTask : StorageTask<*>
-            uploadTask =fileRef.putFile(filePath!!)
-            uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> {
-                  task -> if(!task.isSuccessful)
-            {
-                task.exception?.let {
-                    throw  it
+            val fileRef = storageReference!!.child(System.currentTimeMillis().toString() + ".jpg")
+            var uploadTask: StorageTask<*>
+            uploadTask = fileRef.putFile(filePath!!)
+            uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
+                if (!task.isSuccessful) {
+                    task.exception?.let {
+                        throw  it
+                    }
                 }
-            }
                 return@Continuation fileRef.downloadUrl
-            }).addOnCompleteListener {
-                task ->  if(task.isSuccessful){
-                val downloadUrl = task.result
-                val url = downloadUrl.toString()
-                if(coverChecker == "cover"){
-                    val mapCoverImg = HashMap<String , Any>()
-                    mapCoverImg["cover"] = url
-                    database1!!.updateChildren(mapCoverImg)
-                    coverChecker = " "
+            }).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val downloadUrl = task.result
+                    val url = downloadUrl.toString()
+                    if (coverChecker == "cover") {
+                        val mapCoverImg = HashMap<String, Any>()
+                        mapCoverImg["cover"] = url
+                        database1!!.updateChildren(mapCoverImg)
+                        coverChecker = " "
 
+                    }
+                    //  progressBar.dismiss()
                 }
-            //  progressBar.dismiss()
-            }
             }
 
-          //  Toast.makeText(requireContext(), " SuccessFul ", Toast.LENGTH_LONG).show()
+            //  Toast.makeText(requireContext(), " SuccessFul ", Toast.LENGTH_LONG).show()
         }
-            //val progressBar = ProgressDialog(context)
-         //   progressBar.setMessage("Image is Uploading , Please wait......")
-          //  progressBar.show()
+        //val progressBar = ProgressDialog(context)
+        //   progressBar.setMessage("Image is Uploading , Please wait......")
+        //  progressBar.show()
         //Toast.makeText(requireContext(), " SuccessFul ", Toast.LENGTH_LONG).show()
         Toast.makeText(requireContext(), " Uploading ..... ", Toast.LENGTH_LONG).show()
-        }
-
+    }
 
 
     override fun onCreateView(
@@ -200,7 +221,7 @@ class SignUpFragment : Fragment() {
         userPassEt = view.findViewById(R.id.register_password)
         confrimPassEt = view.findViewById(R.id.register_confirm_password)
         registerBtn = view.findViewById(R.id.btn_register)
-        image=view.findViewById(R.id.image_preview)
+        image = view.findViewById(R.id.image_preview)
 
         return view
     }
@@ -213,10 +234,10 @@ class SignUpFragment : Fragment() {
     private fun register(userName: String, email: String, password: String) {
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance()
-       // reference = database.getReference("users")
-      //  reference.child("username").setValue(userName)
-      //  reference.child("email").setValue(email)
-      //  reference.child("password").setValue(password)
+        // reference = database.getReference("users")
+        //  reference.child("username").setValue(userName)
+        //  reference.child("email").setValue(email)
+        //  reference.child("password").setValue(password)
 
 
         var p = ProgressDialog(requireContext())
@@ -241,7 +262,11 @@ class SignUpFragment : Fragment() {
                         }
                     )*/
                 } else {
-                    Toast.makeText(requireContext(), " You registered Failed ${it.exception.toString()}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        requireContext(),
+                        " Your register Failed ${it.exception.toString()}",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
     }
@@ -250,10 +275,10 @@ class SignUpFragment : Fragment() {
         val user = auth.currentUser
         user?.sendEmailVerification()?.addOnCompleteListener {
             if (it.isSuccessful) {
-                Toast.makeText(requireContext(), "You registered successful", Toast.LENGTH_LONG)
+                Toast.makeText(requireContext(), "Your register successful", Toast.LENGTH_LONG)
                     .show()
-                 var intent = Intent(requireContext(), MainActivity::class.java)
-                 startActivity(intent)
+                var intent = Intent(requireContext(), MainActivity::class.java)
+                startActivity(intent)
                 signUpCallbacks?.onCreateAccountSuccess()
             }
         }
@@ -276,9 +301,9 @@ class SignUpFragment : Fragment() {
 
         @JvmStatic
         fun newInstance() = SignUpFragment().apply {
-                arguments = Bundle().apply {
+            arguments = Bundle().apply {
 
-                }
             }
+        }
     }
 }

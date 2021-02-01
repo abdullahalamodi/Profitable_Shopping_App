@@ -24,15 +24,18 @@ import kotlinx.android.synthetic.main.fragment_log_in.*
 
 class LogInFragment : Fragment() {
     var mAuth: FirebaseAuth? = null
-   // lateinit var user: FirebaseUser
+
+    // lateinit var user: FirebaseUser
     lateinit var email_login: EditText
     lateinit var passWord_login: EditText
-  //  lateinit var signUpBtn: Button
-    lateinit var signUpText:TextView
-    lateinit var resetPassword :TextView
+
+    //  lateinit var signUpBtn: Button
+    lateinit var signUpText: TextView
+    lateinit var resetPassword: TextView
     lateinit var questView: TextView
-  // lateinit var reference: DatabaseReference
-  // var database = FirebaseDatabase.getInstance().reference
+    lateinit var questViewTv: TextView
+    // lateinit var reference: DatabaseReference
+    // var database = FirebaseDatabase.getInstance().reference
 
     var loginCallbacks: LoginCallbacks? = null
 //    var resetcallbacks: ResetCallbacks? = null
@@ -56,11 +59,11 @@ class LogInFragment : Fragment() {
             loginCallbacks?.onSignUpClicked()
         }
 
-       resetPassword.setOnClickListener {
+        resetPassword.setOnClickListener {
 
 
-          loginCallbacks?.onRestPasswordClicked()
-       }
+            loginCallbacks?.onRestPasswordClicked()
+        }
         btn_login.setOnClickListener {
             var email = email_login.text.toString()
             var password = passWord_login.text.toString()
@@ -82,15 +85,25 @@ class LogInFragment : Fragment() {
                         .show()
                     return@setOnClickListener
                 }
-                  login(email, password)
+                login(email, password)
 
-            //   database.child("users").setValue(SaveUserInfo(email,password))
+                //   database.child("users").setValue(SaveUserInfo(email,password))
 
 
             } else {
-                email_login.error="هذا الحقل مطلوب"
-                email_login.requestFocus()
-                Toast.makeText(requireContext(), "Failed login email or password is wrong", Toast.LENGTH_LONG).show()
+                if (email.isEmpty()) {
+                    email_login.error = getString(R.string.is_empty)
+                    email_login.requestFocus()
+                } else if (password.isEmpty()) {
+                    passWord_login.error = getString(R.string.is_empty)
+                    passWord_login.requestFocus()
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "Failed login email or password is wrong",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
             }
 
 
@@ -112,12 +125,13 @@ class LogInFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_log_in, container, false)
         email_login = view.findViewById(R.id.email_login)
         passWord_login = view.findViewById(R.id.passWord_login)
-      //  signUpBtn = view.findViewById(R.id.sign_up)
+        //  signUpBtn = view.findViewById(R.id.sign_up)
         signUpText = view.findViewById(R.id.newAccount)
         resetPassword = view.findViewById(R.id.resetPassword)
         questView = view.findViewById(R.id.quest_v)
+        questViewTv = view.findViewById(R.id.tv_quest_v)
 
-        questView.setOnClickListener {
+        questViewTv.setOnClickListener {
             goAsQuest()
         }
         return view
@@ -182,7 +196,8 @@ class LogInFragment : Fragment() {
         val user: FirebaseUser? = mAuth?.currentUser
         if (user!!.isEmailVerified) {
 
-            Toast.makeText(requireContext(), "You have signed in successfully", Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), "You have signed in successfully", Toast.LENGTH_LONG)
+                .show()
             var intent = Intent(requireContext(), MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
@@ -220,8 +235,8 @@ class LogInFragment : Fragment() {
     }
 
     private fun goAsQuest() {
-            saveUserToken("quest")
-            saveUserData("0", "", "")
+        saveUserToken("quest")
+        saveUserData("0", "", "")
         loginCallbacks?.onLoginSuccess()
     }
 
@@ -255,9 +270,8 @@ class LogInFragment : Fragment() {
     interface LoginCallbacks {
         fun onSignUpClicked()
         fun onLoginSuccess()
-       fun onRestPasswordClicked()
+        fun onRestPasswordClicked()
     }
-
 
 
     companion object {
@@ -271,8 +285,8 @@ class LogInFragment : Fragment() {
         fun newInstance() = LogInFragment().apply {
             arguments = Bundle().apply {
 
-                }
             }
+        }
     }
 
 

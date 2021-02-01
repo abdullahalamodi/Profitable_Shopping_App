@@ -94,6 +94,14 @@
                     android:orientation="horizontal"
                     android:weightSum="2">
 
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="12dp"
+                        android:text="@string/color_of_product"
+                        android:textDirection="rtl" />
+
                     <Spinner
                         android:id="@+id/spinner_product_color"
                         android:layout_width="0dp"
@@ -103,13 +111,6 @@
                         android:entries="@array/category"
                         android:padding="12dp" />
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:padding="12dp"
-                        android:text="@string/color_of_product"
-                        android:textDirection="rtl" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -118,20 +119,23 @@
                     android:orientation="horizontal"
                     android:weightSum="2">
 
-                    <Spinner
-                        android:id="@+id/spinner_product_size"
-                        android:layout_width="196dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:entries="@array/category"
-                        android:padding="12dp" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:padding="12dp"
-                        android:text="@string/size_of_product" />
+                        android:text="@string/size_of_product"/>
+
+                    <Spinner
+                        android:id="@+id/spinner_product_size"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:entries="@array/category"
+                        android:padding="12dp"
+                        android:visibility="visible"/>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -175,7 +179,7 @@
                         android:background="@drawable/bg4"
                         android:fontFamily="@font/rb_light"
                         android:text="@string/add_item_to_cart"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textStyle="bold" />
 
                     <Button
@@ -189,7 +193,7 @@
                         android:background="@drawable/bg4"
                         android:fontFamily="@font/rb_light"
                         android:text="@string/cancel"
-                        android:textColor="@android:color/black"
+                        android:textColor="@android:color/white"
                         android:textStyle="bold" />
 
                 </LinearLayout>
