@@ -3,21 +3,20 @@ package com.finalproject.profitableshopping.view
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.fragment.app.Fragment
 import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.AppSharedPreference
 import com.finalproject.profitableshopping.data.firebase.NotifationActivity
 import com.finalproject.profitableshopping.view.authentication.fragments.LogInFragment
 import com.finalproject.profitableshopping.view.authentication.fragments.ShowProfileFragment
-import com.finalproject.profitableshopping.view.authentication.fragments.SignUpFragment
 import com.finalproject.profitableshopping.view.category.CategoryActivity
 import com.finalproject.profitableshopping.view.products.ManageProductActivity
 import com.finalproject.profitableshopping.view.report.dialog.AddComplainDialog
-import com.finalproject.profitableshopping.view.report.dialog.ComplainDialog
 import com.finalproject.profitableshopping.view.user.ManageUserProfileFragment
 import com.finalproject.profitableshopping.view.user.UserManageProfileFragment
 
@@ -127,7 +126,8 @@ class SettingsFragment : Fragment(),
 
             } else if (position == 1) {
                 AddComplainDialog.newInstance().apply {
-                    show(this@SettingsFragment.parentFragmentManager, "report")}
+                    show(this@SettingsFragment.parentFragmentManager, "report")
+                }
             } else if (position == 2) {
                 startActivity(Intent(context, NotifationActivity::class.java))
             } else if (position == 3) {
@@ -223,27 +223,30 @@ class SettingsFragment : Fragment(),
     }
 
     override fun onShowProfile(show: Boolean) {
-          class MyListAdapter(
-            private val context: SettingsFragment,
-            private val title: Array<String>,
-            private val imgid: Array<Int>
-        ) : ArrayAdapter<String>(requireContext(), R.layout.list_item_settings, title) {
 
-            override fun getView(position: Int, view: View?, parent: ViewGroup): View {
 
-                val inflater = context.layoutInflater
-                val rowView = inflater.inflate(R.layout.list_item_settings, null, true)
+    }
 
-                val titleText = rowView.findViewById(R.id.tv_title_settings) as TextView
-                val imageView = rowView.findViewById(R.id.img_settings) as ImageView
+    inner class MyListAdapter(
+        private val context: SettingsFragment,
+        private val title: Array<String>,
+        private val imgid: Array<Int>
+    ) : ArrayAdapter<String>(requireContext(), R.layout.list_item_settings, title) {
 
-                titleText.text = title[position]
-                imageView.setImageResource(imgid[position])
+        override fun getView(position: Int, view: View?, parent: ViewGroup): View {
 
-                return rowView
-            }
+            val inflater = context.layoutInflater
+            val rowView = inflater.inflate(R.layout.list_item_settings, null, true)
 
+            val titleText = rowView.findViewById(R.id.tv_title_settings) as TextView
+            val imageView = rowView.findViewById(R.id.img_settings) as ImageView
+
+            titleText.text = title[position]
+            imageView.setImageResource(imgid[position])
+
+            return rowView
         }
+
     }
 
     inner class UserListAdapter(

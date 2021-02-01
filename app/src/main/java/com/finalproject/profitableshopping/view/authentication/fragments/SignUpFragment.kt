@@ -4,9 +4,6 @@ import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
-import android.icu.number.NumberFormatter.with
-import android.icu.number.NumberRangeFormatter.with
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -20,12 +17,10 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.finalproject.profitableshopping.R
 import com.finalproject.profitableshopping.data.AppSharedPreference
-import com.finalproject.profitableshopping.data.AppSharedPreference.sharedPrefFile
-import com.finalproject.profitableshopping.data.models.Favorite
+import com.finalproject.profitableshopping.data.models.User
 import com.finalproject.profitableshopping.view.MainActivity
 import com.finalproject.profitableshopping.viewmodel.FavoriteViewModel
 import com.google.android.gms.tasks.Continuation
@@ -37,8 +32,6 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.StorageTask
 import com.google.firebase.storage.UploadTask
-import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_show_profile.*
 
 private const val PICK_IMAGE_REQUEST = 0
 
@@ -55,9 +48,9 @@ class SignUpFragment : Fragment() {
     lateinit var registerBtn: Button
     lateinit var auth: FirebaseAuth
     lateinit var database: FirebaseDatabase
-    private lateinit var databaseReference:DatabaseReference
-    private var coverChecker : String ="cover"
-   var database1 = FirebaseDatabase.getInstance().reference
+    private lateinit var databaseReference: DatabaseReference
+    private var coverChecker: String = "cover"
+    var database1 = FirebaseDatabase.getInstance().reference
 
 
     var signUpCallbacks: SignUpCallbacks? = null
@@ -87,7 +80,7 @@ class SignUpFragment : Fragment() {
             var userName = userNameEt.text.toString()
             var email = userEmailEt.text.toString()
             var password = userPassEt.text.toString()
-            var phone :String = userPhoneEt.text.toString()
+            var phone: String = userPhoneEt.text.toString()
             var confirmPassword = confrimPassEt.text.toString()
             var image: String = image.toString()
 
@@ -102,7 +95,7 @@ class SignUpFragment : Fragment() {
                             ).show()
                             return@setOnClickListener
                         }
-                        register(userName, email, password , phone)
+                        register(userName, email, password, phone)
 
                     } else {
                         Toast.makeText(
@@ -136,9 +129,6 @@ class SignUpFragment : Fragment() {
                 } else {
                     Toast.makeText(requireContext(), "some fields empty", Toast.LENGTH_LONG).show()
                 }
-               // database1.child("Users").setValue(SaveUserInfo(userName,email,password,image))
-            } else {
-                Toast.makeText(requireContext(), "some fields empty", Toast.LENGTH_LONG).show()
             }
         }
         image.setOnClickListener {
@@ -186,7 +176,8 @@ class SignUpFragment : Fragment() {
 //            }
 
         if (filePath != null) {
-            val fileRef = storageReference!!.child(System.currentTimeMillis().toString() + ".jpg")
+            val fileRef =
+                storageReference!!.child(System.currentTimeMillis().toString() + ".jpg")
             var uploadTask: StorageTask<*>
             uploadTask = fileRef.putFile(filePath!!)
             uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
@@ -196,15 +187,15 @@ class SignUpFragment : Fragment() {
                     }
                 }
                 return@Continuation fileRef.downloadUrl
-            }).addOnCompleteListener {
-                task ->  if(task.isSuccessful){
-                val downloadUrl = task.result
-                val url = downloadUrl.toString()
-                if(coverChecker == "cover"){
-                    val mapCoverImg = HashMap<String , Any>()
-                    mapCoverImg["cover"] = url
-                    database1!!.updateChildren(mapCoverImg)
-                    coverChecker = "cover"
+            }).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val downloadUrl = task.result
+                    val url = downloadUrl.toString()
+                    if (coverChecker == "cover") {
+                        val mapCoverImg = HashMap<String, Any>()
+                        mapCoverImg["cover"] = url
+                        database1!!.updateChildren(mapCoverImg)
+                        coverChecker = "cover"
 
                     }
                     //  progressBar.dismiss()
@@ -243,7 +234,7 @@ class SignUpFragment : Fragment() {
         signUpCallbacks = null
     }
 
-    private fun register(userName: String, email: String, password: String , phone :String) {
+    private fun register(userName: String, email: String, password: String, phone: String) {
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance()
         // reference = database.getReference("users")
@@ -287,38 +278,47 @@ class SignUpFragment : Fragment() {
         val user = auth.currentUser
         user?.sendEmailVerification()?.addOnCompleteListener {
             if (it.isSuccessful) {
-                Toast.makeText(requireContext(), "You registered successful", Toast.LENGTH_LONG).show()
-                var userId: String=user!!.uid
-                databaseReference=FirebaseDatabase.getInstance().getReference("Users").child(userId)
-                var hashMap:HashMap<String,String > = HashMap()
-                hashMap.put("userId",userId)
-                hashMap.put("userName",userNameEt.text.toString())
-                hashMap.put("userEmail",userEmailEt.text.toString())
-                hashMap.put("userPhone",userPhoneEt.text.toString())
-                hashMap.put("profileImage",image.toString())
-
-
-                val sharedPreferences = AppSharedPreference
-
-              //  sharedPreferences.saveUserData("userId",userId)
-              //  sharedPreferences.saveUserData("userName",userNameEt.text.toString())
+                Toast.makeText(requireContext(), "You registered successful", Toast.LENGTH_LONG)
+                    .show()
+                var userId: String = user!!.uid
+                databaseReference =
+                    FirebaseDatabase.getInstance().getReference("Users").child(userId)
+                var hashMap: HashMap<String, String> = HashMap()
+                hashMap.put("userId", userId)
+                hashMap.put("userName", userNameEt.text.toString())
+                hashMap.put("userEmail", userEmailEt.text.toString())
+                hashMap.put("userPhone", userPhoneEt.text.toString())
+                hashMap.put("profileImage", image.toString())
 
 
                 databaseReference.setValue(hashMap).addOnCompleteListener {
-                    if(it.isSuccessful){
+                    if (it.isSuccessful) {
 
                     }
 
                 }
 
+                saveUserToken("user")
+                saveUserData(user?.uid.toString(), userEmailEt.text.toString(), userPassEt.text.toString())
 
-
-                 var intent = Intent(requireContext(), MainActivity::class.java)
-                 startActivity(intent)
-                signUpCallbacks?.onCreateAccountSuccess()
+                var intent = Intent(requireContext(), MainActivity::class.java)
+                startActivity(intent)
+//                signUpCallbacks?.onCreateAccountSuccess()
             }
         }
     }
+
+    private fun saveUserToken(token: String) {
+        AppSharedPreference.saveUserToken(requireContext(), token)
+    }
+
+    private fun saveUserData(id: String, email: String, password: String) {
+        AppSharedPreference.saveUserData(
+            requireContext(),
+            User(id, email, password, "772967092", true)
+        )
+    }
+
 
     private fun isValidEmail(target: CharSequence?): Boolean {
         return if (TextUtils.isEmpty(target)) {
@@ -333,12 +333,13 @@ class SignUpFragment : Fragment() {
         fun onCreateAccountSuccess()
     }
 
-   companion object {
+    companion object {
 
         @JvmStatic
         fun newInstance() = SignUpFragment().apply {
             arguments = Bundle().apply {
 
             }
-   }
+        }
+    }
 }

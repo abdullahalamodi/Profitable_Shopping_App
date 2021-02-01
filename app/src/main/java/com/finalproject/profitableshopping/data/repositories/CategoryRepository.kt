@@ -67,7 +67,7 @@ class CategoryRepository {
         internal const val BASE_URL = "http://10.0.2.2:80/profitable_shopping_api/api/"
 //        internal const val BASE_URL = "http://192.168.191.1:8080/profitable_shopping_api/api/"
 //        internal const val BASE_URL = "http://172.16.16.245/profitable_shopping_api/api/"
-        internal const val BASE_URL = "http://192.168.191.1:80/profitable_shopping_api/api/"
+//        internal const val BASE_URL = "http://192.168.191.1:80/profitable_shopping_api/api/"
     }
 
 }
