@@ -12,10 +12,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class CategoryRepository {
-     private var shoppingApi: ShoppingApi
+    private var shoppingApi: ShoppingApi
 
     init {
-        val  gson=GsonBuilder().setLenient().create()
+        val gson = GsonBuilder().setLenient().create()
         val retrofit: Retrofit = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create(gson))
             .baseUrl(BASE_URL)
@@ -24,48 +24,50 @@ class CategoryRepository {
     }
 
     fun addCategory(category: Category): Call<String> {
-      return shoppingApi.addCategory(category)
+        return shoppingApi.addCategory(category)
     }
 
-    fun getCategory(id:Int):Call<Category>{
-        return  shoppingApi.getCategoryById(id.toString())
+    fun getCategory(id: Int): Call<Category> {
+        return shoppingApi.getCategoryById(id.toString())
     }
 
-    fun getCategoryByName(name:String):Call<Category>{
-        return  shoppingApi.getCategoryByName(name)
+    fun getCategoryByName(name: String): Call<Category> {
+        return shoppingApi.getCategoryByName(name)
     }
 
 
-    fun getAllCategories():Call<List<Category>>{
+    fun getAllCategories(): Call<List<Category>> {
         return shoppingApi.getCategories()
 
     }
 
-    fun updateCategory(catId:Int?,category: Category):Call<String>{
-        return  shoppingApi.updateCategory(catId.toString(),category)
+    fun updateCategory(catId: Int?, category: Category): Call<String> {
+        return shoppingApi.updateCategory(catId.toString(), category)
     }
 
-    fun deleteCategory(catId:Int):Call<String>{
+    fun deleteCategory(catId: Int): Call<String> {
         return shoppingApi.deleteCategory(catId.toString())
     }
 
-    fun updateCategoryCase(catId:Int,isActive:Int):Call<String>{
-        return shoppingApi.updateCategoryCase(catId.toString(),isActive)
+    fun updateCategoryCase(catId: Int, isActive: Int): Call<String> {
+        return shoppingApi.updateCategoryCase(catId.toString(), isActive)
     }
 
-    fun uploadImage(image: MultipartBody.Part,
-                    catId: RequestBody
-    ) :Call<String>{
-        return shoppingApi.uploadCategoryImage(image,catId)
+    fun uploadImage(
+        image: MultipartBody.Part,
+        catId: RequestBody
+    ): Call<String> {
+        return shoppingApi.uploadCategoryImage(image, catId)
 
     }
 
-    companion object{
+    companion object {
+        //        internal const val BASE_URL = "http://192.168.1.34:80/profitable_shopping_api/api/"
+        // internal const val BASE_URL = "https://profitableshopping.000webhostapp.com/profitable_shopping_api/api/"
+        internal const val BASE_URL = "http://10.0.2.2:80/profitable_shopping_api/api/"
+//        internal const val BASE_URL = "http://192.168.191.1:8080/profitable_shopping_api/api/"
+//        internal const val BASE_URL = "http://172.16.16.245/profitable_shopping_api/api/"
         internal const val BASE_URL = "http://192.168.191.1:80/profitable_shopping_api/api/"
-       // internal const val BASE_URL = "https://profitableshopping.000webhostapp.com/profitable_shopping_api/api/"
-     //   internal const val BASE_URL = "http://10.0.2.2:80/profitable_shopping_api/api/"
-     internal const val BASE_URL = "http://192.168.191.1:8080/profitable_shopping_api/api/"
-           internal const val BASE_URL = "http://172.16.16.245/profitable_shopping_api/api/"
     }
 
 }

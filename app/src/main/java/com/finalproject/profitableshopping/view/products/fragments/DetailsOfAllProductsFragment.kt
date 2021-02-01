@@ -20,7 +20,6 @@ import com.finalproject.profitableshopping.data.models.Comment
 import com.finalproject.profitableshopping.data.models.Favorite
 import com.finalproject.profitableshopping.data.models.Product
 import com.finalproject.profitableshopping.data.models.Report
-import com.finalproject.profitableshopping.showMessage
 import com.finalproject.profitableshopping.view.authentication.fragments.SaveUserInfo
 import com.finalproject.profitableshopping.view.cart.dialogs.OrderItemOptions
 import com.finalproject.profitableshopping.view.report.dialog.ComplainDialog
@@ -30,7 +29,6 @@ import com.finalproject.profitableshopping.viewmodel.ProductViewModel
 import com.finalproject.profitableshopping.viewmodel.ReportViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.database.*
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_details_of_all_products.*
 
 
@@ -66,7 +64,7 @@ class DetailsOfAllProductsFragment : Fragment() {
     var productReports: List<Report> = emptyList()
     lateinit var comment: Comment
     lateinit var imageSlider: ImageSlider
-    var databaseReference:DatabaseReference?=null
+    var databaseReference: DatabaseReference? = null
 
 
     override fun onAttach(context: Context) {
@@ -96,7 +94,7 @@ class DetailsOfAllProductsFragment : Fragment() {
                 Toast.makeText(requireContext(), "عذرا لم تقم بتسيل الدخول ", Toast.LENGTH_LONG)
                     .show()
             else {
-                ComplainDialog.newInstance(productId!!, product.userId!!).apply {
+                ComplainDialog.newInstance(productId!!, product.userId).apply {
                     show(this@DetailsOfAllProductsFragment.parentFragmentManager, "report")
                 }
             }
@@ -127,9 +125,9 @@ class DetailsOfAllProductsFragment : Fragment() {
 //             var bottomSheetAddCat = CommentsFragment();
 //            bottomSheetAddCat.show(childFragmentManager, "Tag1")
         }
-      salerNameTv.setOnClickListener {
-           callbacks?.onOpenSalerProfile(product.userId)
-      }
+        salerNameTv.setOnClickListener {
+            callbacks?.onOpenSalerProfile(product.userId)
+        }
     }
 
     override fun onDetach() {
@@ -146,7 +144,8 @@ class DetailsOfAllProductsFragment : Fragment() {
         reportViewModel = ViewModelProviders.of(this).get(ReportViewModel::class.java)
         favoriteViewModel = ViewModelProviders.of(this).get(FavoriteViewModel::class.java)
         product = Product()
-        databaseReference=FirebaseDatabase.getInstance().getReference("users").child(product.userId!!)
+        databaseReference =
+            FirebaseDatabase.getInstance().getReference("users").child(product.userId!!)
         // mainActivity?.anim(false)
         callbacks?.onDetailsOpen(false)
         arguments?.let {
@@ -193,23 +192,22 @@ class DetailsOfAllProductsFragment : Fragment() {
     }
 
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        salerNameTv.text="haytham"
-            databaseReference?.addValueEventListener(object :ValueEventListener{
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    var userInfo=snapshot.getValue(SaveUserInfo::class.java)
-                     var salerNmae=userInfo?.Uname
-                    salerNameTv.text="haytham"
+        salerNameTv.text = "haytham"
+        databaseReference?.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var userInfo = snapshot.getValue(SaveUserInfo::class.java)
+                var salerNmae = userInfo?.userName
+                salerNameTv.text = "haytham"
 
-                }
+            }
 
-                override fun onCancelled(error: DatabaseError) {
+            override fun onCancelled(error: DatabaseError) {
 
-                }
+            }
 
-            })
+        })
 //          showProgress(true)
         productViewModel.productIDetailsLiveData.observe(
             viewLifecycleOwner,
@@ -250,7 +248,6 @@ class DetailsOfAllProductsFragment : Fragment() {
                     }
 
 
-
                 }
                 updateUi(product)
             }
@@ -286,6 +283,7 @@ class DetailsOfAllProductsFragment : Fragment() {
         adapter = CommentsAdapter(comments)
         commentsRecyclerView.adapter = adapter
     }
+
     private fun loadComments(productId: String) {
         commentViewModel.getProductComments(productId).observe(
             viewLifecycleOwner,
@@ -322,7 +320,7 @@ class DetailsOfAllProductsFragment : Fragment() {
     interface Callbacks {
         fun onAddToCartClicked()
         fun onDetailsOpen(show: Boolean)
-        fun onOpenSalerProfile(userId:String?)
+        fun onOpenSalerProfile(userId: String?)
     }
 
     private fun addItemToFavorite() {
@@ -353,8 +351,6 @@ class DetailsOfAllProductsFragment : Fragment() {
 
         )
     }
-
-
 
 
     companion object {
