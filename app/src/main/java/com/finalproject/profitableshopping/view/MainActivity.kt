@@ -329,6 +329,10 @@ class MainActivity : AppCompatActivity(),
         showButtonNavigation(show)
     }
 
+    override fun onOpenSalerProfile(userId: String?) {
+        setCurrentFragment(ManageUserProfileFragment.newInstance(userId))
+    }
+
     override fun onRestPasswordClicked() {
         setCurrentFragment(RestPasswordFragment.newInstance())
     }

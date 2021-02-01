@@ -32,8 +32,7 @@ class ManageUserProfileFragment : Fragment() {
     var userCountOfReport = 0
     lateinit var notifationM: ImageView
 
-    //////////////////////////////////
-    private lateinit var userId: String
+    private  var userId: String?=null
     private lateinit var productViewModel: ProductViewModel
     private lateinit var manageProductsRv: RecyclerView
     private lateinit var productSearchEt: EditText
@@ -83,13 +82,14 @@ class ManageUserProfileFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
-        userId = AppSharedPreference.getUserId(context!!)!!
-        productViewModel.refreshUserList(userId)
+        //userId = AppSharedPreference.getUserId(context!!)!!
+
         //////////////////////////////
         reportViewModel = ViewModelProviders.of(this).get(ReportViewModel::class.java)
         arguments?.let {
-
+        userId=it.getString("USERID")!!
         }
+        productViewModel.refreshUserList(userId!!)
     }
 
     override fun onCreateView(
@@ -126,12 +126,6 @@ class ManageUserProfileFragment : Fragment() {
         manageProductsRv.adapter = adapterManageProduct
     }
 
-  /*  private fun showProgress(show: Boolean) {
-        if (show)
-            progressBar.visibility = View.VISIBLE
-        else
-            progressBar.visibility = View.GONE
-    }*/
 
     private inner class ManageProductHolder(view: View) : RecyclerView.ViewHolder(view),
         View.OnClickListener {
@@ -211,9 +205,10 @@ class ManageUserProfileFragment : Fragment() {
 
     companion object {
 
-        fun newInstance() =
+        fun newInstance(userId:String?) =
             ManageUserProfileFragment().apply {
                 arguments = Bundle().apply {
+                    putString("USERID",userId)
 
                 }
             }

@@ -76,5 +76,9 @@ class ManageProductActivity : AppCompatActivity(),
 
     }
 
+    override fun onOpenSalerProfile(userId: String?) {
+        TODO("Not yet implemented")
+    }
+
 
 }

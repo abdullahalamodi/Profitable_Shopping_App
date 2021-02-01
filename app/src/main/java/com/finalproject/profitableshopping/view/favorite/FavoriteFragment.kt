@@ -2,6 +2,7 @@ package com.finalproject.profitableshopping.view.favorite
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -85,6 +86,7 @@ class FavoriteFragment : Fragment() {
                     favorites = favoriteList
                     showProgress(false)
                     dialog?.dismiss()
+                    Log.d("fav",favorites.size.toString())
                     updateUI(favorites)
                 }
             )
