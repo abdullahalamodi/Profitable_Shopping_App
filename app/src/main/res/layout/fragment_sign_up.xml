@@ -93,7 +93,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/rb_light"
-                            android:inputType="phone" />
+                            android:inputType="phone"
+                            android:maxLength="9"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
 

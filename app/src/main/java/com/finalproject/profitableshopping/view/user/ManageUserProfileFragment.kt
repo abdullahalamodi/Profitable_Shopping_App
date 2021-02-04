@@ -1,6 +1,7 @@
 package com.finalproject.profitableshopping.view.user
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -36,6 +37,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.database.*
 import com.google.firebase.storage.*
 import com.squareup.picasso.Picasso
+import dmax.dialog.SpotsDialog
 import java.io.File
 import java.lang.Exception
 
@@ -55,6 +57,7 @@ class ManageUserProfileFragment : Fragment() {
     lateinit var notifationM: ImageView
 //save data in firebase
     var database1 : DatabaseReference?=null
+    private var dialog: AlertDialog? = null
 
     lateinit var UserText1 : TextView
     lateinit var UserText2 : TextView
@@ -165,8 +168,8 @@ class ManageUserProfileFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //Show Profile :
-        database1 = FirebaseDatabase.getInstance().getReference()
-            .child("Users").child(AppSharedPreference.getUserId(requireContext())!!)
+      //  database1 = FirebaseDatabase.getInstance().getReference()
+        //    .child("Users").child(AppSharedPreference.getUserId(requireContext())!!)
         storageReference = FirebaseStorage.getInstance().getReference().child("Image/")
         try {
             var localfile: File = File.createTempFile("", "jpg")
@@ -208,6 +211,7 @@ class ManageUserProfileFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_manage_user, container, false)
+        dialog= SpotsDialog.Builder().setContext(context!!).setCancelable(false).build()
         manage = view.findViewById(R.id.UserManage)
         location = view.findViewById(R.id.location)
         notifationM = view.findViewById(R.id.notification)
@@ -230,10 +234,12 @@ class ManageUserProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 //        showProgress(true)
+        dialog?.show()
         productViewModel.userProductsLiveData.observe(
             viewLifecycleOwner,
             Observer { prodcts ->
              //   showProgress(false)
+                dialog?.dismiss()
                 updateUI(prodcts)
             })
 
@@ -292,11 +298,11 @@ class ManageUserProfileFragment : Fragment() {
                     it.load(path)
                         .resize(45, 45)
                         .centerCrop()
-                        .placeholder(R.drawable.shoe)
+                        .placeholder(R.drawable.ic_phone_android)
                         .into(manageProductImageIv)
                 }
             } else {
-                manageProductImageIv.setImageResource(R.drawable.shoe)
+                manageProductImageIv.setImageResource(R.drawable.ic_phone_android)
             }
         }
 

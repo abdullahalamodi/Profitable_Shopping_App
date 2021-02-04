@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.finalproject.profitableshopping.R
+import com.finalproject.profitableshopping.data.AppSharedPreference
 import com.finalproject.profitableshopping.data.models.OrderDetails
 import com.finalproject.profitableshopping.viewmodel.CartViewModel
 import com.squareup.picasso.Picasso
@@ -43,8 +44,8 @@ class OrderDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        PurchaseViewModelDetails.loadOrder(orderId)
-        PurchaseViewModelDetails.orderDetailsListLiveData1.observe(
+        PurchaseViewModelDetails.loadUserOrder(orderId,AppSharedPreference.getUserId(requireContext())!!)
+        PurchaseViewModelDetails.orderDetailsListLiveData.observe(
             viewLifecycleOwner,
             Observer {
                 updateUI(it)

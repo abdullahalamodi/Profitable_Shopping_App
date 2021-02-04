@@ -110,8 +110,8 @@
 
     <string-array name="admin_list">
         <item>الاصناف</item>
-        <item>إضافة بلاغ</item>
         <item>ارسال الاشعارات</item>
+        <item>إضافة بلاغ</item>
         <!--<item>تغيير كلمة المرور</item>-->
         <item>تواصل معنا</item>
         <item>حول التطبيق</item>
@@ -119,7 +119,7 @@
     </string-array>
 
     <string-array name="user_list">
-        <!--<item>حسابي</item>-->
+        <item>حسابي</item>
         <item>منتجاتي</item>
         <item>مشترياتي</item>
         <item>مبيعاتي</item>
@@ -145,5 +145,15 @@
 
     <string name="is_empty">هذا الحقل مطلوب</string>
     <string name="member_details3">" أتطلع للبحث عن منصب مليء بالتحديات والمسؤولية حيث يمكن الاستفادة من قدراتي بشكل كبير وفعال ، والمساهمة في بالاستمرار بالتطور، مما يوفر فرصًا لاكتساب المزيد من المعرفة ، وتعلم المزيد من المهارات ، وتطويرها إلى أقصى مستوى "</string>
+    <string name="hide_category">اخفاء</string>
+    <string name="forgot_your_password">هل نسيت كلمة المرور؟</string>
+    <string name="message_of_forgit">" لإعادة تعيين كلمة المرور ، أدخل بريدك الإلكتروني ، واضغط على الزر وتحقق من البريد لاتباع التعليمات."</string>
+    <string name="reset_password">ا إعادة تعيين كلمة المرور</string>
+    <string name="back">عودة</string>
+    <string name="my_product">منتجاتي</string>
+    <string name="my_pruchases">مشترياتي</string>
+    <string name="my_sales">مبيعاتي</string>
+    <string name="calling">اتصال</string>
+    <string name="seller_page">صفحة البائع</string>
 
 </resources>

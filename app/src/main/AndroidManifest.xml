@@ -1,5 +1,4 @@
-<?xm
-    l version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.finalproject.profitableshopping">
 
@@ -20,14 +19,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.authentication.fragments.ShowProfileActivity"
+        <activity
+            android:name=".view.authentication.fragments.ShowProfileActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".data.firebase.NotifationActivity"
-            android:theme="@style/SplashScreenTheme"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".view.user.MapActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".data.firebase.NotifationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashScreenTheme" />
+        <activity
+            android:name=".view.user.MapActivity"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -36,19 +38,18 @@
         <activity
             android:name=".view.category.CategoryActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".view.CheckNetworkActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:theme="@style/ConnectActivityTheme"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/ConnectActivityTheme" />
 
         <activity
             android:name=".view.SplashScreenActivity"
-            android:theme="@style/SplashScreenTheme"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -57,14 +58,15 @@
         <activity
             android:name=".view.products.ManageProductActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
-            android:screenOrientation="portrait"/>
+            android:theme="@style/SplashScreenTheme"/>
         <activity
 
             android:name=".view.MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan">
 
         </activity>
 

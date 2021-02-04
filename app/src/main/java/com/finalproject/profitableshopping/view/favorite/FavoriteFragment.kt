@@ -73,7 +73,7 @@ class FavoriteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
        // showProgress(true)
-        dialog?.show()
+       // dialog?.show()
 //        val items = mutableListOf<FavoriteDetails>()
 //        items.add(FavoriteDetails(null, 1, "1"))
 //        items.add(FavoriteDetails(null, 1, "1"))

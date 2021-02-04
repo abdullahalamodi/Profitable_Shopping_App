@@ -26,7 +26,7 @@
         android:fontFamily="@font/rb_light"
         android:text="@string/skip"
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

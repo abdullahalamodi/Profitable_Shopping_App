@@ -1,6 +1,8 @@
 package com.finalproject.profitableshopping.view.products.fragments
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -44,7 +46,7 @@ class DetailsOfAllProductsFragment : Fragment() {
     lateinit var favoriteViewModel: FavoriteViewModel
     lateinit var productImageIv: ImageView
     lateinit var productNameTv: TextView
-    lateinit var salerNameTv: TextView
+    lateinit var salerNameTv: LinearLayout
     lateinit var productQuantityTv: TextView
     lateinit var productReviewsTv: TextView
     lateinit var productRialPriceTv: TextView
@@ -65,6 +67,7 @@ class DetailsOfAllProductsFragment : Fragment() {
     lateinit var comment: Comment
     lateinit var imageSlider: ImageSlider
     var databaseReference: DatabaseReference? = null
+    var salerphone:String?=""
 
 
     override fun onAttach(context: Context) {
@@ -128,6 +131,12 @@ class DetailsOfAllProductsFragment : Fragment() {
         salerNameTv.setOnClickListener {
             callbacks?.onOpenSalerProfile(product.userId)
         }
+
+        call_btn.setOnClickListener {
+            val intent= Intent(Intent.ACTION_DIAL)
+            intent.data= Uri.parse("tel:772967092")
+            startActivity(intent)
+        }
     }
 
     override fun onDetach() {
@@ -145,7 +154,9 @@ class DetailsOfAllProductsFragment : Fragment() {
         favoriteViewModel = ViewModelProviders.of(this).get(FavoriteViewModel::class.java)
         product = Product()
         databaseReference =
-            FirebaseDatabase.getInstance().getReference("users").child(product.userId!!)
+            FirebaseDatabase.getInstance().getReference()
+                .child("Users").child(product.userId!!)
+
         // mainActivity?.anim(false)
         callbacks?.onDetailsOpen(false)
         arguments?.let {
@@ -155,6 +166,7 @@ class DetailsOfAllProductsFragment : Fragment() {
                 this,
                 Observer { it ->
                     countOfReports = it.size
+                    Log.d("mmm", product.userId!!)
                 }
             )
         }
@@ -171,7 +183,7 @@ class DetailsOfAllProductsFragment : Fragment() {
         productNameTv = view.findViewById(R.id.tv_product_name_details) as TextView
         //  productReviewsTv = view.findViewById(R.id.reviews_tv) as TextView
         productQuantityTv = view.findViewById(R.id.tv_product_quantity_details) as TextView
-        salerNameTv = view.findViewById(R.id.saler_name_tv) as TextView
+        salerNameTv = view.findViewById(R.id.saler_name_tv) as LinearLayout
         productRialPriceTv = view.findViewById(R.id.tv_product_price_rial_details) as TextView
         productDollarPriceTv = view.findViewById(R.id.tv_product_price_details) as TextView
         productDescriptionTv = view.findViewById(R.id.tv_product_desc_details) as TextView
@@ -194,12 +206,12 @@ class DetailsOfAllProductsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        salerNameTv.text = "haytham"
+        // salerNameTv.text = "haytham"
         databaseReference?.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 var userInfo = snapshot.getValue(SaveUserInfo::class.java)
-                var salerNmae = userInfo?.userName
-                salerNameTv.text = "haytham"
+                 salerphone = userInfo?.userPhone
+                //salerNameTv.text = salerName
 
             }
 
@@ -218,33 +230,33 @@ class DetailsOfAllProductsFragment : Fragment() {
                     if (AppSharedPreference.getUserId(requireContext())
                         != product.userId && AppSharedPreference.getUserToken(requireContext()) == "user"
                     ) {
-                        chat_btn.isEnabled = false
+                        //chat_btn.isEnabled = false
                         cartBtn.show()
                         cartBtn.isEnabled = true
                         favoriteFABtn.isEnabled = true
                         reportBtn.isEnabled = true
-                        chat_btn.isEnabled = true
+                        page_btn.isEnabled = true
                         call_btn.isEnabled = true
 
-                        cartBtn.visibility=View.VISIBLE
-                        favoriteFABtn.visibility=View.VISIBLE
-                        reportBtn.visibility=View.VISIBLE
-                        chat_btn.visibility=View.VISIBLE
-                        call_btn.visibility=View.VISIBLE
+                        cartBtn.visibility = View.VISIBLE
+                        favoriteFABtn.visibility = View.VISIBLE
+                        reportBtn.visibility = View.VISIBLE
+                        page_btn.visibility = View.VISIBLE
+                        call_btn.visibility = View.VISIBLE
 
-                    }else{
+                    } else {
 
                         cartBtn.isEnabled = false
                         favoriteFABtn.isEnabled = false
                         reportBtn.visibility = View.GONE
-                        chat_btn.isEnabled = false
+                        page_btn.isEnabled = false
                         call_btn.isEnabled = false
 
-                        cartBtn.visibility=View.INVISIBLE
-                        favoriteFABtn.visibility=View.INVISIBLE
-                        reportBtn.visibility=View.INVISIBLE
-                        chat_btn.visibility=View.INVISIBLE
-                        call_btn.visibility=View.INVISIBLE
+                        cartBtn.visibility = View.INVISIBLE
+                        favoriteFABtn.visibility = View.INVISIBLE
+                        reportBtn.visibility = View.INVISIBLE
+                        page_btn.visibility = View.INVISIBLE
+                        call_btn.visibility = View.INVISIBLE
                     }
 
 
