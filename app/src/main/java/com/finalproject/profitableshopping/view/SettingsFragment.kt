@@ -79,8 +79,12 @@ class SettingsFragment : Fragment(),
         )
 
         val userImage = arrayOf<Int>(
-            R.drawable.ic_my_products, R.drawable.ic_orders, R.drawable.ic_sells,
-            R.drawable.ic_contact_us, R.drawable.ic_phone_android,
+            R.drawable.ic_person,
+            R.drawable.ic_my_products,
+            R.drawable.ic_orders,
+            R.drawable.ic_sells,
+            R.drawable.ic_contact_us,
+            R.drawable.ic_phone_android,
             R.drawable.logout
         )
 
@@ -95,7 +99,7 @@ class SettingsFragment : Fragment(),
         var aAdapter = MyListAdapter(this, adminList, adminImage)
         aList.adapter = aAdapter
 
-        var uAdapter = MyListAdapter(this, userList, userImage)
+        var uAdapter = UserListAdapter(this, userList, userImage)
         uList.adapter = uAdapter
 
 
@@ -125,11 +129,11 @@ class SettingsFragment : Fragment(),
 
 
             } else if (position == 1) {
+                startActivity(Intent(context, NotifationActivity::class.java))
+            } else if (position == 2) {
                 AddComplainDialog.newInstance().apply {
                     show(this@SettingsFragment.parentFragmentManager, "report")
                 }
-            } else if (position == 2) {
-                startActivity(Intent(context, NotifationActivity::class.java))
             } else if (position == 3) {
                 addFragment(ContactUsFragment())
             } else if (position == 4) {
@@ -144,31 +148,31 @@ class SettingsFragment : Fragment(),
         uList.setOnItemClickListener { parent, view, position, id ->
 
             if (position == 0) {
-                //addFragment(AboutAppFragment())
-                startActivity(Intent(context, ManageProductActivity::class.java))
-
-
+                addFragment(
+                    ManageUserProfileFragment.newInstance(
+                        AppSharedPreference.getUserId(
+                            requireContext()
+                        )!!
+                    )
+                )
             } else if (position == 1) {
+                startActivity(Intent(context, ManageProductActivity::class.java))
+            } else if (position == 2) {
                 callbacks?.onMyPurchaseSelected()
 
-            } else if (position == 2) {
+            } else if (position == 3) {
                 callbacks?.onMySalesSelected()
 
-            } else if (position == 3) {
+            } else if (position == 4) {
+
                 callbacks?.onContactUsSelected()
 
-            } else if (position == 4) {
-                callbacks?.onAboutAppSelected()
-
-
             } else if (position == 5) {
+                addFragment(AboutAppFragment())
+            } else if (position == 6) {
                 logOut()
                 setCurrentFragment(LogInFragment.newInstance())
-
             }
-//            else if (position == 6) {
-//
-//            }
 
         }
 

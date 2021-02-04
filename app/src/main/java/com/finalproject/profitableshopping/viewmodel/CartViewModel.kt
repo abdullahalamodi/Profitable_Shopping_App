@@ -107,7 +107,7 @@ class CartViewModel : ViewModel() {
                     response: Response<List<OrderDetails>>
                 ) {
                     orderList.value = response.body()?: emptyList()
-                    Log.d("success get order","success get orders")
+                    Log.d("success get cart items",response.body()?.size.toString())
                 }
 
                 override fun onFailure(call: Call<List<OrderDetails>>, t: Throwable) {
@@ -131,7 +131,7 @@ class CartViewModel : ViewModel() {
                     response: Response<List<OrderDetails>>
                 ) {
                     orderList.value = response.body()?: emptyList()
-                    Log.d("success get order","success get orders")
+                    Log.d("success get order",response.body()?.size.toString())
                 }
 
                 override fun onFailure(call: Call<List<OrderDetails>>, t: Throwable) {

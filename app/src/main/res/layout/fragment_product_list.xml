@@ -9,7 +9,26 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/view_background1">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/rb_light"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="55dp"
         android:orientation="vertical">
 
         <EditText
@@ -25,27 +44,27 @@
             android:fontFamily="@font/rb_light"
             android:hint="search...."
             android:imeOptions="actionSearch"
+            android:inputType="text"
             android:maxLines="1"
             android:padding="12dp"
             android:singleLine="true"
-            android:inputType="text"
-            android:textSize="14sp"/>
+            android:textSize="14sp" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_all_categories"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="4dp"
             android:orientation="horizontal"
-            android:id="@+id/rv_all_categories"
-            tools:listitem="@layout/list_item_main_categories"
-            android:layout_margin="4dp"/>
+            tools:listitem="@layout/list_item_main_categories" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_product"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingRight="4dp"
-            android:paddingLeft="4dp"
             android:layout_marginTop="8dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/list_item_product" />
     </LinearLayout>

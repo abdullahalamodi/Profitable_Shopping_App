@@ -35,14 +35,14 @@
     <string-array name="admin_list">
         <item>Categories</item>
         <item>Send Notification</item>
-        <item>Reset Password</item>
+        <item>Add Report</item>
         <item>Contact us</item>
         <item>About App</item>
         <item>Logout</item>
     </string-array>
 
     <string-array name="user_list">
-      <!--  <item>My Account</item>-->
+        <item>My Account</item>
         <item>My Products</item>
         <item>My purchases</item>
         <item>My sales</item>
@@ -83,7 +83,7 @@
     <string name="dollar_price_product">dollar price</string>
     <string name="quntity_product">quantity</string>
     <string name="description_product">description</string>
-    <string name="add_product">add</string>
+    <string name="add_product">add new product</string>
     <string name="add_photo">product image</string>
     <string name="no_network">no connection</string>
     <string name="no_network_desc">no service , please connect to internet</string>
@@ -114,4 +114,13 @@
     <string name="member_details3">I am looking for a position full of challenges and responsibility where it can benefit from my capabilities greatly and effectively, and contribute to the continued development, which provides opportunities to gain more knowledge, learn more skills, and develop them to the maximum level</string>
     <string name="skip">Skip</string>
     <string name="sign_in">Sign In</string>
+    <string name="is_empty">This field is required</string>
+    <string name="hide_category">Hide</string>
+    <string name="back">BACK</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="forgot_your_password">Forgot your password?</string>
+    <string name="message_of_forgit">To reset password, enter your email, press the button and check mail to follow instruction.</string>
+    <string name="my_product">My Products</string>
+    <string name="my_pruchases">My Purchases</string>
+    <string name="my_sales">My Sales</string>
 </resources>

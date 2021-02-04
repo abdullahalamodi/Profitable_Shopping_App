@@ -26,10 +26,10 @@ class AdminProductManagmentFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
-        productViewModel.refreshCategoryList(catgoryId.toString())
         arguments?.let {
             catgoryId=it.getInt("CATID")
         }
+        productViewModel.refreshCategoryList(catgoryId.toString())
     }
 
     override fun onCreateView(

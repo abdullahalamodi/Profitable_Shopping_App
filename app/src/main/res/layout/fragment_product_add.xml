@@ -19,7 +19,7 @@
             android:background="@color/colorPrimary"
             android:focusable="true"
             android:orientation="vertical"
-            android:paddingTop="20dp">
+            android:paddingTop="40dp">
 
             <TextView
                 android:layout_width="match_parent"
@@ -29,7 +29,7 @@
                 android:fontFamily="@font/rb_light"
                 android:paddingRight="18dp"
                 android:text="@string/category_hint"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -129,6 +129,8 @@
                     android:orientation="horizontal"
                     android:gravity="center|end"
                     android:weightSum="2"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="6dp"
                     android:layout_marginEnd="12dp">
 
 
@@ -211,7 +213,8 @@
                     android:fontFamily="@font/rb_light"
                     android:gravity="center"
                     android:text="@string/add_product"
-                    android:textColor="@color/black"
+                    android:padding="10dp"
+                    android:textColor="@color/white"
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
